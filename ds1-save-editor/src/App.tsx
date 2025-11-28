@@ -5,6 +5,7 @@ import { FileUpload } from './components/FileUpload';
 import { CharacterList } from './components/CharacterList';
 import { TabPanel } from './components/TabPanel';
 import { TermsPage } from './components/TermsPage';
+import logoImg from '/logo.png';
 import './App.css';
 
 function App() {
@@ -90,7 +91,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>
-          <img src="/logo.png" alt="Dark Souls" className="header-icon" />
+          <img src={logoImg} alt="Dark Souls" className="header-icon" />
           Dark Souls Save Editor
         </h1>
       </header>

@@ -1,6 +1,14 @@
-# Dark Souls Save Editor
+# Dark Souls Remastered Save Editor
 
-A web-based save file editor for Dark Souls 1 (Remastered).
+A portable desktop application and web-based save file editor for Dark Souls Remastered.
+
+**⚠️ Work in Progress** - Active development, new features coming!
+
+**Discord:** https://discord.gg/FZuCXNcUWA
+
+---
+
+**Tags:** Dark Souls Remastered Save Editor, DSR Save Editor, Dark Souls Save Editor Online, DS1 Save Editor, Dark Souls Character Editor, Portable Save Editor, Dark Souls Stats Editor, DRAKS0005, Humanity Editor, Souls Editor
 
 ## Features
 
@@ -175,6 +183,12 @@ Each class has predefined base stats and starting level.
 - Uses modern `showOpenFilePicker()` and `showSaveFilePicker()` APIs
 - Requires HTTPS in production (works on localhost HTTP)
 - Gracefully falls back to traditional file input/download
+
+## Support & Contact
+
+**Discord:** https://discord.gg/FZuCXNcUWA
+
+For bugs, feature requests, questions, or general support - join our Discord server!
 
 ## License
 

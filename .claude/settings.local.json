@@ -16,7 +16,9 @@
       "Bash(npm run dist:win:*)",
       "Bash(timeout 120 bash:*)",
       "Bash(timeout 180 bash:*)",
-      "Bash(electron-builder:*)"
+      "Bash(electron-builder:*)",
+      "Bash(node scripts/convert-icon.js:*)",
+      "Bash(taskkill /F /IM \"DS1 Save Editor.exe\")"
     ],
     "deny": [],
     "ask": []
