@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="json\items.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="json\npc_data.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

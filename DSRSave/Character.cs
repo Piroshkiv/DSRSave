@@ -9,12 +9,6 @@ namespace DSRSave
 {
     public class Character
     {
-        private readonly byte[] _data;
-        public int SlotNumber { get; }
-        public NPCEditor Npc { get; }
-        public NameEditor Name { get; }
-        public StatsEditor Stats { get; }
-
         public Character(byte[] data, int slotNumber)
         {
             _data = data ?? throw new ArgumentNullException(nameof(data));
@@ -22,7 +16,17 @@ namespace DSRSave
             Npc = new NPCEditor(this);
             Name = new NameEditor(this);
             Stats = new StatsEditor(this);
+            Covenant = new CovenantEditor(this);
+            Inventory = new InventoryEditor(this);
         }
+
+        private readonly byte[] _data;
+        public int SlotNumber { get; }
+        public NPCEditor Npc { get; }
+        public NameEditor Name { get; }
+        public StatsEditor Stats { get; }
+        public CovenantEditor Covenant { get; }
+        public InventoryEditor Inventory { get; }
 
         private readonly byte[] _pattern1 =
         {

@@ -15,7 +15,8 @@ namespace DSRSave
         private const int UserDataSize = 0x060020;
         private const int UserDataFileCount = 11;
 
-        private static readonly byte[] Key = new byte[16] {
+        private static readonly byte[] Key = new byte[16] 
+        {
             0x01, 0x23, 0x45, 0x67,
             0x89, 0xAB, 0xCD, 0xEF,
             0xFE, 0xDC, 0xBA, 0x98,

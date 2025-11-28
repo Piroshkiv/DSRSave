@@ -1,0 +1,26 @@
+1.3.1
+
+NEW: "Find save in folder" - automatically searches for .sl2 files!
+FIXED: MD5 checksum (MUST run "npm install")
+
+Latest Changes (v1.3.1):
+- "Find save in folder" button added
+- Help icons (?) with usage hints for both buttons
+- Searches recursively for ANY .sl2 file
+- Just select NBGI or any folder with saves
+- Finds save automatically - no manual navigation needed!
+
+Previous Changes (v1.3):
+- Auto-loads your last edited save when you open the app
+- Shows loading indicator during auto-load
+- Uses IndexedDB to remember file handle
+
+IMPORTANT: Run "npm install" before using!
+
+How to use:
+1. Click "Find save in folder" (green button)
+2. Select folder: NBGI, DARK SOULS REMASTERED, or user ID folder
+3. App finds your .sl2 file automatically
+4. Done!
+
+Hover over ? icons for help!

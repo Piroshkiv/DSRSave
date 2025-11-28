@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="fireGlow" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF8C00;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FF4500;stop-opacity:0.3" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#1a1a1a"/>
+
+  <!-- Gear -->
+  <g transform="translate(256, 256)">
+    <!-- Gear teeth -->
+    <path d="M -30,-120 L -30,-140 L 30,-140 L 30,-120
+             L 120,-30 L 140,-30 L 140,30 L 120,30
+             L 30,120 L 30,140 L -30,140 L -30,120
+             L -120,30 L -140,30 L -140,-30 L -120,-30 Z"
+          fill="#4a4a4a" stroke="#666" stroke-width="3"/>
+
+    <!-- Inner gear circle -->
+    <circle cx="0" cy="0" r="100" fill="#2a2a2a" stroke="#555" stroke-width="4"/>
+
+    <!-- Fire in center -->
+    <ellipse cx="0" cy="10" rx="45" ry="60" fill="url(#fireGlow)" opacity="0.9"/>
+
+    <!-- Fire highlights -->
+    <path d="M -15,-30 Q -10,-50 0,-55 Q 10,-50 15,-30 Q 10,-15 0,0 Q -10,-15 -15,-30 Z"
+          fill="#FFD700" opacity="0.7"/>
+    <path d="M -8,-20 Q -5,-35 0,-38 Q 5,-35 8,-20 Q 5,-10 0,-5 Q -5,-10 -8,-20 Z"
+          fill="#FFF" opacity="0.6"/>
+
+    <!-- Bonfire sticks -->
+    <rect x="-3" y="25" width="6" height="35" fill="#8B4513" rx="2"/>
+    <rect x="-20" y="35" width="6" height="25" fill="#654321" rx="2" transform="rotate(-25 -17 47)"/>
+    <rect x="14" y="35" width="6" height="25" fill="#654321" rx="2" transform="rotate(25 17 47)"/>
+  </g>
+
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="245" fill="none" stroke="#555" stroke-width="8"/>
+</svg>
