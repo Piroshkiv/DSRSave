@@ -1,5 +1,6 @@
 import { Character } from './Character';
 import { decryptAesCbc, encryptAesCbc, calculateMD5 } from './crypto';
+import { toArrayBuffer } from './bufferUtils';
 import {
   SAVE_FILE_SIZE,
   SAVE_SLOT_SIZE,
@@ -88,7 +89,7 @@ export class SaveFileEditor {
 
     const data = await this.exportSaveFile();
     const writable = await this.fileHandle.createWritable();
-    await writable.write(data);
+    await writable.write(toArrayBuffer(data));
     await writable.close();
   }
 
@@ -107,7 +108,7 @@ export class SaveFileEditor {
         });
 
         const writable = await handle.createWritable();
-        await writable.write(data);
+        await writable.write(toArrayBuffer(data));
         await writable.close();
         return;
       } catch (err: any) {
@@ -123,7 +124,7 @@ export class SaveFileEditor {
   }
 
   private downloadFile(data: Uint8Array, filename: string): void {
-    const blob = new Blob([data], { type: 'application/octet-stream' });
+    const blob = new Blob([toArrayBuffer(data)], { type: 'application/octet-stream' });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');

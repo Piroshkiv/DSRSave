@@ -1,4 +1,5 @@
-import md5 from 'js-md5';
+import { md5 } from 'js-md5';
+import { toArrayBuffer } from './bufferUtils';
 
 export async function decryptAesCbc(
   cipherData: Uint8Array,
@@ -7,16 +8,16 @@ export async function decryptAesCbc(
 ): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
-    key,
+    toArrayBuffer(key),
     { name: 'AES-CBC' },
     false,
     ['decrypt']
   );
 
   const decrypted = await crypto.subtle.decrypt(
-    { name: 'AES-CBC', iv },
+    { name: 'AES-CBC', iv: toArrayBuffer(iv) },
     cryptoKey,
-    cipherData
+    toArrayBuffer(cipherData)
   );
 
   return new Uint8Array(decrypted);
@@ -29,16 +30,16 @@ export async function encryptAesCbc(
 ): Promise<Uint8Array> {
   const cryptoKey = await crypto.subtle.importKey(
     'raw',
-    key,
+    toArrayBuffer(key),
     { name: 'AES-CBC' },
     false,
     ['encrypt']
   );
 
   const encrypted = await crypto.subtle.encrypt(
-    { name: 'AES-CBC', iv },
+    { name: 'AES-CBC', iv: toArrayBuffer(iv) },
     cryptoKey,
-    plainData
+    toArrayBuffer(plainData)
   );
 
   return new Uint8Array(encrypted);
