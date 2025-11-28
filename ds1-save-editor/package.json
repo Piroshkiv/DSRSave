@@ -2,10 +2,41 @@
   "name": "ds1-save-editor",
   "version": "1.3.1",
   "description": "Dark Souls 1 Save Editor - Web-based save file editor",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:static": "tsc && vite build --mode static",
+    "electron": "npm run build:static && electron .",
+    "electron:dev": "electron .",
+    "dist": "npm run build:static && electron-builder",
+    "dist:win": "npm run build:static && electron-builder --win",
+    "dist:linux": "npm run build:static && electron-builder --linux",
+    "dist:mac": "npm run build:static && electron-builder --mac",
     "preview": "vite preview"
+  },
+  "build": {
+    "appId": "com.ds1saveeditor.app",
+    "productName": "DS1 Save Editor",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": ["portable", "nsis"],
+      "signAndEditExecutable": false
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Utility"
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "category": "public.app-category.utilities"
+    }
   },
   "dependencies": {
     "js-md5": "^0.8.3",
@@ -17,6 +48,8 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
+    "electron": "^39.2.4",
+    "electron-builder": "^26.0.12",
     "typescript": "^5.3.0",
     "vite": "^5.0.0"
   }

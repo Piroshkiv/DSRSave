@@ -4,7 +4,19 @@
       "Bash(npm run dev:*)",
       "Bash(timeout /t 5 /nobreak)",
       "WebFetch(domain:darksouls.wiki.fextralife.com)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(npm run build:static:*)",
+      "Bash(dir:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:inline:*)",
+      "Bash(del START.bat)",
+      "Bash(del server.js)",
+      "Bash(del README-USER.md)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm run dist:win:*)",
+      "Bash(timeout 120 bash:*)",
+      "Bash(timeout 180 bash:*)",
+      "Bash(electron-builder:*)"
     ],
     "deny": [],
     "ask": []

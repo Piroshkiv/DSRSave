@@ -115,6 +115,20 @@ export class Character {
     this.data[0x00E4] = value & 0xFF;
   }
 
+  get souls(): number {
+    return this.data[0x00F4] +
+           (this.data[0x00F5] << 8) +
+           (this.data[0x00F6] << 16) +
+           (this.data[0x00F7] << 24);
+  }
+
+  set souls(value: number) {
+    this.data[0x00F4] = value & 0xFF;
+    this.data[0x00F5] = (value >> 8) & 0xFF;
+    this.data[0x00F6] = (value >> 16) & 0xFF;
+    this.data[0x00F7] = (value >> 24) & 0xFF;
+  }
+
   get playerClass(): PlayerClass {
     return this.data[0x012E] as PlayerClass;
   }

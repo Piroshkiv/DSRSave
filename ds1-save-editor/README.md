@@ -17,41 +17,70 @@ A web-based save file editor for Dark Souls 1 (Remastered).
 - Dark theme UI
 - Fully client-side - no server required
 
-## Installation
+## 🚀 Quick Start for Users
 
-First, make sure you have Node.js installed. Then:
+### Option 1: Download Desktop App (Recommended)
+
+Download the latest release for your platform:
+- **Windows**: `DS1-Save-Editor-Setup.exe` (installer) or `DS1-Save-Editor-Portable.exe` (portable)
+- **Linux**: `DS1-Save-Editor.AppImage` or `ds1-save-editor.deb`
+- **macOS**: `DS1-Save-Editor.dmg`
+
+No installation required for portable versions - just download and run!
+
+### Option 2: Web Version
+
+Visit the hosted version at [your-deployed-url] or run locally:
+
+```bash
+npm install
+npm run dev
+```
+
+## 🛠 Development Setup
+
+### Prerequisites
+
+- Node.js 16+ (for development)
+- npm or yarn
+
+### Installation
 
 ```bash
 npm install
 ```
 
-## Usage
-
-### Development
-
-Start the development server:
+### Development Commands
 
 ```bash
-npm run dev
-```
+# Web development with hot reload
+npm run dev              # → http://localhost:5173
 
-The application will be available at `http://localhost:5173`
+# Build for web deployment (Cloudflare Pages, etc.)
+npm run build            # → dist/ with absolute paths
 
-### Build
+# Build for Electron/local use
+npm run build:static     # → dist/ with relative paths
 
-Build for production:
+# Electron development
+npm run electron         # Build + run Electron app
+npm run electron:dev     # Run Electron without rebuilding
 
-```bash
-npm run build
-```
+# Create executable files
+npm run dist             # Build for current platform
+npm run dist:win         # Windows (.exe)
+npm run dist:linux       # Linux (.AppImage, .deb)
+npm run dist:mac         # macOS (.dmg)
 
-The built files will be in the `dist` folder.
-
-### Preview Production Build
-
-```bash
+# Preview production build
 npm run preview
 ```
+
+### Build Outputs
+
+- **Web build** (`npm run build`): `dist/` folder with absolute paths (`/assets/...`)
+- **Electron build** (`npm run dist`): `release/` folder with executables
+- **Static build** (`npm run build:static`): `dist/` folder with relative paths (`./assets/...`)
 
 ## How to Use
 
@@ -96,6 +125,27 @@ The app automatically detects support and falls back to traditional download if 
 
 Dark Souls Remastered save files are typically located at:
 - Windows: `%USERPROFILE%\Documents\NBGI\DARK SOULS REMASTERED\<user_id>\`
+
+## 📦 Project Structure
+
+```
+ds1-save-editor/
+├── electron/          # Electron main process
+│   └── main.js       # App entry point
+├── src/              # React application
+│   ├── lib/          # Save file library (can be used independently)
+│   │   ├── SaveFileEditor.ts  # Load/save .sl2 files
+│   │   ├── Character.ts       # Character data manipulation
+│   │   ├── constants.ts       # Game constants and stat tables
+│   │   └── crypto.ts          # AES encryption/decryption
+│   ├── App.tsx       # Main UI component
+│   └── main.tsx      # React entry point
+├── dist/             # Built files (generated)
+├── release/          # Electron executables (generated)
+├── package.json      # Dependencies and scripts
+├── vite.config.ts    # Vite configuration
+└── tsconfig.json     # TypeScript configuration
+```
 
 ## Library
 

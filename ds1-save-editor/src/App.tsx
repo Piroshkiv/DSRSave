@@ -89,7 +89,10 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Dark Souls Save Editor</h1>
+        <h1>
+          <img src="/logo.png" alt="Dark Souls" className="header-icon" />
+          Dark Souls Save Editor
+        </h1>
       </header>
 
       <div className="app-content">

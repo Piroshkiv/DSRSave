@@ -164,6 +164,15 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     }
   };
 
+  const handleSoulsChange = (value: string) => {
+    const numValue = parseInt(value, 10);
+    if (!isNaN(numValue) && numValue >= 0 && numValue <= 999999999) {
+      character.souls = numValue;
+      forceUpdate({});
+      onCharacterUpdate();
+    }
+  };
+
   const handleHpChange = (value: string) => {
     const numValue = parseInt(value, 10);
     if (!isNaN(numValue) && numValue >= 0 && numValue <= 9999) {
@@ -188,6 +197,17 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
         <div className="stats-column">
           <h3>Stats</h3>
           <div className="stats-list">
+            <div className="stat-row">
+              <label>Level</label>
+              <input
+                type="number"
+                value={character.level}
+                onChange={(e) => handleLevelChange(e.target.value)}
+                min={1}
+                max={713}
+                disabled={safeMode}
+              />
+            </div>
             {STAT_ORDER.map((statName) => (
               <div key={statName} className="stat-row">
                 <label>{statName}</label>
@@ -231,18 +251,6 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           </div>
 
           <div className="form-group">
-            <label>Level</label>
-            <input
-              type="number"
-              value={character.level}
-              onChange={(e) => handleLevelChange(e.target.value)}
-              min={1}
-              max={713}
-              disabled={safeMode}
-            />
-          </div>
-
-          <div className="form-group">
             <label>HP</label>
             <input
               type="number"
@@ -274,6 +282,17 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               onChange={(e) => handleHumanityChange(e.target.value)}
               min={0}
               max={99}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Souls</label>
+            <input
+              type="number"
+              value={character.souls}
+              onChange={(e) => handleSoulsChange(e.target.value)}
+              min={0}
+              max={999999999}
             />
           </div>
 
