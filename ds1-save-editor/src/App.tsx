@@ -83,6 +83,26 @@ function App() {
     }
   };
 
+  const handleReload = async () => {
+    if (!saveEditor) return;
+
+    try {
+      if (saveEditor.hasFileHandle()) {
+        // Reload from the original file handle
+        const fileHandle = saveEditor.getFileHandle();
+        if (fileHandle) {
+          const file = await fileHandle.getFile();
+          await handleFileLoaded(file, fileHandle);
+        }
+      } else {
+        alert('Cannot reload: no file handle available. Please load the file again.');
+      }
+    } catch (error) {
+      console.error('Error reloading file:', error);
+      alert('Error reloading file. Please try again.');
+    }
+  };
+
   const selectedCharacter = selectedCharacterIndex !== null
     ? characters[selectedCharacterIndex]
     : null;
@@ -120,6 +140,7 @@ function App() {
           <TabPanel
             character={selectedCharacter}
             onCharacterUpdate={handleCharacterUpdate}
+            onReload={handleReload}
           />
 
           {saveEditor && (

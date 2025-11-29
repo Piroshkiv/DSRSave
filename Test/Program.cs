@@ -6,7 +6,7 @@ var path = "C:/Users/Iho/Documents/NBGI/DARK SOULS REMASTERED/834633765/DRAKS000
 var save = DSRSaveEditor.ReadSave(path);
 //save.ToList()[0].Stats.Humanity = 2;
 //DSRSaveEditor.WriteSave(save, path);
-var a = save.ToList()[1].Inventory.GetAllInventoryItems();
+var a = save.ToList()[0].Inventory.GetAllInventoryItems();
 var b1 = save.ToList()[1].Inventory.Ring1;
 var b2 = save.ToList()[1].Inventory.Ring2;
 //var data = save.ToList()[8].GetRawData();
@@ -29,7 +29,6 @@ var b2 = save.ToList()[1].Inventory.Ring2;
 //    b = int.Max(b, item.WeaponLevel);
 //}
 
-save.ToList()[1].Inventory.EditItem(110,  "0x65", "0x40000000", 1);
 foreach (var (slotIndex, item) in a)
 {
     //if (item.ItemInfo != null && item.ItemInfo.CollectionType == ItemCollectionType.Weapon)

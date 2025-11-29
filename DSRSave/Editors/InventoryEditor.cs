@@ -13,7 +13,7 @@ public class InventoryEditor
     private readonly Character _character;
     private readonly ItemsCollection _itemsData;
 
-    private const int INVENTORY_START = 0x370;
+    private const int INVENTORY_START = 0x370 - 30 * ITEM_SIZE;
     private const int ITEM_SIZE = 28;
     private const int MAX_SLOTS = 2048;
 

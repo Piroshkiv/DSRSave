@@ -18,7 +18,9 @@
       "Bash(timeout 180 bash:*)",
       "Bash(electron-builder:*)",
       "Bash(node scripts/convert-icon.js:*)",
-      "Bash(taskkill /F /IM \"DS1 Save Editor.exe\")"
+      "Bash(taskkill /F /IM \"DS1 Save Editor.exe\")",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)"
     ],
     "deny": [],
     "ask": []

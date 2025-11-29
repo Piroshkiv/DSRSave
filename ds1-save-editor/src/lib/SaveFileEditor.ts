@@ -143,4 +143,8 @@ export class SaveFileEditor {
   hasFileHandle(): boolean {
     return this.fileHandle !== null;
   }
+
+  getFileHandle(): FileSystemFileHandle | null {
+    return this.fileHandle;
+  }
 }

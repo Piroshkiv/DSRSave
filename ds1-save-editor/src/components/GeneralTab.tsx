@@ -4,6 +4,7 @@ import { Character } from '../lib/Character';
 interface GeneralTabProps {
   character: Character;
   onCharacterUpdate: () => void;
+  safeMode: boolean;
 }
 
 const STAT_ORDER = ['VIT', 'ATN', 'END', 'STR', 'DEX', 'RES', 'INT', 'FTH'];
@@ -36,8 +37,7 @@ const CLASS_BASE_STATS: Record<number, { level: number; stats: Record<string, nu
   9: { level: 6, stats: { VIT: 11, ATN: 11, END: 11, STR: 11, DEX: 11, RES: 11, INT: 11, FTH: 11 }, totalStatsAtZero: 82 }  // Deprived (88 - 6)
 };
 
-export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUpdate }) => {
-  const [safeMode, setSafeMode] = useState(true);
+export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUpdate, safeMode }) => {
   const [, forceUpdate] = useState({});
 
   const calculateLevel = (): number => {
@@ -296,16 +296,6 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
             />
           </div>
 
-          <div className="form-group checkbox-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={safeMode}
-                onChange={(e) => setSafeMode(e.target.checked)}
-              />
-              <span>Safe mod (auto-adjust Level, HP, Stamina)</span>
-            </label>
-          </div>
         </div>
       </div>
     </div>

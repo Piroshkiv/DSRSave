@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { Character } from '../lib/Character';
 import { GeneralTab } from './GeneralTab';
+import { InventoryTab } from './InventoryTab';
 
 interface TabPanelProps {
   character: Character | null;
   onCharacterUpdate: () => void;
+  onReload: () => void;
 }
 
-type TabType = 'general';
+type TabType = 'general' | 'inventory';
 
-export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate }) => {
+export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, onReload }) => {
   const [activeTab, setActiveTab] = useState<TabType>('general');
+  const [safeMode, setSafeMode] = useState(true);
 
   if (!character) {
     return (
@@ -24,18 +27,48 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
 
   return (
     <div className="tab-panel">
-      <div className="tabs">
-        <button
-          className={`tab ${activeTab === 'general' ? 'active' : ''}`}
-          onClick={() => setActiveTab('general')}
-        >
-          General
-        </button>
+      <div className="tabs-header">
+        <div className="tabs">
+          <button className="reload-button" onClick={onReload} title="Reload save file">
+            ↻ Reload
+          </button>
+          <button
+            className={`tab ${activeTab === 'general' ? 'active' : ''}`}
+            onClick={() => setActiveTab('general')}
+          >
+            General
+          </button>
+          <button
+            className={`tab ${activeTab === 'inventory' ? 'active' : ''}`}
+            onClick={() => setActiveTab('inventory')}
+          >
+            Inventory
+          </button>
+        </div>
+
+        <div className="safe-mode-container">
+          <div className="button-with-help">
+            <label className="safe-mode-label">
+              <input
+                type="checkbox"
+                checked={safeMode}
+                onChange={(e) => setSafeMode(e.target.checked)}
+              />
+              <span>Safe Mode</span>
+            </label>
+            <span className="help-icon" title="Auto-adjust Level, HP, Stamina based on stats. Prevents Weapon Level editing.">
+              ?
+            </span>
+          </div>
+        </div>
       </div>
 
       <div className="tab-content">
         {activeTab === 'general' && (
-          <GeneralTab character={character} onCharacterUpdate={onCharacterUpdate} />
+          <GeneralTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
+        )}
+        {activeTab === 'inventory' && (
+          <InventoryTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
         )}
       </div>
     </div>
