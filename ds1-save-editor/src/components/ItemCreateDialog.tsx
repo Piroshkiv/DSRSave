@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Inventory, ItemCollectionType, Item, ItemInfusion } from '../lib/Inventory';
 
 interface ItemCreateDialogProps {
@@ -24,6 +24,8 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const [maxUpgrade, setMaxUpgrade] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [durability, setDurability] = useState<number>(0);
+  const quantityInputRef = useRef<HTMLInputElement>(null);
+  const dialogBodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const db = inventory.getItemsDatabase();
@@ -184,6 +186,64 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     item.Name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Prevent body scroll when dialog is open
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
+  // Scroll to quantity field when item is selected
+  useEffect(() => {
+    if (selectedItem && (canStack || isEstusFlask) && quantityInputRef.current) {
+      // Use setTimeout to ensure the DOM is updated
+      setTimeout(() => {
+        quantityInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [selectedItem, canStack, isEstusFlask]);
+
+  // Redirect scroll from overlay to dialog body
+  useEffect(() => {
+    const dialogBody = dialogBodyRef.current;
+    const dialogContent = dialogBody?.closest('.dialog-content');
+    const dialogOverlay = dialogBody?.closest('.dialog-overlay');
+    if (!dialogBody || !dialogContent || !dialogOverlay) return;
+
+    const handleWheel = (e: Event) => {
+      if (!(e instanceof WheelEvent)) return;
+      
+      const target = e.target as HTMLElement;
+      
+      // If scrolling is inside dialog content, allow it
+      if (dialogContent.contains(target)) {
+        // Don't prevent default - let dialog scroll normally
+        return;
+      }
+
+      // If scrolling is on overlay (empty space), redirect it to dialog body
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Scroll the dialog body instead
+      dialogBody.scrollBy({
+        top: e.deltaY,
+        left: e.deltaX,
+        behavior: 'auto'
+      });
+    };
+
+    // Add listener to overlay in capture phase to catch all scroll events
+    dialogOverlay.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+
+    return () => {
+      dialogOverlay.removeEventListener('wheel', handleWheel, { capture: true });
+    };
+  }, []);
+
   return (
     <div className="dialog-overlay" onClick={onClose}>
       <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
@@ -194,7 +254,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
           </button>
         </div>
 
-        <div className="dialog-body">
+        <div className="dialog-body" ref={dialogBodyRef}>
           <div className="form-group">
             <label>Search Item</label>
             <input
@@ -232,6 +292,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                     }
                   </label>
                   <input
+                    ref={quantityInputRef}
                     type="number"
                     min={isEstusFlaskEmpty ? 0 : (isEstusFlask ? 0 : 1)}
                     max={isEstusFlask ? 99 : selectedItem.MaxStackCount}
