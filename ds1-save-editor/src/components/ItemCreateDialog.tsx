@@ -87,7 +87,16 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
   useEffect(() => {
     if (selectedItem) {
-      if (selectedItem.MaxUpgrade !== undefined) {
+      // Special handling for Pyromancy Flame
+      const isPyromancyFlame = selectedItem.Name === 'Pyromancy Flame' || selectedItem.Name === 'Pyromancy Flame (Ascended)';
+      if (isPyromancyFlame) {
+        // Pyromancy Flame special logic: can upgrade from 0 to 15 for base, 0 to 5 for ascended
+        if (selectedItem.Name === 'Pyromancy Flame (Ascended)') {
+          setMaxUpgrade(5);
+        } else {
+          setMaxUpgrade(15);
+        }
+      } else if (selectedItem.MaxUpgrade !== undefined) {
         let max: number;
         if (safeMode) {
           max = Inventory.getMaxUpgradeForInfusion(selectedItem.MaxUpgrade, infusion);
@@ -134,11 +143,25 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
       const finalQuantity = isEstusFlaskEmpty ? 0 : quantity;
       const slotIndex = inventory.addItem(selectedItem, finalQuantity, upgradeLevel, infusion);
 
-      // Update durability if applicable
-      if (slotIndex !== null && hasDurability) {
+      if (slotIndex !== null) {
         const item = inventory.readSlot(slotIndex);
-        item.durability = durability;
-        inventory.writeSlot(slotIndex, item);
+
+        // Special handling for Pyromancy Flame upgrade level
+        if (isPyromancyFlame) {
+          const baseId = item.baseItemId;
+          if (baseId === 1330000) { // Pyromancy Flame
+            item.itemId = 1330000 + upgradeLevel * 100;
+          } else if (baseId === 1332000) { // Pyromancy Flame (Ascended)
+            item.itemId = 1332000 + upgradeLevel * 100;
+          }
+          inventory.writeSlot(slotIndex, item);
+        }
+
+        // Update durability if applicable
+        if (hasDurability) {
+          item.durability = durability;
+          inventory.writeSlot(slotIndex, item);
+        }
       }
 
       onItemCreated(slotIndex);
@@ -151,7 +174,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const isPyromancyFlame = selectedItem?.Name === 'Pyromancy Flame' || selectedItem?.Name === 'Pyromancy Flame (Ascended)';
   const isEstusFlask = selectedItem?.Name?.includes('Estus Flask');
   const isEstusFlaskEmpty = isEstusFlask && selectedItem?.Name?.includes('(empty)');
-  const canUpgrade = selectedItem?.MaxUpgrade !== undefined && selectedItem.MaxUpgrade > 0;
+  const canUpgrade = isPyromancyFlame || (selectedItem?.MaxUpgrade !== undefined && selectedItem.MaxUpgrade > 0);
   const canInfuse = safeMode ? (selectedItem?.CanInfuse === true && !isPyromancyFlame) : !isPyromancyFlame;
   const canStack = selectedItem && selectedItem.MaxStackCount > 1;
   const hasDurability = selectedItem?.Durability !== undefined &&
