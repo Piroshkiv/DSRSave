@@ -359,8 +359,34 @@ export class Inventory {
   }
 
   async loadItemsDatabase(): Promise<void> {
-    const response = await fetch('/json/items.json');
-    this.itemsDatabase = await response.json();
+    // Check if running in Electron (file:// protocol) or web (http/https)
+    const isElectron = typeof window !== 'undefined' && window.location.protocol === 'file:';
+    
+    // In Electron, use relative path; in web, use absolute path
+    const paths = isElectron 
+      ? ['./json/items.json', '/json/items.json']
+      : ['/json/items.json', './json/items.json'];
+    
+    let lastError: Error | null = null;
+    
+    for (const jsonPath of paths) {
+      try {
+        const response = await fetch(jsonPath);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        this.itemsDatabase = await response.json();
+        return; // Success, exit early
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        console.warn(`Failed to load items database from ${jsonPath}:`, lastError);
+        // Continue to try next path
+      }
+    }
+    
+    // All paths failed
+    console.error('Could not load items database from any path:', lastError);
+    throw new Error('Could not load items database. Please ensure items.json is available.');
   }
 
   getItemsDatabase(): ItemsDatabase | null {

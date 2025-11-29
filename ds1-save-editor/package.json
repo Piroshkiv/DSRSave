@@ -26,6 +26,8 @@
     "build:static": "tsc && vite build --mode static",
     "electron": "npm run build:static && electron .",
     "electron:dev": "electron .",
+    "electron:debug": "npm run build:static && electron . --devtools",
+    "electron:debug:dev": "electron . --devtools",
     "dist": "npm run build:static && electron-builder",
     "dist:win": "npm run build:static && electron-builder --win",
     "dist:linux": "npm run build:static && electron-builder --linux",

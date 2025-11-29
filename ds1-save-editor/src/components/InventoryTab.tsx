@@ -99,40 +99,48 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     
     const loadInventory = async () => {
       setLoading(true);
-      await newInventory.loadItemsDatabase();
-      // Refresh items after loading database
-      const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
-      let filteredItems = newInventory.getItemsByType(collectionType);
+      try {
+        await newInventory.loadItemsDatabase();
+        // Refresh items after loading database
+        const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
+        let filteredItems = newInventory.getItemsByType(collectionType);
 
-      // Hide Fists and No armor items in safe mode
-      if (safeMode) {
-        const hiddenNames = ['Fists', 'No helm', 'No armor', 'No gauntlets', 'No legs'];
-        filteredItems = filteredItems.filter(item => !hiddenNames.includes(item.itemName));
+        // Hide Fists and No armor items in safe mode
+        if (safeMode) {
+          const hiddenNames = ['Fists', 'No helm', 'No armor', 'No gauntlets', 'No legs'];
+          filteredItems = filteredItems.filter(item => !hiddenNames.includes(item.itemName));
+        }
+
+        // Apply search filter
+        if (searchQuery.trim()) {
+          filteredItems = filteredItems.filter(item =>
+            item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        }
+
+        // Apply infusion filter (only for weapons, armor)
+        if (infusionFilter !== 'all' && (activeSubTab === 'weapons' || activeSubTab === 'armor')) {
+          filteredItems = filteredItems.filter(item => item.infusion === infusionFilter);
+        }
+
+        // Apply WL filter (only for weapons)
+        if (wlFilter !== 'all' && activeSubTab === 'weapons') {
+          filteredItems = filteredItems.filter(item => {
+            const itemWL = newInventory.getWeaponLevel(item);
+            return itemWL === wlFilter;
+          });
+        }
+
+        setItems(filteredItems);
+        setWeaponLevel(newInventory.weaponLevel);
+      } catch (error) {
+        console.error('Error loading inventory:', error);
+        alert(`Failed to load items database: ${error instanceof Error ? error.message : String(error)}\n\nPlease ensure items.json is available.`);
+        setItems([]);
+        setWeaponLevel(0);
+      } finally {
+        setLoading(false);
       }
-
-      // Apply search filter
-      if (searchQuery.trim()) {
-        filteredItems = filteredItems.filter(item =>
-          item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      }
-
-      // Apply infusion filter (only for weapons, armor)
-      if (infusionFilter !== 'all' && (activeSubTab === 'weapons' || activeSubTab === 'armor')) {
-        filteredItems = filteredItems.filter(item => item.infusion === infusionFilter);
-      }
-
-      // Apply WL filter (only for weapons)
-      if (wlFilter !== 'all' && activeSubTab === 'weapons') {
-        filteredItems = filteredItems.filter(item => {
-          const itemWL = newInventory.getWeaponLevel(item);
-          return itemWL === wlFilter;
-        });
-      }
-
-      setItems(filteredItems);
-      setWeaponLevel(newInventory.weaponLevel);
-      setLoading(false);
     };
     loadInventory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
