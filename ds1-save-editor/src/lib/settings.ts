@@ -9,6 +9,7 @@ interface Settings {
   lastFileHandle?: FileSystemFileHandle;
   lastFileName?: string;
   lastFilePath?: string;
+  lastDirectoryHandle?: FileSystemDirectoryHandle;
 }
 
 class SettingsHelper {
@@ -79,6 +80,42 @@ class SettingsHelper {
       request.onsuccess = () => {
         const settings = request.result as Settings | undefined;
         resolve(settings?.lastFileName || null);
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async saveLastDirectory(dirHandle: FileSystemDirectoryHandle): Promise<void> {
+    if (!this.db) await this.initDB();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORE_NAME], 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.get('lastFile');
+
+      request.onsuccess = () => {
+        const settings = (request.result as Settings | undefined) || {};
+        settings.lastDirectoryHandle = dirHandle;
+
+        const putRequest = store.put(settings, 'lastFile');
+        putRequest.onsuccess = () => resolve();
+        putRequest.onerror = () => reject(putRequest.error);
+      };
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async getLastDirectory(): Promise<FileSystemDirectoryHandle | null> {
+    if (!this.db) await this.initDB();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORE_NAME], 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.get('lastFile');
+
+      request.onsuccess = () => {
+        const settings = request.result as Settings | undefined;
+        resolve(settings?.lastDirectoryHandle || null);
       };
       request.onerror = () => reject(request.error);
     });

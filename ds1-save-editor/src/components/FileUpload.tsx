@@ -82,6 +82,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileLoaded, onAutoLoad
 
       console.log(`Searching for .sl2 files in: ${dirHandle.name}`);
 
+      // Save this directory for next time (so "Load Save File" can start here)
+      await settingsHelper.saveLastDirectory(dirHandle);
+
       // Search for first .sl2 file
       const result = await findFirstSL2File(dirHandle);
 
@@ -111,13 +114,32 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileLoaded, onAutoLoad
     // Try to use File System Access API first
     if ('showOpenFilePicker' in window) {
       try {
-        const [fileHandle] = await window.showOpenFilePicker({
+        // Try to get the last used directory to start the picker there
+        const lastDir = await settingsHelper.getLastDirectory();
+
+        const pickerOptions: any = {
           types: [{
             description: 'Dark Souls Save File',
             accept: { 'application/octet-stream': ['.sl2'] }
           }],
           multiple: false
-        } as any);
+        };
+
+        // If we have a saved directory, start the picker there
+        if (lastDir) {
+          try {
+            // Check if we still have permission to the directory
+            const permission = await (lastDir as any).queryPermission?.({ mode: 'read' });
+            if (permission === 'granted' || permission === 'prompt') {
+              pickerOptions.startIn = lastDir;
+              console.log('Starting file picker in last used directory');
+            }
+          } catch (err) {
+            console.warn('Could not use last directory as starting point:', err);
+          }
+        }
+
+        const [fileHandle] = await window.showOpenFilePicker(pickerOptions);
 
         const file = await fileHandle.getFile();
 
