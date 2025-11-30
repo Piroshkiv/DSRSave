@@ -20,7 +20,12 @@
       "Bash(node scripts/convert-icon.js:*)",
       "Bash(taskkill /F /IM \"DS1 Save Editor.exe\")",
       "Bash(mkdir:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "WebSearch",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
