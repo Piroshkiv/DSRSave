@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Inventory, ItemCollectionType, Item, ItemInfusion } from '../lib/Inventory';
+import { NumberInput } from './NumberInput';
 
 interface ItemCreateDialogProps {
   inventory: Inventory;
@@ -286,27 +287,22 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               {(canStack || isEstusFlask) && (
                 <div className="form-group">
                   <label>
-                    {isEstusFlask 
-                      ? `Quantity ${isEstusFlaskEmpty ? '(empty flask, must be 0)' : '(max: 99)'}`
+                    {isEstusFlask
+                      ? `Quantity ${isEstusFlaskEmpty ? '(empty flask, must be 0)' : '(max: 20)'}`
                       : `Quantity (max: ${selectedItem.MaxStackCount})`
                     }
                   </label>
-                  <input
-                    ref={quantityInputRef}
-                    type="number"
-                    min={isEstusFlaskEmpty ? 0 : (isEstusFlask ? 0 : 1)}
-                    max={isEstusFlask ? 99 : selectedItem.MaxStackCount}
+                  <NumberInput
                     value={quantity}
-                    onChange={(e) => {
-                      const newValue = parseInt(e.target.value) || 0;
+                    onChange={(value) => {
                       if (isEstusFlaskEmpty) {
                         setQuantity(0);
-                      } else if (isEstusFlask) {
-                        setQuantity(Math.max(0, Math.min(newValue, 99)));
                       } else {
-                        setQuantity(Math.min(newValue || 1, selectedItem.MaxStackCount));
+                        setQuantity(value);
                       }
                     }}
+                    min={isEstusFlaskEmpty ? 0 : (isEstusFlask ? 0 : 1)}
+                    max={isEstusFlask ? 20 : selectedItem.MaxStackCount}
                     disabled={isEstusFlaskEmpty}
                   />
                 </div>
@@ -333,12 +329,11 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               {canUpgrade && (
                 <div className="form-group">
                   <label>Upgrade Level (max: +{maxUpgrade})</label>
-                  <input
-                    type="number"
+                  <NumberInput
+                    value={upgradeLevel}
+                    onChange={setUpgradeLevel}
                     min={0}
                     max={safeMode ? maxUpgrade : 9999}
-                    value={upgradeLevel}
-                    onChange={(e) => setUpgradeLevel(safeMode ? Math.min(parseInt(e.target.value) || 0, maxUpgrade) : (parseInt(e.target.value) || 0))}
                   />
                 </div>
               )}
@@ -346,12 +341,11 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               {hasDurability && (
                 <div className="form-group">
                   <label>Durability</label>
-                  <input
-                    type="number"
+                  <NumberInput
+                    value={durability}
+                    onChange={setDurability}
                     min={0}
                     max={9999}
-                    value={durability}
-                    onChange={(e) => setDurability(parseInt(e.target.value) || 0)}
                   />
                 </div>
               )}

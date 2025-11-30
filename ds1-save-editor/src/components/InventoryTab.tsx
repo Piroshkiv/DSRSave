@@ -3,6 +3,7 @@ import { Character } from '../lib/Character';
 import { Inventory, ItemCollectionType, ItemInfusion, InventoryItem } from '../lib/Inventory';
 import { ItemCreateDialog } from './ItemCreateDialog';
 import { ItemEditDialog } from './ItemEditDialog';
+import { NumberInput } from './NumberInput';
 
 interface InventoryTabProps {
   character: Character;
@@ -190,13 +191,10 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     onCharacterUpdate();
   };
 
-  const handleWeaponLevelChange = (value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 0 && numValue <= 15) {
-      inventory.weaponLevel = numValue;
-      setWeaponLevel(numValue);
-      onCharacterUpdate();
-    }
+  const handleWeaponLevelChange = (numValue: number) => {
+    inventory.weaponLevel = numValue;
+    setWeaponLevel(numValue);
+    onCharacterUpdate();
   };
 
   const handleCalibrateWL = () => {
@@ -295,12 +293,11 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
             <div className="weapon-level-display">
               <label>Weapon Level:</label>
-              <input
-                type="number"
+              <NumberInput
+                value={weaponLevel}
+                onChange={handleWeaponLevelChange}
                 min={0}
                 max={15}
-                value={weaponLevel}
-                onChange={(e) => handleWeaponLevelChange(e.target.value)}
                 disabled={safeMode}
               />
               <button

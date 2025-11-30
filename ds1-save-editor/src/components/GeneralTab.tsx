@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Character } from '../lib/Character';
+import { NumberInput } from './NumberInput';
 
 interface GeneralTabProps {
   character: Character;
@@ -86,31 +87,25 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     }
   }, [character, safeMode]);
 
-  const handleStatChange = (statName: string, value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 0 && numValue <= 99) {
-      const classData = CLASS_BASE_STATS[character.playerClass];
+  const handleStatChange = (statName: string, numValue: number) => {
+    const classData = CLASS_BASE_STATS[character.playerClass];
 
-      // In safe mode, enforce minimum stats
-      if (safeMode && classData) {
-        const minStat = classData.stats[statName] || 0;
-        if (numValue < minStat) {
-          alert(`${statName} cannot be lower than ${minStat} for ${CLASS_NAMES[character.playerClass]} class in Safe Mode`);
-          return;
-        }
-      }
-
-      // Pass safeMode to setStat to auto-update HP/Stamina
-      character.setStat(statName, numValue, safeMode);
-
-      if (safeMode) {
-        character.level = calculateLevel();
-      }
-
-      // Force re-render to show updated HP/Stamina
-      forceUpdate({});
-      onCharacterUpdate();
+    // In safe mode, enforce minimum stats
+    if (safeMode && classData) {
+      const minStat = classData.stats[statName] || 0;
+      numValue = Math.max(minStat, numValue);
     }
+
+    // Pass safeMode to setStat to auto-update HP/Stamina
+    character.setStat(statName, numValue, safeMode);
+
+    if (safeMode) {
+      character.level = calculateLevel();
+    }
+
+    // Force re-render to show updated HP/Stamina
+    forceUpdate({});
+    onCharacterUpdate();
   };
 
   const handleClassChange = (value: string) => {
@@ -138,13 +133,10 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     }
   };
 
-  const handleLevelChange = (value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 1 && numValue <= 713) {
-      character.level = numValue;
-      forceUpdate({});
-      onCharacterUpdate();
-    }
+  const handleLevelChange = (numValue: number) => {
+    character.level = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
   };
 
   const handleNameChange = (value: string) => {
@@ -155,40 +147,28 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     }
   };
 
-  const handleHumanityChange = (value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 0 && numValue <= 99) {
-      character.humanity = numValue;
-      forceUpdate({});
-      onCharacterUpdate();
-    }
+  const handleHumanityChange = (numValue: number) => {
+    character.humanity = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
   };
 
-  const handleSoulsChange = (value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 0 && numValue <= 999999999) {
-      character.souls = numValue;
-      forceUpdate({});
-      onCharacterUpdate();
-    }
+  const handleSoulsChange = (numValue: number) => {
+    character.souls = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
   };
 
-  const handleHpChange = (value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 0 && numValue <= 9999) {
-      character.hp = numValue;
-      forceUpdate({});
-      onCharacterUpdate();
-    }
+  const handleHpChange = (numValue: number) => {
+    character.hp = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
   };
 
-  const handleStaminaChange = (value: string) => {
-    const numValue = parseInt(value, 10);
-    if (!isNaN(numValue) && numValue >= 0 && numValue <= 999) {
-      character.stamina = numValue;
-      forceUpdate({});
-      onCharacterUpdate();
-    }
+  const handleStaminaChange = (numValue: number) => {
+    character.stamina = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
   };
 
   return (
@@ -199,10 +179,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           <div className="stats-list">
             <div className="stat-row">
               <label>Level</label>
-              <input
-                type="number"
+              <NumberInput
                 value={character.level}
-                onChange={(e) => handleLevelChange(e.target.value)}
+                onChange={handleLevelChange}
                 min={1}
                 max={713}
                 disabled={safeMode}
@@ -211,10 +190,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
             {STAT_ORDER.map((statName) => (
               <div key={statName} className="stat-row">
                 <label>{statName}</label>
-                <input
-                  type="number"
+                <NumberInput
                   value={character.getStat(statName)}
-                  onChange={(e) => handleStatChange(statName, e.target.value)}
+                  onChange={(value) => handleStatChange(statName, value)}
                   min={0}
                   max={99}
                 />
@@ -252,10 +230,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           <div className="form-group">
             <label>HP</label>
-            <input
-              type="number"
+            <NumberInput
               value={character.hp}
-              onChange={(e) => handleHpChange(e.target.value)}
+              onChange={handleHpChange}
               min={0}
               max={9999}
               disabled={safeMode}
@@ -264,10 +241,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           <div className="form-group">
             <label>Stamina</label>
-            <input
-              type="number"
+            <NumberInput
               value={character.stamina}
-              onChange={(e) => handleStaminaChange(e.target.value)}
+              onChange={handleStaminaChange}
               min={0}
               max={999}
               disabled={safeMode}
@@ -276,10 +252,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           <div className="form-group">
             <label>Humanity</label>
-            <input
-              type="number"
+            <NumberInput
               value={character.humanity}
-              onChange={(e) => handleHumanityChange(e.target.value)}
+              onChange={handleHumanityChange}
               min={0}
               max={99}
             />
@@ -287,10 +262,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           <div className="form-group">
             <label>Souls</label>
-            <input
-              type="number"
+            <NumberInput
               value={character.souls}
-              onChange={(e) => handleSoulsChange(e.target.value)}
+              onChange={handleSoulsChange}
               min={0}
               max={999999999}
             />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Inventory, ItemInfusion, InventoryItem, Item } from '../lib/Inventory';
+import { NumberInput } from './NumberInput';
 
 interface ItemEditDialogProps {
   inventory: Inventory;
@@ -238,14 +239,12 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
                 
                 return showQuantity ? (
                   <div className="form-group">
-                    <label>Quantity</label>
-                    <input
-                      ref={quantityInputRef}
-                      type="number"
-                      min={0}
-                      max={99}
+                    <label>Quantity (max: 20)</label>
+                    <NumberInput
                       value={quantity}
-                      onChange={(e) => setQuantity(Math.max(0, parseInt(e.target.value) || 0))}
+                      onChange={setQuantity}
+                      min={0}
+                      max={20}
                     />
                   </div>
                 ) : null;
@@ -256,13 +255,11 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
               {canStack && (
                 <div className="form-group">
                   <label>Quantity (max: {itemInfo.MaxStackCount})</label>
-                  <input
-                    ref={quantityInputRef}
-                    type="number"
+                  <NumberInput
+                    value={quantity}
+                    onChange={setQuantity}
                     min={1}
                     max={itemInfo.MaxStackCount}
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.min(parseInt(e.target.value) || 1, itemInfo.MaxStackCount))}
                   />
                 </div>
               )}
@@ -288,12 +285,11 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
               {canUpgrade && (
                 <div className="form-group">
                   <label>Upgrade Level (max: +{maxUpgrade})</label>
-                  <input
-                    type="number"
+                  <NumberInput
+                    value={upgradeLevel}
+                    onChange={setUpgradeLevel}
                     min={0}
                     max={safeMode ? maxUpgrade : 9999}
-                    value={upgradeLevel}
-                    onChange={(e) => setUpgradeLevel(safeMode ? Math.min(parseInt(e.target.value) || 0, maxUpgrade) : (parseInt(e.target.value) || 0))}
                   />
                 </div>
               )}
@@ -303,12 +299,11 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
           {hasDurability && (
             <div className="form-group">
               <label>Durability</label>
-              <input
-                type="number"
+              <NumberInput
+                value={durability}
+                onChange={setDurability}
                 min={0}
                 max={9999}
-                value={durability}
-                onChange={(e) => setDurability(parseInt(e.target.value) || 0)}
               />
             </div>
           )}
