@@ -1,0 +1,55 @@
+.file-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.action-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.save-button {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+  color: white;
+}
+
+.save-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ff8c5a 0%, #ffa67d 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+}
+
+.save-as-button {
+  background: linear-gradient(135deg, #4a90e2 0%, #5ca3f5 100%);
+  color: white;
+}
+
+.save-as-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5ca3f5 0%, #7ab8ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+}
+
+.reload-button {
+  background: linear-gradient(135deg, #666 0%, #888 100%);
+  color: white;
+}
+
+.reload-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #888 0%, #999 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(136, 136, 136, 0.3);
+}

@@ -5,6 +5,7 @@ import { FileUpload } from './components/FileUpload';
 import { CharacterList } from './components/CharacterList';
 import { TabPanel } from './components/TabPanel';
 import { TermsPage } from './components/TermsPage';
+import { FileHandle } from './lib/adapters';
 import logoImg from '/logo.png';
 import './App.css';
 
@@ -17,14 +18,12 @@ function App() {
   const [isAutoLoading, setIsAutoLoading] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
 
-  const handleFileLoaded = async (file: File, fileHandle?: FileSystemFileHandle) => {
+  const handleFileLoaded = async (file: File, fileHandle: FileHandle | null) => {
     try {
       setOriginalFilename(file.name);
 
-      // Use fromFileHandle if we have a file handle, otherwise fromFile
-      const editor = fileHandle
-        ? await SaveFileEditor.fromFileHandle(fileHandle)
-        : await SaveFileEditor.fromFile(file);
+      // Use new fromFileData method that accepts both file and handle
+      const editor = await SaveFileEditor.fromFileData(file, fileHandle);
 
       setSaveEditor(editor);
       // Only show first 10 character slots (0-9), slot 10 is for settings
@@ -88,11 +87,25 @@ function App() {
 
     try {
       if (saveEditor.hasFileHandle()) {
-        // Reload from the original file handle
         const fileHandle = saveEditor.getFileHandle();
         if (fileHandle) {
-          const file = await fileHandle.getFile();
-          await handleFileLoaded(file, fileHandle);
+          // Use adapter to reload the file
+          const adapter = (await import('./lib/adapters')).getFileSystemAdapter();
+
+          // For WebFS adapter, we can read the file from the handle
+          // For Tauri adapter, we read from the stored path
+          // The adapter handles this internally based on handle type
+
+          // We need to load the file again using the adapter
+          // Since we can't directly read from an abstract FileHandle,
+          // we'll need to use loadLastFile which will get the cached handle
+          const fileData = await adapter.loadLastFile();
+
+          if (fileData) {
+            await handleFileLoaded(fileData.file, fileData.handle);
+          } else {
+            alert('Cannot reload: unable to access the file. Please load the file again.');
+          }
         }
       } else {
         alert('Cannot reload: no file handle available. Please load the file again.');

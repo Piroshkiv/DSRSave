@@ -9,13 +9,14 @@ import {
   USER_DATA_FILE_COUNT,
   AES_KEY
 } from './constants';
+import { getFileSystemAdapter, FileHandle } from './adapters';
 
 export class SaveFileEditor {
   private saveData: Uint8Array;
   private characters: Character[];
-  private fileHandle: FileSystemFileHandle | null = null;
+  private fileHandle: FileHandle | null = null;
 
-  constructor(saveData: Uint8Array, fileHandle?: FileSystemFileHandle) {
+  constructor(saveData: Uint8Array, fileHandle?: FileHandle) {
     if (saveData.length < SAVE_FILE_SIZE) {
       throw new Error('Invalid save file size');
     }
@@ -32,13 +33,17 @@ export class SaveFileEditor {
     return editor;
   }
 
-  static async fromFileHandle(fileHandle: FileSystemFileHandle): Promise<SaveFileEditor> {
-    const file = await fileHandle.getFile();
+  static async fromFileData(file: File, fileHandle: FileHandle | null): Promise<SaveFileEditor> {
     const arrayBuffer = await file.arrayBuffer();
     const saveData = new Uint8Array(arrayBuffer);
-    const editor = new SaveFileEditor(saveData, fileHandle);
+    const editor = new SaveFileEditor(saveData, fileHandle || undefined);
     await editor.loadCharacters();
     return editor;
+  }
+
+  // Deprecated: Use fromFileData instead
+  static async fromFileHandle(_fileHandle: FileHandle): Promise<SaveFileEditor> {
+    throw new Error('Deprecated: Use SaveFileEditor.fromFileData() instead');
   }
 
   private async loadCharacters(): Promise<void> {
@@ -88,39 +93,22 @@ export class SaveFileEditor {
     }
 
     const data = await this.exportSaveFile();
-    const writable = await this.fileHandle.createWritable();
-    await writable.write(toArrayBuffer(data));
-    await writable.close();
+    const adapter = getFileSystemAdapter();
+    await adapter.saveToFile(this.fileHandle, data);
   }
 
   async saveToNewFile(suggestedName?: string): Promise<void> {
     const data = await this.exportSaveFile();
+    const adapter = getFileSystemAdapter();
 
-    // Use File System Access API if available
-    if ('showSaveFilePicker' in window) {
-      try {
-        const handle = await window.showSaveFilePicker({
-          suggestedName: suggestedName || 'edited_save.sl2',
-          types: [{
-            description: 'Dark Souls Save File',
-            accept: { 'application/octet-stream': ['.sl2'] }
-          }]
-        });
-
-        const writable = await handle.createWritable();
-        await writable.write(toArrayBuffer(data));
-        await writable.close();
-        return;
-      } catch (err: any) {
-        // User cancelled or error - fall back to download
-        if (err.name === 'AbortError') {
-          return; // User cancelled
-        }
+    try {
+      await adapter.saveAsNewFile(data, { suggestedName: suggestedName || 'edited_save.sl2' });
+    } catch (err: any) {
+      if (err.message === 'User cancelled file save') {
+        return; // User cancelled
       }
+      throw err;
     }
-
-    // Fallback to traditional download
-    this.downloadFile(data, suggestedName || 'edited_save.sl2');
   }
 
   private downloadFile(data: Uint8Array, filename: string): void {
@@ -144,7 +132,7 @@ export class SaveFileEditor {
     return this.fileHandle !== null;
   }
 
-  getFileHandle(): FileSystemFileHandle | null {
+  getFileHandle(): FileHandle | null {
     return this.fileHandle;
   }
 }

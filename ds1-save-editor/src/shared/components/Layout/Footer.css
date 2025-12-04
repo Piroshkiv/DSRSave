@@ -1,0 +1,63 @@
+.app-footer {
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+  padding: 1rem 2rem;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-contacts-single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+.footer-label {
+  color: #999;
+}
+
+.separator {
+  color: #555;
+}
+
+.terms-link {
+  background: none;
+  border: none;
+  color: #ff6b35;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+}
+
+.terms-link:hover {
+  color: #ff8c5a;
+  text-decoration: underline;
+}
+
+.contact-link {
+  color: #ff6b35;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+}
+
+.contact-link:hover {
+  color: #ff8c5a;
+  text-decoration: underline;
+}
+
+.contact-icon {
+  font-size: 1rem;
+}

@@ -25,7 +25,18 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:api.github.com)",
       "WebSearch",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npx tauri init --help:*)",
+      "Bash(npx tauri:*)",
+      "Bash(npm run tauri:dev:*)",
+      "Bash(timeout 10 bash:*)",
+      "Bash(npm run tauri:build:win:*)",
+      "Bash(timeout 30 bash:*)",
+      "Bash(npx png-to-ico:*)",
+      "Bash(npx png2icons:*)",
+      "Bash(npx png2icons-cli icon.png icon -icns)",
+      "Bash(cargo clean:*)",
+      "Bash(del /S /Q target)"
     ],
     "deny": [],
     "ask": []
