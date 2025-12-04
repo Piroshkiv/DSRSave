@@ -52,7 +52,7 @@
 .sidebar {
   width: 300px;
   background-color: #202020;
-  border-right: 2px solid #333;
+  border: 2px solid #555;
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
@@ -68,10 +68,18 @@
 
 /* File Upload */
 .file-upload {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+@media (max-width: 1075px) {
+  .file-upload {
+    margin-bottom: 0;
+    margin-top: 3rem;
+  }
 }
 
 .button-with-help {
@@ -96,9 +104,15 @@
 
 .upload-button:hover:not(:disabled) {
   background: linear-gradient(135deg, #4a4a4a 0%, #3f3f3f 100%);
-  border-color: #666;
+  border-color: #ff6b35;
   transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 6px rgba(255, 107, 53, 0.3);
+}
+
+.upload-button:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
 }
 
 .upload-button:active:not(:disabled) {
@@ -274,6 +288,11 @@
   width: 1.1rem;
   height: 1.1rem;
   cursor: pointer;
+  accent-color: #ff6b35;
+}
+
+.safe-mode-label input[type="checkbox"]:checked {
+  filter: drop-shadow(0 0 4px rgba(255, 107, 53, 0.5));
 }
 
 .safe-mode-label span {
@@ -295,16 +314,19 @@
 .tab:hover {
   color: #e0e0e0;
   background-color: #2a2a2a;
+  border-bottom-color: rgba(255, 107, 53, 0.3);
 }
 
 .tab.active {
-  color: #e0e0e0;
-  border-bottom-color: #666;
+  color: #ff8c5a;
+  border-bottom-color: #ff6b35;
+  background-color: rgba(255, 107, 53, 0.05);
 }
 
 .reload-button {
   padding: 0.75rem 1.25rem;
   margin-right: 1rem;
+  margin-top: 1px;
   background: linear-gradient(135deg, #4a5a6a 0%, #3a4a5a 100%);
   color: #e0e0e0;
   border: 2px solid #5a7a8a;
@@ -360,7 +382,7 @@
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid rgba(255, 107, 53, 0.55);
   font-weight: 500;
 }
 
@@ -417,6 +439,8 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  padding-bottom: 0.25rem;
+
 }
 
 .form-group input,
@@ -434,9 +458,9 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #6a9fb5;
+  border-color: #ff6b35;
   background-color: #333;
-  box-shadow: 0 0 0 3px rgba(106, 159, 181, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .form-group input:disabled {
@@ -468,11 +492,15 @@
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #555;
+  accent-color: #ff6b35;
   margin: 0;
   padding: 0;
   flex-shrink: 0;
   vertical-align: middle;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  filter: drop-shadow(0 0 3px rgba(255, 107, 53, 0.4));
 }
 
 .checkbox-label span {

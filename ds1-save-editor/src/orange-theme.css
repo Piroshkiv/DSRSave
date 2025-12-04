@@ -1,0 +1,137 @@
+/*
+ * Orange Theme Enhancements
+ * Подключи этот файл в main.tsx для добавления оранжевых акцентов
+ * import './orange-theme.css';
+ */
+
+/* Оранжевый градиент на header */
+.app-header {
+  border-bottom: 3px solid #ff6b35 !important;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 80%, #2a1f1c 100%) !important;
+}
+
+/* Оранжевый акцент на активных табах */
+.tab-button.active {
+  border-bottom-color: #ff6b35 !important;
+  color: #ff8c5a !important;
+}
+
+/* Оранжевое свечение на selected персонаже */
+.character-slot.selected {
+  border-color: #ff6b35 !important;
+  box-shadow: 0 0 12px rgba(255, 107, 53, 0.4) !important;
+}
+
+/* Оранжевый акцент на input focus */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border-color: #ff6b35 !important;
+  box-shadow: 0 0 0 2px rgba(255, 107, 53, 0.2) !important;
+}
+
+/* Оранжевый scrollbar */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ff6b35 0%, #ff8c5a 100%) !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #ff8c5a 0%, #ffa67d 100%) !important;
+}
+
+/* Оранжевый accent на sidebar */
+.sidebar {
+  border-right: 2px solid rgba(255, 107, 53, 0.3) !important;
+}
+
+/* Оранжевая полоска на footer */
+.app-footer {
+  border-top: 2px solid rgba(255, 107, 53, 0.5) !important;
+}
+
+/* Оранжевый hover на ссылках */
+.contact-link:hover,
+.terms-link:hover {
+  color: #ff6b35 !important;
+  text-shadow: 0 0 8px rgba(255, 107, 53, 0.5) !important;
+}
+
+/* Оранжевый загрузочный индикатор */
+.loading-indicator {
+  border-left: 3px solid #ff6b35 !important;
+  background: rgba(255, 107, 53, 0.1) !important;
+}
+
+/* Оранжевый акцент на карточках игр (тонкая полоска снизу) */
+.game-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff6b35, transparent);
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+
+.game-card:hover:not(.game-card-disabled)::after {
+  opacity: 1;
+}
+
+/* Оранжевая анимация для заголовка на главной */
+.game-selector-title {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 50%, #ffa67d 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  animation: gradient-shift 3s ease infinite !important;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Пульсирующий оранжевый эффект для важных кнопок */
+.save-button {
+  animation: pulse-orange 2s ease-in-out infinite !important;
+}
+
+@keyframes pulse-orange {
+  0%, 100% {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 107, 53, 0.3);
+  }
+}
+
+/* Оранжевый border для main-content */
+.main-content {
+  border-left: 2px solid rgba(255, 107, 53, 0.2) !important;
+}
+
+/* Тонкий оранжевый градиент сверху страницы */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    #ff6b35 25%,
+    #ff8c5a 50%,
+    #ff6b35 75%,
+    transparent 100%
+  );
+  z-index: 10000;
+  pointer-events: none;
+}

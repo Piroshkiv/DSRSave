@@ -36,7 +36,9 @@
       "Bash(npx png2icons:*)",
       "Bash(npx png2icons-cli icon.png icon -icns)",
       "Bash(cargo clean:*)",
-      "Bash(del /S /Q target)"
+      "Bash(del /S /Q target)",
+      "Bash(cat:*)",
+      "Bash(npm ls:*)"
     ],
     "deny": [],
     "ask": []

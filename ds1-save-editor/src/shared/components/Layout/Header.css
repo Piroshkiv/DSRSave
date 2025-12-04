@@ -13,20 +13,72 @@
   margin: 0 auto;
 }
 
-.back-button {
+.burger-button {
+  display: none;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  transition: all 0.2s;
+}
+
+.burger-button span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.burger-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #ff6b35;
+}
+
+.burger-button:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+}
+
+.home-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
   color: #fff;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.9rem;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.back-button:hover {
+.home-button:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: #ff6b35;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+}
+
+.home-button:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+}
+
+.home-button svg {
+  width: 18px;
+  height: 18px;
 }
 
 .header-title {
@@ -42,4 +94,28 @@
   height: 40px;
   width: auto;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+@media (max-width: 1075px) {
+  .burger-button {
+    display: flex;
+  }
+
+  .header-title {
+    font-size: 1.5rem;
+  }
+
+  .header-icon {
+    height: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 1.3rem;
+  }
+
+  .header-icon {
+    height: 32px;
+  }
 }

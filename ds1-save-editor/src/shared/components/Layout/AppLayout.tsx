@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import './AppLayout.css';
@@ -6,8 +6,8 @@ import './AppLayout.css';
 interface AppLayoutProps {
   title: string;
   icon?: string;
-  showBackButton?: boolean;
-  onBack?: () => void;
+  showHomeButton?: boolean;
+  onHome?: () => void;
   sidebar?: ReactNode;
   children: ReactNode;
   onTermsClick?: () => void;
@@ -16,18 +16,43 @@ interface AppLayoutProps {
 export const AppLayout: React.FC<AppLayoutProps> = ({
   title,
   icon,
-  showBackButton,
-  onBack,
+  showHomeButton,
+  onHome,
   sidebar,
   children,
   onTermsClick,
 }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className="app">
-      <Header title={title} icon={icon} showBackButton={showBackButton} onBack={onBack} />
+      <Header
+        title={title}
+        icon={icon}
+        showHomeButton={showHomeButton}
+        onHome={onHome}
+        showBurger={!!sidebar}
+        onBurgerClick={toggleSidebar}
+      />
 
       <div className="app-content">
-        {sidebar && <aside className="sidebar">{sidebar}</aside>}
+        {sidebar && (
+          <>
+            <aside className={`sidebar ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+              <button className="sidebar-close" onClick={toggleSidebar}>
+                ✕
+              </button>
+              {sidebar}
+            </aside>
+            {isSidebarOpen && (
+              <div className="sidebar-overlay" onClick={toggleSidebar}></div>
+            )}
+          </>
+        )}
         <main className="main-content">{children}</main>
       </div>
 

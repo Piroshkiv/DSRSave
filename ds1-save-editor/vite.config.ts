@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
+      input: {
+        main: './index.html',
+        ds1: './ds1.html',
+        ds3: './ds3.html',
+        eldenring: './eldenring.html',
+      },
       output: {
         manualChunks: undefined,
       }

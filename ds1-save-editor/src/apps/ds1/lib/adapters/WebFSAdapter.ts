@@ -162,12 +162,7 @@ export class WebFSAdapter extends IFileSystemAdapter {
     await this.initDB();
 
     return new Promise((resolve, reject) => {
-      if (!this.db) {
-        reject(new Error('Database not initialized'));
-        return;
-      }
-
-      const transaction = this.db.transaction([STORE_NAME], 'readwrite');
+      const transaction = this.db!.transaction([STORE_NAME], 'readwrite');
       const store = transaction.objectStore(STORE_NAME);
 
       const settings: Settings = {
@@ -176,11 +171,7 @@ export class WebFSAdapter extends IFileSystemAdapter {
       };
 
       const request = store.put(settings, 'lastFile');
-
-      // Use transaction.oncomplete instead of request.onsuccess
-      // This ensures the transaction is fully committed before resolving
-      transaction.oncomplete = () => resolve();
-      transaction.onerror = () => reject(transaction.error);
+      request.onsuccess = () => resolve();
       request.onerror = () => reject(request.error);
     });
   }
@@ -193,12 +184,7 @@ export class WebFSAdapter extends IFileSystemAdapter {
     await this.initDB();
 
     return new Promise((resolve, reject) => {
-      if (!this.db) {
-        reject(new Error('Database not initialized'));
-        return;
-      }
-
-      const transaction = this.db.transaction([STORE_NAME], 'readonly');
+      const transaction = this.db!.transaction([STORE_NAME], 'readonly');
       const store = transaction.objectStore(STORE_NAME);
       const request = store.get('lastFile');
 
@@ -236,7 +222,6 @@ export class WebFSAdapter extends IFileSystemAdapter {
         }
       };
 
-      transaction.onerror = () => reject(transaction.error);
       request.onerror = () => reject(request.error);
     });
   }
