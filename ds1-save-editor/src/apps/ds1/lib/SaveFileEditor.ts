@@ -41,11 +41,6 @@ export class SaveFileEditor {
     return editor;
   }
 
-  // Deprecated: Use fromFileData instead
-  static async fromFileHandle(_fileHandle: FileHandle): Promise<SaveFileEditor> {
-    throw new Error('Deprecated: Use SaveFileEditor.fromFileData() instead');
-  }
-
   private async loadCharacters(): Promise<void> {
     this.characters = [];
 

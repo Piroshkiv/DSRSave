@@ -41,7 +41,9 @@
       "Bash(npm ls:*)",
       "Bash(timeout 3 bash:*)",
       "Bash(del ds1.html ds3.html eldenring.html)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(npx png2icons-cli \"build/icon.png\" \"build/icon\" -ico)"
     ],
     "deny": [],
     "ask": []

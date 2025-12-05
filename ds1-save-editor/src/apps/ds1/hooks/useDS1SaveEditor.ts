@@ -7,7 +7,6 @@ export interface UseDS1SaveEditorResult {
   saveEditor: SaveFileEditor | null;
   characters: Character[];
   selectedCharacterIndex: number | null;
-  isAutoLoading: boolean;
   originalFilename: string;
 
   handleFileLoaded: (file: File, fileHandle: FileHandle | null) => Promise<void>;
@@ -24,7 +23,6 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
   const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number | null>(null);
   const [, setUpdateTrigger] = useState(0);
   const [originalFilename, setOriginalFilename] = useState<string>('DRAKS0005.sl2');
-  const [isAutoLoading] = useState(false);
 
   const handleFileLoaded = useCallback(async (file: File, fileHandle: FileHandle | null) => {
     try {
@@ -112,7 +110,6 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     saveEditor,
     characters,
     selectedCharacterIndex,
-    isAutoLoading,
     originalFilename,
     handleFileLoaded,
     handleCharacterSelect,

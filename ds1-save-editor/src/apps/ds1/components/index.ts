@@ -8,3 +8,4 @@ export { NumberInput } from './NumberInput';
 export { ItemCreateDialog } from './ItemCreateDialog';
 export { ItemEditDialog } from './ItemEditDialog';
 export { TermsPage } from './TermsPage';
+export { AboutPage } from './AboutPage';

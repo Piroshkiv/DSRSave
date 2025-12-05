@@ -11,6 +11,7 @@ interface AppLayoutProps {
   sidebar?: ReactNode;
   children: ReactNode;
   onTermsClick?: () => void;
+  onAboutClick?: () => void;
 }
 
 export const AppLayout: React.FC<AppLayoutProps> = ({
@@ -21,6 +22,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   sidebar,
   children,
   onTermsClick,
+  onAboutClick,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -56,7 +58,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
         <main className="main-content">{children}</main>
       </div>
 
-      <Footer onTermsClick={onTermsClick} />
+      <Footer onTermsClick={onTermsClick} onAboutClick={onAboutClick} />
     </div>
   );
 };

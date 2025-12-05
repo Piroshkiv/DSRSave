@@ -1,4 +1,4 @@
-import { FileHandle } from '../../lib/adapters';
+import { FileHandle } from '../../apps/ds1/lib/adapters';
 
 export interface GameCharacter {
   isEmpty: boolean;

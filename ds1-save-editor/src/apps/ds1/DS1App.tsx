@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { AppLayout } from '../../shared/components/Layout';
 import { FileActions } from '../../shared/components/FileSystem';
-import { FileUpload, CharacterList, TabPanel, TermsPage } from './components';
+import { FileUpload, CharacterList, TabPanel, TermsPage, AboutPage } from './components';
 import { useDS1SaveEditor } from './hooks';
 import { MetaTags } from '../../core/MetaTags';
-import logoImg from '/logo.png';
+
+// Use relative path for logo to work in both web and Electron
+const logoImg = (import.meta.env.MODE === 'static' || typeof window !== 'undefined' && window.location.protocol === 'file:')
+  ? 'logo.png'
+  : '/logo.png';
 
 interface DS1AppProps {
   onHome?: () => void;
@@ -15,7 +19,6 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
     saveEditor,
     characters,
     selectedCharacterIndex,
-    isAutoLoading,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
@@ -25,7 +28,8 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
   } = useDS1SaveEditor();
 
   const [showTerms, setShowTerms] = useState(false);
-  const [, setIsAutoLoading] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [isAutoLoading, setIsAutoLoading] = useState(false);
 
   const selectedCharacter = selectedCharacterIndex !== null
     ? characters[selectedCharacterIndex]
@@ -142,6 +146,7 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
         onHome={onHome}
         sidebar={sidebar}
         onTermsClick={() => setShowTerms(true)}
+        onAboutClick={() => setShowAbout(true)}
       >
         <TabPanel
           character={selectedCharacter}
@@ -159,6 +164,7 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
       </AppLayout>
 
       {showTerms && <TermsPage onClose={() => setShowTerms(false)} />}
+      {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
     </>
   );
 };

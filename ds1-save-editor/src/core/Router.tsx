@@ -6,6 +6,7 @@ import { DS1App } from '../apps/ds1/DS1App';
 import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
 import { ErrorBoundary } from './ErrorBoundary';
+import { AboutPage, TermsPage } from '../apps/ds1/components';
 
 // Wrapper to use ErrorPage with React Router hooks
 const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
@@ -141,6 +142,18 @@ const ComingSoon: React.FC<{ title: string; gameId: string }> = ({ title, gameId
   );
 };
 
+// About Page Wrapper
+const AboutPageWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <AboutPage onClose={() => navigate('/')} />;
+};
+
+// Terms Page Wrapper
+const TermsPageWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <TermsPage onClose={() => navigate('/')} />;
+};
+
 export const Router: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -149,6 +162,10 @@ export const Router: React.FC = () => {
           {/* Home routes - both / and /home go to game selector */}
           <Route path="/" element={<GameSelectorWrapper />} />
           <Route path="/home" element={<Navigate to="/" replace />} />
+
+          {/* Info routes */}
+          <Route path="/about" element={<AboutPageWrapper />} />
+          <Route path="/terms" element={<TermsPageWrapper />} />
 
           {/* Game routes */}
           <Route path="/ds1" element={<DS1AppWrapper />} />

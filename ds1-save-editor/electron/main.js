@@ -1,9 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
 
 // Check for debug mode: environment variable or custom command line argument
-const isDebug = 
-  process.env.NODE_ENV === 'development' || 
+const isDebug =
+  process.env.NODE_ENV === 'development' ||
   process.env.ELECTRON_DEBUG === '1' ||
   process.argv.includes('--devtools');
 
@@ -15,7 +15,7 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    icon: path.join(__dirname, '../dist/favicon.svg')
+    icon: path.join(__dirname, '../build/icon.ico')
   });
 
   // Remove menu bar
@@ -25,17 +25,31 @@ function createWindow() {
   const startUrl = path.join(__dirname, '../dist/index.html');
   mainWindow.loadFile(startUrl);
 
+  // Open external links in default browser
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
+
+  // Intercept navigation to external links
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('mailto:')) {
+      event.preventDefault();
+      shell.openExternal(url);
+    }
+  });
+
   // Enable console logging in debug mode
   if (isDebug) {
     console.log('🐛 Debug mode enabled - Console logging active');
     console.log('   App starting at:', startUrl);
-    
+
     // Log console messages from renderer process
     mainWindow.webContents.on('console-message', (event, level, message) => {
       const levelNames = { 0: 'verbose', 1: 'info', 2: 'warning', 3: 'error' };
       const levelName = levelNames[level] || 'unknown';
       const prefix = `[Renderer ${levelName}]`;
-      
+
       if (level === 3) { // error
         console.error(prefix, message);
       } else if (level === 2) { // warning
@@ -44,12 +58,12 @@ function createWindow() {
         console.log(prefix, message);
       }
     });
-    
+
     // Log page load events
     mainWindow.webContents.on('did-finish-load', () => {
       console.log('✓ Page loaded successfully');
     });
-    
+
     mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
       console.error('✗ Page failed to load:', errorCode, errorDescription);
     });

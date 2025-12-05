@@ -1,3 +1,8 @@
+// Use relative path for logo to work in both web and Electron
+const logoImg = (import.meta.env.MODE === 'static' || typeof window !== 'undefined' && window.location.protocol === 'file:')
+  ? 'logo.png'
+  : '/logo.png';
+
 export interface GameInfo {
   id: string;
   enabled: boolean;
@@ -17,7 +22,7 @@ export const GAMES: Record<string, GameInfo> = {
     name: 'Dark Souls Remastered',
     shortName: 'DS1',
     route: '/ds1',
-    icon: '/logo.png',
+    icon: logoImg,
     description: 'Edit your Dark Souls Remastered save files',
     saveFileExtension: '.sl2',
     defaultFileName: 'DRAKS0005.sl2',

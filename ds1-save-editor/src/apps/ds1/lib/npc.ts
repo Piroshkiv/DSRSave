@@ -4,22 +4,33 @@ import { Character } from "./Character";
 export class NpcEditor {
     private character: Character;
     private npcData: NpcCollection | null = null;
+    private static npcDataCache: NpcCollection | null = null;
     private static readonly NPC_DATA_PATH = "json/npc_data.json";
-  
+
     constructor(character: Character) {
       this.character = character;
     }
-  
-    public async loadNpcData(): Promise<void> {
+
+    /**
+     * Load NPC data from JSON file. Uses static cache to avoid multiple loads.
+     * @returns Promise<NpcCollection> The loaded NPC data
+     */
+    public async loadNpcData(): Promise<NpcCollection> {
+      // Return cached data if available
+      if (NpcEditor.npcDataCache) {
+        this.npcData = NpcEditor.npcDataCache;
+        return this.npcData;
+      }
+
       const isElectron =
         typeof window !== "undefined" && window.location.protocol === "file:";
-  
+
       const paths = isElectron
         ? [`./${NpcEditor.NPC_DATA_PATH}`, `/${NpcEditor.NPC_DATA_PATH}`]
         : [`/${NpcEditor.NPC_DATA_PATH}`, `./${NpcEditor.NPC_DATA_PATH}`];
-  
+
       let lastError: Error | null = null;
-  
+
       for (const jsonPath of paths) {
         try {
           const response = await fetch(jsonPath);
@@ -27,24 +38,38 @@ export class NpcEditor {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
           }
           this.npcData = (await response.json()) as NpcCollection;
-          return; 
+          // Cache for future use
+          NpcEditor.npcDataCache = this.npcData;
+          return this.npcData;
         } catch (error) {
           lastError = error instanceof Error ? error : new Error(String(error));
           console.error(`Failed to load NPC data from ${jsonPath}:`, lastError);
         }
       }
-  
-      
+
+
       throw new Error(
         "Could not load NPC data. Please ensure npc_data.json is available.",
       );
     }
-  
-    public loadItemsDatabase(): NpcCollection {
+
+    /**
+     * Get the loaded NPC data. Must call loadNpcData() first.
+     * @returns NpcCollection The NPC data
+     * @throws Error if data not loaded
+     */
+    public getNpcData(): NpcCollection {
       if (!this.npcData) {
         throw new Error("NPC data has not been loaded yet. Call loadNpcData() first.");
       }
       return this.npcData;
+    }
+
+    /**
+     * @deprecated Use getNpcData() instead
+     */
+    public loadItemsDatabase(): NpcCollection {
+      return this.getNpcData();
     }
   
     public setNpcAlive(name: string, alive: boolean): void {
