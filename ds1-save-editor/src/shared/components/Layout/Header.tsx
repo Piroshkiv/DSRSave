@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
         )}
         <h1 className="header-title">
           {icon && <img src={icon} alt={title} className="header-icon" />}
-          {title}
+          <span className="header-title-text">{title}</span>
         </h1>
       </div>
     </header>

@@ -111,11 +111,25 @@
 }
 
 @media (max-width: 768px) {
+  .app-header {
+    padding: 1rem 1rem;
+  }
+
   .header-title {
     font-size: 1.3rem;
   }
 
   .header-icon {
     height: 32px;
+  }
+
+  /* Hide title text on mobile, keep only icon */
+  .header-title-text {
+    display: none;
+  }
+
+  .home-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
   }
 }

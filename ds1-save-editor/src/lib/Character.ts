@@ -206,7 +206,7 @@ export class Character {
    * Ищет последнее вхождение паттерна в диапазоне 0x1F000 - 0x1FFFF.
    * @returns Базовое смещение (baseOffset) или -1, если не найдено.
    */
-  private findPattern1(): number {
+  findPattern1(): number {
     // Pattern1: FF FF FF FF 00 00 00 00 FF FF FF FF 00 00 00 00
     const pattern = [
       0xFF, 0xFF, 0xFF, 0xFF,
@@ -385,4 +385,68 @@ export class Character {
 
     return results;
   }
+
+  // NPC methods
+  /**
+   * Set a specific bit in a byte at the given offset
+   * @param offset Byte offset in the data
+   * @param bitPosition Bit position (0-7)
+   * @param value true to set bit to 1, false to set to 0
+   */
+  private setBit(offset: number, bitPosition: number, value: boolean): void {
+    if (bitPosition < 0 || bitPosition > 7) {
+      throw new Error('Bit position must be between 0 and 7');
+    }
+
+    const currentValue = this.data[offset];
+    const mask = 1 << bitPosition;
+
+    if (value) {
+      this.data[offset] = currentValue | mask;
+    } else {
+      this.data[offset] = currentValue & ~mask;
+    }
+  }
+
+  /**
+   * Get a specific bit from a byte at the given offset
+   * @param offset Byte offset in the data
+   * @param bitPosition Bit position (0-7)
+   * @returns true if bit is 1, false if 0
+   */
+  private getBit(offset: number, bitPosition: number): boolean {
+    if (bitPosition < 0 || bitPosition > 7) {
+      throw new Error('Bit position must be between 0 and 7');
+    }
+
+    const currentValue = this.data[offset];
+    const mask = 1 << bitPosition;
+    return (currentValue & mask) !== 0;
+  }
+
+  /**
+   * Set NPC alive/dead state
+   * @param npcBits Array of bit entries for the NPC
+   * @param alive true to revive, false to kill
+   */
+  setNpcAlive(npcBits: Array<{ offset: string; bit: number; reverse: boolean }>, alive: boolean): void {
+    const baseOffset = this.findPattern1();
+
+    if (baseOffset === -1) {
+      throw new Error('Pattern not found in character data');
+    }
+
+    for (const bitEntry of npcBits) {
+      const offset = parseInt(bitEntry.offset, 16);
+      const absoluteOffset = baseOffset + offset;
+
+      if (absoluteOffset < 0 || absoluteOffset >= this.data.length) {
+        throw new Error(`Calculated offset ${absoluteOffset} is out of bounds`);
+      }
+
+      const bitValue = bitEntry.reverse ? !alive : alive;
+      this.setBit(absoluteOffset, bitEntry.bit, bitValue);
+    }
+  }
+
 }

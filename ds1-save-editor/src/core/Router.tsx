@@ -5,6 +5,7 @@ import { GameInfo } from './config';
 import { DS1App } from '../apps/ds1/DS1App';
 import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
+import { ErrorBoundary } from './ErrorBoundary';
 
 // Wrapper to use ErrorPage with React Router hooks
 const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
@@ -91,20 +92,22 @@ const ComingSoon: React.FC<{ title: string; gameId: string }> = ({ title, gameId
 
 export const Router: React.FC = () => {
   return (
-    <GameProvider>
-      <Routes>
-        {/* Home routes - both / and /home go to game selector */}
-        <Route path="/" element={<GameSelectorWrapper />} />
-        <Route path="/home" element={<Navigate to="/" replace />} />
+    <ErrorBoundary>
+      <GameProvider>
+        <Routes>
+          {/* Home routes - both / and /home go to game selector */}
+          <Route path="/" element={<GameSelectorWrapper />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
 
-        {/* Game routes */}
-        <Route path="/ds1" element={<DS1AppWrapper />} />
-        <Route path="/ds3" element={<ComingSoon title="Dark Souls 3" gameId="ds3" />} />
-        <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
+          {/* Game routes */}
+          <Route path="/ds1" element={<DS1AppWrapper />} />
+          <Route path="/ds3" element={<ComingSoon title="Dark Souls 3" gameId="ds3" />} />
+          <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
 
-        {/* 404 - catch all unknown routes */}
-        <Route path="*" element={<ErrorPageWrapper errorType="notFound" />} />
-      </Routes>
-    </GameProvider>
+          {/* 404 - catch all unknown routes */}
+          <Route path="*" element={<ErrorPageWrapper errorType="notFound" />} />
+        </Routes>
+      </GameProvider>
+    </ErrorBoundary>
   );
 };

@@ -206,7 +206,7 @@ export class Character {
    * Ищет последнее вхождение паттерна в диапазоне 0x1F000 - 0x1FFFF.
    * @returns Базовое смещение (baseOffset) или -1, если не найдено.
    */
-  private findPattern1(): number {
+  public findPattern1(): number {
     // Pattern1: FF FF FF FF 00 00 00 00 FF FF FF FF 00 00 00 00
     const pattern = [
       0xFF, 0xFF, 0xFF, 0xFF,

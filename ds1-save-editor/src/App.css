@@ -1221,3 +1221,79 @@
   font-size: 1rem;
   font-weight: 500;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Make tabs scrollable horizontally */
+  .tabs-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .tabs {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0.5rem;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #ff6b35 #252525;
+  }
+
+  .tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .tabs::-webkit-scrollbar-track {
+    background: #252525;
+  }
+
+  .tabs::-webkit-scrollbar-thumb {
+    background: #ff6b35;
+    border-radius: 3px;
+  }
+
+  .tab {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .reload-button {
+    padding: 0.5rem 0.875rem;
+    margin-right: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .safe-mode-container {
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #333;
+  }
+
+  .safe-mode-label {
+    font-size: 0.85rem;
+  }
+
+  /* Stack General tab columns vertically on mobile */
+  .compact-layout {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .compact-column {
+    width: 100%;
+  }
+
+  .tab-content {
+    padding: 1rem;
+  }
+
+  /* Make inputs more touch-friendly */
+  input[type="text"],
+  input[type="number"],
+  select {
+    min-height: 44px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}

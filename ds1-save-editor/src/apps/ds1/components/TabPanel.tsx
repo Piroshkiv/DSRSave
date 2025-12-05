@@ -3,6 +3,8 @@ import { Character } from '../lib/Character';
 import { GeneralTab } from './GeneralTab';
 import { InventoryTab } from './InventoryTab';
 import { BonfiresTab } from './BonfiresTab';
+import { NPCsTab } from './NPCsTab';
+import { BossesTab } from './BossesTab';
 
 interface TabPanelProps {
   character: Character | null;
@@ -10,7 +12,7 @@ interface TabPanelProps {
   onReload: () => void;
 }
 
-type TabType = 'general' | 'inventory' | 'bonfires';
+type TabType = 'general' | 'inventory' | 'bonfires' | 'npcs' | 'bosses';
 
 export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, onReload }) => {
   const [activeTab, setActiveTab] = useState<TabType>('general');
@@ -51,6 +53,18 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
           >
             Bonfires
           </button>
+          <button
+            className={`tab ${activeTab === 'npcs' ? 'active' : ''}`}
+            onClick={() => setActiveTab('npcs')}
+          >
+            NPCs
+          </button>
+          <button
+            className={`tab ${activeTab === 'bosses' ? 'active' : ''}`}
+            onClick={() => setActiveTab('bosses')}
+          >
+            Bosses
+          </button>
         </div>
 
         <div className="safe-mode-container">
@@ -79,6 +93,12 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
         )}
         {activeTab === 'bonfires' && (
           <BonfiresTab character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
+        {activeTab === 'npcs' && (
+          <NPCsTab character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
+        {activeTab === 'bosses' && (
+          <BossesTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
       </div>
     </div>

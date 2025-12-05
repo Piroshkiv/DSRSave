@@ -38,7 +38,8 @@
       "Bash(cargo clean:*)",
       "Bash(del /S /Q target)",
       "Bash(cat:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Bash(timeout 3 bash:*)"
     ],
     "deny": [],
     "ask": []
