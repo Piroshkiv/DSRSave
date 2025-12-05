@@ -414,6 +414,7 @@ export class Character {
    * @param bitPosition Bit position (0-7)
    * @returns true if bit is 1, false if 0
    */
+  /*
   private getBit(offset: number, bitPosition: number): boolean {
     if (bitPosition < 0 || bitPosition > 7) {
       throw new Error('Bit position must be between 0 and 7');
@@ -423,6 +424,7 @@ export class Character {
     const mask = 1 << bitPosition;
     return (currentValue & mask) !== 0;
   }
+  */
 
   /**
    * Set NPC alive/dead state

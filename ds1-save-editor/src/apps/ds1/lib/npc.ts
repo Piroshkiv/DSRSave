@@ -30,7 +30,7 @@ export class NpcEditor {
           return; 
         } catch (error) {
           lastError = error instanceof Error ? error : new Error(String(error));
-          
+          console.error(`Failed to load NPC data from ${jsonPath}:`, lastError);
         }
       }
   
