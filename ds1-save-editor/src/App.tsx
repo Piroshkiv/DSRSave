@@ -1,5 +1,6 @@
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import { Router } from './core/Router';
+import { ErrorBoundary } from './core/ErrorBoundary';
 import './App.css';
 
 // Detect if running in Electron or Tauri
@@ -12,9 +13,11 @@ function App() {
   const RouterComponent = isDesktopApp ? HashRouter : BrowserRouter;
 
   return (
-    <RouterComponent>
-      <Router />
-    </RouterComponent>
+    <ErrorBoundary>
+      <RouterComponent>
+        <Router />
+      </RouterComponent>
+    </ErrorBoundary>
   );
 }
 

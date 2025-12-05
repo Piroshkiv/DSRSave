@@ -123,6 +123,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Ensure URL is / or /home for the home page
+      if (window.location.pathname !== '/' && window.location.pathname !== '/home') {
+        // Only update if we're somehow on a different path with index.html loaded
+        const validPaths = ['/', '/home', '/ds1', '/ds3', '/eldenring'];
+        if (!validPaths.includes(window.location.pathname)) {
+          window.history.replaceState(null, '', '/');
+        }
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

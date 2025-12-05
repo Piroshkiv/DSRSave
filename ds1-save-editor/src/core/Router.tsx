@@ -1,9 +1,16 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { GameProvider } from './context';
 import { GameSelector } from './GameSelector';
 import { GameInfo } from './config';
 import { DS1App } from '../apps/ds1/DS1App';
 import { MetaTags } from './MetaTags';
+import { ErrorPage } from './ErrorPage';
+
+// Wrapper to use ErrorPage with React Router hooks
+const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
+  const location = useLocation();
+  return <ErrorPage errorType={errorType} currentPath={location.pathname} />;
+};
 
 const GameSelectorWrapper: React.FC = () => {
   const navigate = useNavigate();
@@ -86,11 +93,17 @@ export const Router: React.FC = () => {
   return (
     <GameProvider>
       <Routes>
+        {/* Home routes - both / and /home go to game selector */}
         <Route path="/" element={<GameSelectorWrapper />} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
+
+        {/* Game routes */}
         <Route path="/ds1" element={<DS1AppWrapper />} />
         <Route path="/ds3" element={<ComingSoon title="Dark Souls 3" gameId="ds3" />} />
         <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
-        <Route path="*" element={<GameSelectorWrapper />} />
+
+        {/* 404 - catch all unknown routes */}
+        <Route path="*" element={<ErrorPageWrapper errorType="notFound" />} />
       </Routes>
     </GameProvider>
   );

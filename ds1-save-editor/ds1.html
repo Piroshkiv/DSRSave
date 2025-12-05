@@ -122,6 +122,13 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      // Ensure URL matches the expected path for this HTML file
+      // This prevents redirect loops by setting the URL before React Router loads
+      if (window.location.pathname !== '/ds1') {
+        window.history.replaceState(null, '', '/ds1');
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
