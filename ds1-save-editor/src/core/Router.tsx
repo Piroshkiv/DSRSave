@@ -58,9 +58,60 @@ const ComingSoon: React.FC<{ title: string; gameId: string }> = ({ title, gameId
 
   const meta = metaData[gameId as keyof typeof metaData] || metaData.ds3;
 
+  const structuredDataMap = {
+    ds3: {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Dark Souls 3 Save Editor",
+      "alternateName": ["DS3 Save Editor", "Dark Souls III Save Editor", "DS3 Character Editor"],
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript. Works with Chrome, Firefox, Safari, Edge.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/ComingSoon"
+      },
+      "description": "Dark Souls 3 save editor coming soon. Will allow editing of character stats, inventory, weapons, armor, embers, and more directly in your browser.",
+      "url": "https://dsrsaveeditor.pages.dev/ds3",
+      "author": {
+        "@type": "Organization",
+        "name": "Souls Save Editor Team"
+      },
+      "keywords": "Dark Souls 3, DS3, Dark Souls III, save editor, game save editor, character editor, stats editor, inventory editor, online save editor",
+      "softwareVersion": "2.0"
+    },
+    eldenring: {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Elden Ring Save Editor",
+      "alternateName": ["ER Save Editor", "Elden Ring Character Editor"],
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Web Browser",
+      "browserRequirements": "Requires JavaScript. Works with Chrome, Firefox, Safari, Edge.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/ComingSoon"
+      },
+      "description": "Elden Ring save editor coming soon. Will allow editing of character stats, inventory, weapons, armor, runes, and more directly in your browser.",
+      "url": "https://dsrsaveeditor.pages.dev/eldenring",
+      "author": {
+        "@type": "Organization",
+        "name": "Souls Save Editor Team"
+      },
+      "keywords": "Elden Ring, ER, save editor, game save editor, character editor, stats editor, inventory editor, online save editor, runes editor",
+      "softwareVersion": "2.0"
+    }
+  };
+
+  const structuredData = structuredDataMap[gameId as keyof typeof structuredDataMap];
+
   return (
     <>
-      <MetaTags {...meta} />
+      <MetaTags {...meta} structuredData={structuredData} />
       <div style={{
         display: 'flex',
         flexDirection: 'column',

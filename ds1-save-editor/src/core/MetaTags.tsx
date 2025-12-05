@@ -8,6 +8,7 @@ interface MetaTagsProps {
   ogTitle?: string;
   ogDescription?: string;
   canonical?: string;
+  structuredData?: Record<string, any> | Record<string, any>[];
 }
 
 export const MetaTags: React.FC<MetaTagsProps> = ({
@@ -17,6 +18,7 @@ export const MetaTags: React.FC<MetaTagsProps> = ({
   ogTitle,
   ogDescription,
   canonical,
+  structuredData,
 }) => {
   useEffect(() => {
     if (title) {
@@ -104,7 +106,25 @@ export const MetaTags: React.FC<MetaTagsProps> = ({
       }
       ogUrl.setAttribute('content', canonical);
     }
-  }, [title, description, keywords, ogTitle, ogDescription, canonical]);
+
+    // Update structured data (JSON-LD)
+    // Remove all existing dynamic structured data scripts
+    const existingScripts = document.querySelectorAll('script[type="application/ld+json"][data-dynamic]');
+    existingScripts.forEach(script => script.remove());
+
+    if (structuredData) {
+      // Handle both single object and array of objects
+      const dataArray = Array.isArray(structuredData) ? structuredData : [structuredData];
+
+      dataArray.forEach(data => {
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.setAttribute('data-dynamic', 'true');
+        script.textContent = JSON.stringify(data);
+        document.head.appendChild(script);
+      });
+    }
+  }, [title, description, keywords, ogTitle, ogDescription, canonical, structuredData]);
 
   return null;
 };

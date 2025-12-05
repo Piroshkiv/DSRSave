@@ -61,6 +61,79 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
         ogTitle="Dark Souls Remastered Save Editor (DSR) — Online"
         ogDescription="Free online Dark Souls Remastered (DSR) save editor. Edit stats, level, humanity, inventory, and character data directly in your browser."
         canonical="https://dsrsaveeditor.pages.dev/ds1"
+        structuredData={[{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "name": "DSR Save Editor",
+          "alternateName": ["Dark Souls Save Editor", "DS1 Save Editor", "Dark Souls Remastered Save Editor", "Dark Souls Character Editor"],
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Web Browser",
+          "browserRequirements": "Requires JavaScript. Works with Chrome, Firefox, Safari, Edge.",
+          "image": "https://dsrsaveeditor.pages.dev/logo.png",
+          "screenshot": "https://dsrsaveeditor.pages.dev/screenshot.png",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "Free online save editor for Dark Souls Remastered (DSR). Edit character stats, soul level, humanity, inventory, equipment, and more directly in your browser without any installation.",
+          "url": "https://dsrsaveeditor.pages.dev/ds1",
+          "author": {
+            "@type": "Organization",
+            "name": "Souls Save Editor Team"
+          },
+          "featureList": [
+            "Edit character stats: Vitality, Attunement, Endurance, Strength, Dexterity, Resistance, Intelligence, Faith",
+            "Modify soul level, souls, and humanity count",
+            "Edit inventory items, weapons, armor, and equipment",
+            "Unlock bonfires and warp points",
+            "Support for Dark Souls Remastered (DSR)",
+            "Browser-based editor - no installation or download required",
+            "100% free and open source",
+            "Works offline after initial load",
+            "Safe editing with backup functionality"
+          ],
+          "keywords": "Dark Souls, DS1, DSR, Dark Souls Remastered, PTDE, save editor, game save editor, character editor, stats editor, inventory editor, online save editor",
+          "softwareVersion": "2.0",
+          "datePublished": "2024-01-01"
+        }, {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Does this work with Dark Souls Remastered?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, this save editor is designed specifically for Dark Souls Remastered (DSR) save files (.sl2 format)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I edit PTDE (Prepare to Die Edition) saves?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The editor is optimized for Dark Souls Remastered, but may work with PTDE saves as they share similar formats."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this save editor free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, this is a completely free online tool. No registration, payment, or download required."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need to download anything?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No, this is a browser-based save editor. Everything works directly in your web browser without any installation."
+              }
+            }
+          ]
+        }]}
       />
       <AppLayout
         title="Dark Souls Save Editor"

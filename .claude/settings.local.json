@@ -39,7 +39,9 @@
       "Bash(del /S /Q target)",
       "Bash(cat:*)",
       "Bash(npm ls:*)",
-      "Bash(timeout 3 bash:*)"
+      "Bash(timeout 3 bash:*)",
+      "Bash(del ds1.html ds3.html eldenring.html)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
