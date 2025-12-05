@@ -43,7 +43,8 @@
       "Bash(del ds1.html ds3.html eldenring.html)",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(npx png2icons-cli \"build/icon.png\" \"build/icon\" -ico)"
+      "Bash(npx png2icons-cli \"build/icon.png\" \"build/icon\" -ico)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []
