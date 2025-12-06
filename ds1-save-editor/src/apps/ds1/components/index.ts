@@ -4,6 +4,7 @@ export { TabPanel } from './TabPanel';
 export { GeneralTab } from './GeneralTab';
 export { InventoryTab } from './InventoryTab';
 export { BonfiresTab } from './BonfiresTab';
+export { TableTab } from './TableTab';
 export { NumberInput } from './NumberInput';
 export { ItemCreateDialog } from './ItemCreateDialog';
 export { ItemEditDialog } from './ItemEditDialog';

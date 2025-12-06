@@ -5,6 +5,7 @@ const BONFIRE_RELATIVE_OFFSET_1 = 0x6B; // Bonfire data 1
 const BONFIRE_RELATIVE_OFFSET_2 = 0x6C; // Bonfire data 2
 const BONFIRE_RELATIVE_OFFSET_3 = 0x6D; // Bonfire data 3
 const BONFIRE_RELATIVE_FLAG_OFFSET = 0xAE; // Warp flag
+const NG_PLUS_RELATIVE_OFFSET = -0xBC0; // NG+ counter (pattern1 - 0xBC0)
 
 export class Character {
   private data: Uint8Array;
@@ -133,6 +134,30 @@ export class Character {
     this.data[0x00F5] = (value >> 8) & 0xFF;
     this.data[0x00F6] = (value >> 16) & 0xFF;
     this.data[0x00F7] = (value >> 24) & 0xFF;
+  }
+
+  get ngPlus(): number {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) {
+      return 0;
+    }
+    const ngPlusOffset = baseOffset + NG_PLUS_RELATIVE_OFFSET;
+    if (ngPlusOffset < 0 || ngPlusOffset >= this.data.length) {
+      return 0;
+    }
+    return this.data[ngPlusOffset];
+  }
+
+  set ngPlus(value: number) {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) {
+      throw new Error('Cannot set NG+: Pattern1 not found');
+    }
+    const ngPlusOffset = baseOffset + NG_PLUS_RELATIVE_OFFSET;
+    if (ngPlusOffset < 0 || ngPlusOffset >= this.data.length) {
+      throw new Error('NG+ offset out of range');
+    }
+    this.data[ngPlusOffset] = value & 0xFF;
   }
 
   get playerClass(): PlayerClass {

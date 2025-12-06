@@ -171,6 +171,12 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     onCharacterUpdate();
   };
 
+  const handleNgPlusChange = (numValue: number) => {
+    character.ngPlus = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
   return (
     <div className="general-tab-compact">
       <div className="compact-layout">
@@ -198,6 +204,15 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
                 />
               </div>
             ))}
+            <div className="stat-row">
+              <label>Humanity</label>
+              <NumberInput
+                value={character.humanity}
+                onChange={handleHumanityChange}
+                min={0}
+                max={99}
+              />
+            </div>
           </div>
         </div>
 
@@ -251,22 +266,22 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           </div>
 
           <div className="form-group">
-            <label>Humanity</label>
-            <NumberInput
-              value={character.humanity}
-              onChange={handleHumanityChange}
-              min={0}
-              max={99}
-            />
-          </div>
-
-          <div className="form-group">
             <label>Souls</label>
             <NumberInput
               value={character.souls}
               onChange={handleSoulsChange}
               min={0}
               max={999999999}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>NG+</label>
+            <NumberInput
+              value={character.ngPlus}
+              onChange={handleNgPlusChange}
+              min={0}
+              max={99}
             />
           </div>
 
