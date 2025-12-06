@@ -169,6 +169,7 @@ export const Router: React.FC = () => {
 
           {/* Game routes */}
           <Route path="/ds1" element={<DS1AppWrapper />} />
+          <Route path="/ds1v1" element={<DS1AppWrapper />} />
           <Route path="/ds3" element={<ComingSoon title="Dark Souls 3" gameId="ds3" />} />
           <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
 
