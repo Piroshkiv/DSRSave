@@ -3,6 +3,7 @@ import { GameProvider } from './context';
 import { GameSelector } from './GameSelector';
 import { GameInfo } from './config';
 import { DS1App } from '../apps/ds1/DS1App';
+import { DS3App } from '../apps/ds3/DS3App';
 import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
 import { ErrorBoundary } from './ErrorBoundary';
@@ -32,6 +33,16 @@ const DS1AppWrapper: React.FC = () => {
   };
 
   return <DS1App onHome={handleHome} />;
+};
+
+const DS3AppWrapper: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate('/');
+  };
+
+  return <DS3App onHome={handleHome} />;
 };
 
 const ComingSoon: React.FC<{ title: string; gameId: string }> = ({ title, gameId }) => {
@@ -175,7 +186,7 @@ export const Router: React.FC = () => {
           <Route path="/ds1" element={<DS1AppWrapper />} />
           <Route path="/ds1v1" element={<DS1AppWrapper />} />
           <Route path="/ds1/tutorial" element={<DS1TutorialPageWrapper />} />
-          <Route path="/ds3" element={<ComingSoon title="Dark Souls 3" gameId="ds3" />} />
+          <Route path="/ds3" element={<DS3AppWrapper />} />
           <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
 
           {/* 404 - catch all unknown routes */}

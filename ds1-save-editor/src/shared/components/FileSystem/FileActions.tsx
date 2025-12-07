@@ -6,6 +6,7 @@ interface FileActionsProps {
   onSaveAs?: () => void;
   onReload?: () => void;
   disabled?: boolean;
+  disableSave?: boolean;
 }
 
 export const FileActions: React.FC<FileActionsProps> = ({
@@ -13,6 +14,7 @@ export const FileActions: React.FC<FileActionsProps> = ({
   onSaveAs,
   onReload,
   disabled = false,
+  disableSave = false,
 }) => {
   return (
     <div className="file-actions">
@@ -22,7 +24,7 @@ export const FileActions: React.FC<FileActionsProps> = ({
         </button>
       )}
       {onSave && (
-        <button className="action-button save-button" onClick={onSave} disabled={disabled}>
+        <button className="action-button save-button" onClick={onSave} disabled={disabled || disableSave}>
           Save
         </button>
       )}

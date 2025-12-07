@@ -71,7 +71,9 @@ export class WebFSAdapter extends IFileSystemAdapter {
           throw new Error('User cancelled file selection');
         }
         console.error('[WebFSAdapter] File System Access API failed:', err);
+        console.error('[WebFSAdapter] Error name:', err.name, 'Error message:', err.message);
         console.warn('File System Access API failed, falling back to input');
+        // Continue to fallback
       }
     } else {
       console.log('[WebFSAdapter] File System Access API not available');
