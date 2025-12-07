@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useImperativeHandle, forwardRef } from 'react';
+import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import { FileHandle } from '../../ds1/lib/adapters';
 
 interface FileUploadProps {
@@ -10,9 +10,8 @@ export interface FileUploadRef {
   openFileDialog: () => void;
 }
 
-export const FileUpload = forwardRef<FileUploadRef, FileUploadProps>(({ onFileLoaded, onAutoLoadAttempt }, ref) => {
+export const FileUpload = forwardRef<FileUploadRef, FileUploadProps>(({ onFileLoaded }, ref) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const autoLoadAttemptedRef = useRef(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

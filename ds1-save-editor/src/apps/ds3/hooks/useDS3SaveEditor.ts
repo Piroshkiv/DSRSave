@@ -15,7 +15,7 @@ export interface UseDS3SaveEditorResult {
   handleCharacterUpdate: () => void;
   handleSave: () => Promise<void>;
   handleSaveAs: () => Promise<void>;
-  handleReload: () => Promise<void>;
+  handleReload: () => void;
 }
 
 export const useDS3SaveEditor = (fileUploadRef: RefObject<FileUploadRef>): UseDS3SaveEditorResult => {
