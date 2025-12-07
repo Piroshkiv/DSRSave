@@ -46,6 +46,7 @@
     },
     "files": [
       "dist/**/*",
+      "!dist/ads.txt",
       "electron/**/*"
     ],
     "win": {

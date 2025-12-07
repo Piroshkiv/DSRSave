@@ -120,14 +120,11 @@
       ]
     }
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
     <!-- Google AdSense - Only load for web version (not Electron/Tauri) -->
     <script>
       // Check if running in Electron or Tauri
       const isElectron = navigator.userAgent.toLowerCase().includes('electron');
-      const isTauri = window.__TAURI__ !== undefined;
+      const isTauri = typeof window !== 'undefined' && window.__TAURI__ !== undefined;
       const isDesktopApp = isElectron || isTauri;
 
       // Only load AdSense for web version
@@ -139,6 +136,9 @@
         document.head.appendChild(script);
       }
     </script>
+  </head>
+  <body>
+    <div id="root"></div>
     <!-- No URL manipulation needed - React Router will handle routing -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
