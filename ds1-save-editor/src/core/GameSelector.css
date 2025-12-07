@@ -27,7 +27,35 @@
 .game-selector-subtitle {
   font-size: 1.2rem;
   color: #999;
-  margin: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.guide-link-container {
+  margin-top: 1.5rem;
+}
+
+.guide-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 107, 53, 0.05) 100%);
+  border: 2px solid rgba(255, 107, 53, 0.5);
+  border-radius: 8px;
+  color: #ff6b35;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2);
+}
+
+.guide-link:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.25) 0%, rgba(255, 107, 53, 0.15) 100%);
+  border-color: #ff6b35;
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.5);
+  transform: translateY(-2px);
+  color: #ff8c5a;
 }
 
 .game-grid {

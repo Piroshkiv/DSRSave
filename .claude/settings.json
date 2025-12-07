@@ -1,0 +1,13 @@
+{
+  "toolApprovalPolicy": {
+    "Bash": "auto-approve",
+    "Read": "auto-approve",
+    "Write": "auto-approve",
+    "Edit": "auto-approve",
+    "Glob": "auto-approve",
+    "Grep": "auto-approve",
+    "Task": "auto-approve",
+    "WebFetch": "auto-approve",
+    "WebSearch": "auto-approve"
+  }
+}

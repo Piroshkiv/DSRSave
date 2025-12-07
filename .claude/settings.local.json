@@ -1,4 +1,7 @@
 {
+  "toolApprovalPolicy": {
+    "default": "auto-approve"
+  },
   "permissions": {
     "allow": [
       "Bash(npm run dev:*)",

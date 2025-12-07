@@ -12,6 +12,10 @@ interface AppLayoutProps {
   children: ReactNode;
   onTermsClick?: () => void;
   onAboutClick?: () => void;
+  showTutorialButton?: boolean;
+  onTutorial?: () => void;
+  showGameNav?: boolean;
+  currentGame?: 'ds1' | 'ds3' | 'eldenring';
 }
 
 export const AppLayout: React.FC<AppLayoutProps> = ({
@@ -23,6 +27,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   children,
   onTermsClick,
   onAboutClick,
+  showTutorialButton,
+  onTutorial,
+  showGameNav,
+  currentGame,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -39,6 +47,10 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
         onHome={onHome}
         showBurger={!!sidebar}
         onBurgerClick={toggleSidebar}
+        showTutorialButton={showTutorialButton}
+        onTutorial={onTutorial}
+        showGameNav={showGameNav}
+        currentGame={currentGame}
       />
 
       <div className="app-content">

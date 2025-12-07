@@ -10,3 +10,6 @@ export { ItemCreateDialog } from './ItemCreateDialog';
 export { ItemEditDialog } from './ItemEditDialog';
 export { TermsPage } from './TermsPage';
 export { AboutPage } from './AboutPage';
+export { TermsFullPage } from './TermsFullPage';
+export { AboutFullPage } from './AboutFullPage';
+export { DS1TutorialPage } from './DS1TutorialPage';

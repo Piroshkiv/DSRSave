@@ -1,22 +1,27 @@
 .app-footer {
   background: #1a1a1a;
   border-top: 1px solid #333;
-  padding: 1rem 2rem;
+  padding: 0 1rem;
   margin-top: auto;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .footer-content {
   max-width: 1400px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .footer-contacts-single {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0;
   flex-wrap: wrap;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  padding: 0;
 }
 
 .footer-label {
@@ -24,40 +29,52 @@
 }
 
 .separator {
-  color: #555;
+  display: inline-block;
+  width: 1rem;
 }
 
-.terms-link {
-  background: none;
-  border: none;
-  color: #ff6b35;
-  cursor: pointer;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: color 0.2s;
-}
-
-.terms-link:hover {
-  color: #ff8c5a;
-  text-decoration: underline;
-}
-
-.contact-link {
-  color: #ff6b35;
+.footer-link,
+.footer-link-button {
+  color: #6a9fb5;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   transition: color 0.2s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.footer-link:hover,
+.footer-link-button:hover {
+  color: #8fc1d9;
+  text-decoration: underline;
+}
+
+.contact-link {
+  color: #6a9fb5;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 .contact-link:hover {
-  color: #ff8c5a;
+  color: #8fc1d9;
   text-decoration: underline;
 }
 
 .contact-icon {
-  font-size: 1rem;
+  font-size: 0.85rem;
 }

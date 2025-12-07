@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '../../shared/components/Layout';
 import { FileActions } from '../../shared/components/FileSystem';
 import { FileUpload, CharacterList, TabPanel, TermsPage, AboutPage } from './components';
@@ -15,6 +16,7 @@ interface DS1AppProps {
 }
 
 export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
+  const navigate = useNavigate();
   const {
     saveEditor,
     characters,
@@ -30,6 +32,10 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
   const [showTerms, setShowTerms] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [isAutoLoading, setIsAutoLoading] = useState(false);
+
+  const handleTutorial = () => {
+    navigate('/ds1/tutorial');
+  };
 
   const selectedCharacter = selectedCharacterIndex !== null
     ? characters[selectedCharacterIndex]
@@ -147,6 +153,10 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
         sidebar={sidebar}
         onTermsClick={() => setShowTerms(true)}
         onAboutClick={() => setShowAbout(true)}
+        showTutorialButton={true}
+        onTutorial={handleTutorial}
+        showGameNav={true}
+        currentGame="ds1"
       >
         <TabPanel
           character={selectedCharacter}

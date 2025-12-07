@@ -1,6 +1,7 @@
 import React from 'react';
 import { getAllGames, GameInfo } from './config';
 import { MetaTags } from './MetaTags';
+import { Footer } from '../shared/components/Layout/Footer';
 import './GameSelector.css';
 
 interface GameSelectorProps {
@@ -11,7 +12,7 @@ export const GameSelector: React.FC<GameSelectorProps> = ({ onGameSelect }) => {
   const games = getAllGames();
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <MetaTags
         title="Dark Souls Save Editor - DS Remastered, DS3, Elden Ring"
         description="Free online save editors for Dark Souls series. Edit Dark Souls Remastered (DS1), Dark Souls 3, and Elden Ring saves. Edit stats, inventory, and character data in your browser."
@@ -128,6 +129,8 @@ export const GameSelector: React.FC<GameSelectorProps> = ({ onGameSelect }) => {
           </p>
         </div>
       </div>
-    </>
+
+      <Footer />
+    </div>
   );
 };

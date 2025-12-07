@@ -6,7 +6,7 @@ import { DS1App } from '../apps/ds1/DS1App';
 import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
 import { ErrorBoundary } from './ErrorBoundary';
-import { AboutPage, TermsPage } from '../apps/ds1/components';
+import { AboutFullPage, TermsFullPage, DS1TutorialPage } from '../apps/ds1/components';
 
 // Wrapper to use ErrorPage with React Router hooks
 const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
@@ -142,16 +142,20 @@ const ComingSoon: React.FC<{ title: string; gameId: string }> = ({ title, gameId
   );
 };
 
-// About Page Wrapper
+// About Page Wrapper - uses full page version
 const AboutPageWrapper: React.FC = () => {
-  const navigate = useNavigate();
-  return <AboutPage onClose={() => navigate('/')} />;
+  return <AboutFullPage />;
 };
 
-// Terms Page Wrapper
+// Terms Page Wrapper - uses full page version
 const TermsPageWrapper: React.FC = () => {
+  return <TermsFullPage />;
+};
+
+// DS1 Tutorial Page Wrapper
+const DS1TutorialPageWrapper: React.FC = () => {
   const navigate = useNavigate();
-  return <TermsPage onClose={() => navigate('/')} />;
+  return <DS1TutorialPage onClose={() => navigate('/')} />;
 };
 
 export const Router: React.FC = () => {
@@ -170,6 +174,7 @@ export const Router: React.FC = () => {
           {/* Game routes */}
           <Route path="/ds1" element={<DS1AppWrapper />} />
           <Route path="/ds1v1" element={<DS1AppWrapper />} />
+          <Route path="/ds1/tutorial" element={<DS1TutorialPageWrapper />} />
           <Route path="/ds3" element={<ComingSoon title="Dark Souls 3" gameId="ds3" />} />
           <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
 
