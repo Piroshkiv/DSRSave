@@ -123,6 +123,22 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Google AdSense - Only load for web version (not Electron/Tauri) -->
+    <script>
+      // Check if running in Electron or Tauri
+      const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+      const isTauri = window.__TAURI__ !== undefined;
+      const isDesktopApp = isElectron || isTauri;
+
+      // Only load AdSense for web version
+      if (!isDesktopApp) {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8822594382518314';
+        script.crossOrigin = 'anonymous';
+        document.head.appendChild(script);
+      }
+    </script>
     <!-- No URL manipulation needed - React Router will handle routing -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
