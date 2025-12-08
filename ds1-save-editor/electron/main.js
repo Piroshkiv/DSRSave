@@ -9,7 +9,7 @@ const isDebug =
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 1200,
+    width: 1300,
     height: 800,
     webPreferences: {
       nodeIntegration: false,

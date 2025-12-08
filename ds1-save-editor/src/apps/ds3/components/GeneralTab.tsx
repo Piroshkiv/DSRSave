@@ -11,20 +11,6 @@ interface GeneralTabProps {
 
 const STAT_ORDER = ['VIG', 'ATN', 'END', 'VIT', 'STR', 'DEX', 'INT', 'FTH', 'LCK'];
 
-// DS3 Classes (MOCK - placeholder values)
-const CLASS_NAMES: Record<number, string> = {
-  0: 'Knight',
-  1: 'Mercenary',
-  2: 'Warrior',
-  3: 'Herald',
-  4: 'Thief',
-  5: 'Assassin',
-  6: 'Sorcerer',
-  7: 'Pyromancer',
-  8: 'Cleric',
-  9: 'Deprived'
-};
-
 export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUpdate }) => {
   const [, forceUpdate] = useState({});
 
@@ -40,18 +26,66 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     onCharacterUpdate();
   };
 
-  const handleNameChange = (value: string) => {
-    if (value.length <= 16) {
-      character.name = value;
-      forceUpdate({});
-      onCharacterUpdate();
-    }
-  };
-
   const handleSoulsChange = (numValue: number) => {
     character.souls = numValue;
     forceUpdate({});
     onCharacterUpdate();
+  };
+
+  const handleHPChange = (numValue: number) => {
+    character.hp = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
+  const handleFPChange = (numValue: number) => {
+    character.fp = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
+  const handleStaminaChange = (numValue: number) => {
+    character.stamina = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
+  const handleEstusMaxChange = (numValue: number) => {
+    character.estusMax = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
+  const handleAshenEstusMaxChange = (numValue: number) => {
+    character.ashenEstusMax = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
+  const handleNGCycleChange = (numValue: number) => {
+    character.ngCycle = numValue;
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
+  const handleExportToBinary = () => {
+    try {
+      const rawData = character.getRawData();
+      // Create a new Uint8Array to ensure we have a proper ArrayBuffer
+      const dataToExport = new Uint8Array(rawData);
+      const blob = new Blob([dataToExport], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `character_slot${character.slotIndex}_raw.bin`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to export character data:', error);
+      alert('Failed to export character data');
+    }
   };
 
   return (
@@ -66,8 +100,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
                 value={character.level}
                 onChange={handleLevelChange}
                 min={1}
-                max={802}
-                disabled={true}
+                max={MAX_VALUES.LEVEL}
               />
             </div>
             {STAT_ORDER.map((statName) => (
@@ -78,7 +111,6 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
                   onChange={(value) => handleStatChange(statName, value)}
                   min={0}
                   max={99}
-                  disabled={true}
                 />
               </div>
             ))}
@@ -89,60 +121,32 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           <h3>General</h3>
 
           <div className="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              value={character.name}
-              onChange={(e) => handleNameChange(e.target.value)}
-              maxLength={16}
-              disabled={true}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Class</label>
-            <select
-              value={0}
-              disabled={true}
-            >
-              {Object.entries(CLASS_NAMES).map(([classId, className]) => (
-                <option key={classId} value={classId}>
-                  {className}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
             <label>HP</label>
             <NumberInput
-              value={1000}
-              onChange={() => {}}
+              value={character.hp}
+              onChange={handleHPChange}
               min={0}
               max={9999}
-              disabled={true}
             />
           </div>
 
           <div className="form-group">
             <label>FP</label>
             <NumberInput
-              value={100}
-              onChange={() => {}}
+              value={character.fp}
+              onChange={handleFPChange}
               min={0}
               max={999}
-              disabled={true}
             />
           </div>
 
           <div className="form-group">
             <label>Stamina</label>
             <NumberInput
-              value={100}
-              onChange={() => {}}
+              value={character.stamina}
+              onChange={handleStaminaChange}
               min={0}
               max={999}
-              disabled={true}
             />
           </div>
 
@@ -156,9 +160,63 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
             />
           </div>
 
-          <div className="form-group" style={{ marginTop: '20px', padding: '10px', backgroundColor: '#fff3cd', borderRadius: '4px' }}>
+          <div className="form-group">
+            <label>Estus Flask Max</label>
+            <NumberInput
+              value={character.estusMax}
+              onChange={handleEstusMaxChange}
+              min={0}
+              max={MAX_VALUES.ESTUS_MAX}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Ashen Estus Max</label>
+            <NumberInput
+              value={character.ashenEstusMax}
+              onChange={handleAshenEstusMaxChange}
+              min={0}
+              max={MAX_VALUES.ASHEN_ESTUS_MAX}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>NG+ Cycle</label>
+            <NumberInput
+              value={character.ngCycle}
+              onChange={handleNGCycleChange}
+              min={0}
+              max={MAX_VALUES.NG_CYCLE}
+            />
+          </div>
+
+          <div className="form-group" style={{ marginTop: '20px', padding: '10px', backgroundColor: '#d1ecf1', borderRadius: '4px' }}>
             <p style={{ margin: 0, fontSize: '0.9em' }}>
-              <strong>ℹ️ Note:</strong> Only Souls editing is currently available. Other fields are disabled (MOCK values).
+              <strong>ℹ️ Note:</strong> Character name and class editing are not yet available.
+            </p>
+          </div>
+
+          <div className="form-group" style={{ marginTop: '20px' }}>
+            <button
+              onClick={handleExportToBinary}
+              style={{
+                width: '100%',
+                padding: '10px 20px',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '1em',
+                fontWeight: 'bold'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#007bff'}
+            >
+              📥 Export Character Data (.bin)
+            </button>
+            <p style={{ margin: '8px 0 0 0', fontSize: '0.85em', color: '#666' }}>
+              Download raw decrypted character data for pattern analysis
             </p>
           </div>
 

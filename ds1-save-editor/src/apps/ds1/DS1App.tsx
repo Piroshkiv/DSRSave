@@ -146,7 +146,7 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
         }]}
       />
       <AppLayout
-        title="Dark Souls Save Editor"
+        title="Dark Souls Save Editor Online"
         icon={logoImg}
         showHomeButton={!!onHome}
         onHome={onHome}

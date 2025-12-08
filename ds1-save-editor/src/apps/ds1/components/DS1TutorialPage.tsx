@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Header } from '../../../shared/components/Layout/Header';
 import { Footer } from '../../../shared/components/Layout/Footer';
 
+// Use relative path for screenshots to work in both web and Electron
+const getScreenshotPath = (filename: string) => {
+  const isStatic = import.meta.env.MODE === 'static' || (typeof window !== 'undefined' && window.location.protocol === 'file:');
+  return isStatic ? `screenshots/${filename}` : `/screenshots/${filename}`;
+};
+
 interface DS1TutorialPageProps {
   onClose?: () => void;
 }
@@ -46,7 +52,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               Make sure you're at the main menu screen (not in-game) before proceeding.
             </p>
             <div className="screenshot-container">
-              <img src="/screenshots/screen1.png" alt="Dark Souls main menu" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen1.png')} alt="Dark Souls main menu" className="tutorial-screenshot" />
             </div>
           </section>
 
@@ -65,7 +71,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               Look for files with the <strong>.sl2</strong> extension, usually named <code>DRAKS0005.sl2</code>.
             </p>
             <div className="screenshot-container">
-              <img src="/screenshots/screen2.png" alt="Load file button" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen2.png')} alt="Load file button" className="tutorial-screenshot" />
             </div>
           </section>
 
@@ -80,7 +86,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               <li>Optionally rename it with a date (e.g., <code>DRAKS0005_2024-01-15.sl2</code>)</li>
             </ol>
             <div className="screenshot-container">
-              <img src="/screenshots/screen3.png" alt="Creating backup folder" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen3.png')} alt="Creating backup folder" className="tutorial-screenshot" />
             </div>
           </section>
 
@@ -90,7 +96,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               After loading your save file, you'll see a list of all characters. Click on the character you want to edit.
             </p>
             <div className="screenshot-container">
-              <img src="/screenshots/screen4.png" alt="Character selection" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen4.png')} alt="Character selection" className="tutorial-screenshot" />
             </div>
           </section>
 
@@ -112,7 +118,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               <li><strong>Name & Class:</strong> Edit your character's name and starting class</li>
             </ul>
             <div className="screenshot-container">
-              <img src="/screenshots/screen5.png" alt="General tab - character stats" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen5.png')} alt="General tab - character stats" className="tutorial-screenshot" />
             </div>
 
             <h4>Inventory Tab</h4>
@@ -130,7 +136,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               <li><strong>Weapon Memory:</strong> You can recalibrate weapon memory if all weapons are lower level than current weapon memory capacity</li>
             </ul>
             <div className="screenshot-container">
-              <img src="/screenshots/screen6.png" alt="Inventory tab - items and equipment" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen6.png')} alt="Inventory tab - items and equipment" className="tutorial-screenshot" />
             </div>
 
             <h4>Bonfires Tab</h4>
@@ -142,7 +148,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               <li>Simply check or uncheck bonfires to enable/disable them</li>
             </ul>
             <div className="screenshot-container">
-              <img src="/screenshots/screen7.png" alt="Bonfires tab - bonfire management" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen7.png')} alt="Bonfires tab - bonfire management" className="tutorial-screenshot" />
             </div>
 
             <h4>NPCs & Bosses Tabs</h4>
@@ -154,7 +160,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               <li><strong>Bosses Tab:</strong> Mark bosses as defeated or respawn them by unchecking</li>
             </ul>
             <div className="screenshot-container">
-              <img src="/screenshots/screen8.png" alt="NPCs tab - NPC and quest management" className="tutorial-screenshot" />
+              <img src={getScreenshotPath('screen8.png')} alt="NPCs tab - NPC and quest management" className="tutorial-screenshot" />
             </div>
           </section>
 

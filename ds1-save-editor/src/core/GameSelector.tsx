@@ -14,10 +14,10 @@ export const GameSelector: React.FC<GameSelectorProps> = ({ onGameSelect }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <MetaTags
-        title="Dark Souls Save Editor - DS Remastered, DS3, Elden Ring"
+        title="Dark Souls Save Editor Online - DS Remastered, DS3, Elden Ring"
         description="Free online save editors for Dark Souls series. Edit Dark Souls Remastered (DS1), Dark Souls 3, and Elden Ring saves. Edit stats, inventory, and character data in your browser."
         keywords="dark souls save editor, ds1 save editor, dsr save editor, dark souls remastered save editor, dark souls 3 save editor, ds3 save editor, elden ring save editor, souls save editor, fromsoft save editor, dark souls character editor, online save editor, browser save editor"
-        ogTitle="Dark Souls Save Editor - DS Remastered, DS3, Elden Ring"
+        ogTitle="Dark Souls Save Editor Online - DS Remastered, DS3, Elden Ring"
         ogDescription="Free online save editors for Dark Souls Remastered, Dark Souls 3, and Elden Ring. Edit character stats, inventory, and more directly in your browser."
         canonical="https://dsrsaveeditor.pages.dev/"
         structuredData={[{

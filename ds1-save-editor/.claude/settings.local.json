@@ -4,7 +4,13 @@
       "Bash(find:*)",
       "Bash(dir \"C:\\Users\\Iho\\source\\repos\\ConsoleApp3-master\\DS3SaveEditor\" /B)",
       "Bash(node:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(dir \"C:\\Users\\Iho\\source\\repos\\DSRSave\" /B)",
+      "Bash(dir \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\dist\")",
+      "Bash(npm run build:static:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,29 +1,66 @@
-// Dark Souls 3 Save File Constants
-// Based on BND4 format with AES-CBC encryption
 
-// BND4 File Format Constants
 export const BND4_HEADER_SIZE = 0x40;
 export const ENTRY_HEADER_SIZE = 0x20;
 export const BND4_SIGNATURE = [0x42, 0x4E, 0x44, 0x34]; // "BND4"
 
-// AES Encryption Key (from DS3SaveEditor.cs)
 export const AES_KEY = new Uint8Array([
   0xFD, 0x46, 0x4D, 0x69, 0x5E, 0x69, 0xA3, 0x9A,
   0x10, 0xE3, 0x19, 0xA7, 0xAC, 0xE8, 0xB7, 0xFA
 ]);
 
-// Character Data Offsets
-export const OFFSETS = {
-  // Souls - 4 bytes, Little-Endian (decimal offset: 71100-71103, hex: 0x115DC-0x115DF)
-  SOULS: 0x115BC,
+export const CHARACTER_PATTERN = new Uint8Array([
+  0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+]); 
 
-  // Future offsets will be added here:
-  // NAME: 0x????,
-  // LEVEL: 0x????,
-  // STATS: { ... }
+
+// Relative offsets from pattern position (pattern start + offset)
+export const RELATIVE_OFFSETS = {
+  SOULS: -0xDC,
+  LEVEL: -0xE0,
+
+  VIGOR: -0x10C,
+  ATTUNEMENT: -0x108,
+  ENDURANCE: -0x104,
+  VITALITY: -0xE4,
+  STRENGTH: -0x100,
+  DEXTERITY: -0xFC,
+  INTELLIGENCE: -0xF8,
+  FAITH: -0xF4,
+  LUCK: -0xF0,
+
+  HP: -0x130,
+  FP: -0x124,
+  STAMINA: -0x114,
+
+  ESTUS_MAX: -0x20,
+  ASHEN_ESTUS_MAX: -0x1F,
+
+  NG_CYCLE: -0x6,
 } as const;
 
 // Maximum values
 export const MAX_VALUES = {
-  SOULS: 999999999, // Maximum souls (много девяток)
+  SOULS: 999999999,
+  LEVEL: 802, // Max level in DS3
+
+  // Stats (99 is standard max for DS3)
+  VIGOR: 99,
+  ATTUNEMENT: 99,
+  ENDURANCE: 99,
+  VITALITY: 99,
+  STRENGTH: 99,
+  DEXTERITY: 99,
+  INTELLIGENCE: 99,
+  FAITH: 99,
+  LUCK: 99,
+
+  // Consumables
+  ESTUS_MAX: 15,
+  ASHEN_ESTUS_MAX: 15,
+
+  // Progression
+  NG_CYCLE: 7, // NG+7 is max
 } as const;
