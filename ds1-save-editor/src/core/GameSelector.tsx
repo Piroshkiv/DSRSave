@@ -97,7 +97,7 @@ export const GameSelector: React.FC<GameSelectorProps> = ({ onGameSelect }) => {
       />
       <div className="game-selector">
         <div className="game-selector-header">
-          <h1 className="game-selector-title">Souls Save Editor</h1>
+          <h1 className="game-selector-title">Souls Save Editor Online</h1>
           <p className="game-selector-subtitle">Select a game to edit your save files</p>
         </div>
 
