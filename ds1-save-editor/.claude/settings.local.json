@@ -10,7 +10,14 @@
       "WebFetch(domain:api.github.com)",
       "Bash(dir \"C:\\Users\\Iho\\source\\repos\\DSRSave\" /B)",
       "Bash(dir \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\dist\")",
-      "Bash(npm run build:static:*)"
+      "Bash(npm run build:static:*)",
+      "Bash(curl:*)",
+      "Bash(python parse_ds3_items.py:*)",
+      "Bash(python:*)",
+      "Bash(findstr:*)",
+      "Bash(dir /B:*)",
+      "Bash(cat:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []

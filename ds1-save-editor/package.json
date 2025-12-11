@@ -22,7 +22,7 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node scripts/generate-seo-pages.js",
     "build:static": "tsc && vite build --mode static",
     "electron": "npm run build:static && electron .",
     "electron:dev": "electron .",
@@ -80,6 +80,7 @@
     "js-md5": "^0.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet-async": "^2.0.5",
     "react-router-dom": "^7.10.1"
   },
   "devDependencies": {

@@ -3,10 +3,14 @@ import { decryptAesCbc, encryptAesCbc, calculateMD5 } from './crypto';
 import {
   BND4_HEADER_SIZE,
   ENTRY_HEADER_SIZE,
-  BND4_SIGNATURE
+  BND4_SIGNATURE,
+  CLASS_STARTING_STATS
 } from './constants';
 import { getFileSystemAdapter, FileHandle } from '../../ds1/lib/adapters';
 import { toArrayBuffer } from './bufferUtils';
+
+// Stats order for level calculation
+const STAT_ORDER = ['VIG', 'ATN', 'END', 'VIT', 'STR', 'DEX', 'INT', 'FTH', 'LCK'];
 
 /**
  * DS3 Save File Editor
@@ -55,12 +59,16 @@ export class DS3SaveFileEditor {
 
   /**
    * Load all character slots from the save file
+   * Limit to 10 characters (DS3 has 10 character slots)
    */
   private async loadCharacters(): Promise<void> {
     // Read entry count from offset 0x0C (4 bytes, little-endian)
     const entryCount = new DataView(this.saveData.buffer).getUint32(0x0C, true);
 
-    for (let i = 0; i < entryCount; i++) {
+    // Limit to 10 character slots
+    const maxCharacters = Math.min(entryCount, 10);
+
+    for (let i = 0; i < maxCharacters; i++) {
       try {
         const character = await this.loadCharacter(i);
         this.characters.push(character);
@@ -142,9 +150,33 @@ export class DS3SaveFileEditor {
   }
 
   /**
+   * Calculate level from stats (same as DSR)
+   */
+  private calculateLevelForCharacter(character: DS3Character): number {
+    const classData = CLASS_STARTING_STATS[character.playerClass];
+    if (!classData) return character.level;
+
+    // Calculate current total stats
+    let currentTotalStats = 0;
+    for (const statName of STAT_ORDER) {
+      currentTotalStats += character.getStat(statName);
+    }
+
+    // Level = Current Total Stats - Total Stats at Zero Level
+    return currentTotalStats - classData.totalStatsAtZero;
+  }
+
+  /**
    * Export modified save file as Uint8Array
    */
   async exportSaveFile(): Promise<Uint8Array> {
+    // Recalculate level for all characters before export
+    for (const character of this.characters) {
+      if (!character.isEmpty) {
+        character.level = this.calculateLevelForCharacter(character);
+      }
+    }
+
     // Create copy of original save data
     const newSaveData = new Uint8Array(this.saveData);
     const view = new DataView(newSaveData.buffer);

@@ -1,0 +1,7131 @@
+{
+  "weapon_items": [
+    {
+      "Type": "0x0",
+      "Id": "0x015EF3C0",
+      "MaxStackCount": 1,
+      "Category": "torches",
+      "Name": "Torch"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x015F1AD0",
+      "MaxStackCount": 1,
+      "Category": "torches",
+      "Name": "Follower Torch"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x000F4240",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Dagger"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x000F6950",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Bandit's Knife"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x000F9060",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Parrying Dagger"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x000FDE80",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Rotten Ghru Dagger"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00102CA0",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Harpe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x001053B0",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Scholar's Candlestick"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00107AC0",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Tailbone Short Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0010A1D0",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Corvian Greatknife"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00111700",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Handmaid's Dagger"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00116520",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Aquamarine Dagger"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00118C30",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Murky Hand Scythe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F50E60",
+      "MaxStackCount": 1,
+      "Category": "daggers",
+      "Name": "Brigand Twindaggers"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x001E8480",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Shortsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x001EAB90",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Long Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x001ED2A0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Broadsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x001EF9B0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Broken Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x001F6EE0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Lothric Knight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00203230",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Sunlight Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0020A760",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Irithyll Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0020F580",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Cleric's Candlestick"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002143A0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Morion Blade"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002191C0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Astora Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0021B8D0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Barbed Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002206F0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Anri's Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00225510",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Ringed Knight Straight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005FD340",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Lothric's Holy Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005F3700",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Dark Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F53570",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Gotthard Twinswords"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F646E0",
+      "MaxStackCount": 1,
+      "Category": "straightswords",
+      "Name": "Valorheart"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002DC6C0",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Estoc"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002DEDD0",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Mail Breaker"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002E14E0",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Rapier"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002E3BF0",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Ricard's Rapier"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002E6300",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Crystal Sage's Rapier"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x002E8A10",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Irithyll Rapier"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F66DF0",
+      "MaxStackCount": 1,
+      "Category": "rapiers",
+      "Name": "Crow Quills"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00205940",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Rotten Ghru Curved Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003D3010",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Shotel"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003D7E30",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Scimitar"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003DA540",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Falchion"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003DCC50",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Carthus Curved Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003E1A70",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Pontiff Knight Curved Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003E4180",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Storm Curved Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003E6890",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Painting Guardian's Curved Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003E8FA0",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Crescent Moon Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003EB6B0",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Carthus Shotel"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003EDDC0",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Follower Sabre"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003F04D0",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Demon Scar"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F42400",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Sellsword Twinblades"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F47220",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Warden Twinblades"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F4C040",
+      "MaxStackCount": 1,
+      "Category": "curvedswords",
+      "Name": "Dancer's Enchanted Swords"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004C4B40",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Uchigatana"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004C7250",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Washing Pole"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004C9960",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Chaos Blade"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004CC070",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Black Blade"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004CE780",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Bloodlust"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004D0E90",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Darkdrift"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x004D35A0",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Frayed Blade"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F58390",
+      "MaxStackCount": 1,
+      "Category": "katanas",
+      "Name": "Onikiri and Ubadachi"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0021DFE0",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Executioner's Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00222E00",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Onyx Blade"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00227C20",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Gael Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005B8D80",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Bastard Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005BDBA0",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Claymore"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005DB060",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Flamberge"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005F5E10",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Black Knight Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005FAC30",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Twin Princes' Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005FFA50",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Wolnir's Holy Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00602160",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Wolf Knight's Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0060216A",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Greatsword of Artorias !!!!!!!!!!!!!!!!"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00604870",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Hollowslayer Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00606F80",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Moonlight Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00609690",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Drakeblood Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0060BDA0",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Firelink Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005E2590",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Greatsword of Judgment"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006132D0",
+      "MaxStackCount": 1,
+      "Category": "greatswords",
+      "Name": "Storm Ruler"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005C29C0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Zweihander"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005C50D0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005C9EF0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Astora Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005D1420",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Lothric Knight Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005D8950",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Black Knight Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005E4CA0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Profaned Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005E73B0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Cathedral Knight Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005E9AC0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Farron Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005F8520",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Lorian's Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0060E4B0",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Fume Ultra Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F69500",
+      "MaxStackCount": 1,
+      "Category": "ultragreatswords",
+      "Name": "Ringed Knight Paired Greatswords"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x003DF360",
+      "MaxStackCount": 1,
+      "Category": "curvedgreatswords",
+      "Name": "Carthus Curved Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005CC600",
+      "MaxStackCount": 1,
+      "Category": "curvedgreatswords",
+      "Name": "Murakumo"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005DD770",
+      "MaxStackCount": 1,
+      "Category": "curvedgreatswords",
+      "Name": "Exile Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00610BC0",
+      "MaxStackCount": 1,
+      "Category": "curvedgreatswords",
+      "Name": "Old Wolf Curved Sword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006159E0",
+      "MaxStackCount": 1,
+      "Category": "curvedgreatswords",
+      "Name": "Harald Curved Greatsword"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006ACFC0",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Hand Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006AF6D0",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Battle Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006B1DE0",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Brigand Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006B6C00",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Crescent Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006BE130",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Butcher Knife"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006C0840",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Dragonslayer's Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006C5660",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Thrall Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006CCB90",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Eleonora"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006D19B0",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Man Serpent Hatchet"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006D67D0",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Millwood Battle Axe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F49930",
+      "MaxStackCount": 1,
+      "Category": "axes",
+      "Name": "Winged Knight Twinaxes"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x005F0FF0",
+      "MaxStackCount": 1,
+      "Category": "greataxes",
+      "Name": "Yhorm's Great Machete"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006B9310",
+      "MaxStackCount": 1,
+      "Category": "greataxes",
+      "Name": "Greataxe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006C7D70",
+      "MaxStackCount": 1,
+      "Category": "greataxes",
+      "Name": "Dragonslayer Greataxe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006CA480",
+      "MaxStackCount": 1,
+      "Category": "greataxes",
+      "Name": "Demon's Greataxe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x006D8EE0",
+      "MaxStackCount": 1,
+      "Category": "greataxes",
+      "Name": "Earth Seeker"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F4E750",
+      "MaxStackCount": 1,
+      "Category": "greataxes",
+      "Name": "Great Machete"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007A1200",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Club"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007A3910",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Mace"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007A6020",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Morning Star"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007A8730",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Reinforced Club"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007D6D60",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Heysel Pick"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007DBB80",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Warpick"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007E57C0",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Blacksmith Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F61FD0",
+      "MaxStackCount": 1,
+      "Category": "hammers",
+      "Name": "Drang Hammers"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007AFC60",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Large Club"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007B4A80",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Great Club"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007BBFB0",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Great Mace"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007C8300",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Great Wooden Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007CAA10",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Gargoyle Flame Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007CD120",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Vordt's Great Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007CF830",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Old King's Great Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007DE290",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Pickaxe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007E09A0",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Dragon Tooth"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007E30B0",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Smough's Great Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007E7ED0",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Morne's Great Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007EA5E0",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Spiked Mace"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007ECCF0",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Quakestone Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x007EF400",
+      "MaxStackCount": 1,
+      "Category": "greathammers",
+      "Name": "Ledo's Great Hammer"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00895440",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00897B50",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Winged Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0089C970",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Partizan"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008A8CC0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Greatlance"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008AB3D0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Lothric Knight Long Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008ADAE0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Four-Pronged Plow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008B01F0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Gargoyle Flame Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008B2900",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Rotten Ghru Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008B5010",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Tailbone Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008B7720",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Soldering Iron"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008BC540",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Dragonslayer Swordspear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008BEC50",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Arstor's Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008C1360",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Saint Bident"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008C3A70",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Yorshka's Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008C6180",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Pike"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008CAFA0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Dragonslayer Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008CD6B0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Follower Javelin"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008CFDC0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Ringed Knight Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008D24D0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Lothric War Banner"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F5AAA0",
+      "MaxStackCount": 1,
+      "Category": "spears",
+      "Name": "Drang Twinspears"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x008D4BE0",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Crucifix of the Mad King (Halberd)"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0098BD90",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Lucerne"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0098E4A0",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Glaive"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00990BB0",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Halberd"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009959D0",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Black Knight Greataxe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0099A7F0",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Pontiff Knight Great Scythe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0099F610",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Winged Knight Halberd"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009A1D20",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Gundyr's Halberd"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009AB960",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Red Hilted Halberd"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009AE070",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Black Knight Glaive"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009B0780",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Immolation Tinder"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009B2E90",
+      "MaxStackCount": 1,
+      "Category": "halberds",
+      "Name": "Splitleaf Greatsword (It's a Halberd)"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00989680",
+      "MaxStackCount": 1,
+      "Category": "reapers",
+      "Name": "Great Scythe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0099CF00",
+      "MaxStackCount": 1,
+      "Category": "reapers",
+      "Name": "Great Corvian Scythe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x009B55A0",
+      "MaxStackCount": 1,
+      "Category": "reapers",
+      "Name": "Friede's Great Scythe"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00A7D8C0",
+      "MaxStackCount": 1,
+      "Category": "fists",
+      "Name": "Claw"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00A7FFD0",
+      "MaxStackCount": 1,
+      "Category": "fists",
+      "Name": "Caestus"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00A826E0",
+      "MaxStackCount": 1,
+      "Category": "fists",
+      "Name": "Manikin Claws"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00A84DF0",
+      "MaxStackCount": 1,
+      "Category": "fists",
+      "Name": "Demon's Fist"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00A87500",
+      "MaxStackCount": 1,
+      "Category": "fists",
+      "Name": "Dark Hand"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00A89C10",
+      "MaxStackCount": 1,
+      "Category": "fists",
+      "Name": "Crow Talons"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00B71B00",
+      "MaxStackCount": 1,
+      "Category": "whips",
+      "Name": "Whip"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00B7B740",
+      "MaxStackCount": 1,
+      "Category": "whips",
+      "Name": "Witch's Locks"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00B7DE50",
+      "MaxStackCount": 1,
+      "Category": "whips",
+      "Name": "Notched Whip"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00B80560",
+      "MaxStackCount": 1,
+      "Category": "whips",
+      "Name": "Spotted Whip"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00B82C70",
+      "MaxStackCount": 1,
+      "Category": "whips",
+      "Name": "Rose of Ariandel"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C747A0",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Sorcerer's Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C76EB0",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Storyteller's Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C795C0",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Mendicant's Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C7E3E0",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Man-grub's Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C80AF0",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Archdeacon's Great Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C8CE40",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Sage's Crystal Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C8F550",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Heretic's Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C91C60",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Court Sorcerer's Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C94370",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Witchtree Branch"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C96A80",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Izalith Staff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CCC5E0",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Murky Longstaff"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CD1400",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Preacher's Right Arm"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C83200",
+      "MaxStackCount": 1,
+      "Category": "staves",
+      "Name": "Golden Ritual Spear"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C88020",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Yorshka's Chime"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C99190",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Cleric's Sacred Chime"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C9B8A0",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Priest's Chime"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C9DFB0",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Saint-tree Bellvine"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CA06C0",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Caitha's Chime"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CA2DD0",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Crystal Chime"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CCECF0",
+      "MaxStackCount": 1,
+      "Category": "chimes",
+      "Name": "Sacred Chime of Filianore"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00C72090",
+      "MaxStackCount": 1,
+      "Category": "talismans",
+      "Name": "Talisman"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CA54E0",
+      "MaxStackCount": 1,
+      "Category": "talismans",
+      "Name": "Sunlight Talisman"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CA7BF0",
+      "MaxStackCount": 1,
+      "Category": "talismans",
+      "Name": "Canvas Talisman"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CAA300",
+      "MaxStackCount": 1,
+      "Category": "talismans",
+      "Name": "Sunless Talisman"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CACA10",
+      "MaxStackCount": 1,
+      "Category": "talismans",
+      "Name": "Saint's Talisman"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CAF120",
+      "MaxStackCount": 1,
+      "Category": "talismans",
+      "Name": "White Hair Talisman"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CC77C0",
+      "MaxStackCount": 1,
+      "Category": "flames",
+      "Name": "Pyromancy Flame"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CC9ED0",
+      "MaxStackCount": 1,
+      "Category": "flames",
+      "Name": "Pyromancer's Parting Flame"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D5C690",
+      "MaxStackCount": 1,
+      "Category": "bows",
+      "Name": "Short Bow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D5EDA0",
+      "MaxStackCount": 1,
+      "Category": "bows",
+      "Name": "Composite Bow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D689E0",
+      "MaxStackCount": 1,
+      "Category": "bows",
+      "Name": "Longbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D77440",
+      "MaxStackCount": 1,
+      "Category": "bows",
+      "Name": "White Tree Bow (White Birch Bow)"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D79B50",
+      "MaxStackCount": 1,
+      "Category": "bows",
+      "Name": "Darkmoon Longbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D7E970",
+      "MaxStackCount": 1,
+      "Category": "bows",
+      "Name": "Black Bow of Pharis"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D6B0F0",
+      "MaxStackCount": 1,
+      "Category": "greatbows",
+      "Name": "Dragonrider Bow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D7C260",
+      "MaxStackCount": 1,
+      "Category": "greatbows",
+      "Name": "Onislayer Greatbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00CF8500",
+      "MaxStackCount": 1,
+      "Category": "greatbows",
+      "Name": "Dragonslayer Greatbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D85EA0",
+      "MaxStackCount": 1,
+      "Category": "greatbows",
+      "Name": "Millwood Greatbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D63BC0",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Light Crossbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D662D0",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Arbalest"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D6FF10",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Avelyn"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D72620",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Knight's Crossbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D74D30",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Heavy Crossbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D83790",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Sniper Crossbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00D885B0",
+      "MaxStackCount": 1,
+      "Category": "crossbows",
+      "Name": "Repeating Crossbow"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01312D00",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Buckler"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01315410",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Small Leather Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0131C940",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Large Leather Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01323E70",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Hawkwood's Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01326580",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Iron Round Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x013328D0",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Ghru Rotshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01339E00",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Target Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0133C510",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Elkhorn Round Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0133EC20",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Warrior's Round Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01341330",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Caduceus Round Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01343A40",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Red and White Round Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01346150",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Plank Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01348860",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Leather Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0134AF70",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Crimson Parma"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0134D680",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Eastern Iron Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0134FD90",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Llewellyn Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01354BB0",
+      "MaxStackCount": 1,
+      "Category": "smallshields",
+      "Name": "Golden Falcon Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x013572C0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Sacred Bloom Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0131A230",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Round Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0132DAB0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Wooden Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x013301C0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Kite Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0135C0E0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Followers Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01409650",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Lothric Knight Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01410B80",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Knight Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x014159A0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Pontiff Knight Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x014180B0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Carthus Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0141F5E0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Black Knight Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01426B10",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Spiked Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0142B930",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "East-West Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01429220",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Pierce Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01424400",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Silver Knight Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01430750",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Crest Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0142E040",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Sunlight Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01432E60",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Dragon Crest Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01435570",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Spider Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0143A390",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Sunset Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01437C80",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Grass Crest Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0143F1B0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Blue Wooden Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x014418C0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Silver Eagle Kite Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0143CAA0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Golden Wing Crest Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01443FD0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Stone Parma"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01448DF0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Porcine Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x014466E0",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Spirit Tree Crest Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0144B500",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Shield of Want"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0144DC10",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Wargod Wooden Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01450320",
+      "MaxStackCount": 1,
+      "Category": "standardshields",
+      "Name": "Ethereal Oak Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x013599D0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Ancient Dragon Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0135E7F0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Dragonhead Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x013376F0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Havel's Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01452A30",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Dragonhead Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x014FD890",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Lothric Knight Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x014FFFA0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Cathedral Knight Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01504DC0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Dragonslayer Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x015074D0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Moaning Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0150C2F0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Yhorm's Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0150EA00",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Black Iron Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01511110",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Wolf Knight's Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01513820",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Twin Dragon Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01515F30",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Greatshield of Glory"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x01518640",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Curse Ward Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0151AD50",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Bonewheel Shield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x0151D460",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Stone Greatshield"
+    },
+    {
+      "Type": "0x0",
+      "Id": "0x00F5F8C0",
+      "MaxStackCount": 1,
+      "Category": "greatshields",
+      "Name": "Great Door Twinshields"
+    }
+  ],
+  "armor_items": [
+    {
+      "Type": "0x10000000",
+      "Id": "0x1121EAC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Fallen Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1121EEA8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Fallen Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1121F290",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Fallen Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1121F678",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Fallen Knight Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11298BE0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11298FC8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x112993B0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11299798",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11406F40",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Firelink Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11407328",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Firelink Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11407710",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Firelink Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11407AF8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Firelink Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11481060",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Sellsword Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11481448",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Sellsword Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11481830",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Sellsword Gauntlet"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11481C18",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Sellsword Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x114FB180",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Herald Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x114FB568",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Herald Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x114FB950",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Herald Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x114FBD38",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Herald Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x115752A0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Sunless Veil"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11575688",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Sunless Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11575A70",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Sunless Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11575E58",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Sunless Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x115EF3C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Black Hand Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x115EF7A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Black Hand Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x115EFB90",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Assassin Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x115EFF78",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Assassin Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11607A60",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Assassin Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11607E48",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Assassin Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x116694E0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Xanthous Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x116698C8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Xanthous Overcoat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11669CB0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Xanthous Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1166A098",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Xanthous Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x116E3600",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Northern Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x116E39E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Northern Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x116E3DD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Northern Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x116E41B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Northern Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1175D720",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Morne's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1175DB08",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Morne's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1175DEF0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Morne's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1175E2D8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Morne's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x117D7840",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Silver Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x117D7C28",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Leonhard's Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x117D8010",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Leonhard's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x117D83F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Leonhard's Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11851960",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Sneering Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11851D48",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Pale Shade Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11852130",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Pale Shade Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11852518",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Pale Shade Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x118CBA80",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Sunset Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x118CBE68",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Sunset Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x118CC250",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Sunset Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x118CC638",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Sunset Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11945BA0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Old Sage's Blindfold"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11945F88",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Cornyx's Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11946370",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Cornyx's Wrap"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11946758",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Cornyx's Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x119BFCC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Executioner Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x119C00A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Executioner Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x119C0490",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Executioner Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x119C0878",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Executioner Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11A39DE0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Billed Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11A3A1C8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Black Dress"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11A3A5B0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Black Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11A3A998",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Black Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11AB3F00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Pyromancer Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11AB42E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Pyromancer Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11AB46D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Pyromancer Wrap"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11AB4AB8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Pyromancer Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11BA8140",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Court Sorcerer Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11BA8528",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Court Sorcerer Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11BA8910",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Court Sorcerer Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11BA8CF8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Court Sorcerer Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C9C380",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Sorcerer Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C9C768",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Sorcerer Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C9CB50",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Sorcerer Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C9CF38",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Sorcerer Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11CB4E08",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Clandestine Coat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11D905C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Cleric Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11D909A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Cleric Blue Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11D90D90",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Cleric Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11D91178",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Cleric Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12625A00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Steel Soldier Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12625DE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Deserter Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x126265B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Deserter Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12656740",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Thief Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x129020C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Sage's Big Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x129F6300",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Aristocrat's Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x129F66E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Jailer Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x129F6AD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Jailer Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x129F6EB8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Jailer Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12BDE780",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Grave Warden Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12BDEB68",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Grave Warden Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12BDEF50",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Grave Warden Wrap"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12BDF338",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Grave Warden Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12CD29C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Worker Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12CD2DA8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Worker Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12CD3190",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Worker Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12CD3578",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Worker Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12D4CAE0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Thrall Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12DC6C00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Evangelist Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12DC6FE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Evangelist Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12DC73D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Evangelist Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12DC77B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Evangelist Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12E41108",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Scholar's Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12EBAE40",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Winged Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12EBB228",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Winged Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12EBB610",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Winged Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x12EBB9F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Winged Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x130291A0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Cathedral Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13029588",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Cathedral Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13029970",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Cathedral Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13029D58",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Cathedral Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13197500",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Lothric Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x131978E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Lothric Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13197CD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Lothric Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x131980B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Lothric Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1328B740",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Outrider Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1328BB28",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Outrider Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1328BF10",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Outrider Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1328C2F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Outrider Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1337F980",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Black Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1337FD68",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Black Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13380150",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Black Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13380538",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Black Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x133F9AA0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Dark Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x133F9E88",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Dark Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x133FA270",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Dark Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x133FA658",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Dark Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13473BC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Exile Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13473FA8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Exile Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13474390",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Exile Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13474778",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Exile Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13567E00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Pontiff Knight Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x135681E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Pontiff Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x135685D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Pontiff Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x135689B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Pontiff Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1365C040",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Golden Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1365C428",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Dragonscale Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1365C810",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Golden Bracelets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1365CBF8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Dragonscale Waistcloth"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x136D6160",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Wolnir's Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13750280",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Undead Legion Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13750668",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Undead Legion Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13750A50",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Undead Legion Gauntlet"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13750E38",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Undead Legion Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13938700",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Fire Witch Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13938AE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Fire Witch Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13938ED0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Fire Witch Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x139392B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Fire Witch Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13A2C940",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Lorian's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13A2CD28",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Lorian's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13A2D110",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Lorian's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13A2D4F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Lorian's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13AA6A60",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Hood of Prayer"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13AA6E48",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Robe of Prayer"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13AA7618",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Skirt of Prayer"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C14DC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Dancer's Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C151A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Dancer's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C15590",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Dancer's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C15978",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Dancer's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D09000",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Gundyr's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D093E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Gundyr's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D097D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Gundyr's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D09BB8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Gundyr's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13EF1480",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Archdeacon White Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13EF1868",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Archdeacon Holy Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13EF2038",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Archdeacon Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13F6B988",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Deacon Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13F6C158",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Deacon Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x140D9CE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Fire Keeper Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x140DA0D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Fire Keeper Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x140DA4B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Fire Keeper Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x142C1D80",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Chain Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x142C2168",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Chain Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x142C2550",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Leather Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x142C2938",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Chain Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x143B5FC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Nameless Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x143B63A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Nameless Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x143B6790",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Nameless Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x143B6B78",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Nameless Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x144AA200",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Elite Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x144AA5E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Elite Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x144AA9D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Elite Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x144AADB8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Elite Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1459E440",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Faraam Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1459E828",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Faraam Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1459EC10",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Faraam Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1459EFF8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Faraam Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14692680",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Catarina Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14692A68",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Catarina Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14692E50",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Catarina Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14693238",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Catarina Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1470C7A0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Standard Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1470CB88",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Hard Leather Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1470CF70",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Hard Leather Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1470D358",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Hard Leather Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x147868C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Havel's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14786CA8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Havel's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14787090",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Havel's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14787478",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Havel's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x148009E0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Brigand Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14800DC8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Brigand Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x148011B0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Brigand Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14801598",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Brigand Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1487AB00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Pharis's Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1487AEE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Leather Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1487B2D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Leather Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1487B6B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Leather Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x148F4C20",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Ragged Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x148F5008",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Master's Attire"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x148F53F0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Master's Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x148F57D8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Loincloth"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1496ED40",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Old Sorcerer Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1496F128",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Old Sorcerer Coat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1496F510",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Old Sorcerer Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1496F8F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Old Sorcerer Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x149E8E60",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Conjurator Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x149E9248",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Conjurator Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x149E9630",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Conjurator Manchettes"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x149E9A18",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Conjurator Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14A63368",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Black Leather Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14A63750",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Black Leather Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14A63B38",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Black Leather Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14ADD0A0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Symbol of Avarice"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14B571C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Creighton's Steel Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14B575A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Mirrah Chain Mail"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14B57990",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Mirrah Chain Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14B57D78",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Mirrah Chain Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14BD12E0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Maiden Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14BD16C8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Maiden Robe"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14BD1AB0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Maiden Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14BD1E98",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Maiden Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14C4B400",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Alva Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14C4B7E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Alva Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14C4BBD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Alva Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14C4BFB8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Alva Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14D3F640",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Shadow Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14D3FA28",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Shadow Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14D3FE10",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Shadow Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14D401F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Shadow Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14E33880",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Eastern Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14E33C68",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Eastern Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14E34050",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Eastern Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14E34438",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Eastern Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14F27AC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Helm of Favor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14F27EA8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Embraced Armor of Favor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14F28290",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Gauntlets of Favor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14F28678",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Leggings of Favor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1501BD00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Brass Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1501C0E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Brass Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1501C4D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Brass Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1501C8B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Brass Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1510FF40",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Silver Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15110328",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Silver Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15110710",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Silver Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15110AF8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Silver Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15204180",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Lucatiel's Mask"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15204568",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Mirrah Vest"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15204950",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Mirrah Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15204D38",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Mirrah Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x152F83C0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Iron Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x152F87A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Armor of the Sun"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x152F8B90",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Iron Bracelets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x152F8F78",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Iron Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x153EC600",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Drakeblood Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x153EC9E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Drakeblood Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x153ECDD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Drakeblood Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x153ED1B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Drakeblood Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x154E0C28",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Drang Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x154E1010",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Drang Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x154E13F8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Drang Shoes"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x155D4A80",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Black Iron Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x155D4E68",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Black Iron Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x155D5250",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Black Iron Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x155D5638",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Black Iron Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x156C8CC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Painting Guardian Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x156C90A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Painting Guardian Gown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x156C9490",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Painting Guardian Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x156C9878",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Painting Guardian Waistcloth"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x157BCF00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Wolf Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x157BD2E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Wolf Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x157BD6D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Wolf Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x157BDAB8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Wolf Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x158B1140",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Dragonslayer Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x158B1528",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Dragonslayer Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x158B1910",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Dragonslayer Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x158B1CF8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Dragonslayer Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x159A5380",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Smough's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x159A5768",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Smough's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x159A5B50",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Smough's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x159A5F38",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Smough's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15B8D800",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Helm of Thorns"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15B8DBE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Armor of Thorns"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15B8DFD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Gauntlets of Thorns"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15B8E3B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Leggings of Thorns"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15D75C80",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Crown of Dusk"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15D76068",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Antiquated Dress"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15D76450",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Antiquated Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15D76838",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Antiquated Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15E69EC0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Karla's Pointed Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15E6A2A8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Karla's Coat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15E6A690",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Karla's Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15E6AA78",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Karla's Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x137CA3A0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Follower Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x137CA788",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Follower Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x137CAB70",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Follower Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x137CAF58",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Follower Boots"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x134EDCE0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Slave Knight Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x134EE0C8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Slave Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x134EE4B0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Slave Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x134EE898",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Slave Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11312D00",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Vilhelm's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x113130E8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Vilhelm's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x113134D0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Vilhelm's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x113134D0",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Vilhelm's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x139B2820",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Millwood Knight Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x139B2C08",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Millwood Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x139B2FF0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Millwood Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x139B33D8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Millwood Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x135E1F20",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Ordained Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x135E2308",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Ordained Dress"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x135E2AD8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Ordained Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11B2E408",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Antiquated Plain Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11B2E7F0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Violet Wrappings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11B2EBD8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Loincloth Not the one already in the game"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C22260",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Shira's Crown"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C22648",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Shira's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C22A30",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Shira's Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11C22E18",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Shira's Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11E84800",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Lapp's Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11E84BE8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Lapp's Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11E84FD0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Lapp's Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x11E853B8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Lapp's Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C8EEE0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Ringed Knight Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C8F2C8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Ringed Knight Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C8F6B0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Ringed Knight Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13C8FA98",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Ringed Knight Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D83508",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Harald Legion Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D838F0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Harald Legion Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x13D83CD8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Harald Legion Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1405F7E0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Iron Dragonslayer Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1405FBC8",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Iron Dragonslayer Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x1405FFB0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Iron Dragonslayer Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14060398",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Iron Dragonslayer Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14153A20",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "White Preacher Head"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14CC5520",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Ruin Sentinel Helm"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14CC5908",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Ruin Sentinel Armor"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14CC5CF0",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Ruin Sentinel Gauntlets"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14CC60D8",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Ruin Sentinel Leggings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14DB9760",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Desert Pyromancer Hood"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14DB9B48",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Desert Pyromancer Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14DB9F30",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Desert Pyromancer Gloves"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14DBA318",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Desert Pyromancer Skirt"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14FA1BE0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Black Witch Veil"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14EAD9A0",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Black Witch Hat"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14EADD88",
+      "MaxStackCount": 1,
+      "Category": "chests",
+      "Name": "Black Witch Garb"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14EAE170",
+      "MaxStackCount": 1,
+      "Category": "gauntlets",
+      "Name": "Black Witch Wrappings"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x14EAE558",
+      "MaxStackCount": 1,
+      "Category": "leggings",
+      "Name": "Black Witch Trousers"
+    },
+    {
+      "Type": "0x10000000",
+      "Id": "0x15095E20",
+      "MaxStackCount": 1,
+      "Category": "helms",
+      "Name": "Blindfold Mask"
+    }
+  ],
+  "ring_items": [
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E20",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Life Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E21",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Life Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E22",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Life Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E23",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Life Ring+3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E2A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Chloranthy Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E2B",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Chloranthy Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E2C",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Chloranthy Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E2D",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Chloranthy Ring +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E34",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Havel's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E35",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Havel's Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E36",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Havel's Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E37",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Havel's Ring +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E3E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Favor"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E3F",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Favor+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E40",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Favor+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E41",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Favor +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E48",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Steel Protection"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E49",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Steel Protection+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E4A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Steel Protection+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E4B",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Steel Protection +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E52",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Flame Stoneplate Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E53",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Flame Stoneplate Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E54",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Flame Stoneplate Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E5C",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Thunder Stoneplate Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E5D",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Thunder Stoneplate Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E5E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Thunder Stoneplate Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E66",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Magic Stoneplate Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E67",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Magic Stoneplate Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E68",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Magic Stoneplate Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E70",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Dark Stoneplate Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E71",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Dark Stoneplate Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E72",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Dark Stoneplate Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E7A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Speckled Stoneplate Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E7B",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Speckled Stoneplate Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E84",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Bloodbite Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E85",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Bloodbite Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E8E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Poisonbite Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E8F",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Poisonbite Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004E98",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Cursebite Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EA2",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Fleshbite Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EA3",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Fleshbite Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EAC",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wood Grain Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EAD",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wood Grain Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EAE",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wood Grain Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EB6",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Scholar Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EC0",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Priestess Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004ECA",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Red Tearstone Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004ED4",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Blue Tearstone Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EDE",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wolf Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EDF",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wolf Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EE0",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wolf Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EE1",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Wolf Ring +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EE8",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Leo Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004EF2",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of Sacrifice"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F06",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Young Dragon Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F07",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Bellowing Dragoncrest Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F10",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Great Swamp Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F11",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Witch's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F1A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Morne's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F1B",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of the Sun's First Born"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F2E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Lingering Dragoncrest Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F2F",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Lingering Dragoncrest Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F30",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Lingering Dragoncrest Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F38",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Sage Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F39",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Sage Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F3A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Sage Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F42",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Slumbering Dragoncrest Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F4C",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Dusk Crown Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F56",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Saint's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F60",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Deep Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F6A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Darkmoon Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F92",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Hawk Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004F9C",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Hornet Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FA6",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Gold Serpent Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FA7",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Gold Serpent Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FA8",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Gold Serpent Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FA9",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Gold Serpent Ring +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FB0",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Silver Serpent Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FB1",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Silver Serpent Ring+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FB2",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Silver Serpent Ring+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FB3",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Covetous Silver Serpent Ring +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FBA",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Sun Princess Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FC4",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Silvercat Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FCE",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Skull Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FD8",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Untrue White Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FE2",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Carthus Milkring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FEC",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Knight's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20004FF6",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Hunter's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005000",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Knight Slayer's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000500A",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Magic Clutch Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005014",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Lightning Clutch Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000501E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Fire Clutch Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005028",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Dark Clutch Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000503C",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Flynn's Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005046",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Prisoner's Chain"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005050",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Untrue Dark Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005064",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Obscuring Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000506E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of the Evil Eye"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000506F",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of the Evil Eye+1"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005070",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of the Evil Eye+2"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005071",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ring of the Evil Eye +3"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005078",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Calamity Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005082",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Farron Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000508C",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Aldrich's Ruby"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005096",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Aldrich's Sapphire"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x200050B4",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Lloyd's Sword Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x200050BE",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Lloyd's Shield Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x200050DC",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Estus Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x200050E6",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Ashen Estus Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x200050F0",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Horsehoof Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x200050FA",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Carthus Bloodring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005104",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Reversal Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000510E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Pontiff's Right Eye"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005136",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Pontiff's Left Eye"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x2000515E",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Dragonscale Ring"
+    },
+    {
+      "Type": "0x20000000",
+      "Id": "0x20005208",
+      "MaxStackCount": 1,
+      "Category": "rings",
+      "Name": "Chillbite Ring"
+    }
+  ],
+  "magic_items": [
+    {
+      "Type": "0x40000000",
+      "Id": "0x40124F80",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Farron Dart"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40127690",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Great Farron Dart"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013D620",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Soul Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013DA08",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Great Soul Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013DDF0",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Heavy Soul Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013E1D8",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Great Heavy Soul Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013E5C0",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Homing Soulmass"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013E9A8",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Homing Crystal Soulmass"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013ED90",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Soul Spear"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013F178",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Crystal Soul Spear"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013F560",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Deep Soul"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013F948",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Great Deep Soul"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4013FD30",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Magic Weapon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40140118",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Great Magic Weapon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40140500",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Crystal Magic Weapon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40144B50",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Magic Shield"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40144F38",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Great Magic Shield"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40147260",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Hidden Weapon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40147648",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Hidden Body"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40149970",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Cast Light"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4014A528",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Repair"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4014A910",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Spook"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4014ACF8",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Chameleon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4014B0E0",
+      "MaxStackCount": 1,
+      "Category": "sorceries",
+      "Name": "Aural Decoy"
+    }
+  ],
+  "consumable_items": [
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061A80",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Standard Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061AE4",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Fire Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061B48",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Poison Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061BAC",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Large Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061C10",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Feather Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061C74",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Moonlight Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061CD8",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Wood Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061D3C",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Dark Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062250",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Dragonslayer Greatarrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062318",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Dragonslayer Lightning Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x0006237C",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Onislayer Greatarrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x000623E0",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Millwood Greatarrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062A20",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Standard Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062A84",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Heavy Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062AE8",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Sniper Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062B4C",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Wood Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062BB0",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Lightning Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062C14",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Splintering Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062C78",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Exploding Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002710",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Blade of the Darkmoon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002724",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Watchdogs of Farron"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x2000272E",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Aldrich Faithful"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002738",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Warrior of Sunlight"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002742",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Mound-Makers"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x2000274C",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Way of Blue"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002756",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Blue Sentinel"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002760",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Rosaria's Fingers"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000064",
+      "MaxStackCount": 1,
+      "Category": "multiplayer",
+      "Name": "White Sign Soapstone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000065",
+      "MaxStackCount": 1,
+      "Category": "multiplayer",
+      "Name": "Red Sign Soapstone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000066",
+      "MaxStackCount": 1,
+      "Category": "multiplayer",
+      "Name": "Red Eye Orb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000006C",
+      "MaxStackCount": 1,
+      "Category": "multiplayer",
+      "Name": "Roster of Knights"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000006F",
+      "MaxStackCount": 99,
+      "Category": "multiplayer",
+      "Name": "Cracked Red Eye Orb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000073",
+      "MaxStackCount": 1,
+      "Category": "questitems",
+      "Name": "Black Eye Orb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400000F0",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Divine Blessing"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400000F1",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Hidden Blessing"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000104",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Green Blossom"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000105",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Budding Green Blossom"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000106",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Budding Green Blossom (Sirris Questline)"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000010E",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Bloodred Moss Clump"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000010F",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Purple Moss Clump"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000110",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Blooming Purple Moss Clump"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000112",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Purging Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000114",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Rime-blue Moss Clump"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000118",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Repair Powder"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000122",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Kukri"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000124",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Firebomb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000125",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Dung Pie"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000126",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Alluring Skull"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000128",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Undead Hunter Charm"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000129",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Black Firebomb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000012B",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Rope Firebomb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000012C",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Lightning Urn"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000012E",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Rope Black Firebomb"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000012F",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Stalk Dung Pie"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000130",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Duel Charm"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000136",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Throwing Knife"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000137",
+      "MaxStackCount": 99,
+      "Category": "projectiles",
+      "Name": "Poison Throwing Knife"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000014A",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Charcoal Pine Resin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000014B",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Gold Pine Resin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000014E",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Human Pine Resin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000014F",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Carthus Rouge"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000150",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Pale Pine Resin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000154",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Charcoal Pine Bundle"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000155",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Gold Pine Bundle"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000157",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Rotten Pine Resin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000015E",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Homeward Bone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000015F",
+      "MaxStackCount": 99,
+      "Category": "tools",
+      "Name": "Coiled Sword Fragment"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000016E",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Wolf's Blood Swordgrass"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000016F",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Human Dregs"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000170",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Forked Pale Tongue"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000171",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Proof of a Concord Well Kept"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000172",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Prism Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000173",
+      "MaxStackCount": 99,
+      "Category": "tools",
+      "Name": "Binoculars"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000174",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Proof of a Concord Kept"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000175",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Pale Tongue"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000176",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Vertebra Shackle"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000177",
+      "MaxStackCount": 99,
+      "Category": "covenantitems",
+      "Name": "Sunlight Medal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000179",
+      "MaxStackCount": 99,
+      "Category": "tools",
+      "Name": "Dragon Head Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000017A",
+      "MaxStackCount": 99,
+      "Category": "tools",
+      "Name": "Dragon Torso Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000017C",
+      "MaxStackCount": 99,
+      "Category": "tools",
+      "Name": "Rubbish"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000181",
+      "MaxStackCount": 1,
+      "Category": "multiplayer",
+      "Name": "Dried Finger"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000183",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Twinkling Dragon Head Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000184",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Twinkling Dragon Torso Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000186",
+      "MaxStackCount": 1,
+      "Category": "questitems",
+      "Name": "Fire Keeper Soul"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000190",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Fading Soul"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000191",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Deserted Corpse"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000192",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of a Deserted Corpse"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000193",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of an Unknown Traveler"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000194",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of an Unknown Traveler"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000195",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Nameless Soldier"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000196",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of a Nameless Soldier"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000197",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Weary Warrior"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000198",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of a Weary Warrior"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000199",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Crestfallen Knight"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000019A",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of a Crestfallen Knight"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000019B",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Proud Paladin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000019C",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of a Proud Paladin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000019D",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of an Intrepid Hero"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000019E",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of an Intrepid Hero"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000019F",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Seasoned Warrior"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001A0",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Large Soul of a Seasoned Warrior"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001A1",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of an Old Hand"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001A2",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Venerable Old Hand"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001A3",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Champion"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001A4",
+      "MaxStackCount": 99,
+      "Category": "souls",
+      "Name": "Soul of a Great Champion"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001B8",
+      "MaxStackCount": 99,
+      "Category": "multiplayer",
+      "Name": "Seed of a Giant Tree"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001C4",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Mossfruit"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001C6",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Young White Branch"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001C7",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Rusted Coin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001C8",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Siegbräu"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001C9",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Rusted Gold Coin"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001CA",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Blue Bug Pellet"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001CB",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Red Bug Pellet"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001CC",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Yellow Bug Pellet"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001CD",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Black Bug Pellet"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001CE",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Young White Branch From Giant"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001CF",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Young White Branch"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001EA",
+      "MaxStackCount": 8,
+      "Category": "questitems",
+      "Name": "Dark Sigil"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400001F4",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Ember"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000208",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Hello Carving"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000209",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Thank you Carving"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000020A",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Very good! Carving"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000020B",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "I'm sorry Carving"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000020C",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Help me! Carving"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002C8",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Champion Gundyr"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002CA",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Dancer"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002CB",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of a Crystal Sage"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002CD",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Blood of the Wolf"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002CE",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Consumed Oceiros"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002CF",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Boreal Valley Vordt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D0",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Old Demon King"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D1",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Dragonslayer Armour"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D2",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Nameless King"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D4",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Pontiff Sulyvahn"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D5",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Aldrich"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D6",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of High Lord Wolnir"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D7",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Rotted Greatwood"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D8",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Rosaria"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002D9",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Deacons of the Deep"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002DB",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Twin Princes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002DC",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of Yhorm the Giant"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002DD",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of the Lords"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002E3",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of a Demon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400002E7",
+      "MaxStackCount": 99,
+      "Category": "bosssouls",
+      "Name": "Soul of a Stray Demon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003E8",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Shard"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003E9",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Large Titanite Shard"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003EA",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Chunk"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003EB",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Slab"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003FC",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Scale"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000406",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Twinkling Titanite"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000044C",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Heavy Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000456",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Sharp Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000460",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Refined Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000046A",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Crystal Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000474",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Simple Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000047E",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Fire Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000488",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Chaos Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000492",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Lightning Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000049C",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Deep Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004A6",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Dark Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004B0",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Poison Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004BA",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Blood Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004C4",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Raw Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004CE",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Blessed Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004D8",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Hollow Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004E2",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Shriving Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D1",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Lift Chamber Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D5",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Small Doll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D7",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Jailbreaker's Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D8",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Jailer's Key Ring"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D9",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Grave Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DA",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cell Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DB",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Dungeon Ground Floor Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DC",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Old Cell Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DD",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Tower Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DE",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Grand Archives Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DF",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Tower Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000836",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Small Lothric Banner"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000837",
+      "MaxStackCount": 1,
+      "Category": "ores",
+      "Name": "Farron Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000838",
+      "MaxStackCount": 1,
+      "Category": "ores",
+      "Name": "Sage's Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000839",
+      "MaxStackCount": 1,
+      "Category": "ores",
+      "Name": "Giant's Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083A",
+      "MaxStackCount": 1,
+      "Category": "ores",
+      "Name": "Profaned Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083B",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Mortician's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083C",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Dreamchaser's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083D",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Paladin's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083E",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Grave Warden's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083F",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Greirat's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000840",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Orbeck's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000841",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Cornyx's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000842",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Karla's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000843",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Irina's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000844",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Yuria's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000845",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Basin of Vows"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000846",
+      "MaxStackCount": 99,
+      "Category": "questitems",
+      "Name": "Loretta's Bone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000847",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Braille Divine Tome of Carim"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000848",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Braille Divine Tome of Lothric"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000849",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Braille Divine Sunlight Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084B",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084C",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084D",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084E",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084F",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Great Swamp Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000850",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Carthus Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000851",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Izalith Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000852",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Quelana Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000853",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Grave Warden Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000854",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Sage's Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000855",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Logan's Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000856",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Crystal Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000857",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Transposing Kiln"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000859",
+      "MaxStackCount": 1,
+      "Category": "tools",
+      "Name": "Coiled Sword"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085A",
+      "MaxStackCount": 1,
+      "Category": "questitems",
+      "Name": "Eyes of a Fire Keeper"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085B",
+      "MaxStackCount": 1,
+      "Category": "questitems",
+      "Name": "Sword of Avowal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085C",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Golden Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085D",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Estus Shard"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085E",
+      "MaxStackCount": 1,
+      "Category": "questitems",
+      "Name": "Hawkwood's Swordgrass"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085F",
+      "MaxStackCount": 99,
+      "Category": "consumables",
+      "Name": "Undead Bone Shard"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000860",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Deep Braille Divine Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000861",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Londor Braille Divine Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000862",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Excrement-covered Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000863",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Prisoner Chief's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000864",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Xanthous Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000865",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Hollow's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000866",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Patches' Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000867",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Dragon Chaser's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000868",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Easterner's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000869",
+      "MaxStackCount": 1,
+      "Category": "multiplayer",
+      "Name": "Champions Bones"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000086A",
+      "MaxStackCount": 1,
+      "Category": "ashes",
+      "Name": "Captain's Ashes"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000086B",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Contraption Key"
+    }
+  ]
+}

@@ -7,6 +7,7 @@ interface NumberInputProps {
   max: number;
   disabled?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export const NumberInput: React.FC<NumberInputProps> = ({
@@ -15,7 +16,8 @@ export const NumberInput: React.FC<NumberInputProps> = ({
   min,
   max,
   disabled = false,
-  className = ''
+  className = '',
+  style
 }) => {
   const [localValue, setLocalValue] = useState<string | undefined>(undefined);
 
@@ -54,6 +56,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
     <input
       type="number"
       className={className}
+      style={style}
       value={localValue !== undefined ? localValue : value}
       onChange={(e) => handleChange(e.target.value)}
       onBlur={handleBlur}

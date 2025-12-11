@@ -62,11 +62,10 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
                 type="checkbox"
                 checked={safeMode}
                 onChange={(e) => setSafeMode(e.target.checked)}
-                disabled
               />
               <span>Safe Mode</span>
             </label>
-            <span className="help-icon" title="Safe Mode is not yet implemented for DS3">
+            <span className="help-icon" title="When enabled, HP/FP/Stamina and Level are automatically calculated from stats">
               ?
             </span>
           </div>
@@ -75,7 +74,7 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
 
       <div className="tab-content">
         {activeTab === 'general' && (
-          <GeneralTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
+          <GeneralTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} onSafeModeChange={setSafeMode} />
         )}
       </div>
     </div>

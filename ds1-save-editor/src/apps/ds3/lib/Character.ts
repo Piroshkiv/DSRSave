@@ -1,4 +1,14 @@
-import { MAX_VALUES, CHARACTER_PATTERN, RELATIVE_OFFSETS } from './constants';
+import {
+  MAX_VALUES,
+  CHARACTER_PATTERN,
+  RELATIVE_OFFSETS,
+  PlayerClass,
+  CLASS_NAMES,
+  CLASS_STARTING_STATS,
+  // TEMPORARILY DISABLED - VIGOR_TO_HP,
+  // TEMPORARILY DISABLED - ATTUNEMENT_TO_FP,
+  // TEMPORARILY DISABLED - ENDURANCE_TO_STAMINA
+} from './constants';
 
 /**
  * Represents a DS3 character save data
@@ -79,6 +89,7 @@ export class DS3Character {
   /**
    * Get the actual offset for a given stat/value
    * Uses pattern-based offset calculation
+   * For large positive offsets (> 0x1000), treats them as pattern + offset
    */
   private getOffset(key: keyof typeof RELATIVE_OFFSETS): number {
     this.ensurePatternFound(); // Lazy initialization of pattern
@@ -261,8 +272,9 @@ export class DS3Character {
 
   /**
    * Set stat value (1 byte)
+   * @param _autoUpdateDerived - TEMPORARILY DISABLED - if true, auto-update HP/FP/Stamina based on stat tables
    */
-  setStat(statName: string, value: number): void {
+  setStat(statName: string, value: number, _autoUpdateDerived: boolean = false): void {
     const offsetKey = DS3Character.STAT_MAP[statName];
     if (!offsetKey) {
       console.warn(`Unknown stat: ${statName}`);
@@ -273,6 +285,28 @@ export class DS3Character {
     value = Math.max(0, Math.min(max, value));
     const offset = this.getOffset(offsetKey as keyof typeof RELATIVE_OFFSETS);
     this.data[offset] = value & 0xFF;
+
+    // Auto-update derived stats if in safe mode - TEMPORARILY DISABLED
+    /*
+    if (autoUpdateDerived) {
+      if (statName === 'VIG') {
+        const hp = VIGOR_TO_HP[value];
+        if (typeof hp === 'number') {
+          this.hp = hp;
+        }
+      } else if (statName === 'ATN') {
+        const fp = ATTUNEMENT_TO_FP[value];
+        if (typeof fp === 'number') {
+          this.fp = fp;
+        }
+      } else if (statName === 'END') {
+        const stamina = ENDURANCE_TO_STAMINA[value];
+        if (typeof stamina === 'number') {
+          this.stamina = stamina;
+        }
+      }
+    }
+    */
   }
 
   // ===== DERIVED STATS =====
@@ -354,39 +388,6 @@ export class DS3Character {
     this.data[offset + 3] = (value >> 24) & 0xFF;
   }
 
-  // ===== CONSUMABLES =====
-  /**
-   * Get Estus Flask max count (1 byte)
-   */
-  get estusMax(): number {
-    if (this.isEmpty) return 0;
-    return this.data[this.getOffset('ESTUS_MAX')];
-  }
-
-  /**
-   * Set Estus Flask max count (1 byte)
-   */
-  set estusMax(value: number) {
-    value = Math.max(0, Math.min(MAX_VALUES.ESTUS_MAX, value));
-    this.data[this.getOffset('ESTUS_MAX')] = value & 0xFF;
-  }
-
-  /**
-   * Get Ashen Estus Flask max count (1 byte)
-   */
-  get ashenEstusMax(): number {
-    if (this.isEmpty) return 0;
-    return this.data[this.getOffset('ASHEN_ESTUS_MAX')];
-  }
-
-  /**
-   * Set Ashen Estus Flask max count (1 byte)
-   */
-  set ashenEstusMax(value: number) {
-    value = Math.max(0, Math.min(MAX_VALUES.ASHEN_ESTUS_MAX, value));
-    this.data[this.getOffset('ASHEN_ESTUS_MAX')] = value & 0xFF;
-  }
-
   // ===== PROGRESSION =====
   /**
    * Get NG+ Cycle (1 byte)
@@ -402,5 +403,125 @@ export class DS3Character {
   set ngCycle(value: number) {
     value = Math.max(0, Math.min(MAX_VALUES.NG_CYCLE, value));
     this.data[this.getOffset('NG_CYCLE')] = value & 0xFF;
+  }
+
+  // ===== ESTUS =====
+  /**
+   * Get Estus Flask Max Count (1 byte)
+   */
+  get estusMax(): number {
+    if (this.isEmpty) return 0;
+    return this.data[this.getOffset('ESTUS_MAX')];
+  }
+
+  /**
+   * Set Estus Flask Max Count (1 byte)
+   */
+  set estusMax(value: number) {
+    value = Math.max(0, Math.min(20, value)); // Max 20 in unsafe mode
+    this.data[this.getOffset('ESTUS_MAX')] = value & 0xFF;
+  }
+
+  /**
+   * Get Ashen Estus Flask Max Count (1 byte)
+   */
+  get ashenEstusMax(): number {
+    if (this.isEmpty) return 0;
+    return this.data[this.getOffset('ASHEN_ESTUS_MAX')];
+  }
+
+  /**
+   * Set Ashen Estus Flask Max Count (1 byte)
+   */
+  set ashenEstusMax(value: number) {
+    value = Math.max(0, Math.min(20, value)); // Max 20 in unsafe mode
+    this.data[this.getOffset('ASHEN_ESTUS_MAX')] = value & 0xFF;
+  }
+
+  // ===== CLASS =====
+  /**
+   * Get character class (1 byte)
+   */
+  get playerClass(): PlayerClass {
+    if (this.isEmpty) return PlayerClass.Knight;
+    return this.data[this.getOffset('CLASS')] as PlayerClass;
+  }
+
+  /**
+   * Set character class (1 byte)
+   */
+  set playerClass(value: PlayerClass) {
+    this.data[this.getOffset('CLASS')] = value & 0xFF;
+  }
+
+  /**
+   * Get character class name
+   */
+  get className(): string {
+    return CLASS_NAMES[this.playerClass] || 'Unknown';
+  }
+
+  // ===== HELPER METHODS =====
+  /**
+   * Calculate level based on stats and class starting stats
+   * Level = Current Total Stats - Total Stats at Zero Level
+   * Same algorithm as DSR
+   */
+  calculateLevel(): number {
+    const playerClass = this.playerClass;
+    const startingStats = CLASS_STARTING_STATS[playerClass];
+
+    if (!startingStats) {
+      console.warn('Unknown class, cannot calculate level');
+      return this.level;
+    }
+
+    // Calculate current total stats
+    let currentTotalStats = 0;
+    currentTotalStats += this.getStat('VIG');
+    currentTotalStats += this.getStat('ATN');
+    currentTotalStats += this.getStat('END');
+    currentTotalStats += this.getStat('VIT');
+    currentTotalStats += this.getStat('STR');
+    currentTotalStats += this.getStat('DEX');
+    currentTotalStats += this.getStat('INT');
+    currentTotalStats += this.getStat('FTH');
+    currentTotalStats += this.getStat('LCK');
+
+    // Level = Current Total Stats - Total Stats at Zero Level
+    return currentTotalStats - startingStats.totalStatsAtZero;
+  }
+
+  /**
+   * Update all derived stats (HP, FP, Stamina, Level) based on current stats
+   * Used in safe mode - TEMPORARILY DISABLED (HP/FP/Stamina updates)
+   */
+  updateDerivedStats(): void {
+    // TEMPORARILY DISABLED - Update HP from Vigor
+    /*
+    const hp = VIGOR_TO_HP[this.getStat('VIG')];
+    if (typeof hp === 'number') {
+      this.hp = hp;
+    }
+    */
+
+    // TEMPORARILY DISABLED - Update FP from Attunement
+    /*
+    const fp = ATTUNEMENT_TO_FP[this.getStat('ATN')];
+    if (typeof fp === 'number') {
+      this.fp = fp;
+    }
+    */
+
+    // TEMPORARILY DISABLED - Update Stamina from Endurance
+    /*
+    const stamina = ENDURANCE_TO_STAMINA[this.getStat('END')];
+    if (typeof stamina === 'number') {
+      this.stamina = stamina;
+    }
+    */
+
+    // Update Level
+    this.level = this.calculateLevel();
   }
 }
