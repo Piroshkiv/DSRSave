@@ -22,7 +22,7 @@ export const TableTab: React.FC<TableTabProps> = ({ character, onCharacterUpdate
   const handleDownloadSlot = () => {
     try {
       const slotData = character.getRawData();
-      const blob = new Blob([slotData], { type: 'application/octet-stream' });
+      const blob = new Blob([new Uint8Array(slotData)], { type: 'application/octet-stream' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
