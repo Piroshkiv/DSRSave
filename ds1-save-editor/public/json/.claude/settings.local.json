@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/import-from-ct.js:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)",
+      "Bash(node:*)",
+      "Bash(xxd:*)"
+    ]
+  }
+}

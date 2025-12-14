@@ -19,6 +19,24 @@ export const TableTab: React.FC<TableTabProps> = ({ character, onCharacterUpdate
   const COLS = 16;
   const BYTES_PER_PAGE = ROWS * COLS;
 
+  const handleDownloadSlot = () => {
+    try {
+      const slotData = character.getRawData();
+      const blob = new Blob([slotData], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `slot_${character.slotNumber}_${character.name || 'unnamed'}.bin`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading slot:', error);
+      alert('Error downloading slot. Please try again.');
+    }
+  };
+
   useEffect(() => {
     const offset = character.findPattern1();
     setPattern1Offset(offset);
@@ -116,6 +134,9 @@ export const TableTab: React.FC<TableTabProps> = ({ character, onCharacterUpdate
         <div className="pattern-controls">
           <button onClick={handleFindPattern1} className="action-button">
             Find Pattern1
+          </button>
+          <button onClick={handleDownloadSlot} className="action-button">
+            Download Slot
           </button>
 
           {pattern1Offset !== -1 && (

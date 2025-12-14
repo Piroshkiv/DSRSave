@@ -88,8 +88,107 @@
   gap: 0.5rem;
 }
 
+/* Base Button Styles */
+.btn {
+  padding: 0.75rem 1rem;
+  color: #e0e0e0;
+  border: 2px solid;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button Variants */
+.btn-primary {
+  background: linear-gradient(135deg, #4a5a6a 0%, #3a4a5a 100%);
+  border-color: #5a7a8a;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6a7a 0%, #4a5a6a 100%);
+  border-color: #6a8a9a;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary:focus {
+  border-color: #6a8a9a;
+  box-shadow: 0 0 0 3px rgba(106, 159, 181, 0.3);
+}
+
+.btn-primary:active:not(:disabled) {
+  background: linear-gradient(135deg, #3a4a5a 0%, #2a3a4a 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #3a3a3a 0%, #2f2f2f 100%);
+  border-color: #555;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4a4a4a 0%, #3f3f3f 100%);
+  border-color: #ff6b35;
+  box-shadow: 0 3px 6px rgba(255, 107, 53, 0.3);
+}
+
+.btn-secondary:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #6a3a3a 0%, #5a2a2a 100%);
+  border-color: #7a4a4a;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: linear-gradient(135deg, #7a4a4a 0%, #6a3a3a 100%);
+  border-color: #8a5a5a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #5a6a4a 0%, #4a5a3a 100%);
+  border-color: #6a8a5a;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #6a7a5a 0%, #5a6a4a 100%);
+  border-color: #7a9a6a;
+}
+
+/* Legacy Classes - for backward compatibility */
 .upload-button {
   flex: 1;
+}
+
+.upload-button,
+.save-button,
+.reload-button,
+.create-item-button,
+.edit-button,
+.action-button,
+.nav-button {
   padding: 0.75rem 1rem;
   background: linear-gradient(135deg, #3a3a3a 0%, #2f2f2f 100%);
   color: #e0e0e0;
@@ -102,25 +201,49 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.upload-button:hover:not(:disabled) {
+.upload-button:hover:not(:disabled),
+.save-button:hover:not(:disabled),
+.reload-button:hover:not(:disabled),
+.create-item-button:hover:not(:disabled),
+.edit-button:hover:not(:disabled),
+.action-button:hover:not(:disabled),
+.nav-button:hover:not(:disabled) {
   background: linear-gradient(135deg, #4a4a4a 0%, #3f3f3f 100%);
   border-color: #ff6b35;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(255, 107, 53, 0.3);
 }
 
-.upload-button:focus {
+.upload-button:focus,
+.save-button:focus,
+.reload-button:focus,
+.create-item-button:focus,
+.edit-button:focus,
+.action-button:focus,
+.nav-button:focus {
   outline: none;
   border-color: #ff6b35;
   box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
 }
 
-.upload-button:active:not(:disabled) {
+.upload-button:active:not(:disabled),
+.save-button:active:not(:disabled),
+.reload-button:active:not(:disabled),
+.create-item-button:active:not(:disabled),
+.edit-button:active:not(:disabled),
+.action-button:active:not(:disabled),
+.nav-button:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.upload-button:disabled {
+.upload-button:disabled,
+.save-button:disabled,
+.reload-button:disabled,
+.create-item-button:disabled,
+.edit-button:disabled,
+.action-button:disabled,
+.nav-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
@@ -327,27 +450,9 @@
   padding: 0.75rem 1.25rem;
   margin-right: 1rem;
   margin-top: 1px;
-  background: linear-gradient(135deg, #4a5a6a 0%, #3a4a5a 100%);
-  color: #e0e0e0;
-  border: 2px solid #5a7a8a;
   border-radius: 4px;
-  cursor: pointer;
   font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
   white-space: nowrap;
-}
-
-.reload-button:hover {
-  background: linear-gradient(135deg, #5a6a7a 0%, #4a5a6a 100%);
-  border-color: #6a8a9a;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.reload-button:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .tab-content {
@@ -521,28 +626,6 @@
 
 .save-button {
   padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, #4a5a6a 0%, #3a4a5a 100%);
-  color: #e0e0e0;
-  border: 2px solid #5a7a8a;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.save-button:hover {
-  background: linear-gradient(135deg, #5a6a7a 0%, #4a5a6a 100%);
-  border-color: #6a8a9a;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
-}
-
-.save-button:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #3a4a5a 0%, #2a3a4a 100%);
 }
 
 /* Terms Page */
@@ -828,41 +911,13 @@
 
 .calibrate-button {
   padding: 0.5rem 0.75rem;
-  background: linear-gradient(135deg, #5a6a4a 0%, #4a5a3a 100%);
-  color: #e0e0e0;
-  border: 2px solid #6a8a5a;
   border-radius: 4px;
   font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
   white-space: nowrap;
-}
-
-.calibrate-button:hover {
-  background: linear-gradient(135deg, #6a7a5a 0%, #5a6a4a 100%);
-  border-color: #7a9a6a;
-  transform: translateY(-1px);
 }
 
 .create-item-button {
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #4a5a6a 0%, #3a4a5a 100%);
-  color: #e0e0e0;
-  border: 2px solid #5a7a8a;
-  border-radius: 6px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.create-item-button:hover {
-  background: linear-gradient(135deg, #5a6a7a 0%, #4a5a6a 100%);
-  border-color: #6a8a9a;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
 }
 
 .sub-tabs {

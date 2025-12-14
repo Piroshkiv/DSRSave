@@ -17,7 +17,12 @@
       "Bash(findstr:*)",
       "Bash(dir /B:*)",
       "Bash(cat:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(dir \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\src\\shared\\components\" /B)",
+      "Bash(npx ts-node:*)",
+      "Bash(powershell -Command \"Get-Content ''C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\public\\json\\ds3_items.json'' | Select-String -Pattern ''\"\"[a-z_]+\"\":\\s*\\['' | Select-Object -First 20\")",
+      "Bash(powershell -Command:*)",
+      "Bash(del \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\scripts\\reorganize-ds3-items.js\")"
     ],
     "deny": [],
     "ask": []
