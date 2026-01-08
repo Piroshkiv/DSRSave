@@ -117,7 +117,6 @@
     },
     {
       "name": "Solaire of Astora",
-      "warning": "Can only be revived and killed in Anor Londo and Undead Burg. I haven't tested it in other locations, it might bug.",
       "bits": [
         {
           "offset": "0xD5",
@@ -151,6 +150,51 @@
         },
         {
           "offset": "0x16D6C",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xD5",
+          "bit": 7,
+          "reverse": false
+        },
+        {
+          "offset": "0xD6",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0xF8F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0xF94",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0xF95",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x469C",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x11D5E",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15453",
           "bit": 0,
           "reverse": true
         }
@@ -218,7 +262,6 @@
     },
     {
       "name": "Darkmoon Knightess (fire keeper)",
-      "warning": "Comes with a campfire, this is intentional.",
       "bits": [
         {
           "offset": "0x64",
@@ -329,7 +372,6 @@
     },
     {
       "name": "Ingward (Keeper of Seal)",
-      "warning": "Can only be revived and killed in New Londo.",
       "bits": [
         {
           "offset": "0xF7",
@@ -409,8 +451,347 @@
       ]
     },
     {
+      "name": "Big Hat Logan",
+      "bits": [
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xDB",
+          "bit": 5,
+          "reverse": false
+        },
+        {
+          "offset": "0xE2",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x418F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x4195",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x14F54",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xDB",
+          "bit": 3,
+          "reverse": false
+        },
+        {
+          "offset": "0xE2",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x148F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x1494",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x1225A",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D8E",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xDB",
+          "bit": 2,
+          "reverse": false
+        },
+        {
+          "offset": "0xE2",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x5078",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x507E",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x508F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x5095",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x1047E",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E56",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xDB",
+          "bit": 0,
+          "reverse": false
+        },
+        {
+          "offset": "0xE2",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x508F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x5095",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E56",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x16DBD",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x16DDD",
+          "bit": 0,
+          "reverse": false
+        },
+        {
+          "offset": "0x16DDD",
+          "bit": 1,
+          "reverse": false
+        },
+        {
+          "offset": "0x16DDD",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x20",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x21",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x21",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x21",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0xAB",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xAC",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0xAC",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0xDB",
+          "bit": 0,
+          "reverse": false
+        },
+        {
+          "offset": "0xE2",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x5094",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x509C",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x509C",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D3",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D4",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D5",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D6",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D7",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D8",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x53D9",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x53DB",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x53DE",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x53E1",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x53E2",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E55",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E56",
+          "bit": 0,
+          "reverse": true
+        }
+      ]
+    },
+    {
       "name": "Griggs of Vinheim",
-      "warning": "If Griggs was locked he will teleport to the hub.",
       "bits": [
         {
           "offset": "0xE0",
@@ -561,7 +942,6 @@
     },
     {
       "name": "Laurentius (Pyromancer)",
-      "warning": "Always teleports to the hub, both from the depths and from Blighttown.",
       "bits": [
         {
           "offset": "0xEF",
@@ -682,7 +1062,6 @@
     },
     {
       "name": "Dusk of Oolacile (Revive golem)",
-      "warning": "I couldn't revive Dusk of Oolacile but I could revive the golden golem.",
       "bits": [
         {
           "offset": "0xDF",
@@ -869,7 +1248,6 @@
     },
     {
       "name": "Reah of Thorolund and Paladine",
-      "warning": "Will be two, one in the Tomb of Giant and the other in the church. Until you save her in the Tomb of Giant, you won't be able to talk to her. Also updates Reah's inventory.",
       "bits": [
         {
           "offset": "0xB1",
@@ -1315,43 +1693,7 @@
     },
     {
       "name": "Siegmeyer of Catarina",
-      "warning": "Can only be revived and killed in Anor Londo. I haven't tested it in other locations, it might bug.",
       "bits": [
-        {
-          "offset": "0xB1",
-          "bit": 7,
-          "reverse": true
-        },
-        {
-          "offset": "0x111",
-          "bit": 5,
-          "reverse": false
-        },
-        {
-          "offset": "0x116",
-          "bit": 6,
-          "reverse": true
-        },
-        {
-          "offset": "0x4195",
-          "bit": 5,
-          "reverse": true
-        },
-        {
-          "offset": "0x4196",
-          "bit": 7,
-          "reverse": true
-        },
-        {
-          "offset": "0x14F5E",
-          "bit": 7,
-          "reverse": true
-        },
-        {
-          "offset": "0x16D8E",
-          "bit": 2,
-          "reverse": true
-        },
         {
           "offset": "0xB1",
           "bit": 7,
@@ -1756,7 +2098,6 @@
     },
     {
       "name": "Shiva of the East and Bodyguard",
-      "warning": "Do not appear unless you join the covenant AFTER revive them. Do not talk to the cat before this as you will be sinned and he will be there for the rest of the game.",
       "bits": [
         {
           "offset": "0xB1",
@@ -2046,6 +2387,46 @@
         {
           "offset": "0x16D8E",
           "bit": 0,
+          "reverse": true
+        }
+      ]
+    },
+    {
+      "name": "Lord's Blade Ciaran",
+      "bits": [
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x13B",
+          "bit": 2,
+          "reverse": false
+        },
+        {
+          "offset": "0x142",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x2395",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x2396",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x1315B",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 1,
           "reverse": true
         }
       ]

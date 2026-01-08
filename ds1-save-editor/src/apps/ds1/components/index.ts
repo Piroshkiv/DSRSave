@@ -13,3 +13,4 @@ export { AboutPage } from './AboutPage';
 export { TermsFullPage } from './TermsFullPage';
 export { AboutFullPage } from './AboutFullPage';
 export { DS1TutorialPage } from './DS1TutorialPage';
+export { FixSavePage } from './FixSavePage';

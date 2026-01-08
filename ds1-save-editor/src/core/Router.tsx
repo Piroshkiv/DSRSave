@@ -7,7 +7,7 @@ import { DS3App } from '../apps/ds3/DS3App';
 import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
 import { ErrorBoundary } from './ErrorBoundary';
-import { AboutFullPage, TermsFullPage, DS1TutorialPage } from '../apps/ds1/components';
+import { AboutFullPage, TermsFullPage, DS1TutorialPage, FixSavePage } from '../apps/ds1/components';
 
 // Wrapper to use ErrorPage with React Router hooks
 const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
@@ -169,6 +169,12 @@ const DS1TutorialPageWrapper: React.FC = () => {
   return <DS1TutorialPage onClose={() => navigate('/')} />;
 };
 
+// Fix Save Page Wrapper
+const FixSavePageWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <FixSavePage onClose={() => navigate('/')} />;
+};
+
 export const Router: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -186,6 +192,7 @@ export const Router: React.FC = () => {
           <Route path="/ds1" element={<DS1AppWrapper />} />
           <Route path="/ds1v1" element={<DS1AppWrapper />} />
           <Route path="/ds1/tutorial" element={<DS1TutorialPageWrapper />} />
+          <Route path="/ds1/fix-save" element={<FixSavePageWrapper />} />
           <Route path="/ds3" element={<DS3AppWrapper />} />
           <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
 

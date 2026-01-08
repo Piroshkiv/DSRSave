@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DS3Character } from '../lib/Character';
 import { GeneralTab } from './GeneralTab';
+import { InventoryTab } from './InventoryTab';
 
 interface TabPanelProps {
   character: DS3Character | null;
@@ -8,7 +9,7 @@ interface TabPanelProps {
   onReload: () => void;
 }
 
-type TabType = 'general';
+type TabType = 'general' | 'inventory';
 
 export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, onReload }) => {
   const [activeTab, setActiveTab] = useState<TabType>('general');
@@ -38,10 +39,8 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
             General
           </button>
           <button
-            className="tab"
-            disabled
-            title="Coming soon"
-            style={{ opacity: 0.5, cursor: 'not-allowed' }}
+            className={`tab ${activeTab === 'inventory' ? 'active' : ''}`}
+            onClick={() => setActiveTab('inventory')}
           >
             Inventory
           </button>
@@ -75,6 +74,9 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
       <div className="tab-content">
         {activeTab === 'general' && (
           <GeneralTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} onSafeModeChange={setSafeMode} />
+        )}
+        {activeTab === 'inventory' && (
+          <InventoryTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
         )}
       </div>
     </div>

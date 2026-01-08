@@ -22,7 +22,13 @@
       "Bash(npx ts-node:*)",
       "Bash(powershell -Command \"Get-Content ''C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\public\\json\\ds3_items.json'' | Select-String -Pattern ''\"\"[a-z_]+\"\":\\s*\\['' | Select-Object -First 20\")",
       "Bash(powershell -Command:*)",
-      "Bash(del \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\scripts\\reorganize-ds3-items.js\")"
+      "Bash(del \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\scripts\\reorganize-ds3-items.js\")",
+      "Bash(ls:*)",
+      "Bash(dir \"C:\\Users\\Iho\\source\\repos\\DSRSave\\ds1-save-editor\\public\\json\" /b)",
+      "Bash(test:*)",
+      "Bash(node -e:*)",
+      "Bash(node extract-ores-keys.js:*)",
+      "Bash(node extract-categories.js:*)"
     ],
     "deny": [],
     "ask": []

@@ -8004,195 +8004,6 @@
   "consumable_items": [
     {
       "Type": "0x40000000",
-      "Id": "0x00061A80",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Standard Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061AE4",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Fire Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061B48",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Poison Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061BAC",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Large Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061C10",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Feather Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061C74",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Moonlight Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061CD8",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Wood Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00061D3C",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Dark Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062250",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Dragonslayer Greatarrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062318",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Dragonslayer Lightning Arrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x0006237C",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Onislayer Greatarrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x000623E0",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Millwood Greatarrow"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062A20",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Standard Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062A84",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Heavy Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062AE8",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Sniper Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062B4C",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Wood Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062BB0",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Lightning Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062C14",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Splintering Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x00062C78",
-      "MaxStackCount": 99,
-      "Category": "ammunition",
-      "Name": "Exploding Bolt"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x20002710",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Blade of the Darkmoon"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x20002724",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Watchdogs of Farron"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x2000272E",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Aldrich Faithful"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x20002738",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Warrior of Sunlight"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x20002742",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Mound-Makers"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x2000274C",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Way of Blue"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x20002756",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Blue Sentinel"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x20002760",
-      "MaxStackCount": 1,
-      "Category": "covenants",
-      "Name": "Rosaria's Fingers"
-    },
-    {
-      "Type": "0x40000000",
       "Id": "0x40000064",
       "MaxStackCount": 1,
       "Category": "multiplayer",
@@ -9012,272 +8823,6 @@
     },
     {
       "Type": "0x40000000",
-      "Id": "0x400003E8",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Titanite Shard"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400003E9",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Large Titanite Shard"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400003EA",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Titanite Chunk"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400003EB",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Titanite Slab"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400003FC",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Titanite Scale"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000406",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Twinkling Titanite"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000044C",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Heavy Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000456",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Sharp Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000460",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Refined Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000046A",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Crystal Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000474",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Simple Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000047E",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Fire Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000488",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Chaos Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000492",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Lightning Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000049C",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Deep Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004A6",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Dark Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004B0",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Poison Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004BA",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Blood Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004C4",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Raw Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004CE",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Blessed Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004D8",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Hollow Gem"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400004E2",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Shriving Stone"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D1",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Lift Chamber Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D5",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Small Doll"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D7",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Jailbreaker's Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D8",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Jailer's Key Ring"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D9",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Grave Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007DA",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Cell Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007DB",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Dungeon Ground Floor Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007DC",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Old Cell Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007DD",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Tower Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007DE",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Grand Archives Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007DF",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Tower Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000836",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Small Lothric Banner"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000837",
-      "MaxStackCount": 1,
-      "Category": "ores",
-      "Name": "Farron Coal"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000838",
-      "MaxStackCount": 1,
-      "Category": "ores",
-      "Name": "Sage's Coal"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000839",
-      "MaxStackCount": 1,
-      "Category": "ores",
-      "Name": "Giant's Coal"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000083A",
-      "MaxStackCount": 1,
-      "Category": "ores",
-      "Name": "Profaned Coal"
-    },
-    {
-      "Type": "0x40000000",
       "Id": "0x4000083B",
       "MaxStackCount": 1,
       "Category": "ashes",
@@ -9348,129 +8893,10 @@
     },
     {
       "Type": "0x40000000",
-      "Id": "0x40000845",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Basin of Vows"
-    },
-    {
-      "Type": "0x40000000",
       "Id": "0x40000846",
       "MaxStackCount": 99,
       "Category": "questitems",
       "Name": "Loretta's Bone"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000847",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Braille Divine Tome of Carim"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000848",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Braille Divine Tome of Lothric"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000849",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Braille Divine Sunlight Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000084B",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Cinders of a Lord"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000084C",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Cinders of a Lord"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000084D",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Cinders of a Lord"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000084E",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Cinders of a Lord"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000084F",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Great Swamp Pyromancy Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000850",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Carthus Pyromancy Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000851",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Izalith Pyromancy Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000852",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Quelana Pyromancy Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000853",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Grave Warden Pyromancy Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000854",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Sage's Scroll"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000855",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Logan's Scroll"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000856",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Crystal Scroll"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000857",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Transposing Kiln"
     },
     {
       "Type": "0x40000000",
@@ -9495,13 +8921,6 @@
     },
     {
       "Type": "0x40000000",
-      "Id": "0x4000085C",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Golden Scroll"
-    },
-    {
-      "Type": "0x40000000",
       "Id": "0x4000085D",
       "MaxStackCount": 99,
       "Category": "consumables",
@@ -9520,20 +8939,6 @@
       "MaxStackCount": 99,
       "Category": "consumables",
       "Name": "Undead Bone Shard"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000860",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Deep Braille Divine Tome"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000861",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Londor Braille Divine Tome"
     },
     {
       "Type": "0x40000000",
@@ -9600,20 +9005,6 @@
     },
     {
       "Type": "0x40000000",
-      "Id": "0x4000086B",
-      "MaxStackCount": 1,
-      "Category": "keys",
-      "Name": "Contraption Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x2000276A",
-      "MaxStackCount": 99,
-      "Category": "covenants",
-      "Name": "-Spears of the Church"
-    },
-    {
-      "Type": "0x40000000",
       "Id": "0x400002E8",
       "MaxStackCount": 99,
       "Category": "bosssouls",
@@ -9667,13 +9058,6 @@
       "MaxStackCount": 99,
       "Category": "bosssouls",
       "Name": "Soul of Darkeater Midir"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x4000086C",
-      "MaxStackCount": 99,
-      "Category": "keys",
-      "Name": "Small Envoy Banner"
     },
     {
       "Type": "0x40000000",
@@ -9779,34 +9163,6 @@
       "MaxStackCount": 99,
       "Category": "bosssouls",
       "Name": "Soul of the Twin Princes"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400003F2",
-      "MaxStackCount": 99,
-      "Category": "ores",
-      "Name": "Dragon Scale"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D3",
-      "MaxStackCount": 99,
-      "Category": "keys",
-      "Name": "Bridge Key"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x400007D4",
-      "MaxStackCount": 99,
-      "Category": "keys",
-      "Name": "Iron Seal of the Wolf"
-    },
-    {
-      "Type": "0x40000000",
-      "Id": "0x40000835",
-      "MaxStackCount": 99,
-      "Category": "keys",
-      "Name": "Holy Remains"
     },
     {
       "Type": "0x40000000",
@@ -10381,6 +9737,658 @@
       "MaxStackCount": 99,
       "Category": "consumables",
       "Name": "Silent Ally!"
+    }
+  ],
+  "ore_items": [
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003E8",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Shard"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003E9",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Large Titanite Shard"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003EA",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Chunk"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003EB",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Slab"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003FC",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Titanite Scale"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000406",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Twinkling Titanite"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000044C",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Heavy Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000456",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Sharp Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000460",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Refined Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000046A",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Crystal Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000474",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Simple Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000047E",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Fire Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000488",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Chaos Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000492",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Lightning Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000049C",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Deep Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004A6",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Dark Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004B0",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Poison Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004BA",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Blood Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004C4",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Raw Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004CE",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Blessed Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004D8",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Hollow Gem"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400004E2",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Shriving Stone"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000837",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Farron Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000838",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Sage's Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000839",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Giant's Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000083A",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Profaned Coal"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400003F2",
+      "MaxStackCount": 99,
+      "Category": "ores",
+      "Name": "Dragon Scale"
+    }
+  ],
+  "key_items": [
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D1",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Lift Chamber Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D5",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Small Doll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D7",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Jailbreaker's Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D8",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Jailer's Key Ring"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D9",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Grave Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DA",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cell Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DB",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Dungeon Ground Floor Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DC",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Old Cell Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DD",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Tower Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DE",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Grand Archives Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007DF",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Tower Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000836",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Small Lothric Banner"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000845",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Basin of Vows"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000847",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Braille Divine Tome of Carim"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000848",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Braille Divine Tome of Lothric"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000849",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Braille Divine Sunlight Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084B",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084C",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084D",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084E",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Cinders of a Lord"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000084F",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Great Swamp Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000850",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Carthus Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000851",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Izalith Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000852",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Quelana Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000853",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Grave Warden Pyromancy Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000854",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Sage's Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000855",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Logan's Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000856",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Crystal Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000857",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Transposing Kiln"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000085C",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Golden Scroll"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000860",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Deep Braille Divine Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000861",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Londor Braille Divine Tome"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000086B",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Contraption Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x4000086C",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Small Envoy Banner"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D3",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Bridge Key"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x400007D4",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Iron Seal of the Wolf"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x40000835",
+      "MaxStackCount": 1,
+      "Category": "keys",
+      "Name": "Holy Remains"
+    }
+  ],
+  "ammunition_items": [
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061A80",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Standard Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061AE4",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Fire Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061B48",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Poison Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061BAC",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Large Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061C10",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Feather Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061C74",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Moonlight Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061CD8",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Wood Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00061D3C",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Dark Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062250",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Dragonslayer Greatarrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062318",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Dragonslayer Lightning Arrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x0006237C",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Onislayer Greatarrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x000623E0",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Millwood Greatarrow"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062A20",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Standard Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062A84",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Heavy Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062AE8",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Sniper Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062B4C",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Wood Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062BB0",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Lightning Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062C14",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Splintering Bolt"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x00062C78",
+      "MaxStackCount": 99,
+      "Category": "ammunition",
+      "Name": "Exploding Bolt"
+    }
+  ],
+  "covenant_items": [
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002710",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Blade of the Darkmoon"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002724",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Watchdogs of Farron"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x2000272E",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Aldrich Faithful"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002738",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Warrior of Sunlight"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002742",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Mound-Makers"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x2000274C",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Way of Blue"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002756",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Blue Sentinel"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x20002760",
+      "MaxStackCount": 1,
+      "Category": "covenants",
+      "Name": "Rosaria's Fingers"
+    },
+    {
+      "Type": "0x40000000",
+      "Id": "0x2000276A",
+      "MaxStackCount": 99,
+      "Category": "covenants",
+      "Name": "-Spears of the Church"
     }
   ]
 }
