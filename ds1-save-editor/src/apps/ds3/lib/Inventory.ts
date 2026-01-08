@@ -528,7 +528,8 @@ export class DS3Inventory {
    * Calculate CRC16 for item ID (used in bytes 14-15)
    * This appears to be CRC16-CCITT (polynomial 0x1021)
    */
-  private calculateItemCRC16(itemId: number): number {
+  // @ts-expect-error - Reserved for future use
+  private _calculateItemCRC16(itemId: number): number {
     const bytes = [
       itemId & 0xFF,
       (itemId >> 8) & 0xFF,
@@ -557,7 +558,8 @@ export class DS3Inventory {
    * Read Counter 1 (Pattern + 472)
    * Counter 1 is the global item counter used in bytes 0-1 of each item
    */
-  private readCounter1(): number {
+  // @ts-expect-error - Reserved for future use
+  private _readCounter1(): number {
     const data = this.character.getRawData();
     const patternOffset = this.findPattern(data);
 
@@ -610,7 +612,8 @@ export class DS3Inventory {
    * Read Counter 2 (Pattern + 35300)
    * Counter 2 is used in bytes 14-15 of each item
    */
-  private readCounter2(): number {
+  // @ts-expect-error - Reserved for future use
+  private _readCounter2(): number {
     const data = this.character.getRawData();
     const patternOffset = this.findPattern(data);
 
@@ -781,7 +784,8 @@ export class DS3Inventory {
 
     // Determine insert index
     let insertIndex = -1;
-    let previousNonEmptyItem: DS3InventoryItem | null = null;
+    // @ts-expect-error - Reserved for future use
+    let _previousNonEmptyItem: DS3InventoryItem | null = null;
 
     if (targetSlot !== undefined) {
       // Use specified target slot
@@ -797,7 +801,7 @@ export class DS3Inventory {
       for (let j = insertIndex - 1; j >= 0; j--) {
         const prevSlot = this.readSlot(j);
         if (!prevSlot.isEmpty) {
-          previousNonEmptyItem = prevSlot;
+          _previousNonEmptyItem = prevSlot;
           break;
         }
       }
@@ -814,7 +818,7 @@ export class DS3Inventory {
           for (let j = i - 1; j >= 0; j--) {
             const prevSlot = this.readSlot(j);
             if (!prevSlot.isEmpty) {
-              previousNonEmptyItem = prevSlot;
+              _previousNonEmptyItem = prevSlot;
               break;
             }
           }
@@ -828,7 +832,8 @@ export class DS3Inventory {
       }
     }
 
-    const slot = this.readSlot(insertIndex);
+    // @ts-expect-error - Reserved for future use
+    const _slot = this.readSlot(insertIndex);
     let finalItemId = this.parseHex(itemInfo.Id);
 
     // For weapons, apply upgrade and infusion to byte 0
