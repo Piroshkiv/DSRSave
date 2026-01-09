@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { SaveFileEditor } from '../lib/SaveFileEditor';
 import { Character } from '../lib/Character';
 import { FileHandle, getFileSystemAdapter } from '../lib/adapters';
+import { getFilePathFromHandle, extractFilename } from '../lib/filePathUtils';
 
 export interface UseDS1SaveEditorResult {
   saveEditor: SaveFileEditor | null;
@@ -26,7 +27,11 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
 
   const handleFileLoaded = useCallback(async (file: File, fileHandle: FileHandle | null) => {
     try {
-      setOriginalFilename(file.name);
+      const filePath = await getFilePathFromHandle(
+        file,
+        fileHandle as FileSystemFileHandle | null
+      );
+      setOriginalFilename(filePath);
 
       const editor = await SaveFileEditor.fromFileData(file, fileHandle);
 
@@ -61,7 +66,9 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
         await saveEditor.saveToOriginalFile();
         alert('Save file updated successfully!');
       } else {
-        await saveEditor.downloadSaveFile(originalFilename);
+        // Extract just filename for download
+        const filename = extractFilename(originalFilename);
+        await saveEditor.downloadSaveFile(filename);
       }
     } catch (error) {
       console.error('Error saving file:', error);
@@ -73,7 +80,9 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     if (!saveEditor) return;
 
     try {
-      const editedFilename = `edited_${originalFilename}`;
+      // Extract just filename and prepend "edited_"
+      const filename = extractFilename(originalFilename);
+      const editedFilename = `edited_${filename}`;
       await saveEditor.saveToNewFile(editedFilename);
     } catch (error) {
       console.error('Error saving file:', error);

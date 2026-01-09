@@ -52,13 +52,11 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
           Loading last save file...
         </div>
       )}
-      {characters.length > 0 && (
-        <CharacterList
-          characters={characters}
-          selectedIndex={selectedCharacterIndex}
-          onSelectCharacter={handleCharacterSelect}
-        />
-      )}
+      <CharacterList
+        characters={characters}
+        selectedIndex={selectedCharacterIndex}
+        onSelectCharacter={handleCharacterSelect}
+      />
     </>
   );
 

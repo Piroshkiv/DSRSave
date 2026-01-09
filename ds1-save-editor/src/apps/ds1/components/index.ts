@@ -14,3 +14,7 @@ export { TermsFullPage } from './TermsFullPage';
 export { AboutFullPage } from './AboutFullPage';
 export { DS1TutorialPage } from './DS1TutorialPage';
 export { FixSavePage } from './FixSavePage';
+export { MergeExportPage } from './MergeExportPage';
+export { DualFileUpload } from './DualFileUpload';
+export { SlotGrid } from './SlotGrid';
+export { ConfirmModal } from './ConfirmModal';

@@ -28,7 +28,13 @@
       "Bash(test:*)",
       "Bash(node -e:*)",
       "Bash(node extract-ores-keys.js:*)",
-      "Bash(node extract-categories.js:*)"
+      "Bash(node extract-categories.js:*)",
+      "Bash(npx tsc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\Iho\\\\source\\\\repos\\\\DSRSave\")",
+      "Bash(npm run type-check:*)"
     ],
     "deny": [],
     "ask": []
