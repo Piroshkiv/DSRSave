@@ -197,6 +197,166 @@
           "offset": "0x15453",
           "bit": 0,
           "reverse": true
+        },
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xD5",
+          "bit": 7,
+          "reverse": false
+        },
+        {
+          "offset": "0xD6",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0xF94",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C8F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C94",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C95",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x469C",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x12762",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x14A59",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15453",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x17E97",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0xD5",
+          "bit": 7,
+          "reverse": false
+        },
+        {
+          "offset": "0xD6",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0xF94",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C8F",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C94",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C95",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x469C",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x12762",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x14A59",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15453",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x17E97",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C94",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C94",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x3C94",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x469C",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x12762",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15453",
+          "bit": 0,
+          "reverse": true
         }
       ]
     },
@@ -2427,6 +2587,46 @@
         {
           "offset": "0x16D6C",
           "bit": 1,
+          "reverse": true
+        }
+      ]
+    },
+    {
+      "name": "Crestfallen Warrior",
+      "bits": [
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x10D",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x10D",
+          "bit": 3,
+          "reverse": false
+        },
+        {
+          "offset": "0x1493",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x1495",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x12753",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D8F",
+          "bit": 0,
           "reverse": true
         }
       ]
