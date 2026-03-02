@@ -1,14 +1,18 @@
 import { useState, useCallback } from 'react';
 import { SaveFileEditor } from '../lib/SaveFileEditor';
+import { SaveFileEditorNintendo, detectPlatform } from '../lib/SaveFileEditorNintendo';
 import { Character } from '../lib/Character';
 import { FileHandle, getFileSystemAdapter } from '../lib/adapters';
 import { getFilePathFromHandle, extractFilename } from '../lib/filePathUtils';
 
+type SaveEditor = SaveFileEditor | SaveFileEditorNintendo;
+
 export interface UseDS1SaveEditorResult {
-  saveEditor: SaveFileEditor | null;
+  saveEditor: SaveEditor | null;
   characters: Character[];
   selectedCharacterIndex: number | null;
   originalFilename: string;
+  platform: 'pc' | 'nintendo' | 'unknown';
 
   handleFileLoaded: (file: File, fileHandle: FileHandle | null) => Promise<void>;
   handleCharacterSelect: (index: number) => void;
@@ -19,7 +23,8 @@ export interface UseDS1SaveEditorResult {
 }
 
 export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
-  const [saveEditor, setSaveEditor] = useState<SaveFileEditor | null>(null);
+  const [saveEditor, setSaveEditor] = useState<SaveEditor | null>(null);
+  const [platform, setPlatform] = useState<'pc' | 'nintendo' | 'unknown'>('unknown');
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number | null>(null);
   const [, setUpdateTrigger] = useState(0);
@@ -33,7 +38,18 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
       );
       setOriginalFilename(filePath);
 
-      const editor = await SaveFileEditor.fromFileData(file, fileHandle);
+      // Detect platform by file size
+      const detectedPlatform = detectPlatform(file.size);
+      setPlatform(detectedPlatform);
+
+      let editor: SaveEditor;
+      if (detectedPlatform === 'nintendo') {
+        editor = await SaveFileEditorNintendo.fromFileData(file, fileHandle);
+        console.log('Loaded Nintendo Switch save file');
+      } else {
+        editor = await SaveFileEditor.fromFileData(file, fileHandle);
+        console.log('Loaded PC save file');
+      }
 
       setSaveEditor(editor);
       const allCharacters = editor.getCharacters();
@@ -120,6 +136,7 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     characters,
     selectedCharacterIndex,
     originalFilename,
+    platform,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,

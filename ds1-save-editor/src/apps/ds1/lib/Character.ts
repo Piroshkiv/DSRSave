@@ -96,12 +96,12 @@ export class Character {
   }
 
   get name(): string {
-    return this.readUtf16String(0x108);
+    return this.readUtf16String(0x108, 34);
   }
 
   set name(value: string) {
-    this.writeUtf16String(0x108, value);
-    this.writeUtf16String(0x18C, value);
+    this.writeUtf16String(0x108, value, 34);
+    this.writeUtf16String(0x18C, value, 34);
   }
 
   // Stats methods
@@ -158,6 +158,14 @@ export class Character {
       throw new Error('NG+ offset out of range');
     }
     this.data[ngPlusOffset] = value & 0xFF;
+  }
+
+  get gender(): number {
+    return this.data[0x012A];
+  }
+
+  set gender(value: number) {
+    this.data[0x012A] = value & 0xFF;
   }
 
   get playerClass(): PlayerClass {

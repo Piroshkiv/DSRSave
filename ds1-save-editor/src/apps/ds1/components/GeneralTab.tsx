@@ -108,6 +108,12 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     onCharacterUpdate();
   };
 
+  const handleGenderChange = (value: string) => {
+    character.gender = parseInt(value, 10);
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
   const handleClassChange = (value: string) => {
     const newClass = parseInt(value, 10);
     if (!isNaN(newClass) && CLASS_BASE_STATS[newClass]) {
@@ -227,6 +233,17 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               onChange={(e) => handleNameChange(e.target.value)}
               maxLength={16}
             />
+          </div>
+
+          <div className="form-group">
+            <label>Gender</label>
+            <select
+              value={character.gender}
+              onChange={(e) => handleGenderChange(e.target.value)}
+            >
+              <option value={0}>Female</option>
+              <option value={1}>Male</option>
+            </select>
           </div>
 
           <div className="form-group">
