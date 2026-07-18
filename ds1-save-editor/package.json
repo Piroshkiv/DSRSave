@@ -23,6 +23,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node scripts/generate-seo-pages.js",
+    "build:dev": "tsc && vite build",
     "build:static": "tsc && vite build --mode static",
     "electron": "npm run build:static && electron .",
     "electron:dev": "electron .",
@@ -34,7 +35,7 @@
     "dist:mac": "npm run build:static && electron-builder --mac",
     "preview": "vite preview",
     "tauri": "tauri",
-    "tauri:dev": "tauri dev",
+    "tauri:dev": "tauri dev --config src-tauri/tauri.dev.conf.json",
     "tauri:build": "npm run build && tauri build",
     "tauri:build:win": "npm run build && tauri build --target x86_64-pc-windows-msvc"
   },

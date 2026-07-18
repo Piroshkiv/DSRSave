@@ -1,0 +1,3 @@
+value,mem_stat,mem_level,file_stat,file_level,saved,ok,bin
+15,15,14,15,14,True,True,DEX_15.bin
+16,16,15,16,15,True,True,DEX_16.bin

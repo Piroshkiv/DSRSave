@@ -43,6 +43,12 @@ export abstract class IFileSystemAdapter {
   abstract saveAsNewFile(data: Uint8Array, options?: SaveOptions): Promise<FileHandle | null>;
 
   /**
+   * Re-reads the current file contents from a handle (e.g. after an external change)
+   * @param handle - File handle from openFile()
+   */
+  abstract readFile(handle: FileHandle): Promise<File>;
+
+  /**
    * Checks if auto-loading last file is supported
    */
   abstract supportsAutoLoad(): boolean;

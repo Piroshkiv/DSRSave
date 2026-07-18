@@ -19,3 +19,4 @@ export { MergeExportPage } from './MergeExportPage';
 export { DualFileUpload } from './DualFileUpload';
 export { SlotGrid } from './SlotGrid';
 export { ConfirmModal } from './ConfirmModal';
+export { SaveWatcherTab } from './SaveWatcherTab';

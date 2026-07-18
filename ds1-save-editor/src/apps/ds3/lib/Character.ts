@@ -2,6 +2,10 @@ import {
   MAX_VALUES,
   CHARACTER_PATTERN,
   RELATIVE_OFFSETS,
+  PLAYTIME_OFFSET,
+  PLAYTIME_MS_PER_LEVEL_MIN,
+  PLAYTIME_MS_PER_LEVEL_MAX,
+  minSoulMemoryForLevel,
   PlayerClass,
   CLASS_NAMES,
   CLASS_STARTING_STATS,
@@ -394,6 +398,104 @@ export class DS3Character {
     this.data[offset + 1] = (value >> 8) & 0xFF;
     this.data[offset + 2] = (value >> 16) & 0xFF;
     this.data[offset + 3] = (value >> 24) & 0xFF;
+  }
+
+  // ===== SOUL MEMORY (Total Get Soul) =====
+  /**
+   * Get soul memory — total souls ever collected (4 bytes, Little-Endian)
+   */
+  get soulMemory(): number {
+    if (this.isEmpty) return 0;
+    const offset = this.getOffset('SOUL_MEMORY');
+    return (
+      this.data[offset] |
+      (this.data[offset + 1] << 8) |
+      (this.data[offset + 2] << 16) |
+      (this.data[offset + 3] << 24)
+    ) >>> 0;
+  }
+
+  /**
+   * Set soul memory (4 bytes, Little-Endian)
+   */
+  set soulMemory(value: number) {
+    // soul memory is a genuine u32 — allow the full range (level-802 floor ~3.16B > the souls cap)
+    value = Math.max(0, Math.min(0xFFFFFFFF, Math.floor(value)));
+    const offset = this.getOffset('SOUL_MEMORY');
+    this.data[offset] = value & 0xFF;
+    this.data[offset + 1] = (value >>> 8) & 0xFF;
+    this.data[offset + 2] = (value >>> 16) & 0xFF;
+    this.data[offset + 3] = (value >>> 24) & 0xFF;
+  }
+
+  /**
+   * Raise soul memory to at least the plausible minimum for the current level
+   * ((cumulative level-up cost + 20%) plus the souls currently held, since those
+   * were also collected). Never lowers an already-higher value.
+   */
+  enforceSoulMemoryFloor(): void {
+    if (this.isEmpty) return;
+    const floor = minSoulMemoryForLevel(this.level) + this.souls;
+    if (this.soulMemory < floor) this.soulMemory = floor;
+  }
+
+  /**
+   * Apply the side effects of a soul-level increase: credit plausible play time
+   * (random 3-5 min per level) and raise the soul-memory floor. Call with the
+   * level before an edit; if the current level is higher, the difference is credited.
+   */
+  applyLevelProgression(previousLevel: number): void {
+    if (this.isEmpty) return;
+    const gained = this.level - previousLevel;
+    if (gained > 0) {
+      let extraMs = 0;
+      for (let i = 0; i < gained; i++) {
+        extraMs += PLAYTIME_MS_PER_LEVEL_MIN +
+          Math.random() * (PLAYTIME_MS_PER_LEVEL_MAX - PLAYTIME_MS_PER_LEVEL_MIN);
+      }
+      this.playtimeMs = this.playtimeMs + Math.floor(extraMs);
+    }
+    this.enforceSoulMemoryFloor();
+  }
+
+  /**
+   * Apply the side effects of a held-souls edit: souls added by the editor count
+   * as collected, so soul memory grows by the same amount (it never shrinks when
+   * souls are removed — spending souls doesn't reduce Total Get Soul). Call with
+   * the souls value before the edit.
+   */
+  applySoulsProgression(previousSouls: number): void {
+    if (this.isEmpty) return;
+    const gained = this.souls - previousSouls;
+    if (gained > 0) {
+      this.soulMemory = this.soulMemory + gained;
+    }
+    this.enforceSoulMemoryFloor();
+  }
+
+  // ===== PLAY TIME =====
+  /**
+   * Get play time in milliseconds (4 bytes, Little-Endian, slot header offset — not pattern-relative)
+   */
+  get playtimeMs(): number {
+    if (this.isEmpty) return 0;
+    return (
+      this.data[PLAYTIME_OFFSET] |
+      (this.data[PLAYTIME_OFFSET + 1] << 8) |
+      (this.data[PLAYTIME_OFFSET + 2] << 16) |
+      (this.data[PLAYTIME_OFFSET + 3] << 24)
+    ) >>> 0;
+  }
+
+  /**
+   * Set play time in milliseconds (4 bytes, Little-Endian)
+   */
+  set playtimeMs(value: number) {
+    value = Math.max(0, Math.min(0xFFFFFFFF, Math.floor(value)));
+    this.data[PLAYTIME_OFFSET] = value & 0xFF;
+    this.data[PLAYTIME_OFFSET + 1] = (value >>> 8) & 0xFF;
+    this.data[PLAYTIME_OFFSET + 2] = (value >>> 16) & 0xFF;
+    this.data[PLAYTIME_OFFSET + 3] = (value >>> 24) & 0xFF;
   }
 
   // ===== PROGRESSION =====

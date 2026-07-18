@@ -121,6 +121,16 @@ export class WebFSAdapter extends IFileSystemAdapter {
     await writable.close();
   }
 
+  async readFile(handle: FileHandle): Promise<File> {
+    const fileHandle = handle as unknown as FileSystemFileHandle;
+
+    if (!fileHandle || !fileHandle.getFile) {
+      throw new Error('Invalid file handle or File System Access API not supported');
+    }
+
+    return fileHandle.getFile();
+  }
+
   async saveAsNewFile(data: Uint8Array, options?: SaveOptions): Promise<FileHandle | null> {
     // Try File System Access API
     if ('showSaveFilePicker' in window) {

@@ -22,6 +22,16 @@
           "offset": "0x16D7D",
           "bit": 1,
           "reverse": true
+        },
+        {
+          "offset": "0xFE",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0xFE",
+          "bit": 7,
+          "reverse": true
         }
       ]
     },

@@ -1,0 +1,2 @@
+pymem>=1.13
+pycryptodome>=3.20

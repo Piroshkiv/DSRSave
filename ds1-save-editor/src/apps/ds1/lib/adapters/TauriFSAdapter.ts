@@ -2,6 +2,7 @@
 // Uses @tauri-apps/plugin-dialog and @tauri-apps/plugin-fs
 
 import { IFileSystemAdapter, FileHandle, FileData, SaveOptions } from './IFileSystemAdapter';
+import { watchFileMtime, MtimeWatcher } from '../../../../shared/utils/watchFileMtime';
 
 // Tauri imports - these will be available when running in Tauri environment
 // To install: npm install @tauri-apps/plugin-dialog @tauri-apps/plugin-fs
@@ -16,8 +17,7 @@ export class TauriFSAdapter extends IFileSystemAdapter {
   private fs: any = null;
   private pluginsLoaded: Promise<void> | null = null;
   private readonly storageKey: string;
-  private pollInterval: ReturnType<typeof setInterval> | null = null;
-  private lastModified: number = 0;
+  private watcher: MtimeWatcher | null = null;
 
   constructor(storageKey = 'ds1_last_file_path') {
     super();
@@ -124,6 +124,20 @@ export class TauriFSAdapter extends IFileSystemAdapter {
 
     // Write file
     await this.fs.writeFile(tauriHandle.path, data);
+  }
+
+  async readFile(handle: FileHandle): Promise<File> {
+    await this.ensurePluginsLoaded();
+
+    const tauriHandle = handle as unknown as TauriFileHandle;
+    if (!tauriHandle.path) {
+      throw new Error('Invalid file handle');
+    }
+
+    const fileData = await this.fs.readFile(tauriHandle.path);
+    const blob = new Blob([fileData], { type: 'application/octet-stream' });
+    const fileName = this.getFileNameFromPath(tauriHandle.path);
+    return new File([blob], fileName, { type: 'application/octet-stream' });
   }
 
   async saveAsNewFile(data: Uint8Array, options?: SaveOptions): Promise<FileHandle | null> {
@@ -236,34 +250,15 @@ export class TauriFSAdapter extends IFileSystemAdapter {
 
   async watchFile(handle: FileHandle, callback: () => void): Promise<() => void> {
     await this.unwatchFile();
-    await this.ensurePluginsLoaded();
 
     const tauriHandle = handle as unknown as TauriFileHandle;
     if (!tauriHandle.path) {
       return () => {};
     }
 
-    // Check initial file modification time
-    try {
-      const stat = await this.fs.stat(tauriHandle.path);
-      this.lastModified = stat.mtime?.getTime?.() || Date.now();
-    } catch {
-      this.lastModified = Date.now();
-    }
-
-    // Poll for changes every 3 seconds
-    this.pollInterval = setInterval(async () => {
-      try {
-        const stat = await this.fs.stat(tauriHandle.path);
-        const currentModified = stat.mtime?.getTime?.() || 0;
-        if (currentModified > this.lastModified) {
-          this.lastModified = currentModified;
-          console.log('[TauriFSAdapter] Detected file change via polling');
-          callback();
-        }
-      } catch (err) {
-        console.warn('[TauriFSAdapter] Polling error:', err);
-      }
+    this.watcher = await watchFileMtime(tauriHandle.path, () => {
+      console.log('[TauriFSAdapter] Detected file change via polling');
+      callback();
     }, 3000);
 
     console.log('[TauriFSAdapter] File watching started (3s polling)');
@@ -271,10 +266,9 @@ export class TauriFSAdapter extends IFileSystemAdapter {
   }
 
   async unwatchFile(): Promise<void> {
-    if (this.pollInterval) {
-      clearInterval(this.pollInterval);
-      this.pollInterval = null;
+    if (this.watcher) {
+      this.watcher.stop();
+      this.watcher = null;
     }
-    this.lastModified = 0;
   }
 }

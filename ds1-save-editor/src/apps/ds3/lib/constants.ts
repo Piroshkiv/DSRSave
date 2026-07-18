@@ -21,6 +21,7 @@ export const RELATIVE_OFFSETS = {
   NAME: -0xC8,
 
   SOULS: -0xDC,
+  SOUL_MEMORY: -0xD8, // "Total Get Soul" — total souls ever collected (soul memory), 4 bytes
   LEVEL: -0xE0,
 
   VIGOR: -0x10C,
@@ -43,6 +44,41 @@ export const RELATIVE_OFFSETS = {
   CLASS: -0xA2,
   WEAPON_MEMORY: -0x9D,
 } as const;
+
+// Play time in milliseconds, u32 LE. Absolute offset in the decrypted slot header
+// (not pattern-relative). The game trusts this value and continues counting from it.
+export const PLAYTIME_OFFSET = 0x0C;
+
+// Extra play time credited per gained soul level, to keep playtime plausible for
+// an edited level. A random duration in [MIN, MAX] is rolled per level so the
+// resulting timestamp doesn't look machine-generated.
+export const PLAYTIME_MS_PER_LEVEL_MIN = 3 * 60 * 1000;
+export const PLAYTIME_MS_PER_LEVEL_MAX = 5 * 60 * 1000;
+
+// Souls required to go FROM (level-1) TO the given soul level.
+// Source: DS3 wiki — levels 2-12 are fixed values (index 0 = cost of level 2);
+// level 13+ uses y = 0.02x³ + 3.06x² + 105.6x − 895
+// (verified against the wiki table: L13=1038, L15=1445, L20=2601).
+const EARLY_LEVEL_COSTS = [673, 690, 707, 724, 741, 759, 778, 797, 816, 836, 856];
+
+export function levelUpCost(level: number): number {
+  if (level <= 1) return 0;
+  if (level <= 12) return EARLY_LEVEL_COSTS[level - 2];
+  return Math.floor(0.02 * level ** 3 + 3.06 * level ** 2 + 105.6 * level - 895);
+}
+
+// Cumulative souls spent to reach a soul level from level 1 (sum of per-level costs).
+export function cumulativeLevelCost(level: number): number {
+  let total = 0;
+  for (let l = 2; l <= level; l++) total += levelUpCost(l);
+  return total;
+}
+
+// Minimum plausible soul memory ("Total Get Soul") for a given soul level:
+// everything spent on leveling, plus a 20% margin for souls spent elsewhere.
+export function minSoulMemoryForLevel(level: number): number {
+  return Math.floor(cumulativeLevelCost(level) * 1.2);
+}
 
 // Maximum values
 export const MAX_VALUES = {

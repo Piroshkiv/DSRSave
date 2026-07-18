@@ -232,7 +232,10 @@ export class DS3SaveFileEditor {
     // Recalculate level for all characters before export
     for (const character of this.characters) {
       if (!character.isEmpty) {
+        const prevLevel = character.level;
         character.level = this.calculateLevelForCharacter(character);
+        // Credit playtime/soul memory if the level changed outside the UI handlers
+        character.applyLevelProgression(prevLevel);
       }
     }
 

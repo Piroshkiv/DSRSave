@@ -51,6 +51,7 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
     originalFilename,
     platform,
     autoDetect,
+    autoDetectAvailable,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
@@ -71,6 +72,17 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
   useEffect(() => {
     if (saveEditor) setLoadedAt(new Date());
   }, [saveEditor]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (import.meta.env.DEV && e.ctrlKey && e.shiftKey && e.key === 'W') {
+        e.preventDefault();
+        navigate('/ds1/save-watcher');
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [navigate]);
 
   const handleTutorial = () => navigate('/ds1/tutorial');
 
@@ -206,17 +218,19 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
               <button className="ds1-action-btn" onClick={handleReload}>
                 ⟳ {t('reload', lang)}
               </button>
-              <button
-                className="ds1-safemode-btn"
-                onClick={() => setAutoDetect(!autoDetect)}
-                title={t('autoDetectChangesTitle', lang)}
-              >
-                <span className={`ds1-safemode-dot ${autoDetect ? 'on' : 'off'}`}>●</span>
-                {t('autoDetectChanges', lang)}
-                <span className={`ds1-safemode-badge ${autoDetect ? 'on' : 'off'}`}>
-                  {autoDetect ? t('on', lang) : t('off', lang)}
-                </span>
-              </button>
+              {autoDetectAvailable && (
+                <button
+                  className="ds1-safemode-btn"
+                  onClick={() => setAutoDetect(!autoDetect)}
+                  title={t('autoDetectChangesTitle', lang)}
+                >
+                  <span className={`ds1-safemode-dot ${autoDetect ? 'on' : 'off'}`}>●</span>
+                  {t('autoDetectChanges', lang)}
+                  <span className={`ds1-safemode-badge ${autoDetect ? 'on' : 'off'}`}>
+                    {autoDetect ? t('on', lang) : t('off', lang)}
+                  </span>
+                </button>
+              )}
               <button
                 className="ds1-safemode-btn"
                 onClick={() => setSafeMode(v => !v)}

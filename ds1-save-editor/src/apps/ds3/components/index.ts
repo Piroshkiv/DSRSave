@@ -6,3 +6,4 @@ export { ItemEditDialog } from './ItemEditDialog';
 export { TabPanel } from './TabPanel';
 export { SaveWarningModal } from './SaveWarningModal';
 export { OffsetSearchTab } from './OffsetSearchTab';
+export { SaveWatcherTab } from './SaveWatcherTab';
