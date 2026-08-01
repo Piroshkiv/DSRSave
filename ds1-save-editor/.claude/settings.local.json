@@ -64,7 +64,11 @@
       "Bash(Get-Member)",
       "PowerShell($json = Get-Content \"C:\\\\Users\\\\Iho\\\\source\\\\repos\\\\DSRSave\\\\ds1-save-editor\\\\public\\\\json\\\\items.json\" | ConvertFrom-Json; $json.specials | ConvertTo-Json)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Iho\\\\source\\\\repos\\\\DSRSave\" -Filter \"*.cs\" -Recurse)",
-      "Bash(Select-Object -ExpandProperty FullName)"
+      "Bash(Select-Object -ExpandProperty FullName)",
+
+      "Read(//c/Users/daochen/Desktop/**)",
+      "Read(//c/Users/daochen/Desktop/Darksoul//**)"
+
     ],
     "deny": [],
     "ask": []

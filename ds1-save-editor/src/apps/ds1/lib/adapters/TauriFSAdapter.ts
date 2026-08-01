@@ -2,6 +2,7 @@
 // Uses @tauri-apps/plugin-dialog and @tauri-apps/plugin-fs
 
 import { IFileSystemAdapter, FileHandle, FileData, SaveOptions } from './IFileSystemAdapter';
+import { watchFileMtime, MtimeWatcher } from '../../../../shared/utils/watchFileMtime';
 
 // Tauri imports - these will be available when running in Tauri environment
 // To install: npm install @tauri-apps/plugin-dialog @tauri-apps/plugin-fs
@@ -16,6 +17,7 @@ export class TauriFSAdapter extends IFileSystemAdapter {
   private fs: any = null;
   private pluginsLoaded: Promise<void> | null = null;
   private readonly storageKey: string;
+  private watcher: MtimeWatcher | null = null;
 
   constructor(storageKey = 'ds1_last_file_path') {
     super();
@@ -124,6 +126,20 @@ export class TauriFSAdapter extends IFileSystemAdapter {
     await this.fs.writeFile(tauriHandle.path, data);
   }
 
+  async readFile(handle: FileHandle): Promise<File> {
+    await this.ensurePluginsLoaded();
+
+    const tauriHandle = handle as unknown as TauriFileHandle;
+    if (!tauriHandle.path) {
+      throw new Error('Invalid file handle');
+    }
+
+    const fileData = await this.fs.readFile(tauriHandle.path);
+    const blob = new Blob([fileData], { type: 'application/octet-stream' });
+    const fileName = this.getFileNameFromPath(tauriHandle.path);
+    return new File([blob], fileName, { type: 'application/octet-stream' });
+  }
+
   async saveAsNewFile(data: Uint8Array, options?: SaveOptions): Promise<FileHandle | null> {
     await this.ensurePluginsLoaded();
 
@@ -207,9 +223,52 @@ export class TauriFSAdapter extends IFileSystemAdapter {
     }
   }
 
+  async getLastFileName(): Promise<string | null> {
+    const lastFileInfoStr = localStorage.getItem(this.storageKey);
+    if (!lastFileInfoStr) {
+      return null;
+    }
+
+    try {
+      const lastFileInfo = JSON.parse(lastFileInfoStr);
+      return lastFileInfo.fileName || null;
+    } catch {
+      return null;
+    }
+  }
+
+  async requestLastFilePermission(): Promise<FileData | null> {
+    // Tauri doesn't need permission requests, just load the file
+    return this.loadLastFile();
+  }
+
   private getFileNameFromPath(path: string): string {
     // Handle both Windows and Unix paths
     const parts = path.replace(/\\/g, '/').split('/');
     return parts[parts.length - 1] || 'unknown.sl2';
+  }
+
+  async watchFile(handle: FileHandle, callback: () => void): Promise<() => void> {
+    await this.unwatchFile();
+
+    const tauriHandle = handle as unknown as TauriFileHandle;
+    if (!tauriHandle.path) {
+      return () => {};
+    }
+
+    this.watcher = await watchFileMtime(tauriHandle.path, () => {
+      console.log('[TauriFSAdapter] Detected file change via polling');
+      callback();
+    }, 3000);
+
+    console.log('[TauriFSAdapter] File watching started (3s polling)');
+    return () => this.unwatchFile();
+  }
+
+  async unwatchFile(): Promise<void> {
+    if (this.watcher) {
+      this.watcher.stop();
+      this.watcher = null;
+    }
   }
 }

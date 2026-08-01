@@ -1,12 +1,15 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { SaveFileEditor } from '../lib/SaveFileEditor';
 import { SaveFileEditorNintendo, detectPlatform } from '../lib/SaveFileEditorNintendo';
 import { SaveFileEditorPS4 } from '../lib/SaveFileEditorPS4';
 import { Character } from '../lib/Character';
-import { FileHandle, getFileSystemAdapter } from '../lib/adapters';
+import { FileHandle, getFileSystemAdapter, detectEnvironment } from '../lib/adapters';
 import { getFilePathFromHandle, extractFilename } from '../lib/filePathUtils';
 
 type SaveEditor = SaveFileEditor | SaveFileEditorNintendo | SaveFileEditorPS4;
+
+// Auto-detect works reliably only in Tauri (web FileSystemObserver/permissions are flaky)
+const AUTO_DETECT_AVAILABLE = detectEnvironment() === 'tauri';
 
 export interface UseDS1SaveEditorResult {
   saveEditor: SaveEditor | null;
@@ -14,13 +17,16 @@ export interface UseDS1SaveEditorResult {
   selectedCharacterIndex: number | null;
   originalFilename: string;
   platform: 'pc' | 'nintendo' | 'ps4' | 'unknown';
+  autoDetect: boolean;
+  autoDetectAvailable: boolean;
 
-  handleFileLoaded: (file: File, fileHandle: FileHandle | null) => Promise<void>;
+  handleFileLoaded: (file: File, fileHandle: FileHandle | null, opts?: { preserveSelection?: boolean }) => Promise<void>;
   handleCharacterSelect: (index: number) => void;
   handleCharacterUpdate: () => void;
   handleSave: () => Promise<void>;
   handleSaveAs: () => Promise<void>;
   handleReload: () => Promise<void>;
+  setAutoDetect: (value: boolean) => void;
 }
 
 export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
@@ -30,8 +36,13 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
   const [selectedCharacterIndex, setSelectedCharacterIndex] = useState<number | null>(null);
   const [, setUpdateTrigger] = useState(0);
   const [originalFilename, setOriginalFilename] = useState<string>('DRAKS0005.sl2');
+  const [autoDetect, setAutoDetect] = useState(() => {
+    // Tauri-only, off by default — the user opts in explicitly
+    return AUTO_DETECT_AVAILABLE && localStorage.getItem('ds1-auto-detect') === 'on';
+  });
+  const stopWatchRef = useRef<(() => void) | null>(null);
 
-  const handleFileLoaded = useCallback(async (file: File, fileHandle: FileHandle | null) => {
+  const handleFileLoaded = useCallback(async (file: File, fileHandle: FileHandle | null, opts?: { preserveSelection?: boolean }) => {
     try {
       const filePath = await getFilePathFromHandle(
         file,
@@ -62,7 +73,12 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
       setCharacters(displayedCharacters);
 
       const firstNonEmptyIndex = displayedCharacters.findIndex(char => !char.isEmpty);
-      setSelectedCharacterIndex(firstNonEmptyIndex !== -1 ? firstNonEmptyIndex : null);
+      // On reload keep the current selection as long as that slot still has a character
+      setSelectedCharacterIndex(prev =>
+        opts?.preserveSelection && prev !== null && displayedCharacters[prev] && !displayedCharacters[prev].isEmpty
+          ? prev
+          : (firstNonEmptyIndex !== -1 ? firstNonEmptyIndex : null)
+      );
     } catch (error) {
       console.error('Error loading save file:', error);
       alert('Error loading save file. Please make sure it is a valid Dark Souls save file.');
@@ -118,14 +134,11 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
       if (saveEditor.hasFileHandle()) {
         const fileHandle = saveEditor.getFileHandle();
         if (fileHandle) {
+          // Re-read through the adapter — a web handle exposes getFile(),
+          // a Tauri handle is just { path } and must be read via plugin-fs
           const adapter = getFileSystemAdapter();
-          const fileData = await adapter.loadLastFile();
-
-          if (fileData) {
-            await handleFileLoaded(fileData.file, fileData.handle);
-          } else {
-            alert('Cannot reload: unable to access the file. Please load the file again.');
-          }
+          const file = await adapter.readFile(fileHandle);
+          await handleFileLoaded(file, fileHandle, { preserveSelection: true });
         }
       } else {
         alert('Cannot reload: no file handle available. Please load the file again.');
@@ -136,17 +149,62 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     }
   }, [saveEditor, handleFileLoaded]);
 
+  // Auto-detect file changes
+  useEffect(() => {
+    if (!AUTO_DETECT_AVAILABLE || !saveEditor?.hasFileHandle() || !autoDetect) {
+      // Stop watching if no file handle or auto-detect is off
+      if (stopWatchRef.current) {
+        stopWatchRef.current();
+        stopWatchRef.current = null;
+      }
+      return;
+    }
+
+    const adapter = getFileSystemAdapter();
+    const fileHandle = saveEditor.getFileHandle();
+
+    if (!fileHandle) return;
+
+    console.log('[useDS1SaveEditor] Starting file watcher');
+
+    adapter.watchFile(fileHandle, () => {
+      console.log('[useDS1SaveEditor] File changed, auto-reloading...');
+      handleReload();
+    }).then(stop => {
+      stopWatchRef.current = stop;
+    });
+
+    return () => {
+      if (stopWatchRef.current) {
+        stopWatchRef.current();
+        stopWatchRef.current = null;
+      }
+    };
+  }, [saveEditor, autoDetect, handleReload]);
+
+  // Persist autoDetect preference
+  useEffect(() => {
+    localStorage.setItem('ds1-auto-detect', autoDetect ? 'on' : 'off');
+  }, [autoDetect]);
+
+  const setAutoDetectValue = useCallback((value: boolean) => {
+    setAutoDetect(value);
+  }, []);
+
   return {
     saveEditor,
     characters,
     selectedCharacterIndex,
     originalFilename,
     platform,
+    autoDetect,
+    autoDetectAvailable: AUTO_DETECT_AVAILABLE,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
     handleSave,
     handleSaveAs,
     handleReload,
+    setAutoDetect: setAutoDetectValue,
   };
 };

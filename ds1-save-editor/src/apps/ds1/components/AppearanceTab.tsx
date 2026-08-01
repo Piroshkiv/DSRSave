@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 import {
-  PHYSIQUE_NAMES,
-  HAIRSTYLE_FEMALE,
-  HAIRSTYLE_MALE,
+  PHYSIQUE_NAMES_EN, PHYSIQUE_NAMES_ZH,
+  HAIRSTYLE_FEMALE_EN, HAIRSTYLE_FEMALE_ZH,
+  HAIRSTYLE_MALE_EN, HAIRSTYLE_MALE_ZH,
   HAIRSTYLE_SAVE_BASE,
   FACE_PARAM_LABELS,
 } from '../lib/constants';
@@ -118,6 +120,7 @@ const HexField: React.FC<HexFieldProps> = ({ value, onChange }) => {
 };
 
 export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onCharacterUpdate }) => {
+  const { lang } = useLang();
   const [, forceUpdate] = useState({});
   const [faceExpanded, setFaceExpanded] = useState(false);
   const [skinExpanded, setSkinExpanded] = useState(false);
@@ -127,7 +130,9 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
   const colorMax = safeMode ? 1 : 10;
 
   const hairstyleIndex = Math.max(0, Math.min(9, character.hairstyle - HAIRSTYLE_SAVE_BASE));
-  const hairstyleNames = character.gender === 0 ? HAIRSTYLE_FEMALE : HAIRSTYLE_MALE;
+  const hairstyleNames = character.gender === 0
+    ? (lang === 'zh' ? HAIRSTYLE_FEMALE_ZH : HAIRSTYLE_FEMALE_EN)
+    : (lang === 'zh' ? HAIRSTYLE_MALE_ZH : HAIRSTYLE_MALE_EN);
   const hairColor = character.getHairColor();
   const eyeColor = character.getEyeColor();
   const faceData = character.getFaceData();
@@ -208,27 +213,21 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
       {/* ── Preset block ── */}
       <div className="appearance-preset-block">
         <div className="appearance-preset-info">
-          <div className="appearance-preset-title">.dsrchr Appearance Presets</div>
+          <div className="appearance-preset-title">{t('appearance', lang)} .dsrchr Presets</div>
           <div className="appearance-preset-desc">
-            Compatible with{' '}
-            <a
-              href="https://www.nexusmods.com/darksoulsremastered/mods/713?tab=posts"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="appearance-preset-link"
-            >
-              DSR Appearance Preset Tool
-            </a>{' '}
-            by <span className="appearance-preset-author">BobDoleOwndU</span>.
-            Import a <code>.dsrchr</code> file to apply all appearance data, or export the current character.
+            {lang === 'zh' ? (
+              <>与 <a href="https://www.nexusmods.com/darksoulsremastered/mods/713?tab=posts" target="_blank" rel="noopener noreferrer" className="appearance-preset-link">DSR Appearance Preset Tool</a> (作者 <span className="appearance-preset-author">BobDoleOwndU</span>) 兼容。导入 .dsrchr 文件以应用所有外观数据，或导出当前角色。</>
+            ) : (
+              <>Compatible with{' '}<a href="https://www.nexusmods.com/darksoulsremastered/mods/713?tab=posts" target="_blank" rel="noopener noreferrer" className="appearance-preset-link">DSR Appearance Preset Tool</a>{' '}by <span className="appearance-preset-author">BobDoleOwndU</span>. Import a .dsrchr file to apply all appearance data, or export the current character.</>
+            )}
           </div>
         </div>
         <div className="appearance-preset-buttons">
           <button className="action-button" onClick={() => importRef.current?.click()}>
-            ↑ Import .dsrchr
+            ↑ {t('importDsrchr', lang)}
           </button>
           <button className="action-button" onClick={handleExport}>
-            ↓ Export .dsrchr
+            ↓ {t('exportDsrchr', lang)}
           </button>
         </div>
         <input ref={importRef} type="file" accept=".dsrchr" style={{ display: 'none' }} onChange={handleImport} />
@@ -239,27 +238,27 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
 
         {/* Left: Appearance + Hair Color */}
         <div className="appearance-left">
-          <h3>Appearance</h3>
+          <h3>{t('appearance', lang)}</h3>
 
           <div className="form-group">
-            <label>Gender</label>
+            <label>{t('gender', lang)}</label>
             <select value={character.gender} onChange={e => handleGender(e.target.value)}>
-              <option value={0}>Female</option>
-              <option value={1}>Male</option>
+              <option value={0}>{t('female', lang)}</option>
+              <option value={1}>{t('male', lang)}</option>
             </select>
           </div>
 
           <div className="form-group">
-            <label>Physique</label>
+            <label>{t('physique', lang)}</label>
             <select value={character.physique} onChange={e => handlePhysique(e.target.value)}>
-              {PHYSIQUE_NAMES.map((name, i) => (
+              {(lang === 'zh' ? PHYSIQUE_NAMES_ZH : PHYSIQUE_NAMES_EN).map((name, i) => (
                 <option key={i} value={i}>{name}</option>
               ))}
             </select>
           </div>
 
           <div className="form-group">
-            <label>Hairstyle</label>
+            <label>{t('hairstyle', lang)}</label>
             <select value={hairstyleIndex} onChange={e => handleHairstyle(e.target.value)}>
               {hairstyleNames.map((name, i) => (
                 <option key={i} value={i}>{name}</option>
@@ -268,30 +267,30 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
           </div>
 
           <div className="appearance-mode-row">
-            <span className="appearance-mode-label">Color range:</span>
+            <span className="appearance-mode-label">{t('colorRange', lang)}</span>
             <button
               className={`appearance-mode-btn ${safeMode ? 'active' : ''}`}
               onClick={() => setSafeMode(true)}
             >
-              Safe (0–1)
+              {t('safe', lang)}
             </button>
             <button
               className={`appearance-mode-btn ${!safeMode ? 'active' : ''}`}
               onClick={() => setSafeMode(false)}
             >
-              Unsafe (0–10)
+              {t('unsafe', lang)}
             </button>
           </div>
           {!safeMode && (
             <div className="appearance-unsafe-warning">
-              Values above 1.0 will prevent online multiplayer — you won't get banned, but other players won't be able to connect to you.
+              {t('unsafeWarning', lang)}
             </div>
           )}
 
-          <h3>Eye Color</h3>
+          <h3>{t('eyeColor', lang)}</h3>
           <div className="appearance-color-row">
             <div className="appearance-color-group">
-              <div className="appearance-color-note">In-game max is 1.0 — higher values increase saturation</div>
+              <div className="appearance-color-note">{t('gameMax', lang)}</div>
               <FloatChannel label="R" value={eyeColor[0]} max={colorMax} onChange={v => setEye(0, v)} />
               <FloatChannel label="G" value={eyeColor[1]} max={colorMax} onChange={v => setEye(1, v)} />
               <FloatChannel label="B" value={eyeColor[2]} max={colorMax} onChange={v => setEye(2, v)} />
@@ -301,7 +300,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
                 className="appearance-color-swatch"
                 style={{ background: `rgb(${floatToDisplayByte(eyeColor[0])},${floatToDisplayByte(eyeColor[1])},${floatToDisplayByte(eyeColor[2])})` }}
               />
-              <div className="appearance-swatch-note">Approximate</div>
+              <div className="appearance-swatch-note">{t('approximate', lang)}</div>
             </div>
           </div>
         </div>
@@ -309,10 +308,10 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
         {/* Right: Hair Color + Face Data + Skin Color */}
         <div className="appearance-right">
 
-          <h3>Hair Color</h3>
+          <h3>{t('hairColor', lang)}</h3>
           <div className="appearance-color-row">
             <div className="appearance-color-group">
-              <div className="appearance-color-note">In-game max is 1.0 — higher values increase saturation</div>
+              <div className="appearance-color-note">{t('gameMax', lang)}</div>
               <FloatChannel label="R" value={hairColor[0]} max={colorMax} onChange={v => setHair(0, v)} />
               <FloatChannel label="G" value={hairColor[1]} max={colorMax} onChange={v => setHair(1, v)} />
               <FloatChannel label="B" value={hairColor[2]} max={colorMax} onChange={v => setHair(2, v)} />
@@ -322,7 +321,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
                 className="appearance-color-swatch"
                 style={{ background: `rgb(${floatToDisplayByte(hairColor[0])},${floatToDisplayByte(hairColor[1])},${floatToDisplayByte(hairColor[2])})` }}
               />
-              <div className="appearance-swatch-note">Approximate</div>
+              <div className="appearance-swatch-note">{t('approximate', lang)}</div>
             </div>
           </div>
 
@@ -332,17 +331,17 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
             onClick={() => setFaceExpanded(v => !v)}
             style={{ marginTop: '1rem' }}
           >
-            <span>Face Data (50 bytes)</span>
+            <span>{t('faceData', lang)}</span>
             <span className="expand-icon">{faceExpanded ? '▲' : '▼'}</span>
           </div>
           {faceExpanded && (
             <div className="appearance-section-body">
-              <div className="appearance-hex-label">Full 50 bytes (hex)</div>
+              <div className="appearance-hex-label">{t('fullHex', lang)}</div>
               <HexField
                 value={faceData}
                 onChange={bytes => { character.setFaceData(bytes); update(); }}
               />
-              <div className="appearance-params-divider">Parameters (bytes 0–31)</div>
+              <div className="appearance-params-divider">{t('params', lang)}</div>
               <div className="face-params-list">
                 {FACE_PARAM_LABELS.map((label, i) => (
                   <div key={i} className="face-param-row">
@@ -369,7 +368,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
                   </div>
                 ))}
               </div>
-              <div className="appearance-params-divider">Bytes 32–49 (unlabeled)</div>
+              <div className="appearance-params-divider">{t('unlabeled', lang)}</div>
               <HexField
                 value={faceData.slice(32, 50)}
                 onChange={bytes => {
@@ -387,7 +386,7 @@ export const AppearanceTab: React.FC<AppearanceTabProps> = ({ character, onChara
             onClick={() => setSkinExpanded(v => !v)}
             style={{ marginTop: '0.75rem' }}
           >
-            <span>Skin Color (50 bytes)</span>
+            <span>{t('skinColor', lang)}</span>
             <span className="expand-icon">{skinExpanded ? '▲' : '▼'}</span>
           </div>
           {skinExpanded && (

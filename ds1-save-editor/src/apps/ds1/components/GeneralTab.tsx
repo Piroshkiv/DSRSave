@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 import { NumberInput } from './NumberInput';
 
 interface GeneralTabProps {
@@ -10,17 +12,28 @@ interface GeneralTabProps {
 
 const STAT_ORDER = ['VIT', 'ATN', 'END', 'STR', 'DEX', 'RES', 'INT', 'FTH'];
 
-const CLASS_NAMES: Record<number, string> = {
-  0: 'Warrior',
-  1: 'Knight',
-  2: 'Wanderer',
-  3: 'Thief',
-  4: 'Bandit',
-  5: 'Hunter',
-  6: 'Sorcerer',
-  7: 'Pyromancer',
-  8: 'Cleric',
-  9: 'Deprived'
+const STAT_I18N_KEYS: Record<string, string> = {
+  VIT: 'statVIT',
+  ATN: 'statATN',
+  END: 'statEND',
+  STR: 'statSTR',
+  DEX: 'statDEX',
+  RES: 'statRES',
+  INT: 'statINT',
+  FTH: 'statFTH',
+};
+
+const CLASS_KEYS: Record<number, string> = {
+  0: 'classWarrior',
+  1: 'classKnight',
+  2: 'classWanderer',
+  3: 'classThief',
+  4: 'classBandit',
+  5: 'classHunter',
+  6: 'classSorcerer',
+  7: 'classPyromancer',
+  8: 'classCleric',
+  9: 'classDeprived',
 };
 
 // Starting stats for each class
@@ -39,6 +52,7 @@ const CLASS_BASE_STATS: Record<number, { level: number; stats: Record<string, nu
 };
 
 export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUpdate, safeMode }) => {
+  const { lang } = useLang();
   const [, forceUpdate] = useState({});
 
   const calculateLevel = (): number => {
@@ -187,10 +201,10 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     <div className="general-tab-compact">
       <div className="compact-layout">
         <div className="stats-column">
-          <h3>Stats</h3>
+          <h3>{t('stats', lang)}</h3>
           <div className="stats-list">
             <div className="stat-row">
-              <label>Level</label>
+              <label>{t('level', lang)}</label>
               <NumberInput
                 value={character.level}
                 onChange={handleLevelChange}
@@ -201,7 +215,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
             </div>
             {STAT_ORDER.map((statName) => (
               <div key={statName} className="stat-row">
-                <label>{statName}</label>
+                <label>{t(STAT_I18N_KEYS[statName], lang)}</label>
                 <NumberInput
                   value={character.getStat(statName)}
                   onChange={(value) => handleStatChange(statName, value)}
@@ -211,7 +225,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               </div>
             ))}
             <div className="stat-row">
-              <label>Humanity</label>
+              <label>{t('humanity', lang)}</label>
               <NumberInput
                 value={character.humanity}
                 onChange={handleHumanityChange}
@@ -223,10 +237,10 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
         </div>
 
         <div className="info-column">
-          <h3>General</h3>
+          <h3>{t('general', lang)}</h3>
 
           <div className="form-group">
-            <label>Name</label>
+            <label>{t('name', lang)}</label>
             <input
               type="text"
               value={character.name}
@@ -236,25 +250,25 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           </div>
 
           <div className="form-group">
-            <label>Gender</label>
+            <label>{t('gender', lang)}</label>
             <select
               value={character.gender}
               onChange={(e) => handleGenderChange(e.target.value)}
             >
-              <option value={0}>Female</option>
-              <option value={1}>Male</option>
+              <option value={0}>{t('female', lang)}</option>
+              <option value={1}>{t('male', lang)}</option>
             </select>
           </div>
 
           <div className="form-group">
-            <label>Class</label>
+            <label>{t('class_label', lang)}</label>
             <select
               value={character.playerClass}
               onChange={(e) => handleClassChange(e.target.value)}
             >
-              {Object.entries(CLASS_NAMES).map(([classId, className]) => (
+              {Object.entries(CLASS_KEYS).map(([classId, classKey]) => (
                 <option key={classId} value={classId}>
-                  {className}
+                  {t(classKey, lang)}
                 </option>
               ))}
             </select>
@@ -262,7 +276,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           <div className="form-row">
             <div className="form-group">
-              <label>HP</label>
+              <label>{t('hp', lang)}</label>
               <NumberInput
                 value={character.hp}
                 onChange={handleHpChange}
@@ -272,7 +286,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               />
             </div>
             <div className="form-group">
-              <label>Souls</label>
+              <label>{t('souls', lang)}</label>
               <NumberInput
                 value={character.souls}
                 onChange={handleSoulsChange}
@@ -284,7 +298,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           <div className="form-row">
             <div className="form-group">
-              <label>Stamina</label>
+              <label>{t('stamina', lang)}</label>
               <NumberInput
                 value={character.stamina}
                 onChange={handleStaminaChange}
@@ -294,7 +308,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               />
             </div>
             <div className="form-group">
-              <label>NG+</label>
+              <label>{t('ngPlus', lang)}</label>
               <NumberInput
                 value={character.ngPlus}
                 onChange={handleNgPlusChange}

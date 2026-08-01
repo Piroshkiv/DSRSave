@@ -7,8 +7,8 @@ import { DS3App } from '../apps/ds3/DS3App';
 import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
 import { ErrorBoundary } from './ErrorBoundary';
-import { AboutFullPage, TermsFullPage, DS1TutorialPage, FixSavePage, MergeExportPage } from '../apps/ds1/components';
-import { OffsetSearchTab } from '../apps/ds3/components';
+import { AboutFullPage, TermsFullPage, DS1TutorialPage, FixSavePage, MergeExportPage, SaveWatcherTab as DS1SaveWatcherTab } from '../apps/ds1/components';
+import { OffsetSearchTab, SaveWatcherTab } from '../apps/ds3/components';
 
 // Wrapper to use ErrorPage with React Router hooks
 const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
@@ -188,6 +188,18 @@ const DS3OffsetSearchWrapper: React.FC = () => {
   return <OffsetSearchTab onClose={() => navigate('/ds3')} />;
 };
 
+// DS3 Save Watcher Page Wrapper
+const DS3SaveWatcherWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <SaveWatcherTab onClose={() => navigate('/ds3')} />;
+};
+
+// DS1 Save Watcher Page Wrapper
+const DS1SaveWatcherWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <DS1SaveWatcherTab onClose={() => navigate('/ds1')} />;
+};
+
 export const Router: React.FC = () => {
   return (
     <ErrorBoundary>
@@ -207,8 +219,14 @@ export const Router: React.FC = () => {
           <Route path="/ds1/tutorial" element={<DS1TutorialPageWrapper />} />
           <Route path="/ds1/fix-save" element={<FixSavePageWrapper />} />
           <Route path="/ds1/merge-export" element={<MergeExportPageWrapper />} />
+          {import.meta.env.DEV && (
+            <Route path="/ds1/save-watcher" element={<DS1SaveWatcherWrapper />} />
+          )}
           <Route path="/ds3" element={<DS3AppWrapper />} />
           <Route path="/ds3/offset-search" element={<DS3OffsetSearchWrapper />} />
+          {import.meta.env.DEV && (
+            <Route path="/ds3/save-watcher" element={<DS3SaveWatcherWrapper />} />
+          )}
           <Route path="/eldenring" element={<ComingSoon title="Elden Ring" gameId="eldenring" />} />
 
           {/* 404 - catch all unknown routes */}

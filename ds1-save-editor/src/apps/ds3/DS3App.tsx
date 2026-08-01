@@ -74,6 +74,10 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
         e.preventDefault();
         navigate('/ds3/offset-search');
       }
+      if (import.meta.env.DEV && e.ctrlKey && e.shiftKey && e.key === 'W') {
+        e.preventDefault();
+        navigate('/ds3/save-watcher');
+      }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);

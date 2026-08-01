@@ -22,7 +22,8 @@
     "withGlobalTauri": true,
     "security": {
       "csp": null,
-      "devCsp": null
+      "devCsp": null,
+      "capabilities": ["default"]
     }
   },
   "bundle": {

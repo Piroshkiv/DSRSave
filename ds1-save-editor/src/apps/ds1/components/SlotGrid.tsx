@@ -1,5 +1,7 @@
 import React from 'react';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 
 interface SlotGridProps {
   characters: Character[];
@@ -14,13 +16,15 @@ export const SlotGrid: React.FC<SlotGridProps> = ({
   selectedIndex,
   onSelectSlot,
   mode,
-  title = mode === 'source' ? 'SOURCE SLOTS' : 'DESTINATION SLOTS'
+  title
 }) => {
+  const { lang } = useLang();
+  const resolvedTitle = title ?? (mode === 'source' ? t('sourceSlots', lang) : t('destSlots', lang));
   const accentColor = mode === 'source' ? '#ff6b35' : '#3b82f6';
 
   return (
     <div className="slot-grid-container">
-      <h3 className="slot-grid-title">{title}</h3>
+      <h3 className="slot-grid-title">{resolvedTitle}</h3>
       <div className="slot-grid">
         {characters.slice(0, 10).map((char, index) => {
           const isSelected = selectedIndex === index;
@@ -33,15 +37,15 @@ export const SlotGrid: React.FC<SlotGridProps> = ({
               onClick={() => onSelectSlot(index)}
             >
               <div className="slot-header">
-                <span className="slot-number">Slot {index}</span>
+                <span className="slot-number">{t('slot', lang)} {index}</span>
               </div>
               <div className="slot-info">
                 {isEmpty ? (
-                  <span className="empty-label">Empty Slot</span>
+                  <span className="empty-label">{t('emptySlot', lang)}</span>
                 ) : (
                   <>
-                    <div className="slot-name">{char.name || 'Unnamed'}</div>
-                    <div className="slot-level">Level {char.level}</div>
+                    <div className="slot-name">{char.name || t('unnamed', lang)}</div>
+                    <div className="slot-level">{t('levelShort', lang)} {char.level}</div>
                   </>
                 )}
               </div>

@@ -14,6 +14,9 @@ interface Settings {
 
 export class WebFSAdapter extends IFileSystemAdapter {
   private db: IDBDatabase | null = null;
+  private observer: any = null;
+  private pollInterval: ReturnType<typeof setInterval> | null = null;
+  private lastModified: number = 0;
 
   getAdapterName(): string {
     return 'WebFS (File System Access API)';
@@ -118,6 +121,16 @@ export class WebFSAdapter extends IFileSystemAdapter {
     await writable.close();
   }
 
+  async readFile(handle: FileHandle): Promise<File> {
+    const fileHandle = handle as unknown as FileSystemFileHandle;
+
+    if (!fileHandle || !fileHandle.getFile) {
+      throw new Error('Invalid file handle or File System Access API not supported');
+    }
+
+    return fileHandle.getFile();
+  }
+
   async saveAsNewFile(data: Uint8Array, options?: SaveOptions): Promise<FileHandle | null> {
     // Try File System Access API
     if ('showSaveFilePicker' in window) {
@@ -200,24 +213,24 @@ export class WebFSAdapter extends IFileSystemAdapter {
         }
 
         try {
-          // Verify we still have permission
+          // First check if permission is already granted (no user gesture needed)
           const permission = await (fileHandle as any).queryPermission?.({ mode: 'read' });
-          if (permission !== 'granted') {
-            // Try to request permission
-            const newPermission = await (fileHandle as any).requestPermission?.({ mode: 'read' });
-            if (newPermission !== 'granted') {
-              console.log('No permission to access last file');
-              resolve(null);
-              return;
-            }
+          console.log('[WebFSAdapter] Permission status:', permission);
+
+          if (permission === 'granted') {
+            // Permission already granted, can load without user gesture
+            const file = await fileHandle.getFile();
+            resolve({
+              file,
+              handle: fileHandle as unknown as FileHandle
+            });
+            return;
           }
 
-          // Load the file
-          const file = await fileHandle.getFile();
-          resolve({
-            file,
-            handle: fileHandle as unknown as FileHandle
-          });
+          // Permission not granted - need user gesture for requestPermission()
+          // Return null so UI can show a button for user to click
+          console.log('[WebFSAdapter] Permission not granted, need user gesture');
+          resolve(null);
         } catch (err) {
           console.warn('Failed to load last file:', err);
           resolve(null);
@@ -226,5 +239,137 @@ export class WebFSAdapter extends IFileSystemAdapter {
 
       request.onerror = () => reject(request.error);
     });
+  }
+
+  /**
+   * Request permission for last file - MUST be called from user gesture context
+   */
+  async requestLastFilePermission(): Promise<FileData | null> {
+    if (!this.supportsAutoLoad()) {
+      return null;
+    }
+
+    await this.initDB();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORE_NAME], 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.get('lastFile');
+
+      request.onsuccess = async () => {
+        const settings = request.result as Settings | undefined;
+        const fileHandle = settings?.lastFileHandle;
+
+        if (!fileHandle) {
+          resolve(null);
+          return;
+        }
+
+        try {
+          // Request permission - this MUST be called from user gesture
+          const newPermission = await (fileHandle as any).requestPermission?.({ mode: 'read' });
+          console.log('[WebFSAdapter] Permission after request:', newPermission);
+
+          if (newPermission === 'granted') {
+            const file = await fileHandle.getFile();
+            resolve({
+              file,
+              handle: fileHandle as unknown as FileHandle
+            });
+          } else {
+            resolve(null);
+          }
+        } catch (err) {
+          console.warn('Failed to request permission:', err);
+          resolve(null);
+        }
+      };
+
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async getLastFileName(): Promise<string | null> {
+    if (!this.supportsAutoLoad()) {
+      return null;
+    }
+
+    await this.initDB();
+
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction([STORE_NAME], 'readonly');
+      const store = transaction.objectStore(STORE_NAME);
+      const request = store.get('lastFile');
+
+      request.onsuccess = () => {
+        const settings = request.result as Settings | undefined;
+        resolve(settings?.lastFileName || null);
+      };
+
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async watchFile(handle: FileHandle, callback: () => void): Promise<() => void> {
+    await this.unwatchFile();
+
+    const fileHandle = handle as unknown as FileSystemFileHandle;
+
+    // Try FileSystemObserver API (Chrome 110+)
+    if ('FileSystemObserver' in window) {
+      try {
+        const observer = new (window as any).FileSystemObserver(async (records: any[]) => {
+          for (const record of records) {
+            if (record.type === 'change') {
+              console.log('[WebFSAdapter] FileSystemObserver detected change');
+              callback();
+            }
+          }
+        });
+
+        await observer.observe(fileHandle);
+        this.observer = observer;
+        console.log('[WebFSAdapter] Using FileSystemObserver');
+        return () => this.unwatchFile();
+      } catch (err) {
+        console.warn('[WebFSAdapter] FileSystemObserver failed, using polling:', err);
+      }
+    }
+
+    // Fallback: polling via lastModified check
+    const file = await fileHandle.getFile();
+    this.lastModified = file.lastModified;
+
+    this.pollInterval = setInterval(async () => {
+      try {
+        const currentFile = await fileHandle.getFile();
+        if (currentFile.lastModified !== this.lastModified) {
+          this.lastModified = currentFile.lastModified;
+          console.log('[WebFSAdapter] Polling detected file change');
+          callback();
+        }
+      } catch (err) {
+        console.warn('[WebFSAdapter] Polling error:', err);
+      }
+    }, 3000);
+
+    console.log('[WebFSAdapter] Using polling (3s interval)');
+    return () => this.unwatchFile();
+  }
+
+  async unwatchFile(): Promise<void> {
+    if (this.observer) {
+      try {
+        this.observer.disconnect();
+      } catch {}
+      this.observer = null;
+    }
+
+    if (this.pollInterval) {
+      clearInterval(this.pollInterval);
+      this.pollInterval = null;
+    }
+
+    this.lastModified = 0;
   }
 }

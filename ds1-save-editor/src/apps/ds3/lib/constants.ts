@@ -21,6 +21,7 @@ export const RELATIVE_OFFSETS = {
   NAME: -0xC8,
 
   SOULS: -0xDC,
+  SOUL_MEMORY: -0xD8, // "Total Get Soul" — total souls ever collected (soul memory), 4 bytes
   LEVEL: -0xE0,
 
   VIGOR: -0x10C,
@@ -43,6 +44,98 @@ export const RELATIVE_OFFSETS = {
   CLASS: -0xA2,
   WEAPON_MEMORY: -0x9D,
 } as const;
+
+// ===== BONFIRES / event-flag block =====
+// The bonfire block moves with the (variable-length) inventory, so it can't be read at a
+// fixed offset. It is located with a DS1-style windowed anchor search — see
+// docs/ds3-bonfire-anchor.md. Verified byte-exact across 5 captures of 2 characters.
+//
+//   invStart = GA-table scan (same as findInventoryStart)
+//   est      = invStart + BONFIRE_COARSE_FROM_INV            (coarse block estimate)
+//   anchor   = LAST BONFIRE_PATTERN in [est-0x1500, est+0x200]
+//   rec0     = anchor + BONFIRE_ANCHOR_TO_BLOCK              (block start)
+export const BONFIRE_PATTERN = new Uint8Array([
+  0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+  0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+]);
+export const BONFIRE_COARSE_FROM_INV = 0x12B1F;
+export const BONFIRE_ANCHOR_TO_BLOCK = 0xB5D;
+
+// "Unlock all bonfires" bitmask: [offset-from-block-start, byte value]. Each value is a
+// bitmask OR-ed into the byte, so only the bonfire bits are set — every other bit in the
+// same byte is preserved and no flag is ever cleared. The masks are exactly the bits the
+// game itself flips 0→1 on "unlock all" (captured as the lock→unlock diff and confirmed
+// identical on a second character). Records sit every 0x500 bytes; two u16 flag words per
+// record (at +0x0 and +0x40E).
+export const BONFIRE_UNLOCK_ALL: ReadonlyArray<readonly [number, number]> = [
+  // rec 0
+  [0x0000, 0xB0], [0x0001, 0x03], [0x0007, 0x80], [0x040E, 0x40], [0x040F, 0xEC],
+  // rec 1
+  [0x0500, 0x80], [0x0501, 0x03], [0x090F, 0xE0],
+  // rec 2
+  [0x0A00, 0xE0], [0x0A01, 0x03], [0x0E0F, 0xF8],
+  // rec 4
+  [0x1400, 0xC0], [0x1401, 0x03], [0x180F, 0xF0],
+  // rec 6
+  [0x1E00, 0xFE], [0x1E01, 0x02], [0x220E, 0x80], [0x220F, 0xBF],
+  // rec 8
+  [0x2801, 0x03], [0x2C0F, 0xC0],
+  // rec 9
+  [0x2D00, 0x80], [0x2D01, 0x03], [0x310F, 0xF0],
+  // rec 12
+  [0x3C00, 0xFE], [0x3C01, 0x03], [0x400E, 0x80], [0x400F, 0xFF],
+  // rec 13
+  [0x4100, 0xE8], [0x4101, 0x03], [0x450F, 0xFA],
+  // rec 14
+  [0x4600, 0x80], [0x4601, 0x03], [0x4A0F, 0xE0],
+  // rec 15
+  [0x4B00, 0xE0], [0x4B01, 0x03], [0x4F0F, 0xF8], [0x4F1B, 0x0C],
+  // rec 16
+  [0x5000, 0x80], [0x5001, 0x03], [0x540F, 0xE0],
+  // rec 17
+  [0x5500, 0xFC], [0x5501, 0x03], [0x590F, 0xFF],
+  // rec 20
+  [0x6400, 0xC0], [0x6401, 0x03], [0x680F, 0xF0],
+  // rec 21
+  [0x6900, 0xF0], [0x6901, 0x03], [0x6D0F, 0xFC],
+  // rec 22
+  [0x6E01, 0x03], [0x720F, 0xC0],
+];
+
+// Play time in milliseconds, u32 LE. Absolute offset in the decrypted slot header
+// (not pattern-relative). The game trusts this value and continues counting from it.
+export const PLAYTIME_OFFSET = 0x0C;
+
+// Extra play time credited per gained soul level, to keep playtime plausible for
+// an edited level. A random duration in [MIN, MAX] is rolled per level so the
+// resulting timestamp doesn't look machine-generated.
+export const PLAYTIME_MS_PER_LEVEL_MIN = 3 * 60 * 1000;
+export const PLAYTIME_MS_PER_LEVEL_MAX = 5 * 60 * 1000;
+
+// Souls required to go FROM (level-1) TO the given soul level.
+// Source: DS3 wiki — levels 2-12 are fixed values (index 0 = cost of level 2);
+// level 13+ uses y = 0.02x³ + 3.06x² + 105.6x − 895
+// (verified against the wiki table: L13=1038, L15=1445, L20=2601).
+const EARLY_LEVEL_COSTS = [673, 690, 707, 724, 741, 759, 778, 797, 816, 836, 856];
+
+export function levelUpCost(level: number): number {
+  if (level <= 1) return 0;
+  if (level <= 12) return EARLY_LEVEL_COSTS[level - 2];
+  return Math.floor(0.02 * level ** 3 + 3.06 * level ** 2 + 105.6 * level - 895);
+}
+
+// Cumulative souls spent to reach a soul level from level 1 (sum of per-level costs).
+export function cumulativeLevelCost(level: number): number {
+  let total = 0;
+  for (let l = 2; l <= level; l++) total += levelUpCost(l);
+  return total;
+}
+
+// Minimum plausible soul memory ("Total Get Soul") for a given soul level:
+// everything spent on leveling, plus a 20% margin for souls spent elsewhere.
+export function minSoulMemoryForLevel(level: number): number {
+  return Math.floor(cumulativeLevelCost(level) * 1.2);
+}
 
 // Maximum values
 export const MAX_VALUES = {

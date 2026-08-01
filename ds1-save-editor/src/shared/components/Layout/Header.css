@@ -210,6 +210,42 @@
   font-size: 0.85rem;
 }
 
+/* ── Language dropdown ── */
+.lang-nav-button {
+  background: none;
+  border: none;
+  color: #ff6b35;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  line-height: 1;
+}
+
+.lang-nav-button:hover { color: #ff8c5a; }
+
+.lang-label {
+  white-space: nowrap;
+}
+
+.lang-nav-menu {
+  min-width: 110px;
+}
+
+.lang-nav-menu .game-nav-item {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+
+}
+
 /* ── Dropdown menu ── */
 .game-nav-menu {
   position: absolute;

@@ -48,6 +48,7 @@ export interface Item {
   Durability?: number;
   MugenMonkeyName?: string;
   SoulsplannerName?: string;
+  displayName?: string;
 }
 
 export interface ItemsDatabase {
@@ -293,7 +294,8 @@ export class InventoryItem {
 
   get itemName(): string {
     const info = this.itemInfo;
-    return info ? info.Name : `Unknown (Type:0x${this.itemType.toString(16)}, ID:0x${this.itemId.toString(16)})`;
+    if (!info) return `Unknown (Type:0x${this.itemType.toString(16)}, ID:0x${this.itemId.toString(16)})`;
+    return info.displayName || info.Name;
   }
 
   get collectionType(): ItemCollectionType {

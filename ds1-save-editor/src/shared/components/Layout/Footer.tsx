@@ -1,4 +1,6 @@
 import React from 'react';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../../../apps/ds1/lib/i18n';
 import './Footer.css';
 
 interface FooterProps {
@@ -7,6 +9,7 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onTermsClick, onAboutClick }) => {
+  const { lang } = useLang();
   // Detect if running in Electron
   const isElectron = typeof window !== 'undefined' && window.location.protocol === 'file:';
 
@@ -17,24 +20,24 @@ export const Footer: React.FC<FooterProps> = ({ onTermsClick, onAboutClick }) =>
           {onAboutClick ? (
             <button onClick={onAboutClick} className="footer-link-button">
               <span className="contact-icon">ℹ️</span>
-              About
+              {t('about', lang)}
             </button>
           ) : (
             <a href="/about" className="footer-link">
               <span className="contact-icon">ℹ️</span>
-              About
+              {t('about', lang)}
             </a>
           )}
           <span className="separator"></span>
           {onTermsClick ? (
             <button onClick={onTermsClick} className="footer-link-button">
               <span className="contact-icon">📜</span>
-              Terms
+              {t('terms', lang)}
             </button>
           ) : (
             <a href="/terms" className="footer-link">
               <span className="contact-icon">📜</span>
-              Terms
+              {t('terms', lang)}
             </a>
           )}
           <span className="separator"></span>
@@ -47,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onTermsClick, onAboutClick }) =>
                 className="contact-link"
               >
                 <span className="contact-icon">🌐</span>
-                Website
+                {t('website', lang)}
               </a>
               <span className="separator"></span>
             </>
@@ -74,7 +77,7 @@ export const Footer: React.FC<FooterProps> = ({ onTermsClick, onAboutClick }) =>
           <span className="separator"></span>
           <a href="mailto:laim0999716349@gmail.com" className="contact-link">
             <span className="contact-icon">✉</span>
-            Contact
+            {t('contact', lang)}
           </a>
         </div>
       </div>

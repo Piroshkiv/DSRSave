@@ -118,6 +118,18 @@
   flex: 1;
 }
 
+.upload-button-last {
+  width: 100%;
+  margin-top: 8px;
+  background: transparent;
+  border: 1px solid rgba(255, 107, 53, 0.5);
+  color: #ff6b35;
+}
+
+.upload-button-last:hover:not(:disabled) {
+  background: rgba(255, 107, 53, 0.1);
+}
+
 .upload-button,
 .save-button,
 .reload-button,

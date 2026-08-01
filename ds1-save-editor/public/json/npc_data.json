@@ -2,6 +2,7 @@
   "npcs": [
     {
       "name": "Andre of Astora (blackmish)",
+      "displayName": "亚斯特拉的安德烈",
       "bits": [
         {
           "offset": "0xFE",
@@ -22,11 +23,22 @@
           "offset": "0x16D7D",
           "bit": 1,
           "reverse": true
+        },
+        {
+          "offset": "0xFE",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0xFE",
+          "bit": 7,
+          "reverse": true
         }
       ]
     },
     {
       "name": "Giant Blacksmith",
+      "displayName": "巨人铁匠",
       "bits": [
         {
           "offset": "0x101",
@@ -47,6 +59,7 @@
     },
     {
       "name": "Rickert of Vinheim (blackmish)",
+      "displayName": "维姆海姆的里克特",
       "bits": [
         {
           "offset": "0xFF",
@@ -82,6 +95,7 @@
     },
     {
       "name": "Vamos (skeleton blackmish)",
+      "displayName": "骷髅铁匠瓦莫斯",
       "bits": [
         {
           "offset": "0xFC",
@@ -117,6 +131,7 @@
     },
     {
       "name": "Solaire of Astora",
+      "displayName": "亚斯特拉的索拉尔",
       "bits": [
         {
           "offset": "0xD5",
@@ -362,6 +377,7 @@
     },
     {
       "name": "Gwynevere (Princess of Sunlight)",
+      "displayName": "阳光公主葛维艾薇雅",
       "bits": [
         {
           "offset": "0xF1",
@@ -387,6 +403,7 @@
     },
     {
       "name": "Anastacia of Astora (fire keeper)",
+      "displayName": "亚斯特拉的防火女安娜塔西亚",
       "bits": [
         {
           "offset": "0x62",
@@ -422,6 +439,7 @@
     },
     {
       "name": "Darkmoon Knightess (fire keeper)",
+      "displayName": "暗月防火女",
       "bits": [
         {
           "offset": "0x64",
@@ -447,6 +465,7 @@
     },
     {
       "name": "Quelaag's Sister/The Fair Lady (fire keeper)",
+      "displayName": "白蜘蛛姬",
       "bits": [
         {
           "offset": "0x65",
@@ -487,6 +506,7 @@
     },
     {
       "name": "Undead Male Merchant",
+      "displayName": "不死人男商人",
       "bits": [
         {
           "offset": "0x104",
@@ -507,6 +527,7 @@
     },
     {
       "name": "Oswald of Carim",
+      "displayName": "卡利姆的奥斯瓦尔德",
       "bits": [
         {
           "offset": "0x127",
@@ -547,6 +568,7 @@
     },
     {
       "name": "Ingward (Keeper of Seal)",
+      "displayName": "封印守护者英格瓦德",
       "bits": [
         {
           "offset": "0xF7",
@@ -627,6 +649,7 @@
     },
     {
       "name": "Big Hat Logan",
+      "displayName": "大帽子罗根",
       "bits": [
         {
           "offset": "0xB1",
@@ -967,6 +990,7 @@
     },
     {
       "name": "Griggs of Vinheim",
+      "displayName": "维姆海姆的格里格斯",
       "bits": [
         {
           "offset": "0xE0",
@@ -1117,6 +1141,7 @@
     },
     {
       "name": "Laurentius (Pyromancer)",
+      "displayName": "咒术师劳伦蒂斯",
       "bits": [
         {
           "offset": "0xEF",
@@ -1237,6 +1262,7 @@
     },
     {
       "name": "Dusk of Oolacile (Revive golem)",
+      "displayName": "乌拉席露的幽暗公主",
       "bits": [
         {
           "offset": "0xDF",
@@ -1323,10 +1349,11 @@
     },
     {
       "name": "Dark Sun Gwyndolin (boss)",
+      "displayName": "暗影太阳葛温德林",
       "bits": [
         {
           "offset": "0x5F",
-          "bit": 7,
+          "bit": 6,
           "reverse": true
         },
         {
@@ -1337,66 +1364,6 @@
         {
           "offset": "0xF0",
           "bit": 5,
-          "reverse": true
-        },
-        {
-          "offset": "0xF0",
-          "bit": 6,
-          "reverse": false
-        },
-        {
-          "offset": "0xF0",
-          "bit": 7,
-          "reverse": false
-        },
-        {
-          "offset": "0x4695",
-          "bit": 4,
-          "reverse": true
-        },
-        {
-          "offset": "0x46C6",
-          "bit": 3,
-          "reverse": true
-        },
-        {
-          "offset": "0x48FF",
-          "bit": 0,
-          "reverse": true
-        },
-        {
-          "offset": "0x48FF",
-          "bit": 1,
-          "reverse": true
-        },
-        {
-          "offset": "0x48FF",
-          "bit": 3,
-          "reverse": true
-        },
-        {
-          "offset": "0x4906",
-          "bit": 2,
-          "reverse": true
-        },
-        {
-          "offset": "0x4906",
-          "bit": 4,
-          "reverse": true
-        },
-        {
-          "offset": "0x4906",
-          "bit": 5,
-          "reverse": true
-        },
-        {
-          "offset": "0x4906",
-          "bit": 6,
-          "reverse": true
-        },
-        {
-          "offset": "0x4906",
-          "bit": 7,
           "reverse": true
         },
         {
@@ -1423,6 +1390,7 @@
     },
     {
       "name": "Reah of Thorolund and Paladine",
+      "displayName": "索尔隆德的蕾雅",
       "bits": [
         {
           "offset": "0xB1",
@@ -1868,6 +1836,7 @@
     },
     {
       "name": "Siegmeyer of Catarina",
+      "displayName": "卡塔利纳的希格迈尔",
       "bits": [
         {
           "offset": "0xB1",
@@ -2048,6 +2017,7 @@
     },
     {
       "name": "Trusty Patches",
+      "displayName": "可靠的帕奇",
       "bits": [
         {
           "offset": "0xB1",
@@ -2158,6 +2128,7 @@
     },
     {
       "name": "Knight Lautrec of Carim",
+      "displayName": "卡利姆的骑士劳特雷克",
       "bits": [
         {
           "offset": "0xB1",
@@ -2233,6 +2204,7 @@
     },
     {
       "name": "Hawkeye Gough",
+      "displayName": "鹰眼戈夫",
       "bits": [
         {
           "offset": "0x138",
@@ -2283,6 +2255,7 @@
     },
     {
       "name": "Marvellous Chester",
+      "displayName": "非凡的切斯特",
       "bits": [
         {
           "offset": "0x13D",
@@ -2328,6 +2301,7 @@
     },
     {
       "name": "Elizabeth (Mushroom)",
+      "displayName": "伊丽莎白",
       "bits": [
         {
           "offset": "0x141",
@@ -2353,6 +2327,7 @@
     },
     {
       "name": "Eingyi",
+      "displayName": "恩吉",
       "bits": [
         {
           "offset": "0xF3",
@@ -2388,6 +2363,7 @@
     },
     {
       "name": "Alvina (cat)",
+      "displayName": "阿尔薇娜",
       "bits": [
         {
           "offset": "0xB1",
@@ -2413,6 +2389,7 @@
     },
     {
       "name": "Shiva of the East and Bodyguard",
+      "displayName": "东国的希瓦与保镖",
       "bits": [
         {
           "offset": "0xB1",
@@ -2618,6 +2595,7 @@
     },
     {
       "name": "Quelana of Izalith",
+      "displayName": "伊扎里斯的克拉娜",
       "bits": [
         {
           "offset": "0xFA",
@@ -2653,6 +2631,7 @@
     },
     {
       "name": "Domhnall of Zena",
+      "displayName": "泽那的多姆纳尔",
       "bits": [
         {
           "offset": "0x108",
@@ -2708,6 +2687,7 @@
     },
     {
       "name": "Lord's Blade Ciaran",
+      "displayName": "王刃基亚兰",
       "bits": [
         {
           "offset": "0xB1",
@@ -2748,6 +2728,7 @@
     },
     {
       "name": "Crestfallen Warrior",
+      "displayName": "颓废骑士",
       "bits": [
         {
           "offset": "0xB1",
@@ -2788,6 +2769,7 @@
     },
     {
       "name": "Asylum Demon (boss)",
+      "displayName": "离群恶魔",
       "bits": [
         {
           "offset": "0x54",
@@ -2798,6 +2780,7 @@
     },
     {
       "name": "Black Dragon Kalameet (boss)",
+      "displayName": "黑龙喀拉弥特",
       "bits": [
         {
           "offset": "0x2356",
@@ -2808,6 +2791,7 @@
     },
     {
       "name": "Bell Gargoyles (boss)",
+      "displayName": "钟楼石像鬼",
       "bits": [
         {
           "offset": "0x56",
@@ -2818,6 +2802,7 @@
     },
     {
       "name": "Capra Demon (boss)",
+      "displayName": "羊头恶魔",
       "bits": [
         {
           "offset": "0xFC6",
@@ -2828,6 +2813,7 @@
     },
     {
       "name": "Ceaseless Discharge (boss)",
+      "displayName": "持续溃烂的生物",
       "bits": [
         {
           "offset": "0x84",
@@ -3623,6 +3609,7 @@
     },
     {
       "name": "Centipede Demon (boss)",
+      "displayName": "百足恶魔",
       "bits": [
         {
           "offset": "0x3CC6",
@@ -3633,6 +3620,7 @@
     },
     {
       "name": "Chaos Witch Quelaag (boss)",
+      "displayName": "混沌魔女克拉格",
       "bits": [
         {
           "offset": "0x55",
@@ -3643,6 +3631,7 @@
     },
     {
       "name": "Crossbreed Priscilla (boss)",
+      "displayName": "半龙普莉希拉",
       "bits": [
         {
           "offset": "0x56",
@@ -3653,6 +3642,7 @@
     },
     {
       "name": "Ornstein and Smough (boss)",
+      "displayName": "猎龙者翁斯坦与刽子手斯摩",
       "bits": [
         {
           "offset": "0x55",
@@ -3663,6 +3653,7 @@
     },
     {
       "name": "Demon Firesage (boss)",
+      "displayName": "恶魔火焰司祭",
       "bits": [
         {
           "offset": "0x3F83",
@@ -3673,6 +3664,7 @@
     },
     {
       "name": "Four Kings (boss)",
+      "displayName": "小隆德四王",
       "bits": [
         {
           "offset": "0x55",
@@ -3683,6 +3675,7 @@
     },
     {
       "name": "Gaping Dragon (boss)",
+      "displayName": "贪食魔龙",
       "bits": [
         {
           "offset": "0x56",
@@ -3693,6 +3686,7 @@
     },
     {
       "name": "Gravelord Nito (boss)",
+      "displayName": "墓王尼特",
       "bits": [
         {
           "offset": "0x56",
@@ -3703,6 +3697,7 @@
     },
     {
       "name": "Great Grey Wolf Sif (boss)",
+      "displayName": "大狼希夫",
       "bits": [
         {
           "offset": "0x56",
@@ -3713,6 +3708,7 @@
     },
     {
       "name": "Gwyn, Lord of Cinder (boss)",
+      "displayName": "乌薪王葛温",
       "bits": [
         {
           "offset": "0x55",
@@ -3723,6 +3719,7 @@
     },
     {
       "name": "Iron Golem (boss)",
+      "displayName": "钢铁巨偶",
       "bits": [
         {
           "offset": "0x55",
@@ -3733,6 +3730,7 @@
     },
     {
       "name": "Moonlight Butterfly (boss)",
+      "displayName": "月光蝶",
       "bits": [
         {
           "offset": "0x1EC6",
@@ -3743,6 +3741,7 @@
     },
     {
       "name": "Pinwheel (boss)",
+      "displayName": "三面魔",
       "bits": [
         {
           "offset": "0x56",
@@ -3753,6 +3752,7 @@
     },
     {
       "name": "Seath the Scaleless (boss)",
+      "displayName": "白龙希斯",
       "bits": [
         {
           "offset": "0x55",
@@ -3763,6 +3763,7 @@
     },
     {
       "name": "Taurus Demon (boss)",
+      "displayName": "牛头恶魔",
       "bits": [
         {
           "offset": "0xFC6",
@@ -3773,6 +3774,7 @@
     },
     {
       "name": "Manus, Father of the Abyss (boss)",
+      "displayName": "深渊之主马努斯",
       "bits": [
         {
           "offset": "0x54",
@@ -3788,6 +3790,7 @@
     },
     {
       "name": "Bed of Chaos (boss)",
+      "displayName": "混沌的温床",
       "bits": [
         {
           "offset": "0x55",
@@ -3798,6 +3801,7 @@
     },
     {
       "name": "Artorias the Abysswalker (boss)",
+      "displayName": "深渊漫步者阿尔特留斯",
       "bits": [
         {
           "offset": "0x2356",

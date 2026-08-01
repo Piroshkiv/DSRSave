@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 
 const PLATFORM_LABELS: Record<string, string> = {
   pc: 'PC',
@@ -24,6 +26,7 @@ export const CharacterList: React.FC<CharacterListProps> = ({
 }) => {
   const [isToolsExpanded, setIsToolsExpanded] = useState(false);
   const navigate = useNavigate();
+  const { lang } = useLang();
 
   const handleFixSaveClick = () => {
     navigate('/ds1/fix-save');
@@ -40,7 +43,7 @@ export const CharacterList: React.FC<CharacterListProps> = ({
       {characters.length > 0 && (
         <>
           <div className="char-list-header">
-            <span className="char-list-title">Characters</span>
+            <span className="char-list-title">{t('characters', lang)}</span>
             <span className="char-list-count">{nonEmpty} / {characters.length}</span>
           </div>
           <div className="character-slots">
@@ -51,10 +54,10 @@ export const CharacterList: React.FC<CharacterListProps> = ({
                 onClick={() => !char.isEmpty && onSelectCharacter(index)}
               >
                 <div className="character-name">
-                  {char.isEmpty ? 'Empty Slot' : char.name || 'Unnamed'}
+                  {char.isEmpty ? t('emptySlot', lang) : char.name || t('unnamed', lang)}
                 </div>
                 <div className="character-level">
-                  {char.isEmpty ? '' : `Lv ${char.level}`}
+                  {char.isEmpty ? '' : `${t('levelShort', lang)} ${char.level}`}
                 </div>
               </div>
             ))}
@@ -66,23 +69,23 @@ export const CharacterList: React.FC<CharacterListProps> = ({
       <div className="tools-section">
         {platform && (
           <div className="platform-badge">
-            Platform: <strong>{PLATFORM_LABELS[platform] ?? platform}</strong>
+            {t('platform', lang)} <strong>{PLATFORM_LABELS[platform] ?? platform}</strong>
           </div>
         )}
         <div
           className={`tools-header ${isToolsExpanded ? 'expanded' : ''}`}
           onClick={() => setIsToolsExpanded(!isToolsExpanded)}
         >
-          <span>Tools</span>
+          <span>{t('tools', lang)}</span>
           <span className="expand-icon">{isToolsExpanded ? '▼' : '▶'}</span>
         </div>
         {isToolsExpanded && (
           <div className="tools-content">
             <button className="tool-link" onClick={handleFixSaveClick}>
-              🔧 Fix Your Save File
+              {t('fixSave', lang)}
             </button>
             <button className="tool-link" onClick={handleMergeExportClick}>
-              📦 Merge, Duplicate or Export Save
+              {t('mergeExport', lang)}
             </button>
           </div>
         )}

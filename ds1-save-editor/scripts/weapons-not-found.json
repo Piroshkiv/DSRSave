@@ -1,0 +1,248 @@
+[
+  {
+    "Id": "0x0060216A",
+    "Name": "Greatsword of Artorias !!!!!!!!!!!!!!!!",
+    "Category": "greatswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00015F90",
+    "Name": "Torch",
+    "Category": "torches",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00100590",
+    "Name": "Blood-stained Short Sword",
+    "Category": "straightswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x006C2F50",
+    "Name": "Missionary's Axe",
+    "Category": "axes",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x006D40C0",
+    "Name": "Dragon King Greataxe",
+    "Category": "greataxes",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x007D4650",
+    "Name": "Four Knights Hammer",
+    "Category": "greathammers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x007D9470",
+    "Name": "Hammer of the Great Tree",
+    "Category": "greathammers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x008C8890",
+    "Name": "Channeler's Trident",
+    "Category": "spears",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x009A6B40",
+    "Name": "Ancient Dragon Halberd",
+    "Category": "halberds",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x009A4430",
+    "Name": "Lothric's Scythe",
+    "Category": "reapers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x009A9250",
+    "Name": "Scythe of Want",
+    "Category": "reapers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00C8A730",
+    "Name": "Sacred Beast Catalyst",
+    "Category": "staves",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00CD3B10",
+    "Name": "Flickering Pyromancy Flame",
+    "Category": "flames",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00CD6220",
+    "Name": "Strong Pyromancy Flame",
+    "Category": "flames",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00CDFE60",
+    "Name": "Deep Pyromancy Flame",
+    "Category": "flames",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00CE2570",
+    "Name": "Pitch-Dark Pyromancy Flame",
+    "Category": "flames",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00D81080",
+    "Name": "Shield Crossbow",
+    "Category": "crossbows",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x01421CF0",
+    "Name": "Prince's Shield",
+    "Category": "standardshields",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x013524A0",
+    "Name": "Cleric's Parma",
+    "Category": "standardshields",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x01509BE0",
+    "Name": "Ancient Dragon Great Shield",
+    "Category": "greatshields",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x00F55C80",
+    "Name": "Golden Dual Swords",
+    "Category": "straightswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000D9490",
+    "Name": "Broken Sword with Glow",
+    "Category": "straightswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E30D0",
+    "Name": "transparent dagger",
+    "Category": "daggers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3134",
+    "Name": "transparent sword",
+    "Category": "straightswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E31FC",
+    "Name": "transparent greatsword",
+    "Category": "greatswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3328",
+    "Name": "transparent curved sword",
+    "Category": "curvedswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3454",
+    "Name": "transparent axe",
+    "Category": "axes",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E34B8",
+    "Name": "transparent greataxe",
+    "Category": "greataxes",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E351C",
+    "Name": "transparent mace",
+    "Category": "hammers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3648",
+    "Name": "transparent halberd",
+    "Category": "halberds",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3710",
+    "Name": "transparent staff",
+    "Category": "staves",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E383C",
+    "Name": "transparent whip",
+    "Category": "whips",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3904",
+    "Name": "transparent greatbow",
+    "Category": "greatbows",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3A30",
+    "Name": "transparent caestus",
+    "Category": "fists",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3B5C",
+    "Name": "transparent paired axe",
+    "Category": "axes",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3C24",
+    "Name": "transparent paired sword",
+    "Category": "straightswords",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3D50",
+    "Name": "transparent demon fist",
+    "Category": "fists",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3E18",
+    "Name": "transparent paired hammers",
+    "Category": "hammers",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E3F44",
+    "Name": "transparent round shield",
+    "Category": "standardshields",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x000E400C",
+    "Name": "transparent torch",
+    "Category": "torches",
+    "MaxUpgrade": 0
+  },
+  {
+    "Id": "0x055E0DD0",
+    "Name": "Twinswords with torch effect",
+    "Category": "straightswords",
+    "MaxUpgrade": 0
+  }
+]

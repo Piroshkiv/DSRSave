@@ -71,19 +71,34 @@ export const VIT_TO_HP: Record<number, number> = {
   96: 1881, 97: 1888, 98: 1894, 99: 1900
 };
 
-export const PHYSIQUE_NAMES = [
+export const PHYSIQUE_NAMES_EN = [
   'Average', 'Slim', 'Very Slim', 'Large', 'Very Large',
   'Large Upper Body', 'Large Lower Body', 'Top-heavy', 'Tiny Head'
 ];
 
-export const HAIRSTYLE_FEMALE = [
+export const PHYSIQUE_NAMES_ZH = [
+  '普通', '苗条', '纤细', '健壮', '粗壮',
+  '上身发达', '下身发达', '上宽下窄', '小头'
+];
+
+export const HAIRSTYLE_FEMALE_EN = [
   'Shaved', 'Very Short', 'Wave', 'Straight A', 'Straight B',
   'Ponytail A', 'Ponytail B', 'Pigtails', 'Bun', 'Braided'
 ];
 
-export const HAIRSTYLE_MALE = [
+export const HAIRSTYLE_FEMALE_ZH = [
+  '光头', '超短', '波浪', '直发A', '直发B',
+  '马尾A', '马尾B', '双马尾', '发髻', '麻花辫'
+];
+
+export const HAIRSTYLE_MALE_EN = [
   'Shaved', 'Receding', 'Short', 'Swept Back', 'Ponytail',
   'Wild', 'Parted Center', 'Semi-Long', 'Curly', 'Bobbed'
+];
+
+export const HAIRSTYLE_MALE_ZH = [
+  '光头', '秃头', '短发', '后梳', '马尾',
+  '狂野', '中分', '半长发', '卷发', '波波头'
 ];
 
 export const HAIRSTYLE_SAVE_BASE = 0x500; // 1280

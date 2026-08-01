@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Header } from '../../../shared/components/Layout/Header';
 import { Footer } from '../../../shared/components/Layout/Footer';
+import { t } from '../lib/i18n';
+import { useLang } from '../../../core/context/LanguageContext';
 
 // Use relative path for screenshots to work in both web and Electron
 const getScreenshotPath = (filename: string) => {
@@ -15,6 +17,7 @@ interface DS1TutorialPageProps {
 
 export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => {
   const navigate = useNavigate();
+  const { lang } = useLang();
 
   const handleHome = () => {
     if (onClose) {
@@ -27,7 +30,7 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header
-        title="Dark Souls Remastered - Tutorial"
+        title={t('tutorialTitle', lang)}
         showHomeButton
         onHome={handleHome}
         showGameNav={true}
@@ -36,20 +39,19 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
       <div style={{ flex: 1, padding: '2rem', maxWidth: '1000px', margin: '0 auto', width: '100%' }}>
         <div style={{ color: '#fff', lineHeight: '1.6' }}>
           <section className="guide-section">
-            <h2>Getting Started</h2>
+            <h2>{t('gettingStarted', lang)}</h2>
             <p>
-              Welcome to the DS Save Editor! This guide will walk you through the process of editing
-              your Dark Souls save files safely and effectively.
+              {t('welcomeText', lang)}
             </p>
           </section>
 
           <section className="guide-section">
-            <h3>Step 1: Exit to Main Menu</h3>
+            <h3>{t('step1Title', lang)}</h3>
             <p className="warning-box">
-              ⚠️ <strong>IMPORTANT:</strong> Exit to the main menu in Dark Souls before using the save editor. Otherwise, your changes won't be saved!
+              ⚠️ <strong>{t('step1Important', lang)}</strong>
             </p>
             <p>
-              Make sure you're at the main menu screen (not in-game) before proceeding.
+              {t('step1Text', lang)}
             </p>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen1.png')} alt="Dark Souls main menu" className="tutorial-screenshot" />
@@ -57,18 +59,18 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
           </section>
 
           <section className="guide-section">
-            <h3>Step 2: Load Your Save File</h3>
+            <h3>{t('step2Title', lang)}</h3>
             <p>
-              Click the <strong>"Load File"</strong> button and select your Dark Souls save file.
+              {t('step2Text', lang)}
             </p>
             <p>
-              Dark Souls Remastered save files are typically located at:
+              {t('step2Loc', lang)}
             </p>
             <div className="code-block">
               <code>C:\Users\[YourUsername]\Documents\NBGI\DARK SOULS REMASTERED\[SteamID]\</code>
             </div>
             <p>
-              Look for files with the <strong>.sl2</strong> extension, usually named <code>DRAKS0005.sl2</code>.
+              {t('step2Look', lang)}
             </p>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen2.png')} alt="Load file button" className="tutorial-screenshot" />
@@ -76,14 +78,12 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
           </section>
 
           <section className="guide-section">
-            <h3>Step 3: Create a Backup (Optional but Highly Recommended)</h3>
+            <h3>{t('step3Title', lang)}</h3>
             <p className="warning-box">
-              ⚠️ <strong>HIGHLY RECOMMENDED:</strong> Always create a backup of your save file before editing!
+              ⚠️ <strong>{t('step3Important', lang)}</strong>
             </p>
             <ol>
-              <li>Create a new folder for backups (e.g., "Dark Souls Backups")</li>
-              <li>Copy your <code>.sl2</code> file to this folder</li>
-              <li>Optionally rename it with a date (e.g., <code>DRAKS0005_2024-01-15.sl2</code>)</li>
+              <li>{t('step3Text', lang)}</li>
             </ol>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen3.png')} alt="Creating backup folder" className="tutorial-screenshot" />
@@ -91,9 +91,9 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
           </section>
 
           <section className="guide-section">
-            <h3>Step 4: Select Your Character</h3>
+            <h3>{t('step4Title', lang)}</h3>
             <p>
-              After loading your save file, you'll see a list of all characters. Click on the character you want to edit.
+              {t('step4Text', lang)}
             </p>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen4.png')} alt="Character selection" className="tutorial-screenshot" />
@@ -101,148 +101,119 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
           </section>
 
           <section className="guide-section">
-            <h3>Step 5: Edit Your Character</h3>
+            <h3>{t('step5Title', lang)}</h3>
             <p>
-              The editor provides several tabs for different aspects of your character. Each tab focuses on specific aspects of your save file.
+              {t('step5Text', lang)}
             </p>
 
-            <h4>General Tab</h4>
+            <h4>{t('generalTab', lang)}</h4>
             <p>
-              The General tab allows you to edit your character's core stats and attributes:
+              {t('generalTabDesc', lang)}
             </p>
-            <ul className="features-list">
-              <li><strong>Stats:</strong> Modify Vitality, Attunement, Endurance, Strength, Dexterity, Resistance, Intelligence, and Faith</li>
-              <li><strong>Soul Level:</strong> Change your character's overall level</li>
-              <li><strong>Souls:</strong> Set the amount of souls you currently have</li>
-              <li><strong>Humanity:</strong> Adjust your humanity counter</li>
-              <li><strong>Name & Class:</strong> Edit your character's name and starting class</li>
-            </ul>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen5.png')} alt="General tab - character stats" className="tutorial-screenshot" />
             </div>
 
-            <h4>Inventory Tab</h4>
+            <h4>{t('inventoryTab', lang)}</h4>
             <p>
-              The Inventory tab lets you add, modify, or remove all types of items:
+              {t('inventoryTabDesc', lang)}
             </p>
-            <ul className="features-list">
-              <li><strong>Weapons:</strong> Swords, axes, spears, bows, catalysts, talismans, and shields</li>
-              <li><strong>Armor:</strong> Helmets, chest armor, gauntlets, and leggings</li>
-              <li><strong>Rings:</strong> All rings in the game</li>
-              <li><strong>Consumables:</strong> Estus Flask, humanity items, resins, mosses</li>
-              <li><strong>Upgrade Materials:</strong> Titanite shards, chunks, slabs, twinkling titanite, dragon scales</li>
-              <li><strong>Key Items:</strong> Quest items, keys, covenant items</li>
-              <li><strong>Spells:</strong> Sorceries, pyromancies, and miracles</li>
-              <li><strong>Weapon Memory:</strong> You can recalibrate weapon memory if all weapons are lower level than current weapon memory capacity</li>
-            </ul>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen6.png')} alt="Inventory tab - items and equipment" className="tutorial-screenshot" />
             </div>
 
-            <h4>Bonfires Tab</h4>
+            <h4>{t('bonfiresTab', lang)}</h4>
             <p>
-              The Bonfires tab allows you to unlock bonfires:
+              {t('bonfiresTabDesc', lang)}
             </p>
-            <ul className="features-list">
-              <li><strong>Unlock Bonfires:</strong> Instantly discover any bonfire in the game</li>
-              <li>Simply check or uncheck bonfires to enable/disable them</li>
-            </ul>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen7.png')} alt="Bonfires tab - bonfire management" className="tutorial-screenshot" />
             </div>
 
-            <h4>NPCs & Bosses Tabs</h4>
+            <h4>{t('npcsTab', lang)}</h4>
             <p>
-              These tabs allow you to modify NPC states and boss defeats:
+              {t('npcsTabDesc', lang)}
             </p>
-            <ul className="features-list">
-              <li><strong>NPCs Tab:</strong> Change NPC states (alive, dead, hostile, quest progress)</li>
-              <li><strong>Bosses Tab:</strong> Mark bosses as defeated or respawn them by unchecking</li>
-            </ul>
             <div className="screenshot-container">
               <img src={getScreenshotPath('screen8.png')} alt="NPCs tab - NPC and quest management" className="tutorial-screenshot" />
             </div>
           </section>
 
           <section className="guide-section">
-            <h3>Step 6: Save Your Changes</h3>
+            <h3>{t('step6Title', lang)}</h3>
             <p>
-              After making your edits, you have two save options:
+              {t('step6Text', lang)}
             </p>
-            <ul className="features-list">
-              <li><strong>Save:</strong> Updates your current save file directly</li>
-              <li><strong>Save As:</strong> Downloads the save file to your Downloads folder, allowing you to choose where to save it</li>
-            </ul>
           </section>
 
           <section className="guide-section">
-            <h3>Step 7: Using Reload</h3>
+            <h3>{t('step7Title', lang)}</h3>
             <p className="warning-box">
-              ⚠️ <strong>IMPORTANT:</strong> Always click <strong>Reload</strong> after playing the game, or your edits will be overwritten!
+              ⚠️ <strong>{t('step7Important', lang)}</strong>
             </p>
             <p>
-              The correct workflow when making multiple edits:
+              {t('workflow', lang)}
             </p>
             <ol>
-              <li>Make changes in the save editor</li>
-              <li>Click <strong>Save</strong></li>
-              <li>Play the game and do something (level up, get an item, etc.)</li>
-              <li>Exit to main menu in Dark Souls</li>
-              <li>Click <strong>Reload</strong> in the save editor to load the updated save</li>
-              <li>Make more changes and repeat</li>
+              <li>{t('wf1', lang)}</li>
+              <li>{t('wf2', lang)}</li>
+              <li>{t('wf3', lang)}</li>
+              <li>{t('wf4', lang)}</li>
+              <li>{t('wf5', lang)}</li>
+              <li>{t('wf6', lang)}</li>
             </ol>
             <p>
-              If you don't click Reload, the editor will still have the old save data in memory, and when you save again, it will overwrite any progress you made in-game.
+              {t('wfNote', lang)}
             </p>
           </section>
 
           <section className="guide-section troubleshooting-section">
-            <h3>Troubleshooting</h3>
+            <h3>{t('troubleshootingTitle', lang)}</h3>
 
             <div className="trouble-item">
-              <h4>Can't Find My Save File</h4>
+              <h4>{t('cantFindSave', lang)}</h4>
               <ul>
-                <li>Check if your save is on a different drive (D:, E:, etc.)</li>
-                <li>Make sure the path is <code>Documents\NBGI\</code> and NOT <code>Documents\FromSoftware\</code></li>
-                <li>Verify you're looking in the correct Steam user folder (SteamID)</li>
-                <li>Search your entire computer for <code>*.sl2</code> files</li>
+                <li>{t('cantFindSaveTip1', lang)}</li>
+                <li>{t('cantFindSaveTip2', lang)}</li>
+                <li>{t('cantFindSaveTip3', lang)}</li>
+                <li>{t('cantFindSaveTip4', lang)}</li>
               </ul>
             </div>
 
             <div className="trouble-item">
-              <h4>File Won't Load</h4>
+              <h4>{t('fileWontLoad', lang)}</h4>
               <ul>
-                <li>Make sure the file is a valid <code>.sl2</code> file</li>
-                <li>Check that the file isn't corrupted (try loading it in the game first)</li>
-                <li>Try using a different browser (Chrome, Firefox, Edge)</li>
+                <li>{t('fileWontLoadTip1', lang)}</li>
+                <li>{t('fileWontLoadTip2', lang)}</li>
+                <li>{t('fileWontLoadTip3', lang)}</li>
               </ul>
             </div>
 
             <div className="trouble-item">
-              <h4>Changes Aren't Showing In-Game</h4>
+              <h4>{t('changesNotShowing', lang)}</h4>
               <ul>
-                <li>Make sure you exited to the main menu before saving changes</li>
-                <li>Verify you edited the correct character slot</li>
-                <li>Check that you're using the correct Steam account</li>
-                <li>Ensure the save file is in the correct location for your current Steam user</li>
+                <li>{t('changesNotShowingTip1', lang)}</li>
+                <li>{t('changesNotShowingTip2', lang)}</li>
+                <li>{t('changesNotShowingTip3', lang)}</li>
+                <li>{t('changesNotShowingTip4', lang)}</li>
               </ul>
             </div>
           </section>
 
           <section className="guide-section disclaimer-section">
-            <h3>⚠️ Important Reminders</h3>
+            <h3>{t('importantReminders', lang)}</h3>
             <ul>
-              <li>This tool is not affiliated with FromSoftware or Bandai Namco</li>
-              <li>Use at your own risk - we're not responsible for corrupted saves or bans</li>
-              <li>Always maintain backups of your original save files</li>
-              <li>Respect the game and other players when using edited saves online</li>
+              <li>{t('notAffiliatedReminder', lang)}</li>
+              <li>{t('useAtOwnRiskReminder', lang)}</li>
+              <li>{t('alwaysMaintainBackups', lang)}</li>
+              <li>{t('respectGame', lang)}</li>
             </ul>
           </section>
 
           <section className="guide-section">
-            <h3>Need Help?</h3>
+            <h3>{t('needHelp', lang)}</h3>
             <p>
-              If you encounter issues or have questions, join our community:
+              {t('needHelpText', lang)}
             </p>
             <div className="help-links">
               <a

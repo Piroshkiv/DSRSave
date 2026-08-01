@@ -1,0 +1,6302 @@
+[
+  {
+    "name": "Pyromancer's Parting Flame",
+    "type": "weapon",
+    "category": "flames",
+    "rawId": "0x00CC9EDA"
+  },
+  {
+    "name": "Millwood Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D85EA5"
+  },
+  {
+    "name": "Izalith Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C96A85"
+  },
+  {
+    "name": "Dragonslayer Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006C7D75"
+  },
+  {
+    "name": "Wolf Knight's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01511115"
+  },
+  {
+    "name": "Sniper Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D8379A"
+  },
+  {
+    "name": "Plank Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134615A"
+  },
+  {
+    "name": "Club",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A120A"
+  },
+  {
+    "name": "Fists",
+    "type": "weapon",
+    "category": "weapons",
+    "rawId": "0x0001ADB0"
+  },
+  {
+    "name": "Fists",
+    "type": "weapon",
+    "category": "weapons",
+    "rawId": "0x0001ADB0"
+  },
+  {
+    "name": "Fists",
+    "type": "weapon",
+    "category": "weapons",
+    "rawId": "0x0001ADB0"
+  },
+  {
+    "name": "Fists",
+    "type": "weapon",
+    "category": "weapons",
+    "rawId": "0x0001ADB0"
+  },
+  {
+    "name": "Loincloth",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x148F57D8"
+  },
+  {
+    "name": "Ledo's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007EF405"
+  },
+  {
+    "name": "Fire Keeper Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x140D9CE8"
+  },
+  {
+    "name": "Fire Keeper Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x140DA0D0"
+  },
+  {
+    "name": "Fire Keeper Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x140DA4B8"
+  },
+  {
+    "name": "Estus Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x200050DC"
+  },
+  {
+    "name": "Iron Bracelets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x152F8B90"
+  },
+  {
+    "name": "Bandit's Knife",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000F695A"
+  },
+  {
+    "name": "Broken Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001EF9BA"
+  },
+  {
+    "name": "Long Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001EAB9A"
+  },
+  {
+    "name": "Bastard Sword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005B8D8A"
+  },
+  {
+    "name": "Morne's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007E7ED5"
+  },
+  {
+    "name": "Mace",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A391A"
+  },
+  {
+    "name": "Cleric's Sacred Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C9919A"
+  },
+  {
+    "name": "East-West Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0142B93A"
+  },
+  {
+    "name": "Uchigatana",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004C4B4A"
+  },
+  {
+    "name": "Master's Attire",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x148F5008"
+  },
+  {
+    "name": "Master's Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x148F53F0"
+  },
+  {
+    "name": "Shortsword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001E848A"
+  },
+  {
+    "name": "Scimitar",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003D7E3A"
+  },
+  {
+    "name": "Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x00990BBA"
+  },
+  {
+    "name": "Sorcerer's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C747AA"
+  },
+  {
+    "name": "Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00C7209A"
+  },
+  {
+    "name": "Torch",
+    "type": "weapon",
+    "category": "torches",
+    "rawId": "0x015EF3CA"
+  },
+  {
+    "name": "Leather Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134886A"
+  },
+  {
+    "name": "Crimson Parma",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134AF7A"
+  },
+  {
+    "name": "Warrior's Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0133EC2A"
+  },
+  {
+    "name": "Large Leather Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0131C94A"
+  },
+  {
+    "name": "Chain Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x142C1D80"
+  },
+  {
+    "name": "Chain Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x142C2168"
+  },
+  {
+    "name": "Leather Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x142C2550"
+  },
+  {
+    "name": "Chain Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x142C2938"
+  },
+  {
+    "name": "Longbow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D689EA"
+  },
+  {
+    "name": "Moaning Shield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x015074D5"
+  },
+  {
+    "name": "Light Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D63BCA"
+  },
+  {
+    "name": "Buckler",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01312D0A"
+  },
+  {
+    "name": "Elkhorn Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0133C51A"
+  },
+  {
+    "name": "Round Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0131A23A"
+  },
+  {
+    "name": "Kite Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x013301CA"
+  },
+  {
+    "name": "Billed Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11A39DE0"
+  },
+  {
+    "name": "Cornyx's Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11945F88"
+  },
+  {
+    "name": "Drakeblood Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x153ECDD0"
+  },
+  {
+    "name": "Mirrah Chain Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14B57D78"
+  },
+  {
+    "name": "Thief Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12656740"
+  },
+  {
+    "name": "Dark Hand",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A87500"
+  },
+  {
+    "name": "Untrue Dark Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005050"
+  },
+  {
+    "name": "Untrue White Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FD8"
+  },
+  {
+    "name": "Worker Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x12CD2DA8"
+  },
+  {
+    "name": "Ring of Sacrifice",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EF2"
+  },
+  {
+    "name": "Worker Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x12CD3578"
+  },
+  {
+    "name": "Worker Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12CD29C0"
+  },
+  {
+    "name": "Pyromancy Flame",
+    "type": "weapon",
+    "category": "flames",
+    "rawId": "0x00CC77CA"
+  },
+  {
+    "name": "Worker Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x12CD3190"
+  },
+  {
+    "name": "Zweihander",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005C29CA"
+  },
+  {
+    "name": "Pontiff Knight Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E1A75"
+  },
+  {
+    "name": "Estoc",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002DC6CA"
+  },
+  {
+    "name": "Deserter Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x12625DE8"
+  },
+  {
+    "name": "Warpick",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007DBB8A"
+  },
+  {
+    "name": "Glaive",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0098E4AA"
+  },
+  {
+    "name": "Short Bow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D5C69A"
+  },
+  {
+    "name": "Priest's Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C9B8AA"
+  },
+  {
+    "name": "Ragged Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x148F4C20"
+  },
+  {
+    "name": "Evangelist Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x12DC73D0"
+  },
+  {
+    "name": "Scholar's Shed Skin",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12E40D20"
+  },
+  {
+    "name": "Target Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01339E0A"
+  },
+  {
+    "name": "Pyromancer Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11AB3F00"
+  },
+  {
+    "name": "Pyromancer Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11AB42E8"
+  },
+  {
+    "name": "Pyromancer Wrap",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11AB46D0"
+  },
+  {
+    "name": "Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01410B8A"
+  },
+  {
+    "name": "Pontiff Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014159A5"
+  },
+  {
+    "name": "Claymore",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005BDBAA"
+  },
+  {
+    "name": "Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11298BE0"
+  },
+  {
+    "name": "Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11298FC8"
+  },
+  {
+    "name": "Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x112993B0"
+  },
+  {
+    "name": "Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11299798"
+  },
+  {
+    "name": "Deacon Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13F6C158"
+  },
+  {
+    "name": "Assassin Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11607E48"
+  },
+  {
+    "name": "Lothric Knight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001F6EEA"
+  },
+  {
+    "name": "Assassin Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x115EFB90"
+  },
+  {
+    "name": "Assassin Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x115EFF78"
+  },
+  {
+    "name": "Pyromancer Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11AB4AB8"
+  },
+  {
+    "name": "Lothric Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13197CD0"
+  },
+  {
+    "name": "Saint's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F56"
+  },
+  {
+    "name": "Corvian Greatknife",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x0010A1DA"
+  },
+  {
+    "name": "Mail Breaker",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002DEDDA"
+  },
+  {
+    "name": "Brigand Twindaggers",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00F50E6A"
+  },
+  {
+    "name": "Butcher Knife",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006BE13A"
+  },
+  {
+    "name": "Brigand Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x148009E0"
+  },
+  {
+    "name": "Brigand Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14800DC8"
+  },
+  {
+    "name": "Brigand Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x148011B0"
+  },
+  {
+    "name": "Iron Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0132658A"
+  },
+  {
+    "name": "Iron Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x152F8F78"
+  },
+  {
+    "name": "Brigand Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14801598"
+  },
+  {
+    "name": "Brigand Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006B1DEA"
+  },
+  {
+    "name": "Iron Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x152F83C0"
+  },
+  {
+    "name": "Sellsword Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11481060"
+  },
+  {
+    "name": "Storyteller's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C76EBA"
+  },
+  {
+    "name": "Morne's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F1A"
+  },
+  {
+    "name": "Sellsword Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11481448"
+  },
+  {
+    "name": "Blue Sentinels",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002756"
+  },
+  {
+    "name": "Sellsword Gauntlet",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11481830"
+  },
+  {
+    "name": "Sellsword Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11481C18"
+  },
+  {
+    "name": "Black Knight Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005D8955"
+  },
+  {
+    "name": "Flamberge",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005DB06A"
+  },
+  {
+    "name": "Caduceus Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134133A"
+  },
+  {
+    "name": "Fire Witch Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13938700"
+  },
+  {
+    "name": "Black Iron Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x155D4A80"
+  },
+  {
+    "name": "Black Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1337FD68"
+  },
+  {
+    "name": "Thunder Stoneplate Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E5E"
+  },
+  {
+    "name": "Firelink Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11406F40"
+  },
+  {
+    "name": "Black Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13380538"
+  },
+  {
+    "name": "Sellsword Twinblades",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x00F4240A"
+  },
+  {
+    "name": "Lothric Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x131980B8"
+  },
+  {
+    "name": "Astora Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x002191CA"
+  },
+  {
+    "name": "Caestus",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A7FFDA"
+  },
+  {
+    "name": "Poisonbite Ring+1",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E8F"
+  },
+  {
+    "name": "Mound-makers",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002742"
+  },
+  {
+    "name": "Silver Eagle Kite Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014418CA"
+  },
+  {
+    "name": "Wargod Wooden Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0144DC1A"
+  },
+  {
+    "name": "Grass Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01437C85"
+  },
+  {
+    "name": "Heysel Pick",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007D6D65"
+  },
+  {
+    "name": "Broadsword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001ED2AA"
+  },
+  {
+    "name": "Blue Tearstone Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004ED4"
+  },
+  {
+    "name": "Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E14EA"
+  },
+  {
+    "name": "Evangelist Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x12DC6FE8"
+  },
+  {
+    "name": "Winged Knight Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0099F61A"
+  },
+  {
+    "name": "Great Swamp Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F10"
+  },
+  {
+    "name": "Conjurator Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x149E8E60"
+  },
+  {
+    "name": "Conjurator Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x149E9248"
+  },
+  {
+    "name": "Conjurator Manchettes",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x149E9630"
+  },
+  {
+    "name": "Conjurator Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x149E9A18"
+  },
+  {
+    "name": "Warrior of Sunlight",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002738"
+  },
+  {
+    "name": "Harpe",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00102CAA"
+  },
+  {
+    "name": "Fallen Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1121EAC0"
+  },
+  {
+    "name": "Fallen Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1121EEA8"
+  },
+  {
+    "name": "Fallen Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1121F290"
+  },
+  {
+    "name": "Lucerne",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0098BD9A"
+  },
+  {
+    "name": "Fallen Knight Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1121F678"
+  },
+  {
+    "name": "Great Club",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007B4A8A"
+  },
+  {
+    "name": "Exile Greatsword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x005DD77A"
+  },
+  {
+    "name": "Sorcerer Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11C9C380"
+  },
+  {
+    "name": "Sorcerer Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11C9C768"
+  },
+  {
+    "name": "Cornyx's Wrap",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11946370"
+  },
+  {
+    "name": "Sorcerer Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11C9CF38"
+  },
+  {
+    "name": "Wolf Ring +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EE1"
+  },
+  {
+    "name": "Watchdogs of Farron",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002724"
+  },
+  {
+    "name": "Golden Falcon Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01354BBA"
+  },
+  {
+    "name": "Battle Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006AF6DA"
+  },
+  {
+    "name": "Exile Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13473BC0"
+  },
+  {
+    "name": "Exile Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13473FA8"
+  },
+  {
+    "name": "Way of Blue",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000274C"
+  },
+  {
+    "name": "Exile Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13474390"
+  },
+  {
+    "name": "Exile Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13474778"
+  },
+  {
+    "name": "Lapp's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11E84800"
+  },
+  {
+    "name": "Herald Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x114FB180"
+  },
+  {
+    "name": "Herald Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x114FB568"
+  },
+  {
+    "name": "Herald Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x114FB950"
+  },
+  {
+    "name": "Great Door Twinshields",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x00F5F8CA"
+  },
+  {
+    "name": "Herald Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x114FBD38"
+  },
+  {
+    "name": "Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005C50DA"
+  },
+  {
+    "name": "Old Wolf Curved Sword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x00610BC5"
+  },
+  {
+    "name": "Lothric Knight Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x014FD89A"
+  },
+  {
+    "name": "Stone Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0151D46A"
+  },
+  {
+    "name": "Heretic's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C8F55A"
+  },
+  {
+    "name": "Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01430755"
+  },
+  {
+    "name": "Knight's Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D7262A"
+  },
+  {
+    "name": "Spider Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143557A"
+  },
+  {
+    "name": "Wolf Knight's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01511115"
+  },
+  {
+    "name": "Pike",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008C618A"
+  },
+  {
+    "name": "Twin Dragon Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0151382A"
+  },
+  {
+    "name": "Irithyll Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x0020A765"
+  },
+  {
+    "name": "Wood Grain Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EAE"
+  },
+  {
+    "name": "Wooden Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0132DABA"
+  },
+  {
+    "name": "Large Club",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007AFC6A"
+  },
+  {
+    "name": "Northern Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x116E3600"
+  },
+  {
+    "name": "Northern Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x116E39E8"
+  },
+  {
+    "name": "Northern Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x116E3DD0"
+  },
+  {
+    "name": "Crystal Sage's Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E6305"
+  },
+  {
+    "name": "Northern Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x116E41B8"
+  },
+  {
+    "name": "Morning Star",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A602A"
+  },
+  {
+    "name": "Crescent Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006B6C0A"
+  },
+  {
+    "name": "Canvas Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CA7BFA"
+  },
+  {
+    "name": "Lloyd's Shield Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x200050BE"
+  },
+  {
+    "name": "Nameless Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x143B5FC0"
+  },
+  {
+    "name": "Nameless Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x143B63A8"
+  },
+  {
+    "name": "Flynn's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000503C"
+  },
+  {
+    "name": "Small Leather Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0131541A"
+  },
+  {
+    "name": "Thrall Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006C566A"
+  },
+  {
+    "name": "Mirrah Vest",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x15204568"
+  },
+  {
+    "name": "Four-Pronged Plow",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008ADAEA"
+  },
+  {
+    "name": "Stone Parma",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01443FDA"
+  },
+  {
+    "name": "Mirrah Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x15204950"
+  },
+  {
+    "name": "Mirrah Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x15204D38"
+  },
+  {
+    "name": "Morion Blade",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x002143A5"
+  },
+  {
+    "name": "Spiked Mace",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007EA5EA"
+  },
+  {
+    "name": "Arbalest",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D662DA"
+  },
+  {
+    "name": "Dark Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x133F9AA0"
+  },
+  {
+    "name": "Dancer's Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13C14DC0"
+  },
+  {
+    "name": "Dancer's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13C151A8"
+  },
+  {
+    "name": "Dancer's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13C15590"
+  },
+  {
+    "name": "Dancer's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13C15978"
+  },
+  {
+    "name": "Dark Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x133F9E88"
+  },
+  {
+    "name": "Dark Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x133FA270"
+  },
+  {
+    "name": "Follower Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x137CAB70"
+  },
+  {
+    "name": "Nameless Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x143B6790"
+  },
+  {
+    "name": "Nameless Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x143B6B78"
+  },
+  {
+    "name": "Sunlight Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CA54EA"
+  },
+  {
+    "name": "Black Bow of Pharis",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D7E97A"
+  },
+  {
+    "name": "Pharis's Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1487AB00"
+  },
+  {
+    "name": "Antiquated Dress",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x15D76068"
+  },
+  {
+    "name": "Antiquated Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x15D76450"
+  },
+  {
+    "name": "Partizan",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x0089C97A"
+  },
+  {
+    "name": "Evangelist Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x12DC77B8"
+  },
+  {
+    "name": "Rotten Ghru Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B290A"
+  },
+  {
+    "name": "Ghru Rotshield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x013328DA"
+  },
+  {
+    "name": "Sage Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F3A"
+  },
+  {
+    "name": "Crown of Dusk",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x15D75C80"
+  },
+  {
+    "name": "Composite Bow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D5EDAA"
+  },
+  {
+    "name": "Hand Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006ACFCA"
+  },
+  {
+    "name": "Fire Clutch Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000501E"
+  },
+  {
+    "name": "Magic Stoneplate Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E68"
+  },
+  {
+    "name": "Young Dragon Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F06"
+  },
+  {
+    "name": "Manikin Claws",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A826EA"
+  },
+  {
+    "name": "Slumbering Dragoncrest Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F42"
+  },
+  {
+    "name": "Parrying Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000F906A"
+  },
+  {
+    "name": "Shotel",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003D301A"
+  },
+  {
+    "name": "Winged Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x00897B5A"
+  },
+  {
+    "name": "Reinforced Club",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A873A"
+  },
+  {
+    "name": "Pierce Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0142922A"
+  },
+  {
+    "name": "Farron Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005082"
+  },
+  {
+    "name": "Hawkwood's Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01323E7A"
+  },
+  {
+    "name": "Notched Whip",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B7DE5A"
+  },
+  {
+    "name": "Fleshbite Ring+1",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EA3"
+  },
+  {
+    "name": "Saint-tree Bellvine",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C9DFBA"
+  },
+  {
+    "name": "Astora Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005C9EFA"
+  },
+  {
+    "name": "Wolnir's Holy Sword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005FFA55"
+  },
+  {
+    "name": "Black Leather Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14A63368"
+  },
+  {
+    "name": "Black Leather Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14A63750"
+  },
+  {
+    "name": "Black Leather Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14A63B38"
+  },
+  {
+    "name": "Executioner's Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x0021DFEA"
+  },
+  {
+    "name": "Blue Wooden Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143F1BA"
+  },
+  {
+    "name": "Cleric Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11D905C0"
+  },
+  {
+    "name": "Cleric Blue Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11D909A8"
+  },
+  {
+    "name": "Cleric Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11D90D90"
+  },
+  {
+    "name": "Cleric Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11D91178"
+  },
+  {
+    "name": "Demon's Fist",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A84DF5"
+  },
+  {
+    "name": "Grave Warden Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12BDE780"
+  },
+  {
+    "name": "Grave Warden Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x12BDEB68"
+  },
+  {
+    "name": "Sunlight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0142E04A"
+  },
+  {
+    "name": "Curse Ward Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01518645"
+  },
+  {
+    "name": "Demon's Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006CA485"
+  },
+  {
+    "name": "Great Scythe",
+    "type": "weapon",
+    "category": "reapers",
+    "rawId": "0x0098968A"
+  },
+  {
+    "name": "Rotten Ghru Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000FDE8A"
+  },
+  {
+    "name": "Rotten Ghru Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x0020594A"
+  },
+  {
+    "name": "Llewellyn Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134FD9A"
+  },
+  {
+    "name": "Great Wooden Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007C830A"
+  },
+  {
+    "name": "Bloodbite Ring+1",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E85"
+  },
+  {
+    "name": "Carthus Milkring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FE2"
+  },
+  {
+    "name": "Shield of Want",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0144B505"
+  },
+  {
+    "name": "Evangelist Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12DC6C00"
+  },
+  {
+    "name": "Red Hilted Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009AB96A"
+  },
+  {
+    "name": "Horsehoof Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x200050F0"
+  },
+  {
+    "name": "Falchion",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003DA54A"
+  },
+  {
+    "name": "Great Machete",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x00F4E75A"
+  },
+  {
+    "name": "Saint's Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CACA1A"
+  },
+  {
+    "name": "Bloodlust",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004CE785"
+  },
+  {
+    "name": "Porcine Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01448DFA"
+  },
+  {
+    "name": "Armor of the Sun",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x152F87A8"
+  },
+  {
+    "name": "Lucatiel's Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x15204180"
+  },
+  {
+    "name": "Carthus Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014180BA"
+  },
+  {
+    "name": "Black Iron Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x155D4E68"
+  },
+  {
+    "name": "Black Iron Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x155D5250"
+  },
+  {
+    "name": "Black Iron Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x155D5638"
+  },
+  {
+    "name": "Bonewheel Shield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0151AD5A"
+  },
+  {
+    "name": "Carthus Bloodring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x200050FA"
+  },
+  {
+    "name": "Executioner Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x119BFCC0"
+  },
+  {
+    "name": "Executioner Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x119C00A8"
+  },
+  {
+    "name": "Dark Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x005F370A"
+  },
+  {
+    "name": "Carthus Curved Greatsword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x003DF36A"
+  },
+  {
+    "name": "Hollowslayer Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00604875"
+  },
+  {
+    "name": "Dancer's Enchanted Swords",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x00F4C045"
+  },
+  {
+    "name": "Vordt's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007CD125"
+  },
+  {
+    "name": "Arstor's Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008BEC55"
+  },
+  {
+    "name": "Pontiff's Left Eye",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005136"
+  },
+  {
+    "name": "Wolf Knight's Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00602165"
+  },
+  {
+    "name": "Farron Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005E9AC5"
+  },
+  {
+    "name": "Undead Legion Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13750280"
+  },
+  {
+    "name": "Undead Legion Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13750668"
+  },
+  {
+    "name": "Undead Legion Gauntlet",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13750A50"
+  },
+  {
+    "name": "Undead Legion Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13750E38"
+  },
+  {
+    "name": "Old King's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007CF835"
+  },
+  {
+    "name": "Carthus Shotel",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003EB6BA"
+  },
+  {
+    "name": "Knight Slayer's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005000"
+  },
+  {
+    "name": "Executioner Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x119C0490"
+  },
+  {
+    "name": "Executioner Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x119C0878"
+  },
+  {
+    "name": "Pontiff's Right Eye",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000510E"
+  },
+  {
+    "name": "Symbol of Avarice",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14ADD0A0"
+  },
+  {
+    "name": "Black Blade",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004CC07A"
+  },
+  {
+    "name": "Crescent Moon Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E8FA5"
+  },
+  {
+    "name": "Rosaria's Fingers",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002760"
+  },
+  {
+    "name": "Old Sage's Blindfold",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11945BA0"
+  },
+  {
+    "name": "Witch's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F11"
+  },
+  {
+    "name": "Black Knight Sword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005F5E15"
+  },
+  {
+    "name": "Wolnir's Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x136D6160"
+  },
+  {
+    "name": "White Hair Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CAF125"
+  },
+  {
+    "name": "Pontiff Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x135681E8"
+  },
+  {
+    "name": "Pontiff Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x135689B8"
+  },
+  {
+    "name": "Deacon Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13F6B988"
+  },
+  {
+    "name": "Dark Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x133FA658"
+  },
+  {
+    "name": "Pontiff Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x135685D0"
+  },
+  {
+    "name": "Izalith Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C96A85"
+  },
+  {
+    "name": "Fume Ultra Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x0060E4B5"
+  },
+  {
+    "name": "Black Iron Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0150EA0A"
+  },
+  {
+    "name": "Firelink Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11407328"
+  },
+  {
+    "name": "Lloyd's Sword Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x200050B4"
+  },
+  {
+    "name": "Dragonrider Bow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D6B0F5"
+  },
+  {
+    "name": "Sneering Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11851960"
+  },
+  {
+    "name": "Mirrah Chain Mail",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14B575A8"
+  },
+  {
+    "name": "Fire Witch Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13938ED0"
+  },
+  {
+    "name": "Hawk Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F92"
+  },
+  {
+    "name": "Ashen Estus Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x200050E6"
+  },
+  {
+    "name": "Fire Witch Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x139392B8"
+  },
+  {
+    "name": "Obscuring Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005064"
+  },
+  {
+    "name": "Cathedral Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13029588"
+  },
+  {
+    "name": "Cathedral Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13029970"
+  },
+  {
+    "name": "Cathedral Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13029D58"
+  },
+  {
+    "name": "Aldrich's Sapphire",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005096"
+  },
+  {
+    "name": "Barbed Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x0021B8DA"
+  },
+  {
+    "name": "Spiked Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01426B1A"
+  },
+  {
+    "name": "Murakumo",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x005CC60A"
+  },
+  {
+    "name": "Pale Shade Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11851D48"
+  },
+  {
+    "name": "Pale Shade Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11852130"
+  },
+  {
+    "name": "Pale Shade Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11852518"
+  },
+  {
+    "name": "Silver Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x117D7840"
+  },
+  {
+    "name": "Saint Bident",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008C136A"
+  },
+  {
+    "name": "Maiden Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14BD12E0"
+  },
+  {
+    "name": "Maiden Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14BD16C8"
+  },
+  {
+    "name": "Maiden Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14BD1AB0"
+  },
+  {
+    "name": "Maiden Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14BD1E98"
+  },
+  {
+    "name": "Handmaid's Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x0011170A"
+  },
+  {
+    "name": "Great Corvian Scythe",
+    "type": "weapon",
+    "category": "reapers",
+    "rawId": "0x0099CF0A"
+  },
+  {
+    "name": "Deep Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F60"
+  },
+  {
+    "name": "Havel's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x147868C0"
+  },
+  {
+    "name": "Havel's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14786CA8"
+  },
+  {
+    "name": "Havel's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14787090"
+  },
+  {
+    "name": "Grave Warden Wrap",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x12BDEF50"
+  },
+  {
+    "name": "Red and White Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01343A4A"
+  },
+  {
+    "name": "Ancient Dragon Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x013599D5"
+  },
+  {
+    "name": "Warden Twinblades",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x00F4722A"
+  },
+  {
+    "name": "Onislayer Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D7C265"
+  },
+  {
+    "name": "Cathedral Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x130291A0"
+  },
+  {
+    "name": "Lightning Clutch Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005014"
+  },
+  {
+    "name": "Old Sorcerer Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1496ED40"
+  },
+  {
+    "name": "Old Sorcerer Coat",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1496F128"
+  },
+  {
+    "name": "Old Sorcerer Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1496F510"
+  },
+  {
+    "name": "Old Sorcerer Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1496F8F8"
+  },
+  {
+    "name": "Greatshield of Glory",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01515F35"
+  },
+  {
+    "name": "Havel's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14787478"
+  },
+  {
+    "name": "Dragon Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01432E65"
+  },
+  {
+    "name": "Witchtree Branch",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C9437A"
+  },
+  {
+    "name": "Heavy Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D74D3A"
+  },
+  {
+    "name": "Drakeblood Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x0060969A"
+  },
+  {
+    "name": "Dragon Tooth",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007E09A5"
+  },
+  {
+    "name": "Helm of Thorns",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x15B8D800"
+  },
+  {
+    "name": "Armor of Thorns",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x15B8DBE8"
+  },
+  {
+    "name": "Gauntlets of Thorns",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x15B8DFD0"
+  },
+  {
+    "name": "Leggings of Thorns",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x15B8E3B8"
+  },
+  {
+    "name": "Drang Hammers",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x00F61FDA"
+  },
+  {
+    "name": "Drang Shoes",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x154E13F8"
+  },
+  {
+    "name": "Drang Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x154E1010"
+  },
+  {
+    "name": "Drang Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x154E0C28"
+  },
+  {
+    "name": "Havel's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x013376F5"
+  },
+  {
+    "name": "Man-grub's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C7E3E5"
+  },
+  {
+    "name": "Claw",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A7D8CA"
+  },
+  {
+    "name": "Gargoyle Flame Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B01FA"
+  },
+  {
+    "name": "Shadow Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14D3F640"
+  },
+  {
+    "name": "Shadow Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14D3FA28"
+  },
+  {
+    "name": "Cathedral Knight Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x014FFFAA"
+  },
+  {
+    "name": "Calamity Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005078"
+  },
+  {
+    "name": "Storm Ruler",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x006132D5"
+  },
+  {
+    "name": "Shadow Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14D3FE10"
+  },
+  {
+    "name": "Torch",
+    "type": "weapon",
+    "category": "torches",
+    "rawId": "0x015EF3CA"
+  },
+  {
+    "name": "Torch",
+    "type": "weapon",
+    "category": "torches",
+    "rawId": "0x015EF3CA"
+  },
+  {
+    "name": "Follower Torch",
+    "type": "weapon",
+    "category": "torches",
+    "rawId": "0x015F1ADA"
+  },
+  {
+    "name": "Catarina Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14693238"
+  },
+  {
+    "name": "Immolation Tinder",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009B0785"
+  },
+  {
+    "name": "Archdeacon White Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13EF1480"
+  },
+  {
+    "name": "Archdeacon Holy Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13EF1868"
+  },
+  {
+    "name": "Archdeacon Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13EF2038"
+  },
+  {
+    "name": "Cleric's Candlestick",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x0020F58A"
+  },
+  {
+    "name": "Bellowing Dragoncrest Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F07"
+  },
+  {
+    "name": "Yhorm's Great Machete",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x005F0FF5"
+  },
+  {
+    "name": "Pickaxe",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007DE29A"
+  },
+  {
+    "name": "Yhorm's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0150C2F5"
+  },
+  {
+    "name": "Dark Clutch Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005028"
+  },
+  {
+    "name": "Pontiff Knight Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13567E00"
+  },
+  {
+    "name": "Shadow Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14D401F8"
+  },
+  {
+    "name": "Thrall Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12D4CAE0"
+  },
+  {
+    "name": "Magic Clutch Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000500A"
+  },
+  {
+    "name": "Grave Warden Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x12BDF338"
+  },
+  {
+    "name": "Darkmoon Longbow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D79B55"
+  },
+  {
+    "name": "Yorshka's Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008C3A75"
+  },
+  {
+    "name": "Silvercat Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FC4"
+  },
+  {
+    "name": "Silver Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01424405"
+  },
+  {
+    "name": "Gotthard Twinswords",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00F5357A"
+  },
+  {
+    "name": "Twin Princes' Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005FAC35"
+  },
+  {
+    "name": "Alva Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14C4B400"
+  },
+  {
+    "name": "Alva Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14C4B7E8"
+  },
+  {
+    "name": "Alva Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14C4BBD0"
+  },
+  {
+    "name": "Dragonslayer Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00CF8505"
+  },
+  {
+    "name": "Alva Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14C4BFB8"
+  },
+  {
+    "name": "Dragonscale Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000515E"
+  },
+  {
+    "name": "Cathedral Knight Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005E73BA"
+  },
+  {
+    "name": "Lothric Knight Long Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008AB3DA"
+  },
+  {
+    "name": "Leo Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EE8"
+  },
+  {
+    "name": "Smough's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007E30B5"
+  },
+  {
+    "name": "Silver Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x15110328"
+  },
+  {
+    "name": "Flame Stoneplate Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E54"
+  },
+  {
+    "name": "Moonlight Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00606F85"
+  },
+  {
+    "name": "Scholar's Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x12E41108"
+  },
+  {
+    "name": "Black Knight Glaive",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009AE075"
+  },
+  {
+    "name": "Ring of the Sun's First Born",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F1B"
+  },
+  {
+    "name": "Dragonslayer Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008CAFA5"
+  },
+  {
+    "name": "Firelink Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11407710"
+  },
+  {
+    "name": "Deserter Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x126265B8"
+  },
+  {
+    "name": "Silver Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1510FF40"
+  },
+  {
+    "name": "Dusk Crown Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F4C"
+  },
+  {
+    "name": "Firelink Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11407AF8"
+  },
+  {
+    "name": "Tailbone Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B5015"
+  },
+  {
+    "name": "Tailbone Short Sword",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00107AC5"
+  },
+  {
+    "name": "Dark Stoneplate Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E72"
+  },
+  {
+    "name": "Ricard's Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E3BFA"
+  },
+  {
+    "name": "Silver Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x15110710"
+  },
+  {
+    "name": "Greatsword of Judgment",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005E2595"
+  },
+  {
+    "name": "Profaned Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005E4CA5"
+  },
+  {
+    "name": "Elite Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x144AA200"
+  },
+  {
+    "name": "Elite Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x144AA5E8"
+  },
+  {
+    "name": "Elite Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x144AA9D0"
+  },
+  {
+    "name": "Elite Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x144AADB8"
+  },
+  {
+    "name": "Mendicant's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C795CA"
+  },
+  {
+    "name": "Man Serpent Hatchet",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006D19BA"
+  },
+  {
+    "name": "Jailer Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x129F6AD0"
+  },
+  {
+    "name": "Gargoyle Flame Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007CAA1A"
+  },
+  {
+    "name": "Cursebite Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E98"
+  },
+  {
+    "name": "Eleonora",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006CCB95"
+  },
+  {
+    "name": "Court Sorcerer Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11BA8140"
+  },
+  {
+    "name": "Court Sorcerer Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11BA8528"
+  },
+  {
+    "name": "Court Sorcerer Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11BA8910"
+  },
+  {
+    "name": "Court Sorcerer Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11BA8CF8"
+  },
+  {
+    "name": "Dragonslayer Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x158B1140"
+  },
+  {
+    "name": "Court Sorcerer's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C91C6A"
+  },
+  {
+    "name": "Chaos Blade",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004C9965"
+  },
+  {
+    "name": "Clandestine Coat",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11CB4E08"
+  },
+  {
+    "name": "Dragonslayer Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x158B1528"
+  },
+  {
+    "name": "Dragonslayer Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x158B1910"
+  },
+  {
+    "name": "Aristocrat's Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x129F6300"
+  },
+  {
+    "name": "Dragonslayer Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x158B1CF8"
+  },
+  {
+    "name": "Carthus Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003DCC5A"
+  },
+  {
+    "name": "Hornet Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F9C"
+  },
+  {
+    "name": "Blacksmith Hammer",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007E57CA"
+  },
+  {
+    "name": "Wolf Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x157BCF00"
+  },
+  {
+    "name": "Wolf Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x157BD2E8"
+  },
+  {
+    "name": "Soldering Iron",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B772A"
+  },
+  {
+    "name": "Jailer Robe",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x129F66E8"
+  },
+  {
+    "name": "Jailer Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x129F6EB8"
+  },
+  {
+    "name": "Karla's Pointed Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x15E69EC0"
+  },
+  {
+    "name": "Karla's Coat",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x15E6A2A8"
+  },
+  {
+    "name": "Karla's Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x15E6A690"
+  },
+  {
+    "name": "Karla's Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x15E6AA78"
+  },
+  {
+    "name": "Xanthous Overcoat",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x116698C8"
+  },
+  {
+    "name": "Xanthous Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11669CB0"
+  },
+  {
+    "name": "Xanthous Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1166A098"
+  },
+  {
+    "name": "Wolf Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x157BD6D0"
+  },
+  {
+    "name": "Priestess Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EC0"
+  },
+  {
+    "name": "Wolf Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x157BDAB8"
+  },
+  {
+    "name": "Gundyr's Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009A1D25"
+  },
+  {
+    "name": "Prisoner's Chain",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005046"
+  },
+  {
+    "name": "Gundyr's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13D09000"
+  },
+  {
+    "name": "Gundyr's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13D093E8"
+  },
+  {
+    "name": "Gundyr's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13D097D0"
+  },
+  {
+    "name": "Gundyr's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13D09BB8"
+  },
+  {
+    "name": "Silver Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x15110AF8"
+  },
+  {
+    "name": "Storm Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E4185"
+  },
+  {
+    "name": "Dragonslayer Swordspear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008BC545"
+  },
+  {
+    "name": "Golden Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1365C040"
+  },
+  {
+    "name": "Dragonscale Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1365C428"
+  },
+  {
+    "name": "Golden Bracelets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1365C810"
+  },
+  {
+    "name": "Dragonscale Waistcloth",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1365CBF8"
+  },
+  {
+    "name": "Lothric Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x131978E8"
+  },
+  {
+    "name": "Black Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0141F5E5"
+  },
+  {
+    "name": "Follower Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x137CAF58"
+  },
+  {
+    "name": "Assassin Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11607A60"
+  },
+  {
+    "name": "Black Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13380150"
+  },
+  {
+    "name": "Hood of Prayer",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13AA6A60"
+  },
+  {
+    "name": "Robe of Prayer",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13AA6E48"
+  },
+  {
+    "name": "Skirt of Prayer",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13AA7618"
+  },
+  {
+    "name": "Black Knight Greataxe",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009959D5"
+  },
+  {
+    "name": "Pyromancer's Parting Flame",
+    "type": "weapon",
+    "category": "flames",
+    "rawId": "0x00CC9EDA"
+  },
+  {
+    "name": "Black Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1337F980"
+  },
+  {
+    "name": "Follower Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x137CA788"
+  },
+  {
+    "name": "Dragonslayer Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006C7D75"
+  },
+  {
+    "name": "Chillbite Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005208"
+  },
+  {
+    "name": "Friede's Great Scythe",
+    "type": "weapon",
+    "category": "reapers",
+    "rawId": "0x009B55A5"
+  },
+  {
+    "name": "Dragonslayer Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01504DC5"
+  },
+  {
+    "name": "Rose of Ariandel",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B82C75"
+  },
+  {
+    "name": "Ordained Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x135E1F20"
+  },
+  {
+    "name": "Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x0089544A"
+  },
+  {
+    "name": "Ordained Dress",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x135E2308"
+  },
+  {
+    "name": "Ordained Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x135E2AD8"
+  },
+  {
+    "name": "Crow Quills",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x00F66DFA"
+  },
+  {
+    "name": "Winged Knight Twinaxes",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x00F4993A"
+  },
+  {
+    "name": "Winged Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12EBAE40"
+  },
+  {
+    "name": "Winged Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x12EBB228"
+  },
+  {
+    "name": "Winged Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x12EBB610"
+  },
+  {
+    "name": "Winged Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x12EBB9F8"
+  },
+  {
+    "name": "Sacred Bloom Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x013572C5"
+  },
+  {
+    "name": "Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006B931A"
+  },
+  {
+    "name": "Lothric's Holy Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x005FD345"
+  },
+  {
+    "name": "Knight's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FEC"
+  },
+  {
+    "name": "Aldrich's Ruby",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000508C"
+  },
+  {
+    "name": "Sun Princess Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FBA"
+  },
+  {
+    "name": "Lorian's Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005F8525"
+  },
+  {
+    "name": "Smough's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x159A5380"
+  },
+  {
+    "name": "Smough's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x159A5768"
+  },
+  {
+    "name": "Smough's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x159A5B50"
+  },
+  {
+    "name": "Smough's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x159A5F38"
+  },
+  {
+    "name": "Skull Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FCE"
+  },
+  {
+    "name": "Firelink Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x0060BDA5"
+  },
+  {
+    "name": "Greatlance",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008A8CCA"
+  },
+  {
+    "name": "Slave Knight Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x134EDCE0"
+  },
+  {
+    "name": "Slave Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x134EE0C8"
+  },
+  {
+    "name": "Slave Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x134EE4B0"
+  },
+  {
+    "name": "Slave Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x134EE898"
+  },
+  {
+    "name": "Crow Talons",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A89C1A"
+  },
+  {
+    "name": "Onyx Blade",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00222E05"
+  },
+  {
+    "name": "Quakestone Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007ECCF5"
+  },
+  {
+    "name": "Darkdrift",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004D0E95"
+  },
+  {
+    "name": "Splitleaf Greatsword (It's a Halberd)",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009B2E9A"
+  },
+  {
+    "name": "Follower Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x137CA3A0"
+  },
+  {
+    "name": "Aquamarine Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00116525"
+  },
+  {
+    "name": "Murky Hand Scythe",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00118C3A"
+  },
+  {
+    "name": "Golden Ritual Spear",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C83205"
+  },
+  {
+    "name": "Drang Twinspears",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x00F5AAAA"
+  },
+  {
+    "name": "Speckled Stoneplate Ring+1",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E7B"
+  },
+  {
+    "name": "Follower Javelin",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008CD6BA"
+  },
+  {
+    "name": "Dragonslayer's Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006C084A"
+  },
+  {
+    "name": "Crystal Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00CA2DD5"
+  },
+  {
+    "name": "Lothric War Banner",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008D24DA"
+  },
+  {
+    "name": "Sniper Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D8379A"
+  },
+  {
+    "name": "Pontiff Knight Great Scythe",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0099A7F5"
+  },
+  {
+    "name": "Lothric Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0140965A"
+  },
+  {
+    "name": "Whip",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B71B0A"
+  },
+  {
+    "name": "Spotted Whip",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B8056A"
+  },
+  {
+    "name": "Sunless Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CAA305"
+  },
+  {
+    "name": "Follower Sabre",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003EDDCA"
+  },
+  {
+    "name": "Yorshka's Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C8802A"
+  },
+  {
+    "name": "Murky Longstaff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00CCC5EA"
+  },
+  {
+    "name": "Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000F424A"
+  },
+  {
+    "name": "Witch's Locks",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B7B745"
+  },
+  {
+    "name": "Steel Soldier Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x12625A00"
+  },
+  {
+    "name": "Covetous Silver Serpent Ring +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FB3"
+  },
+  {
+    "name": "Eastern Iron Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134D68A"
+  },
+  {
+    "name": "Aldrich Faithful",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000272E"
+  },
+  {
+    "name": "Irithyll Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E8A15"
+  },
+  {
+    "name": "Spirit Tree Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014466E5"
+  },
+  {
+    "name": "Lothric Knight Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005D142A"
+  },
+  {
+    "name": "Millwood Battle Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006D67DA"
+  },
+  {
+    "name": "Ethereal Oak Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01450325"
+  },
+  {
+    "name": "Millwood Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D85EA5"
+  },
+  {
+    "name": "Valorheart",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00F646E5"
+  },
+  {
+    "name": "Archdeacon's Great Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C80AF5"
+  },
+  {
+    "name": "Sunset Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143A39A"
+  },
+  {
+    "name": "Demon Scar",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003F04D5"
+  },
+  {
+    "name": "Desert Pyromancer Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14DB9B48"
+  },
+  {
+    "name": "Life Ring+3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E23"
+  },
+  {
+    "name": "Ring of Steel Protection +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E4B"
+  },
+  {
+    "name": "Crucifix of the Mad King (Halberd)",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x008D4BE5"
+  },
+  {
+    "name": "Gael Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00227C25"
+  },
+  {
+    "name": "Avelyn",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D6FF1A"
+  },
+  {
+    "name": "Sunlight Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00203235"
+  },
+  {
+    "name": "Red Tearstone Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004ECA"
+  },
+  {
+    "name": "Caitha's Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00CA06C5"
+  },
+  {
+    "name": "Millwood Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x139B2820"
+  },
+  {
+    "name": "Millwood Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x139B2C08"
+  },
+  {
+    "name": "Millwood Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x139B2FF0"
+  },
+  {
+    "name": "Millwood Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x139B33D8"
+  },
+  {
+    "name": "Outrider Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1328B740"
+  },
+  {
+    "name": "Outrider Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1328BB28"
+  },
+  {
+    "name": "Outrider Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1328BF10"
+  },
+  {
+    "name": "Outrider Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1328C2F8"
+  },
+  {
+    "name": "Frayed Blade",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004D35A5"
+  },
+  {
+    "name": "Harald Legion Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13D83CD8"
+  },
+  {
+    "name": "Desert Pyromancer Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14DB9F30"
+  },
+  {
+    "name": "Desert Pyromancer Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14DBA318"
+  },
+  {
+    "name": "Ring of Favor +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E41"
+  },
+  {
+    "name": "Scholar Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EB6"
+  },
+  {
+    "name": "Repeating Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D885B5"
+  },
+  {
+    "name": "Sunless Veil",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x115752A0"
+  },
+  {
+    "name": "Loincloth Not the one already in the game",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11B2EBD8"
+  },
+  {
+    "name": "Harald Curved Greatsword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x006159EA"
+  },
+  {
+    "name": "Sunset Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x118CBA80"
+  },
+  {
+    "name": "Drakeblood Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x153EC600"
+  },
+  {
+    "name": "Lingering Dragoncrest Ring+2",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F30"
+  },
+  {
+    "name": "Desert Pyromancer Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14DB9760"
+  },
+  {
+    "name": "Ruin Sentinel Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14CC5520"
+  },
+  {
+    "name": "Ruin Sentinel Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14CC5908"
+  },
+  {
+    "name": "Ruin Sentinel Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14CC5CF0"
+  },
+  {
+    "name": "Ruin Sentinel Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14CC60D8"
+  },
+  {
+    "name": "Creighton's Steel Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14B571C0"
+  },
+  {
+    "name": "Blade of the Darkmoon",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002710"
+  },
+  {
+    "name": "Darkmoon Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F6A"
+  },
+  {
+    "name": "Painting Guardian's Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E689A"
+  },
+  {
+    "name": "Painting Guardian Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x156C8CC0"
+  },
+  {
+    "name": "Painting Guardian Gown",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x156C90A8"
+  },
+  {
+    "name": "Painting Guardian Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x156C9490"
+  },
+  {
+    "name": "Painting Guardian Waistcloth",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x156C9878"
+  },
+  {
+    "name": "Brass Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1501BD00"
+  },
+  {
+    "name": "Brass Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1501C0E8"
+  },
+  {
+    "name": "Brass Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1501C4D0"
+  },
+  {
+    "name": "Brass Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1501C8B8"
+  },
+  {
+    "name": "Anri's Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x002206F5"
+  },
+  {
+    "name": "Reversal Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005104"
+  },
+  {
+    "name": "Washing Pole",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004C725A"
+  },
+  {
+    "name": "Helm of Favor",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14F27AC0"
+  },
+  {
+    "name": "Embraced Armor of Favor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14F27EA8"
+  },
+  {
+    "name": "Gauntlets of Favor",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14F28290"
+  },
+  {
+    "name": "Leggings of Favor",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14F28678"
+  },
+  {
+    "name": "Eastern Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14E33880"
+  },
+  {
+    "name": "Eastern Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14E33C68"
+  },
+  {
+    "name": "Eastern Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14E34050"
+  },
+  {
+    "name": "Eastern Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14E34438"
+  },
+  {
+    "name": "Morne's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1175D720"
+  },
+  {
+    "name": "Morne's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1175DB08"
+  },
+  {
+    "name": "Morne's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1175DEF0"
+  },
+  {
+    "name": "Morne's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1175E2D8"
+  },
+  {
+    "name": "Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000F424A"
+  },
+  {
+    "name": "Ringed Knight Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13C8F2C8"
+  },
+  {
+    "name": "Ringed Knight Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13C8F6B0"
+  },
+  {
+    "name": "Ringed Knight Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13C8FA98"
+  },
+  {
+    "name": "Sage's Big Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x129020C0"
+  },
+  {
+    "name": "Bandit's Knife",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000F695A"
+  },
+  {
+    "name": "Shira's Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11C22260"
+  },
+  {
+    "name": "Ringed Knight Hood",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13C8EEE0"
+  },
+  {
+    "name": "Blindfold Mask",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x15095E20"
+  },
+  {
+    "name": "Drakeblood Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x153EC9E8"
+  },
+  {
+    "name": "Sacred Chime of Filianore",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00CCECF5"
+  },
+  {
+    "name": "Black Witch Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14EAD9A0"
+  },
+  {
+    "name": "Black Witch Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14EADD88"
+  },
+  {
+    "name": "Scholar's Candlestick",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x001053BA"
+  },
+  {
+    "name": "Black Witch Wrappings",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14EAE170"
+  },
+  {
+    "name": "Black Witch Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14EAE558"
+  },
+  {
+    "name": "Black Dress",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11A3A1C8"
+  },
+  {
+    "name": "Leonhard's Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x117D7C28"
+  },
+  {
+    "name": "Sunless Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11575688"
+  },
+  {
+    "name": "Ringed Knight Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008CFDC5"
+  },
+  {
+    "name": "Followers Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0135C0EA"
+  },
+  {
+    "name": "White Preacher Head",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14153A20"
+  },
+  {
+    "name": "Standard Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1470C7A0"
+  },
+  {
+    "name": "Golden Wing Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143CAA5"
+  },
+  {
+    "name": "Onikiri and Ubadachi",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x00F5839A"
+  },
+  {
+    "name": "Sage's Crystal Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C8CE45"
+  },
+  {
+    "name": "Great Mace",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007BBFBA"
+  },
+  {
+    "name": "Sunset Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x118CBE68"
+  },
+  {
+    "name": "Fire Witch Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13938AE8"
+  },
+  {
+    "name": "Leather Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1487AEE8"
+  },
+  {
+    "name": "Lapp's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11E84BE8"
+  },
+  {
+    "name": "Harald Legion Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13D83508"
+  },
+  {
+    "name": "Shira's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11C22648"
+  },
+  {
+    "name": "Covetous Gold Serpent Ring +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FA9"
+  },
+  {
+    "name": "Havel's Ring +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E37"
+  },
+  {
+    "name": "Ringed Knight Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00225515"
+  },
+  {
+    "name": "Preacher's Right Arm",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00CD1405"
+  },
+  {
+    "name": "Earth Seeker",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006D8EE5"
+  },
+  {
+    "name": "White Tree Bow (White Birch Bow)",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D77445"
+  },
+  {
+    "name": "Black Witch Veil",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14FA1BE0"
+  },
+  {
+    "name": "Sorcerer Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11C9CB50"
+  },
+  {
+    "name": "Follower Torch",
+    "type": "weapon",
+    "category": "torches",
+    "rawId": "0x015F1ADA"
+  },
+  {
+    "name": "Black Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11A3A5B0"
+  },
+  {
+    "name": "Leonhard's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x117D8010"
+  },
+  {
+    "name": "Hard Leather Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1470CB88"
+  },
+  {
+    "name": "Sunless Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11575A70"
+  },
+  {
+    "name": "Vilhelm's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x11312D00"
+  },
+  {
+    "name": "Vilhelm's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x113130E8"
+  },
+  {
+    "name": "Vilhelm's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x113134D0"
+  },
+  {
+    "name": "Sunset Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x118CC250"
+  },
+  {
+    "name": "Leather Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1487B2D0"
+  },
+  {
+    "name": "Mirrah Chain Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14B57990"
+  },
+  {
+    "name": "Shira's Gloves",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11C22A30"
+  },
+  {
+    "name": "Harald Legion Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13D838F0"
+  },
+  {
+    "name": "Lapp's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11E84FD0"
+  },
+  {
+    "name": "Black Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11A3A998"
+  },
+  {
+    "name": "Iron Dragonslayer Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1405F7E0"
+  },
+  {
+    "name": "Iron Dragonslayer Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1405FBC8"
+  },
+  {
+    "name": "Iron Dragonslayer Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1405FFB0"
+  },
+  {
+    "name": "Iron Dragonslayer Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14060398"
+  },
+  {
+    "name": "Cornyx's Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11946758"
+  },
+  {
+    "name": "Hard Leather Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1470CF70"
+  },
+  {
+    "name": "Leonhard's Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x117D83F8"
+  },
+  {
+    "name": "Dragonhead Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01452A35"
+  },
+  {
+    "name": "Ring of the Evil Eye +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005071"
+  },
+  {
+    "name": "Sunless Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11575E58"
+  },
+  {
+    "name": "Sunset Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x118CC638"
+  },
+  {
+    "name": "Drakeblood Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x153ED1B8"
+  },
+  {
+    "name": "Leather Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1487B6B8"
+  },
+  {
+    "name": "Ringed Knight Paired Greatswords",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x00F69505"
+  },
+  {
+    "name": "Antiquated Plain Garb",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x11B2E408"
+  },
+  {
+    "name": "Violet Wrappings",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x11B2E7F0"
+  },
+  {
+    "name": "Lothric Knight Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13197500"
+  },
+  {
+    "name": "Spear of the Church",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x2000276A"
+  },
+  {
+    "name": "Chloranthy Ring +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E2D"
+  },
+  {
+    "name": "Antiquated Skirt",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x15D76838"
+  },
+  {
+    "name": "Lapp's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11E853B8"
+  },
+  {
+    "name": "Shira's Trousers",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x11C22E18"
+  },
+  {
+    "name": "Parrying Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000F906A"
+  },
+  {
+    "name": "Rotten Ghru Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x000FDE8A"
+  },
+  {
+    "name": "Hard Leather Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1470D358"
+  },
+  {
+    "name": "Hunter's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004FF6"
+  },
+  {
+    "name": "Faraam Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1459E440"
+  },
+  {
+    "name": "Faraam Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1459E828"
+  },
+  {
+    "name": "Faraam Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1459EC10"
+  },
+  {
+    "name": "Faraam Boots",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x1459EFF8"
+  },
+  {
+    "name": "Lorian's Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x13A2C940"
+  },
+  {
+    "name": "Lorian's Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x13A2CD28"
+  },
+  {
+    "name": "Lorian's Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x13A2D110"
+  },
+  {
+    "name": "Lorian's Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x13A2D4F8"
+  },
+  {
+    "name": "Black Hand Hat",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x115EF3C0"
+  },
+  {
+    "name": "Black Hand Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x115EF7A8"
+  },
+  {
+    "name": "Catarina Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14692680"
+  },
+  {
+    "name": "Xanthous Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x116694E0"
+  },
+  {
+    "name": "Catarina Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14692A68"
+  },
+  {
+    "name": "Catarina Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14692E50"
+  },
+  {
+    "name": "Harpe",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00102CAA"
+  },
+  {
+    "name": "Scholar's Candlestick",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x001053BA"
+  },
+  {
+    "name": "Tailbone Short Sword",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00107AC5"
+  },
+  {
+    "name": "Corvian Greatknife",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x0010A1DA"
+  },
+  {
+    "name": "Handmaid's Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x0011170A"
+  },
+  {
+    "name": "Aquamarine Dagger",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00116525"
+  },
+  {
+    "name": "Murky Hand Scythe",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00118C3A"
+  },
+  {
+    "name": "Brigand Twindaggers",
+    "type": "weapon",
+    "category": "daggers",
+    "rawId": "0x00F50E6A"
+  },
+  {
+    "name": "Shortsword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001E848A"
+  },
+  {
+    "name": "Long Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001EAB9A"
+  },
+  {
+    "name": "Broadsword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001ED2AA"
+  },
+  {
+    "name": "Dragonhead Shield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0135E7F5"
+  },
+  {
+    "name": "Broken Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001EF9BA"
+  },
+  {
+    "name": "Lothric Knight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x001F6EEA"
+  },
+  {
+    "name": "Sunlight Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00203235"
+  },
+  {
+    "name": "Irithyll Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x0020A765"
+  },
+  {
+    "name": "Cleric's Candlestick",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x0020F58A"
+  },
+  {
+    "name": "Morion Blade",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x002143A5"
+  },
+  {
+    "name": "Astora Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x002191CA"
+  },
+  {
+    "name": "Barbed Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x0021B8DA"
+  },
+  {
+    "name": "Anri's Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x002206F5"
+  },
+  {
+    "name": "Ringed Knight Straight Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00225515"
+  },
+  {
+    "name": "Lothric's Holy Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x005FD345"
+  },
+  {
+    "name": "Dark Sword",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x005F370A"
+  },
+  {
+    "name": "Gotthard Twinswords",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00F5357A"
+  },
+  {
+    "name": "Valorheart",
+    "type": "weapon",
+    "category": "straightswords",
+    "rawId": "0x00F646E5"
+  },
+  {
+    "name": "Estoc",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002DC6CA"
+  },
+  {
+    "name": "Mail Breaker",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002DEDDA"
+  },
+  {
+    "name": "Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E14EA"
+  },
+  {
+    "name": "Ricard's Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E3BFA"
+  },
+  {
+    "name": "Crystal Sage's Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E6305"
+  },
+  {
+    "name": "Irithyll Rapier",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x002E8A15"
+  },
+  {
+    "name": "Crow Quills",
+    "type": "weapon",
+    "category": "rapiers",
+    "rawId": "0x00F66DFA"
+  },
+  {
+    "name": "Rotten Ghru Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x0020594A"
+  },
+  {
+    "name": "Shotel",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003D301A"
+  },
+  {
+    "name": "Scimitar",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003D7E3A"
+  },
+  {
+    "name": "Falchion",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003DA54A"
+  },
+  {
+    "name": "Carthus Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003DCC5A"
+  },
+  {
+    "name": "Pontiff Knight Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E1A75"
+  },
+  {
+    "name": "Storm Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E4185"
+  },
+  {
+    "name": "Painting Guardian's Curved Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E689A"
+  },
+  {
+    "name": "Crescent Moon Sword",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003E8FA5"
+  },
+  {
+    "name": "Carthus Shotel",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003EB6BA"
+  },
+  {
+    "name": "Follower Sabre",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003EDDCA"
+  },
+  {
+    "name": "Demon Scar",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x003F04D5"
+  },
+  {
+    "name": "Sellsword Twinblades",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x00F4240A"
+  },
+  {
+    "name": "Warden Twinblades",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x00F4722A"
+  },
+  {
+    "name": "Dancer's Enchanted Swords",
+    "type": "weapon",
+    "category": "curvedswords",
+    "rawId": "0x00F4C045"
+  },
+  {
+    "name": "Uchigatana",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004C4B4A"
+  },
+  {
+    "name": "Washing Pole",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004C725A"
+  },
+  {
+    "name": "Chaos Blade",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004C9965"
+  },
+  {
+    "name": "Black Blade",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004CC07A"
+  },
+  {
+    "name": "Bloodlust",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004CE785"
+  },
+  {
+    "name": "Darkdrift",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004D0E95"
+  },
+  {
+    "name": "Frayed Blade",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x004D35A5"
+  },
+  {
+    "name": "Onikiri and Ubadachi",
+    "type": "weapon",
+    "category": "katanas",
+    "rawId": "0x00F5839A"
+  },
+  {
+    "name": "Executioner's Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x0021DFEA"
+  },
+  {
+    "name": "Onyx Blade",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00222E05"
+  },
+  {
+    "name": "Gael Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00227C25"
+  },
+  {
+    "name": "Bastard Sword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005B8D8A"
+  },
+  {
+    "name": "Claymore",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005BDBAA"
+  },
+  {
+    "name": "Flamberge",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005DB06A"
+  },
+  {
+    "name": "Black Knight Sword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005F5E15"
+  },
+  {
+    "name": "Twin Princes' Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005FAC35"
+  },
+  {
+    "name": "Wolnir's Holy Sword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005FFA55"
+  },
+  {
+    "name": "Wolf Knight's Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00602165"
+  },
+  {
+    "name": "Wolf Knight's Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00602165"
+  },
+  {
+    "name": "Hollowslayer Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00604875"
+  },
+  {
+    "name": "Moonlight Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x00606F85"
+  },
+  {
+    "name": "Drakeblood Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x0060969A"
+  },
+  {
+    "name": "Firelink Greatsword",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x0060BDA5"
+  },
+  {
+    "name": "Greatsword of Judgment",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x005E2595"
+  },
+  {
+    "name": "Storm Ruler",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x006132D5"
+  },
+  {
+    "name": "Zweihander",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005C29CA"
+  },
+  {
+    "name": "Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005C50DA"
+  },
+  {
+    "name": "Astora Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005C9EFA"
+  },
+  {
+    "name": "Lothric Knight Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005D142A"
+  },
+  {
+    "name": "Black Knight Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005D8955"
+  },
+  {
+    "name": "Profaned Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005E4CA5"
+  },
+  {
+    "name": "Cathedral Knight Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005E73BA"
+  },
+  {
+    "name": "Farron Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005E9AC5"
+  },
+  {
+    "name": "Lorian's Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x005F8525"
+  },
+  {
+    "name": "Fume Ultra Greatsword",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x0060E4B5"
+  },
+  {
+    "name": "Ringed Knight Paired Greatswords",
+    "type": "weapon",
+    "category": "ultragreatswords",
+    "rawId": "0x00F69505"
+  },
+  {
+    "name": "Carthus Curved Greatsword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x003DF36A"
+  },
+  {
+    "name": "Murakumo",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x005CC60A"
+  },
+  {
+    "name": "Exile Greatsword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x005DD77A"
+  },
+  {
+    "name": "Old Wolf Curved Sword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x00610BC5"
+  },
+  {
+    "name": "Harald Curved Greatsword",
+    "type": "weapon",
+    "category": "curvedgreatswords",
+    "rawId": "0x006159EA"
+  },
+  {
+    "name": "Hand Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006ACFCA"
+  },
+  {
+    "name": "Battle Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006AF6DA"
+  },
+  {
+    "name": "Brigand Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006B1DEA"
+  },
+  {
+    "name": "Crescent Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006B6C0A"
+  },
+  {
+    "name": "Butcher Knife",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006BE13A"
+  },
+  {
+    "name": "Dragonslayer's Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006C084A"
+  },
+  {
+    "name": "Thrall Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006C566A"
+  },
+  {
+    "name": "Eleonora",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006CCB95"
+  },
+  {
+    "name": "Man Serpent Hatchet",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006D19BA"
+  },
+  {
+    "name": "Millwood Battle Axe",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x006D67DA"
+  },
+  {
+    "name": "Winged Knight Twinaxes",
+    "type": "weapon",
+    "category": "axes",
+    "rawId": "0x00F4993A"
+  },
+  {
+    "name": "Yhorm's Great Machete",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x005F0FF5"
+  },
+  {
+    "name": "Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006B931A"
+  },
+  {
+    "name": "Dragonslayer Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006C7D75"
+  },
+  {
+    "name": "Demon's Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006CA485"
+  },
+  {
+    "name": "Earth Seeker",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006D8EE5"
+  },
+  {
+    "name": "Great Machete",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x00F4E75A"
+  },
+  {
+    "name": "Club",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A120A"
+  },
+  {
+    "name": "Mace",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A391A"
+  },
+  {
+    "name": "Morning Star",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A602A"
+  },
+  {
+    "name": "Reinforced Club",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007A873A"
+  },
+  {
+    "name": "Heysel Pick",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007D6D65"
+  },
+  {
+    "name": "Warpick",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007DBB8A"
+  },
+  {
+    "name": "Blacksmith Hammer",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x007E57CA"
+  },
+  {
+    "name": "Drang Hammers",
+    "type": "weapon",
+    "category": "hammers",
+    "rawId": "0x00F61FDA"
+  },
+  {
+    "name": "Large Club",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007AFC6A"
+  },
+  {
+    "name": "Great Club",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007B4A8A"
+  },
+  {
+    "name": "Great Mace",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007BBFBA"
+  },
+  {
+    "name": "Great Wooden Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007C830A"
+  },
+  {
+    "name": "Gargoyle Flame Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007CAA1A"
+  },
+  {
+    "name": "Vordt's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007CD125"
+  },
+  {
+    "name": "Old King's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007CF835"
+  },
+  {
+    "name": "Pickaxe",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007DE29A"
+  },
+  {
+    "name": "Dragon Tooth",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007E09A5"
+  },
+  {
+    "name": "Smough's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007E30B5"
+  },
+  {
+    "name": "Morne's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007E7ED5"
+  },
+  {
+    "name": "Spiked Mace",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007EA5EA"
+  },
+  {
+    "name": "Quakestone Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007ECCF5"
+  },
+  {
+    "name": "Ledo's Great Hammer",
+    "type": "weapon",
+    "category": "greathammers",
+    "rawId": "0x007EF405"
+  },
+  {
+    "name": "Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x0089544A"
+  },
+  {
+    "name": "Winged Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x00897B5A"
+  },
+  {
+    "name": "Partizan",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x0089C97A"
+  },
+  {
+    "name": "Greatlance",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008A8CCA"
+  },
+  {
+    "name": "Lothric Knight Long Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008AB3DA"
+  },
+  {
+    "name": "Four-Pronged Plow",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008ADAEA"
+  },
+  {
+    "name": "Gargoyle Flame Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B01FA"
+  },
+  {
+    "name": "Rotten Ghru Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B290A"
+  },
+  {
+    "name": "Tailbone Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B5015"
+  },
+  {
+    "name": "Soldering Iron",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008B772A"
+  },
+  {
+    "name": "Dragonslayer Swordspear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008BC545"
+  },
+  {
+    "name": "Arstor's Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008BEC55"
+  },
+  {
+    "name": "Saint Bident",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008C136A"
+  },
+  {
+    "name": "Yorshka's Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008C3A75"
+  },
+  {
+    "name": "Pike",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008C618A"
+  },
+  {
+    "name": "Dragonslayer Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008CAFA5"
+  },
+  {
+    "name": "Follower Javelin",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008CD6BA"
+  },
+  {
+    "name": "Ringed Knight Spear",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008CFDC5"
+  },
+  {
+    "name": "Lothric War Banner",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x008D24DA"
+  },
+  {
+    "name": "Drang Twinspears",
+    "type": "weapon",
+    "category": "spears",
+    "rawId": "0x00F5AAAA"
+  },
+  {
+    "name": "Crucifix of the Mad King (Halberd)",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x008D4BE5"
+  },
+  {
+    "name": "Lucerne",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0098BD9A"
+  },
+  {
+    "name": "Glaive",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0098E4AA"
+  },
+  {
+    "name": "Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x00990BBA"
+  },
+  {
+    "name": "Black Knight Greataxe",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009959D5"
+  },
+  {
+    "name": "Pontiff Knight Great Scythe",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0099A7F5"
+  },
+  {
+    "name": "Winged Knight Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x0099F61A"
+  },
+  {
+    "name": "Gundyr's Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009A1D25"
+  },
+  {
+    "name": "Red Hilted Halberd",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009AB96A"
+  },
+  {
+    "name": "Black Knight Glaive",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009AE075"
+  },
+  {
+    "name": "Immolation Tinder",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009B0785"
+  },
+  {
+    "name": "Splitleaf Greatsword (It's a Halberd)",
+    "type": "weapon",
+    "category": "halberds",
+    "rawId": "0x009B2E9A"
+  },
+  {
+    "name": "Great Scythe",
+    "type": "weapon",
+    "category": "reapers",
+    "rawId": "0x0098968A"
+  },
+  {
+    "name": "Great Corvian Scythe",
+    "type": "weapon",
+    "category": "reapers",
+    "rawId": "0x0099CF0A"
+  },
+  {
+    "name": "Friede's Great Scythe",
+    "type": "weapon",
+    "category": "reapers",
+    "rawId": "0x009B55A5"
+  },
+  {
+    "name": "Claw",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A7D8CA"
+  },
+  {
+    "name": "Caestus",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A7FFDA"
+  },
+  {
+    "name": "Manikin Claws",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A826EA"
+  },
+  {
+    "name": "Demon's Fist",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A84DF5"
+  },
+  {
+    "name": "Dark Hand",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A87500"
+  },
+  {
+    "name": "Crow Talons",
+    "type": "weapon",
+    "category": "fists",
+    "rawId": "0x00A89C1A"
+  },
+  {
+    "name": "Whip",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B71B0A"
+  },
+  {
+    "name": "Witch's Locks",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B7B745"
+  },
+  {
+    "name": "Notched Whip",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B7DE5A"
+  },
+  {
+    "name": "Spotted Whip",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B8056A"
+  },
+  {
+    "name": "Rose of Ariandel",
+    "type": "weapon",
+    "category": "whips",
+    "rawId": "0x00B82C75"
+  },
+  {
+    "name": "Sorcerer's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C747AA"
+  },
+  {
+    "name": "Storyteller's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C76EBA"
+  },
+  {
+    "name": "Mendicant's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C795CA"
+  },
+  {
+    "name": "Man-grub's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C7E3E5"
+  },
+  {
+    "name": "Archdeacon's Great Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C80AF5"
+  },
+  {
+    "name": "Sage's Crystal Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C8CE45"
+  },
+  {
+    "name": "Heretic's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C8F55A"
+  },
+  {
+    "name": "Court Sorcerer's Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C91C6A"
+  },
+  {
+    "name": "Witchtree Branch",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C9437A"
+  },
+  {
+    "name": "Izalith Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C96A85"
+  },
+  {
+    "name": "Murky Longstaff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00CCC5EA"
+  },
+  {
+    "name": "Preacher's Right Arm",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00CD1405"
+  },
+  {
+    "name": "Golden Ritual Spear",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C83205"
+  },
+  {
+    "name": "Yorshka's Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C8802A"
+  },
+  {
+    "name": "Cleric's Sacred Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C9919A"
+  },
+  {
+    "name": "Priest's Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C9B8AA"
+  },
+  {
+    "name": "Saint-tree Bellvine",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00C9DFBA"
+  },
+  {
+    "name": "Caitha's Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00CA06C5"
+  },
+  {
+    "name": "Crystal Chime",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00CA2DD5"
+  },
+  {
+    "name": "Sacred Chime of Filianore",
+    "type": "weapon",
+    "category": "chimes",
+    "rawId": "0x00CCECF5"
+  },
+  {
+    "name": "Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00C7209A"
+  },
+  {
+    "name": "Sunlight Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CA54EA"
+  },
+  {
+    "name": "Canvas Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CA7BFA"
+  },
+  {
+    "name": "Sunless Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CAA305"
+  },
+  {
+    "name": "Saint's Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CACA1A"
+  },
+  {
+    "name": "White Hair Talisman",
+    "type": "weapon",
+    "category": "talismans",
+    "rawId": "0x00CAF125"
+  },
+  {
+    "name": "Pyromancy Flame",
+    "type": "weapon",
+    "category": "flames",
+    "rawId": "0x00CC77CA"
+  },
+  {
+    "name": "Pyromancer's Parting Flame",
+    "type": "weapon",
+    "category": "flames",
+    "rawId": "0x00CC9EDA"
+  },
+  {
+    "name": "Short Bow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D5C69A"
+  },
+  {
+    "name": "Composite Bow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D5EDAA"
+  },
+  {
+    "name": "Longbow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D689EA"
+  },
+  {
+    "name": "White Tree Bow (White Birch Bow)",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D77445"
+  },
+  {
+    "name": "Darkmoon Longbow",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D79B55"
+  },
+  {
+    "name": "Black Bow of Pharis",
+    "type": "weapon",
+    "category": "bows",
+    "rawId": "0x00D7E97A"
+  },
+  {
+    "name": "Dragonrider Bow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D6B0F5"
+  },
+  {
+    "name": "Onislayer Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D7C265"
+  },
+  {
+    "name": "Dragonslayer Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00CF8505"
+  },
+  {
+    "name": "Millwood Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D85EA5"
+  },
+  {
+    "name": "Light Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D63BCA"
+  },
+  {
+    "name": "Arbalest",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D662DA"
+  },
+  {
+    "name": "Avelyn",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D6FF1A"
+  },
+  {
+    "name": "Knight's Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D7262A"
+  },
+  {
+    "name": "Heavy Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D74D3A"
+  },
+  {
+    "name": "Sniper Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D8379A"
+  },
+  {
+    "name": "Repeating Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D885B5"
+  },
+  {
+    "name": "Buckler",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01312D0A"
+  },
+  {
+    "name": "Small Leather Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0131541A"
+  },
+  {
+    "name": "Large Leather Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0131C94A"
+  },
+  {
+    "name": "Hawkwood's Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01323E7A"
+  },
+  {
+    "name": "Iron Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0132658A"
+  },
+  {
+    "name": "Ghru Rotshield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x013328DA"
+  },
+  {
+    "name": "Target Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01339E0A"
+  },
+  {
+    "name": "Elkhorn Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0133C51A"
+  },
+  {
+    "name": "Warrior's Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0133EC2A"
+  },
+  {
+    "name": "Caduceus Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134133A"
+  },
+  {
+    "name": "Red and White Round Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01343A4A"
+  },
+  {
+    "name": "Plank Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134615A"
+  },
+  {
+    "name": "Leather Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134886A"
+  },
+  {
+    "name": "Crimson Parma",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134AF7A"
+  },
+  {
+    "name": "Eastern Iron Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134D68A"
+  },
+  {
+    "name": "Llewellyn Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x0134FD9A"
+  },
+  {
+    "name": "Golden Falcon Shield",
+    "type": "weapon",
+    "category": "smallshields",
+    "rawId": "0x01354BBA"
+  },
+  {
+    "name": "Sacred Bloom Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x013572C5"
+  },
+  {
+    "name": "Round Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0131A23A"
+  },
+  {
+    "name": "Wooden Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0132DABA"
+  },
+  {
+    "name": "Kite Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x013301CA"
+  },
+  {
+    "name": "Followers Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0135C0EA"
+  },
+  {
+    "name": "Lothric Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0140965A"
+  },
+  {
+    "name": "Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01410B8A"
+  },
+  {
+    "name": "Pontiff Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014159A5"
+  },
+  {
+    "name": "Carthus Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014180BA"
+  },
+  {
+    "name": "Black Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0141F5E5"
+  },
+  {
+    "name": "Spiked Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01426B1A"
+  },
+  {
+    "name": "East-West Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0142B93A"
+  },
+  {
+    "name": "Pierce Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0142922A"
+  },
+  {
+    "name": "Silver Knight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01424405"
+  },
+  {
+    "name": "Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01430755"
+  },
+  {
+    "name": "Sunlight Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0142E04A"
+  },
+  {
+    "name": "Dragon Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01432E65"
+  },
+  {
+    "name": "Spider Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143557A"
+  },
+  {
+    "name": "Sunset Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143A39A"
+  },
+  {
+    "name": "Grass Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01437C85"
+  },
+  {
+    "name": "Blue Wooden Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143F1BA"
+  },
+  {
+    "name": "Silver Eagle Kite Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014418CA"
+  },
+  {
+    "name": "Golden Wing Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0143CAA5"
+  },
+  {
+    "name": "Stone Parma",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01443FDA"
+  },
+  {
+    "name": "Porcine Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01448DFA"
+  },
+  {
+    "name": "Spirit Tree Crest Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x014466E5"
+  },
+  {
+    "name": "Shield of Want",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0144B505"
+  },
+  {
+    "name": "Wargod Wooden Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x0144DC1A"
+  },
+  {
+    "name": "Ethereal Oak Shield",
+    "type": "weapon",
+    "category": "standardshields",
+    "rawId": "0x01450325"
+  },
+  {
+    "name": "Ancient Dragon Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x013599D5"
+  },
+  {
+    "name": "Dragonhead Shield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0135E7F5"
+  },
+  {
+    "name": "Havel's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x013376F5"
+  },
+  {
+    "name": "Dragonhead Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01452A35"
+  },
+  {
+    "name": "Lothric Knight Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x014FD89A"
+  },
+  {
+    "name": "Cathedral Knight Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x014FFFAA"
+  },
+  {
+    "name": "Dragonslayer Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01504DC5"
+  },
+  {
+    "name": "Moaning Shield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x015074D5"
+  },
+  {
+    "name": "Yhorm's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0150C2F5"
+  },
+  {
+    "name": "Black Iron Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0150EA0A"
+  },
+  {
+    "name": "Wolf Knight's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01511115"
+  },
+  {
+    "name": "Twin Dragon Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0151382A"
+  },
+  {
+    "name": "Greatshield of Glory",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01515F35"
+  },
+  {
+    "name": "Curse Ward Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01518645"
+  },
+  {
+    "name": "Bonewheel Shield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0151AD5A"
+  },
+  {
+    "name": "Stone Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x0151D46A"
+  },
+  {
+    "name": "Great Door Twinshields",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x00F5F8CA"
+  },
+  {
+    "name": "Pyromancer's Parting Flame",
+    "type": "weapon",
+    "category": "flames",
+    "rawId": "0x00CC9EDA"
+  },
+  {
+    "name": "Millwood Greatbow",
+    "type": "weapon",
+    "category": "greatbows",
+    "rawId": "0x00D85EA5"
+  },
+  {
+    "name": "Izalith Staff",
+    "type": "weapon",
+    "category": "staves",
+    "rawId": "0x00C96A85"
+  },
+  {
+    "name": "Dragonslayer Greataxe",
+    "type": "weapon",
+    "category": "greataxes",
+    "rawId": "0x006C7D75"
+  },
+  {
+    "name": "Wolf Knight's Greatshield",
+    "type": "weapon",
+    "category": "greatshields",
+    "rawId": "0x01511115"
+  },
+  {
+    "name": "Sniper Crossbow",
+    "type": "weapon",
+    "category": "crossbows",
+    "rawId": "0x00D8379A"
+  },
+  {
+    "name": "Iron Dragonslayer Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x1405F7E0"
+  },
+  {
+    "name": "Iron Dragonslayer Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x1405FBC8"
+  },
+  {
+    "name": "Iron Dragonslayer Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x1405FFB0"
+  },
+  {
+    "name": "Iron Dragonslayer Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14060398"
+  },
+  {
+    "name": "Aldrich's Sapphire",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005096"
+  },
+  {
+    "name": "Ring of the Evil Eye +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20005071"
+  },
+  {
+    "name": "Chloranthy Ring +3",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004E2D"
+  },
+  {
+    "name": "Witch's Ring",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004F11"
+  },
+  {
+    "name": "Watchdogs of Farron",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20002724"
+  },
+  {
+    "name": "Catarina Gauntlets",
+    "type": "armor",
+    "category": "gauntlets",
+    "rawId": "0x14692E50"
+  },
+  {
+    "name": "Catarina Armor",
+    "type": "armor",
+    "category": "chests",
+    "rawId": "0x14692A68"
+  },
+  {
+    "name": "Catarina Helm",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x14692680"
+  },
+  {
+    "name": "Storm Ruler",
+    "type": "weapon",
+    "category": "greatswords",
+    "rawId": "0x006132D0"
+  },
+  {
+    "name": "Xanthous Crown",
+    "type": "armor",
+    "category": "helms",
+    "rawId": "0x116694E0"
+  },
+  {
+    "name": "Ring of Sacrifice",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EF2"
+  },
+  {
+    "name": "Ring of Sacrifice",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EF2"
+  },
+  {
+    "name": "Ring of Sacrifice",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EF2"
+  },
+  {
+    "name": "Ring of Sacrifice",
+    "type": "ring",
+    "category": "rings",
+    "rawId": "0x20004EF2"
+  },
+  {
+    "name": "Catarina Leggings",
+    "type": "armor",
+    "category": "leggings",
+    "rawId": "0x14693238"
+  }
+]

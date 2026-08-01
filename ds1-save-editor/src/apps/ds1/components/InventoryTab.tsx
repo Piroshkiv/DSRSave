@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
+import { applyChineseNames } from '../lib/itemNamesZh';
 import { Inventory, ItemCollectionType, ItemInfusion, InventoryItem } from '../lib/Inventory';
 import { ItemCreateDialog } from './ItemCreateDialog';
 import { ItemEditDialog } from './ItemEditDialog';
@@ -22,15 +25,15 @@ type SubTabType =
   | 'ammunition'
   | 'rings';
 
-const SUB_TAB_LABELS: Record<SubTabType, string> = {
-  consumables: 'Consumables',
-  materials: 'Materials',
-  key: 'Key Items',
-  magic: 'Magic',
-  weapons: 'Weapons',
-  armor: 'Armor',
-  ammunition: 'Ammunition',
-  rings: 'Rings',
+const SUB_TAB_KEYS: Record<SubTabType, string> = {
+  consumables: 'consumables',
+  materials: 'materials',
+  key: 'keyItems',
+  magic: 'magic',
+  weapons: 'weapons',
+  armor: 'armor',
+  ammunition: 'ammunition',
+  rings: 'rings',
 };
 
 const SUB_TAB_TO_COLLECTION: Record<SubTabType, ItemCollectionType> = {
@@ -45,6 +48,7 @@ const SUB_TAB_TO_COLLECTION: Record<SubTabType, ItemCollectionType> = {
 };
 
 export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharacterUpdate, safeMode }) => {
+  const { lang } = useLang();
   const [inventory, setInventory] = useState(() => new Inventory(character));
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [activeSubTab, setActiveSubTab] = useState<SubTabType>('consumables');
@@ -108,6 +112,11 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
       setLoading(true);
       try {
         await newInventory.loadItemsDatabase();
+        // Apply Chinese names if language is Chinese
+        if (lang === 'zh') {
+          const db = newInventory.getItemsDatabase();
+          if (db) await applyChineseNames(db);
+        }
         // Refresh items after loading database
         const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
         let filteredItems = newInventory.getItemsByType(collectionType);
@@ -160,6 +169,28 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     }
   }, [activeSubTab, loading, searchQuery, infusionFilter, wlFilter, safeMode, inventory, refreshItems]);
 
+  // Apply Chinese names when language changes
+  useEffect(() => {
+    if (!loading && inventory) {
+      const db = inventory.getItemsDatabase();
+      if (db) {
+        if (lang === 'zh') {
+          applyChineseNames(db).then(() => refreshItems());
+        } else {
+          // Reset to English names
+          for (const cat of Object.values(db)) {
+            if (Array.isArray(cat)) {
+              for (const item of cat) {
+                item.displayName = undefined;
+              }
+            }
+          }
+          refreshItems();
+        }
+      }
+    }
+  }, [lang]);
+
   // Scroll to newly added item after items state updates
   useEffect(() => {
     if (pendingScrollSlot.current === null) return;
@@ -187,7 +218,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
   };
 
   const handleDeleteItem = (slotIndex: number) => {
-    if (confirm('Are you sure you want to delete this item?')) {
+    if (confirm(t('deleteConfirm', lang))) {
       inventory.deleteItem(slotIndex);
       refreshItems();
       onCharacterUpdate();
@@ -245,15 +276,15 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
   const getInfusionName = (infusion: ItemInfusion): string => {
     switch (infusion) {
       case ItemInfusion.Standard: return '';
-      case ItemInfusion.Crystal: return 'Crystal';
-      case ItemInfusion.Lightning: return 'Lightning';
-      case ItemInfusion.Raw: return 'Raw';
-      case ItemInfusion.Magic: return 'Magic';
-      case ItemInfusion.Enchanted: return 'Enchanted';
-      case ItemInfusion.Divine: return 'Divine';
-      case ItemInfusion.Occult: return 'Occult';
-      case ItemInfusion.Fire: return 'Fire';
-      case ItemInfusion.Chaos: return 'Chaos';
+      case ItemInfusion.Crystal: return t('crystal', lang);
+      case ItemInfusion.Lightning: return t('lightning', lang);
+      case ItemInfusion.Raw: return t('raw', lang);
+      case ItemInfusion.Magic: return t('magic_inf', lang);
+      case ItemInfusion.Enchanted: return t('enchanted', lang);
+      case ItemInfusion.Divine: return t('divine', lang);
+      case ItemInfusion.Occult: return t('occult', lang);
+      case ItemInfusion.Fire: return t('fire', lang);
+      case ItemInfusion.Chaos: return t('chaos', lang);
       default: return '';
     }
   };
@@ -267,7 +298,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
   if (loading) {
     return (
       <div className="inventory-tab">
-        <div className="loading">Loading inventory...</div>
+        <div className="loading">{t('loadingInventory', lang)}</div>
       </div>
     );
   }
@@ -276,10 +307,10 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     <div className="inventory-tab">
       <div className="inventory-header">
         <button className="create-item-button" onClick={() => setShowCreateDialog(true)}>
-          + Create Item
+          {t('createItem', lang)}
         </button>
         <button className="create-item-button add-all-button" onClick={handleAddAll}>
-          + Add All
+          {t('addAll', lang)}
         </button>
         <button className="delete-button clear-all-button" onClick={() => {
           const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
@@ -287,13 +318,13 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
           refreshItems();
           onCharacterUpdate();
         }}>
-          Clear All
+          {t('clearAll', lang)}
         </button>
 
         <div className="inventory-search">
           <input
             type="text"
-            placeholder="Search items..."
+            placeholder={t('searchItems', lang)}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -302,23 +333,23 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
         {(activeSubTab === 'weapons' || activeSubTab === 'armor') && (
           <div className="filter-group">
-            <label>Infusion:</label>
+            <label>{t('infusion', lang)}</label>
             <select
               value={infusionFilter}
               onChange={(e) => setInfusionFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value) as ItemInfusion)}
               className="filter-select"
             >
-              <option value="all">All</option>
-              <option value={ItemInfusion.Standard}>Standard</option>
-              <option value={ItemInfusion.Crystal}>Crystal</option>
-              <option value={ItemInfusion.Lightning}>Lightning</option>
-              <option value={ItemInfusion.Raw}>Raw</option>
-              <option value={ItemInfusion.Magic}>Magic</option>
-              <option value={ItemInfusion.Enchanted}>Enchanted</option>
-              <option value={ItemInfusion.Divine}>Divine</option>
-              <option value={ItemInfusion.Occult}>Occult</option>
-              <option value={ItemInfusion.Fire}>Fire</option>
-              <option value={ItemInfusion.Chaos}>Chaos</option>
+              <option value="all">{t('all', lang)}</option>
+              <option value={ItemInfusion.Standard}>{t('standard', lang)}</option>
+              <option value={ItemInfusion.Crystal}>{t('crystal', lang)}</option>
+              <option value={ItemInfusion.Lightning}>{t('lightning', lang)}</option>
+              <option value={ItemInfusion.Raw}>{t('raw', lang)}</option>
+              <option value={ItemInfusion.Magic}>{t('magic_inf', lang)}</option>
+              <option value={ItemInfusion.Enchanted}>{t('enchanted', lang)}</option>
+              <option value={ItemInfusion.Divine}>{t('divine', lang)}</option>
+              <option value={ItemInfusion.Occult}>{t('occult', lang)}</option>
+              <option value={ItemInfusion.Fire}>{t('fire', lang)}</option>
+              <option value={ItemInfusion.Chaos}>{t('chaos', lang)}</option>
             </select>
           </div>
         )}
@@ -326,13 +357,13 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
         {activeSubTab === 'weapons' && (
           <>
             <div className="filter-group">
-              <label>WL:</label>
+              <label>{t('wl', lang)}</label>
               <select
                 value={wlFilter}
                 onChange={(e) => setWlFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
                 className="filter-select"
               >
-                <option value="all">All</option>
+                <option value="all">{t('all', lang)}</option>
                 {Array.from({ length: 16 }, (_, i) => (
                   <option key={i} value={i}>{i}</option>
                 ))}
@@ -340,7 +371,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
             </div>
 
             <div className="weapon-level-display">
-              <label>Weapon Level:</label>
+              <label>{t('weaponLevel', lang)}</label>
               <NumberInput
                 value={weaponLevel}
                 onChange={handleWeaponLevelChange}
@@ -351,9 +382,9 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
               <button
                 className="calibrate-button"
                 onClick={handleCalibrateWL}
-                title="Calibrate Weapon Level"
+                title={t('calibrateWL', lang)}
               >
-                Calibrate WL
+                {t('calibrateWL', lang)}
               </button>
             </div>
           </>
@@ -361,20 +392,20 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
       </div>
 
       <div className="sub-tabs">
-        {(Object.keys(SUB_TAB_LABELS) as SubTabType[]).map((subTab) => (
+        {(Object.keys(SUB_TAB_KEYS) as SubTabType[]).map((subTab) => (
           <button
             key={subTab}
             className={`sub-tab ${activeSubTab === subTab ? 'active' : ''}`}
             onClick={() => setActiveSubTab(subTab)}
           >
-            {SUB_TAB_LABELS[subTab]}
+            {t(SUB_TAB_KEYS[subTab], lang)}
           </button>
         ))}
       </div>
 
       <div className="inventory-content" ref={parentRef}>
         {items.length === 0 ? (
-          <div className="no-items">No items in this category</div>
+          <div className="no-items">{t('noItems', lang)}</div>
         ) : (
           <div style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
             {virtualizer.getVirtualItems().map((virtualRow) => {
@@ -409,8 +440,8 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
                     </div>
                   </div>
                   <div className="item-actions">
-                    <button className="edit-button" onClick={() => handleEditItem(item)}>Edit</button>
-                    <button className="delete-button" onClick={() => handleDeleteItem(item.slotIndex)}>Delete</button>
+                    <button className="edit-button" onClick={() => handleEditItem(item)}>{t('edit', lang)}</button>
+                    <button className="delete-button" onClick={() => handleDeleteItem(item.slotIndex)}>{t('delete', lang)}</button>
                   </div>
                 </div>
                 </div>

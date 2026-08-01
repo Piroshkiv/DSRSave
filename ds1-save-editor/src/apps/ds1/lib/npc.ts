@@ -72,30 +72,71 @@ export class NpcEditor {
       return this.getNpcData();
     }
   
-    public setNpcAlive(name: string, alive: boolean): void {
-      const npcData = this.loadItemsDatabase(); 
-  
+    public getNpcAlive(name: string): boolean {
+    const npcData = this.loadItemsDatabase();
+    const npc = npcData.npcs.find((n) => n.name === name);
+    if (npc == null) {
+      throw new Error(`NPC with name '${name}' not found in data.`);
+    }
+
+    const baseOffset = this.character.findPattern1();
+
+    // If Pattern1 is not found, we cannot determine NPC state reliably.
+    // Default to alive (true) to avoid false positives.
+    if (baseOffset === -1) {
+      console.warn(`Pattern1 not found for NPC '${name}', defaulting to alive.`);
+      return true;
+    }
+
+    const rawData = this.character.getRawData();
+
+    for (const bitEntry of npc.bits) {
+      const relativeOffset = parseInt(bitEntry.offset, 16);
+      const absoluteOffset = baseOffset + relativeOffset;
+
+      if (absoluteOffset < 0 || absoluteOffset >= rawData.length) {
+        throw new Error(
+          `Calculated offset ${absoluteOffset} (Base: ${baseOffset}, Relative: ${relativeOffset}) is out of bounds.`,
+        );
+      }
+
+      const bitValue = ((rawData[absoluteOffset] >> bitEntry.bit) & 1) === 1;
+      const alive = bitEntry.reverse ? !bitValue : bitValue;
+      if (!alive) return false;
+    }
+    return true;
+  }
+
+  public setNpcAlive(name: string, alive: boolean): void {
+
+      const npcData = this.loadItemsDatabase();
+
       const npc = npcData.npcs.find((n) => n.name === name);
       if (npc == null) {
         throw new Error(`NPC with name '${name}' not found in data.`);
       }
-  
+
       const baseOffset = this.character.findPattern1();
-  
+
+      // If Pattern1 is not found, we cannot safely modify NPC state.
+      if (baseOffset === -1) {
+        throw new Error(`Pattern1 not found. Cannot modify NPC '${name}' state.`);
+      }
+
       const rawData = this.character.getRawData();
-  
+
       for (const bitEntry of npc.bits) {
         const relativeOffset = parseInt(bitEntry.offset, 16);
         const absoluteOffset = baseOffset + relativeOffset;
-  
+
         if (absoluteOffset < 0 || absoluteOffset >= rawData.length) {
           throw new Error(
             `Calculated offset ${absoluteOffset} (Base: ${baseOffset}, Relative: ${relativeOffset}) is out of bounds.`,
           );
         }
-  
+
         const bitValue = bitEntry.reverse ? !alive : alive;
-  
+
         this.setBit(rawData, absoluteOffset, bitEntry.bit, bitValue);
       }
     }

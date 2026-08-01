@@ -1,4 +1,6 @@
 import React from 'react';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -17,10 +19,13 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   message,
   onConfirm,
   onCancel,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   type = 'warning'
 }) => {
+  const { lang } = useLang();
+  const finalConfirmText = confirmText || t('confirm', lang);
+  const finalCancelText = cancelText || t('cancel', lang);
   if (!isOpen) return null;
 
   const getTypeColor = () => {
@@ -51,10 +56,10 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
         </div>
         <div className="modal-footer">
           <button className="modal-button cancel-button" onClick={onCancel}>
-            {cancelText}
+            {finalCancelText}
           </button>
           <button className="modal-button confirm-button" onClick={onConfirm}>
-            {confirmText}
+            {finalConfirmText}
           </button>
         </div>
       </div>

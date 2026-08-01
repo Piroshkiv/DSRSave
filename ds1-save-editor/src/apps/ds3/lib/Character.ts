@@ -2,12 +2,20 @@ import {
   MAX_VALUES,
   CHARACTER_PATTERN,
   RELATIVE_OFFSETS,
+  PLAYTIME_OFFSET,
+  PLAYTIME_MS_PER_LEVEL_MIN,
+  PLAYTIME_MS_PER_LEVEL_MAX,
+  minSoulMemoryForLevel,
   PlayerClass,
   CLASS_NAMES,
   CLASS_STARTING_STATS,
   VIGOR_TO_HP,
   ATTUNEMENT_TO_FP,
   ENDURANCE_TO_STAMINA,
+  BONFIRE_PATTERN,
+  BONFIRE_COARSE_FROM_INV,
+  BONFIRE_ANCHOR_TO_BLOCK,
+  BONFIRE_UNLOCK_ALL,
 } from './constants';
 
 /**
@@ -396,6 +404,104 @@ export class DS3Character {
     this.data[offset + 3] = (value >> 24) & 0xFF;
   }
 
+  // ===== SOUL MEMORY (Total Get Soul) =====
+  /**
+   * Get soul memory — total souls ever collected (4 bytes, Little-Endian)
+   */
+  get soulMemory(): number {
+    if (this.isEmpty) return 0;
+    const offset = this.getOffset('SOUL_MEMORY');
+    return (
+      this.data[offset] |
+      (this.data[offset + 1] << 8) |
+      (this.data[offset + 2] << 16) |
+      (this.data[offset + 3] << 24)
+    ) >>> 0;
+  }
+
+  /**
+   * Set soul memory (4 bytes, Little-Endian)
+   */
+  set soulMemory(value: number) {
+    // soul memory is a genuine u32 — allow the full range (level-802 floor ~3.16B > the souls cap)
+    value = Math.max(0, Math.min(0xFFFFFFFF, Math.floor(value)));
+    const offset = this.getOffset('SOUL_MEMORY');
+    this.data[offset] = value & 0xFF;
+    this.data[offset + 1] = (value >>> 8) & 0xFF;
+    this.data[offset + 2] = (value >>> 16) & 0xFF;
+    this.data[offset + 3] = (value >>> 24) & 0xFF;
+  }
+
+  /**
+   * Raise soul memory to at least the plausible minimum for the current level
+   * ((cumulative level-up cost + 20%) plus the souls currently held, since those
+   * were also collected). Never lowers an already-higher value.
+   */
+  enforceSoulMemoryFloor(): void {
+    if (this.isEmpty) return;
+    const floor = minSoulMemoryForLevel(this.level) + this.souls;
+    if (this.soulMemory < floor) this.soulMemory = floor;
+  }
+
+  /**
+   * Apply the side effects of a soul-level increase: credit plausible play time
+   * (random 3-5 min per level) and raise the soul-memory floor. Call with the
+   * level before an edit; if the current level is higher, the difference is credited.
+   */
+  applyLevelProgression(previousLevel: number): void {
+    if (this.isEmpty) return;
+    const gained = this.level - previousLevel;
+    if (gained > 0) {
+      let extraMs = 0;
+      for (let i = 0; i < gained; i++) {
+        extraMs += PLAYTIME_MS_PER_LEVEL_MIN +
+          Math.random() * (PLAYTIME_MS_PER_LEVEL_MAX - PLAYTIME_MS_PER_LEVEL_MIN);
+      }
+      this.playtimeMs = this.playtimeMs + Math.floor(extraMs);
+    }
+    this.enforceSoulMemoryFloor();
+  }
+
+  /**
+   * Apply the side effects of a held-souls edit: souls added by the editor count
+   * as collected, so soul memory grows by the same amount (it never shrinks when
+   * souls are removed — spending souls doesn't reduce Total Get Soul). Call with
+   * the souls value before the edit.
+   */
+  applySoulsProgression(previousSouls: number): void {
+    if (this.isEmpty) return;
+    const gained = this.souls - previousSouls;
+    if (gained > 0) {
+      this.soulMemory = this.soulMemory + gained;
+    }
+    this.enforceSoulMemoryFloor();
+  }
+
+  // ===== PLAY TIME =====
+  /**
+   * Get play time in milliseconds (4 bytes, Little-Endian, slot header offset — not pattern-relative)
+   */
+  get playtimeMs(): number {
+    if (this.isEmpty) return 0;
+    return (
+      this.data[PLAYTIME_OFFSET] |
+      (this.data[PLAYTIME_OFFSET + 1] << 8) |
+      (this.data[PLAYTIME_OFFSET + 2] << 16) |
+      (this.data[PLAYTIME_OFFSET + 3] << 24)
+    ) >>> 0;
+  }
+
+  /**
+   * Set play time in milliseconds (4 bytes, Little-Endian)
+   */
+  set playtimeMs(value: number) {
+    value = Math.max(0, Math.min(0xFFFFFFFF, Math.floor(value)));
+    this.data[PLAYTIME_OFFSET] = value & 0xFF;
+    this.data[PLAYTIME_OFFSET + 1] = (value >>> 8) & 0xFF;
+    this.data[PLAYTIME_OFFSET + 2] = (value >>> 16) & 0xFF;
+    this.data[PLAYTIME_OFFSET + 3] = (value >>> 24) & 0xFF;
+  }
+
   // ===== PROGRESSION =====
   /**
    * Get NG+ Cycle (1 byte)
@@ -509,6 +615,95 @@ export class DS3Character {
 
     // Level = Current Total Stats - Total Stats at Zero Level
     return currentTotalStats - startingStats.totalStatsAtZero;
+  }
+
+  // ===== BONFIRES / event-flag block =====
+
+  /**
+   * Locate the inventory start via the GA-table scan (same logic as
+   * offsetPatterns.findInventoryStart). Used as the coarse anchor for the bonfire block.
+   */
+  private findInventoryStartOffset(): number {
+    const GA_TABLE_OFFSET = 0x70;
+    const GA_ENTRY_SMALL = 8;
+    const GA_ENTRY_LARGE = 60;
+    const GA_MAX_ENTRIES = 6144;
+
+    let offset = GA_TABLE_OFFSET;
+    let count = 0;
+    while (count < GA_MAX_ENTRIES) {
+      if (offset + GA_ENTRY_SMALL > this.data.length) break;
+      const b3 = this.data[offset + 3];
+      offset += (b3 === 0x80 || b3 === 0x90 || b3 === 0xA0 || b3 === 0xB0)
+        ? GA_ENTRY_LARGE
+        : GA_ENTRY_SMALL;
+      count++;
+    }
+    return offset + 0x13F + 0x1DD;
+  }
+
+  /**
+   * Find the start of the bonfire / event-flag block (rec0).
+   * DS1-style windowed anchor search (see docs/ds3-bonfire-anchor.md):
+   * coarse estimate from the inventory start, then the LAST BONFIRE_PATTERN before the
+   * block, offset by BONFIRE_ANCHOR_TO_BLOCK. Recomputed each call, so it survives the
+   * inventory shifts that GA-table edits cause.
+   * @returns block start offset, or -1 if not found.
+   */
+  findBonfireBlock(): number {
+    if (this.isEmpty) return -1;
+
+    const est = this.findInventoryStartOffset() + BONFIRE_COARSE_FROM_INV;
+    const lo = Math.max(0, est - 0x1500);
+    const hi = Math.min(this.data.length, est + 0x200);
+
+    const pat = BONFIRE_PATTERN;
+    const plen = pat.length;
+    let anchor = -1;
+    for (let i = lo; i + plen <= hi; i++) {
+      let match = true;
+      for (let j = 0; j < plen; j++) {
+        if (this.data[i + j] !== pat[j]) { match = false; break; }
+      }
+      if (match) anchor = i; // keep the last match in the window
+    }
+    if (anchor === -1) return -1;
+
+    const rec0 = anchor + BONFIRE_ANCHOR_TO_BLOCK;
+    if (rec0 < 0 || rec0 >= this.data.length) return -1;
+    return rec0;
+  }
+
+  /**
+   * True when every bit of the "unlock all" bitmask is already set.
+   */
+  get allBonfiresUnlocked(): boolean {
+    const rec0 = this.findBonfireBlock();
+    if (rec0 === -1) return false;
+    for (const [off, val] of BONFIRE_UNLOCK_ALL) {
+      const p = rec0 + off;
+      if (p >= this.data.length) return false;
+      if ((this.data[p] & val) !== val) return false;
+    }
+    return true;
+  }
+
+  /**
+   * Unlock all bonfires by OR-ing the verified bitmask into the block. Never clears a flag.
+   */
+  unlockAllBonfires(): void {
+    if (this.isEmpty) throw new Error('Character slot is empty');
+    const rec0 = this.findBonfireBlock();
+    if (rec0 === -1) {
+      throw new Error('Could not locate the bonfire block in this save. It may not be a valid Dark Souls 3 save, or the slot is empty.');
+    }
+    const maxOff = BONFIRE_UNLOCK_ALL.reduce((m, [o]) => Math.max(m, o), 0);
+    if (rec0 + maxOff >= this.data.length) {
+      throw new Error('Bonfire block is out of range — the save may be corrupted.');
+    }
+    for (const [off, val] of BONFIRE_UNLOCK_ALL) {
+      this.data[rec0 + off] |= val;
+    }
   }
 
   /**

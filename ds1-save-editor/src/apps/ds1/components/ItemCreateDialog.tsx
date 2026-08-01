@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Inventory, ItemCollectionType, Item, ItemInfusion } from '../lib/Inventory';
+import { useLang } from '../../../core/context/LanguageContext';
+import { applyChineseNames } from '../lib/itemNamesZh';
 import { NumberInput } from './NumberInput';
+import { t } from '../lib/i18n';
 
 interface ItemCreateDialogProps {
   inventory: Inventory;
@@ -27,6 +30,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const [durability, setDurability] = useState<number>(0);
   const quantityInputRef = useRef<HTMLInputElement>(null);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
+  const { lang } = useLang();
 
   useEffect(() => {
     const db = inventory.getItemsDatabase();
@@ -85,8 +89,17 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
         break;
     }
 
-    setAvailableItems(items);
-  }, [collectionType, safeMode]);
+    // Apply Chinese names if language is Chinese
+    if (lang === 'zh') {
+      applyChineseNames(db).then(() => {
+        // Re-filter after applying Chinese names
+        const reFiltered = items.map(item => ({...item}));
+        setAvailableItems(reFiltered);
+      });
+    } else {
+      setAvailableItems(items);
+    }
+  }, [collectionType, safeMode, lang, inventory]);
 
   useEffect(() => {
     if (selectedItem) {
@@ -170,7 +183,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
       onItemCreated(slotIndex);
       onClose();
     } catch (error) {
-      alert(`Error creating item: ${error}`);
+      alert(`${t('errorCreatingItem', lang)} ${error}`);
     }
   };
 
@@ -183,9 +196,10 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const hasDurability = selectedItem?.Durability !== undefined &&
     (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Armor);
 
-  const filteredItems = availableItems.filter((item) =>
-    item.Name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredItems = availableItems.filter((item) => {
+    const searchName = (item.displayName || item.Name).toLowerCase();
+    return searchName.includes(searchQuery.toLowerCase()) || item.Name.toLowerCase().includes(searchQuery.toLowerCase());
+  });
 
   // Prevent body scroll when dialog is open
   useEffect(() => {
@@ -249,7 +263,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     <div className="dialog-overlay" onClick={onClose}>
       <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
         <div className="dialog-header">
-          <h2>Create Item</h2>
+          <h2>{t('createItemTitle', lang)}</h2>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
@@ -257,10 +271,10 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
         <div className="dialog-body" ref={dialogBodyRef}>
           <div className="form-group">
-            <label>Search Item</label>
+            <label>{t('searchItem', lang)}</label>
             <input
               type="text"
-              placeholder="Type to search..."
+              placeholder={t('typeToSearch', lang)}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-input"
@@ -268,7 +282,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
           </div>
 
           <div className="form-group">
-            <label>Select Item</label>
+            <label>{t('selectItem', lang)}</label>
             <div className="items-select-list">
               {filteredItems.map((item) => (
                 <div
@@ -276,7 +290,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                   className={`item-select-option ${selectedItem === item ? 'selected' : ''}`}
                   onClick={() => handleItemSelect(item)}
                 >
-                  {item.Name}
+                  {item.displayName || item.Name}
                 </div>
               ))}
             </div>
@@ -288,8 +302,8 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                 <div className="form-group">
                   <label>
                     {isEstusFlask
-                      ? `Quantity ${isEstusFlaskEmpty ? '(empty flask, must be 0)' : '(max: 20)'}`
-                      : `Quantity (max: ${selectedItem.MaxStackCount})`
+                      ? `${t('quantity', lang)} ${isEstusFlaskEmpty ? `(${t('estusFlaskEmpty', lang)})` : '(max: 20)'}`
+                      : `${t('quantity', lang)} (max: ${selectedItem.MaxStackCount})`
                     }
                   </label>
                   <NumberInput
@@ -310,25 +324,25 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
               {canInfuse && (
                 <div className="form-group">
-                  <label>Infusion</label>
+                  <label>{t('infusion', lang).replace(':', '')}</label>
                   <select value={infusion} onChange={(e) => setInfusion(parseInt(e.target.value) as ItemInfusion)}>
-                    <option value={ItemInfusion.Standard}>Standard</option>
-                    <option value={ItemInfusion.Crystal}>Crystal</option>
-                    <option value={ItemInfusion.Lightning}>Lightning</option>
-                    <option value={ItemInfusion.Raw}>Raw</option>
-                    <option value={ItemInfusion.Magic}>Magic</option>
-                    <option value={ItemInfusion.Enchanted}>Enchanted</option>
-                    <option value={ItemInfusion.Divine}>Divine</option>
-                    <option value={ItemInfusion.Occult}>Occult</option>
-                    <option value={ItemInfusion.Fire}>Fire</option>
-                    <option value={ItemInfusion.Chaos}>Chaos</option>
+                    <option value={ItemInfusion.Standard}>{t('standard', lang)}</option>
+                    <option value={ItemInfusion.Crystal}>{t('crystal', lang)}</option>
+                    <option value={ItemInfusion.Lightning}>{t('lightning', lang)}</option>
+                    <option value={ItemInfusion.Raw}>{t('raw', lang)}</option>
+                    <option value={ItemInfusion.Magic}>{t('magic_inf', lang)}</option>
+                    <option value={ItemInfusion.Enchanted}>{t('enchanted', lang)}</option>
+                    <option value={ItemInfusion.Divine}>{t('divine', lang)}</option>
+                    <option value={ItemInfusion.Occult}>{t('occult', lang)}</option>
+                    <option value={ItemInfusion.Fire}>{t('fire', lang)}</option>
+                    <option value={ItemInfusion.Chaos}>{t('chaos', lang)}</option>
                   </select>
                 </div>
               )}
 
               {canUpgrade && (
                 <div className="form-group">
-                  <label>Upgrade Level (max: +{maxUpgrade})</label>
+                  <label>{t('upgradeLevel', lang)} (max: +{maxUpgrade})</label>
                   <NumberInput
                     value={upgradeLevel}
                     onChange={setUpgradeLevel}
@@ -340,7 +354,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
               {hasDurability && (
                 <div className="form-group">
-                  <label>Durability</label>
+                  <label>{t('durability', lang)}</label>
                   <NumberInput
                     value={durability}
                     onChange={setDurability}
@@ -355,14 +369,14 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
         <div className="dialog-footer">
           <button className="cancel-button" onClick={onClose}>
-            Cancel
+            {t('cancel', lang)}
           </button>
           <button
             className="create-button"
             onClick={handleCreate}
             disabled={!selectedItem}
           >
-            Create
+            {t('create', lang)}
           </button>
         </div>
       </div>

@@ -5,6 +5,8 @@ import { FileUpload, CharacterList, TabPanel, TermsPage, AboutPage } from './com
 import { useDS1SaveEditor } from './hooks';
 import { MetaTags } from '../../core/MetaTags';
 import { extractFilename } from './lib/filePathUtils';
+import { useLang } from '../../core/context/LanguageContext';
+import { t, Lang } from './lib/i18n';
 
 const logoImg = (import.meta.env.MODE === 'static' || typeof window !== 'undefined' && window.location.protocol === 'file:')
   ? 'logo.png'
@@ -14,18 +16,20 @@ interface DS1AppProps {
   onHome?: () => void;
 }
 
-function useTimeAgo(date: Date | null): string {
+function useTimeAgo(date: Date | null, lang: Lang): string {
   const [label, setLabel] = useState('');
 
   const compute = useCallback(() => {
     if (!date) return '';
     const secs = Math.floor((Date.now() - date.getTime()) / 1000);
-    if (secs < 60) return 'loaded just now';
+    if (secs < 60) return t('loadedJustNow', lang);
     const mins = Math.floor(secs / 60);
-    if (mins < 60) return `loaded ${mins} min ago`;
+    if (mins < 60) return t('loadedMinAgo', lang).replace('{n}', String(mins));
     const hours = Math.floor(mins / 60);
-    return `loaded ${hours} hour${hours > 1 ? 's' : ''} ago`;
-  }, [date]);
+    return hours > 1
+      ? t('loadedHoursAgo', lang).replace('{n}', String(hours))
+      : t('loadedHourAgo', lang).replace('{n}', String(hours));
+  }, [date, lang]);
 
   useEffect(() => {
     if (!date) { setLabel(''); return; }
@@ -39,18 +43,22 @@ function useTimeAgo(date: Date | null): string {
 
 export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
   const navigate = useNavigate();
+  const { lang } = useLang();
   const {
     saveEditor,
     characters,
     selectedCharacterIndex,
     originalFilename,
     platform,
+    autoDetect,
+    autoDetectAvailable,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
     handleSave,
     handleSaveAs,
     handleReload,
+    setAutoDetect,
   } = useDS1SaveEditor();
 
   const [showTerms, setShowTerms] = useState(false);
@@ -59,11 +67,22 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
   const [safeMode, setSafeMode] = useState(true);
   const [loadedAt, setLoadedAt] = useState<Date | null>(null);
 
-  const timeAgo = useTimeAgo(loadedAt);
+  const timeAgo = useTimeAgo(loadedAt, lang);
 
   useEffect(() => {
     if (saveEditor) setLoadedAt(new Date());
   }, [saveEditor]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (import.meta.env.DEV && e.ctrlKey && e.shiftKey && e.key === 'W') {
+        e.preventDefault();
+        navigate('/ds1/save-watcher');
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [navigate]);
 
   const handleTutorial = () => navigate('/ds1/tutorial');
 
@@ -197,24 +216,37 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
             </div>
             <div className="ds1-subheader-actions">
               <button className="ds1-action-btn" onClick={handleReload}>
-                ⟳ Reload
+                ⟳ {t('reload', lang)}
               </button>
+              {autoDetectAvailable && (
+                <button
+                  className="ds1-safemode-btn"
+                  onClick={() => setAutoDetect(!autoDetect)}
+                  title={t('autoDetectChangesTitle', lang)}
+                >
+                  <span className={`ds1-safemode-dot ${autoDetect ? 'on' : 'off'}`}>●</span>
+                  {t('autoDetectChanges', lang)}
+                  <span className={`ds1-safemode-badge ${autoDetect ? 'on' : 'off'}`}>
+                    {autoDetect ? t('on', lang) : t('off', lang)}
+                  </span>
+                </button>
+              )}
               <button
                 className="ds1-safemode-btn"
                 onClick={() => setSafeMode(v => !v)}
-                title="Auto-adjust Level, HP, Stamina based on stats. Prevents Weapon Level editing."
+                title={t('safeModeTitle', lang)}
               >
                 <span className={`ds1-safemode-dot ${safeMode ? 'on' : 'off'}`}>●</span>
-                Safe Mode
+                {t('safeMode', lang)}
                 <span className={`ds1-safemode-badge ${safeMode ? 'on' : 'off'}`}>
-                  {safeMode ? 'ON' : 'OFF'}
+                  {safeMode ? t('on', lang) : t('off', lang)}
                 </span>
               </button>
               <button className="ds1-action-btn" onClick={handleSave}>
-                Save
+                {t('save', lang)}
               </button>
               <button className="ds1-action-btn" onClick={handleSaveAs}>
-                Save As
+                {t('saveAs', lang)}
               </button>
             </div>
           </div>

@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 import { Npc } from '../types/npc';
 import { NpcEditor } from '../lib/npc';
 import './EntityListTab.css';
@@ -11,6 +13,8 @@ export interface EntityListTabConfig {
   nameTransform?: (name: string) => string;
   searchPlaceholder: string;
   loadingMessage: string;
+  readState?: boolean;
+  showOnlyDead?: boolean;
 }
 
 interface EntityListTabProps {
@@ -24,7 +28,8 @@ interface EntityListTabProps {
  * Uses NpcEditor as single source of truth for data loading.
  */
 export const EntityListTab: React.FC<EntityListTabProps> = ({ character, onCharacterUpdate, config }) => {
-  const [npcEditor] = useState(() => new NpcEditor(character));
+  const { lang } = useLang();
+  const npcEditor = useMemo(() => new NpcEditor(character), [character]);
   const [entities, setEntities] = useState<Npc[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +42,18 @@ export const EntityListTab: React.FC<EntityListTabProps> = ({ character, onChara
       const npcCollection = await npcEditor.loadNpcData();
 
       // Filter entities based on config
-      const entityList = npcCollection.npcs.filter(config.filterFn);
+      let entityList = npcCollection.npcs.filter(config.filterFn);
+
+      // If showOnlyDead, filter to only killed entities
+      if (config.showOnlyDead) {
+        entityList = entityList.filter(entity => {
+          try {
+            return !npcEditor.getNpcAlive(entity.name);
+          } catch {
+            return false;
+          }
+        });
+      }
 
       setEntities(entityList);
       setError(null);
@@ -97,9 +113,12 @@ export const EntityListTab: React.FC<EntityListTabProps> = ({ character, onChara
     <div className={`entity-list-tab entity-list-tab--${config.entityType}`}>
       <h2>{config.title}</h2>
 
-      <div className="disclaimer">
-        ⚠️ There may be bugs. If you encounter any issues, please report them via <a href="https://discord.com/invite/FZuCXNcUWA" target="_blank" rel="noopener noreferrer">Discord</a>.
-      </div>
+      <div
+        className="disclaimer"
+        dangerouslySetInnerHTML={{
+          __html: t('disclaimer', lang).replace('Discord', '<a href="https://discord.com/invite/FZuCXNcUWA" target="_blank" rel="noopener noreferrer">Discord</a>')
+        }}
+      />
 
       {loading && (
         <div className="loading-message">
@@ -133,7 +152,7 @@ export const EntityListTab: React.FC<EntityListTabProps> = ({ character, onChara
             >
               <div className="entity-info">
                 <span className="entity-name">
-                  {config.nameTransform ? config.nameTransform(entity.name) : entity.name}
+                  {lang === 'zh' && entity.displayName ? entity.displayName : (config.nameTransform ? config.nameTransform(entity.name) : entity.name)}
                   {entity.warning && (
                     <span className="warning-icon" title={entity.warning}>⚠️</span>
                   )}
@@ -144,13 +163,13 @@ export const EntityListTab: React.FC<EntityListTabProps> = ({ character, onChara
                   className={`kill-button${f === 'kill' ? ' kill-button--flash' : ''}`}
                   onClick={() => handleKill(entity)}
                 >
-                  Kill
+                  {t('kill', lang)}
                 </button>
                 <button
                   className={`revive-button${f === 'revive' ? ' revive-button--flash' : ''}`}
                   onClick={() => handleRevive(entity)}
                 >
-                  Revive
+                  {t('revive', lang)}
                 </button>
               </div>
             </div>

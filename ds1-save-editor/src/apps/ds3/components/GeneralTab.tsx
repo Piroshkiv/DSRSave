@@ -93,7 +93,9 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     }
 
     if (levelChanged) {
+      const prevLevel = character.level;
       character.level = correctLevel;
+      character.applyLevelProgression(prevLevel);
     }
 
     // Only re-render / notify if we actually changed something
@@ -107,6 +109,7 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
   // Handlers (unchanged semantics)
   const handleStatChange = (statName: string, numValue: number) => {
+    const prevLevel = character.level;
     const classData = CLASS_STARTING_STATS[character.playerClass];
     if (safeMode && classData) {
       const propertyName = STAT_MAP[statName];
@@ -120,6 +123,8 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
       // recalc synchronously after setStat
       character.level = calculateLevel();
     }
+
+    character.applyLevelProgression(prevLevel);
 
     bump();
     onCharacterUpdate();
@@ -143,8 +148,10 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           corrections.push({ stat: statName, from: current, to: min });
         }
       }
+      const prevLevel = character.level;
       for (const c of corrections) character.setStat(c.stat, c.to);
       character.level = calculateLevel();
+      character.applyLevelProgression(prevLevel);
     }
 
     bump();
@@ -152,13 +159,23 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
   };
 
   const handleLevelChange = (numValue: number) => {
+    const prevLevel = character.level;
     character.level = numValue;
+    character.applyLevelProgression(prevLevel);
+    bump();
+    onCharacterUpdate();
+  };
+
+  const handleSoulMemoryChange = (numValue: number) => {
+    character.soulMemory = numValue;
     bump();
     onCharacterUpdate();
   };
 
   const handleSoulsChange = (numValue: number) => {
+    const prevSouls = character.souls;
     character.souls = numValue;
+    character.applySoulsProgression(prevSouls);
     bump();
     onCharacterUpdate();
   };
@@ -183,6 +200,22 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
   const handleNGCycleChange = (numValue: number) => {
     character.ngCycle = numValue;
+    bump();
+    onCharacterUpdate();
+  };
+
+  const playtimeSec = Math.floor(character.playtimeMs / 1000);
+  const playtimeParts = {
+    h: Math.floor(playtimeSec / 3600),
+    m: Math.floor((playtimeSec % 3600) / 60),
+    s: playtimeSec % 60,
+  };
+
+  const handlePlaytimeChange = (part: 'h' | 'm' | 's', numValue: number) => {
+    const p = { ...playtimeParts, [part]: numValue };
+    // preserve sub-second ms so an untouched value round-trips exactly
+    const ms = character.playtimeMs % 1000;
+    character.playtimeMs = (p.h * 3600 + p.m * 60 + p.s) * 1000 + ms;
     bump();
     onCharacterUpdate();
   };
@@ -372,8 +405,59 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           </div>
 
           <div className="form-group">
+            <label>Soul Memory (total collected)</label>
+            <NumberInput
+              value={character.soulMemory}
+              onChange={handleSoulMemoryChange}
+              min={0}
+              max={0xFFFFFFFF}
+              disabled={safeMode}
+            />
+            {safeMode && (
+              <p className="ds3-export-hint">
+                Auto-set to a plausible minimum for the level (level-up cost + 20%).
+              </p>
+            )}
+          </div>
+
+          <div className="form-group">
             <label>NG+ Cycle</label>
             <NumberInput value={character.ngCycle} onChange={handleNGCycleChange} min={0} max={MAX_VALUES.NG_CYCLE} />
+          </div>
+
+          <div className="form-group">
+            <label>Play Time (h/m/s)</label>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <NumberInput
+                value={playtimeParts.h}
+                onChange={(value) => handlePlaytimeChange('h', value)}
+                min={0}
+                max={1193}
+                style={{ flex: 1 }}
+                disabled={safeMode}
+              />
+              <span style={{ color: '#666' }}>:</span>
+              <NumberInput
+                value={playtimeParts.m}
+                onChange={(value) => handlePlaytimeChange('m', value)}
+                min={0}
+                max={59}
+                style={{ flex: 1 }}
+                disabled={safeMode}
+              />
+              <span style={{ color: '#666' }}>:</span>
+              <NumberInput
+                value={playtimeParts.s}
+                onChange={(value) => handlePlaytimeChange('s', value)}
+                min={0}
+                max={59}
+                style={{ flex: 1 }}
+                disabled={safeMode}
+              />
+            </div>
+            {safeMode && (
+              <p className="ds3-export-hint">+5 min per gained level (auto). Editable in unsafe mode.</p>
+            )}
           </div>
 
           <div className="form-group">

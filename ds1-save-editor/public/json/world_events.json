@@ -1,0 +1,223 @@
+{
+  "categories": [
+    {
+      "id": "misc",
+      "name_en": "Miscellaneous",
+      "name_zh": "杂项",
+      "events": [
+        {
+          "id": "rite_of_kindling",
+          "name_en": "Rite of Kindling",
+          "name_zh": "获得注火秘仪",
+          "offset": "0x3",
+          "bit": 1,
+          "reverse": false,
+          "verified": false
+        },
+        {
+          "id": "repair_equipment",
+          "name_en": "Repair Equipment",
+          "name_zh": "可修理装备",
+          "offset": "0x1C",
+          "bit": 3,
+          "reverse": true,
+          "verified": true
+        },
+        {
+          "id": "reinforce_weapon",
+          "name_en": "Reinforce Weapon",
+          "name_zh": "可强化武器",
+          "offset": "0x1C",
+          "bit": 5,
+          "reverse": true,
+          "verified": true
+        },
+        {
+          "id": "reinforce_armor",
+          "name_en": "Reinforce Armor",
+          "name_zh": "可强化盔甲",
+          "offset": "0x1C",
+          "bit": 4,
+          "reverse": true,
+          "verified": true
+        },
+        {
+          "id": "elevators",
+          "name_en": "Elevators",
+          "name_zh": "电梯已激活",
+          "offset": "0x0",
+          "bit": 2,
+          "reverse": false,
+          "verified": false
+        },
+        {
+          "id": "anor_londo_dark",
+          "name_en": "Anor Londo Dark",
+          "name_zh": "亚诺尔隆德变暗",
+          "offset": "0x4631",
+          "bit": 7,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "lava_solidified",
+          "name_en": "Lava Solidified",
+          "name_zh": "岩浆凝固",
+          "offset": "0x3C67",
+          "bit": 7,
+          "reverse": true,
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "fog_gates",
+      "name_en": "Fog Gates",
+      "name_zh": "雾门",
+      "events": [
+        {
+          "id": "fog_asylum",
+          "name_en": "Asylum",
+          "name_zh": "不死院",
+          "offset": "0x5A08",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_burg1",
+          "name_en": "Undead Burg 1",
+          "name_zh": "不死教区 1",
+          "offset": "0xF08",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_burg2",
+          "name_en": "Undead Burg 2",
+          "name_zh": "不死教区 2",
+          "offset": "0xF08",
+          "bit": 4,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_blighttown",
+          "name_en": "Blighttown",
+          "name_zh": "病村",
+          "offset": "0x3708",
+          "bit": 4,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_new_londo",
+          "name_en": "New Londo Ruins",
+          "name_zh": "小隆德遗迹",
+          "offset": "0x4B08",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_sen1",
+          "name_en": "Sen's Fortress 1",
+          "name_zh": "塞恩古城 1",
+          "offset": "0x4108",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_sen2",
+          "name_en": "Sen's Fortress 2",
+          "name_zh": "塞恩古城 2",
+          "offset": "0x4108",
+          "bit": 4,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_anor1",
+          "name_en": "Anor Londo 1",
+          "name_zh": "亚诺尔隆德 1",
+          "offset": "0x4308",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_anor2",
+          "name_en": "Anor Londo 2",
+          "name_zh": "亚诺尔隆德 2",
+          "offset": "0x4308",
+          "bit": 4,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_catacombs",
+          "name_en": "Catacombs",
+          "name_zh": "墓地",
+          "offset": "0x2808",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_tomb",
+          "name_en": "Tomb of Giants",
+          "name_zh": "巨人墓地",
+          "offset": "0x2D08",
+          "bit": 5,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "fog_duke",
+          "name_en": "Duke's Archives",
+          "name_zh": "公爵书库",
+          "offset": "0x5009",
+          "bit": 4,
+          "reverse": true,
+          "verified": false
+        },
+        {
+          "id": "crest_artorias",
+          "name_en": "Crest of Artorias",
+          "name_zh": "亚尔特留斯徽章",
+          "offset": "0xD23D",
+          "bit": 3,
+          "reverse": true,
+          "verified": false
+        }
+      ]
+    },
+    {
+      "id": "bells",
+      "name_en": "Bells",
+      "name_zh": "钟",
+      "events": [
+        {
+          "id": "bell1",
+          "name_en": "First Bell of Awakening",
+          "name_zh": "第一口钟",
+          "offset": "0x180",
+          "bit": 0,
+          "reverse": false,
+          "verified": false
+        },
+        {
+          "id": "bell2",
+          "name_en": "Second Bell of Awakening",
+          "name_zh": "第二口钟",
+          "offset": "0x1D1",
+          "bit": 0,
+          "reverse": false,
+          "verified": false
+        }
+      ]
+    }
+  ]
+}

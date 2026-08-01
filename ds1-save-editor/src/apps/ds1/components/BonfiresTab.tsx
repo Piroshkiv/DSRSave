@@ -1,46 +1,108 @@
 import React, { useState, useEffect } from 'react';
 import { Character } from '../lib/Character';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../lib/i18n';
 
 interface BonfiresTabProps {
   character: Character;
   onCharacterUpdate: () => void;
 }
 
+// 21 warpable bonfire names (indices 0-20, bit0=Catacombs, bits 1-3 reserved, bits 4-23 other bonfires)
+// Bit layout: +0x6B bit0=Catacombs, bits1-3 reserved, bit4=CrystalCave, bit5=Duke'sArchives, bit6=TombOfGiants, bit7=PaintedWorld
+//             +0x6C bit0=UndeadParish, bit1=Depths, bit2=OolacileTownship, bit3=Chasm, bit4=Oolacile, bit5=OolacileSanctuary, bit6=SanctuaryGarden, bit7=DarkmoonTomb
+//             +0x6D bit0=ChamberOfThePrincess, bit1=AltarOfTheGravelord, bit2=SunlightAltar, bit3=TheAbyss, bit4=AnorLondo, bit5=DaughterOfChaos, bit6=StoneDragon, bit7=FirelinkShrine
+const BONFIRE_NAMES: Record<Lang, string[]> = {
+  en: [
+    'The Catacombs', 'Crystal Cave', 'The Duke\'s Archives', 'Tomb of Giants', 'Painted World of Ariamis',
+    'Undead Parish', 'Depths', 'Oolacile Township Dungeon', 'Chasm of the Abyss',
+    'Oolacile', 'Oolacile Sanctuary', 'Sanctuary Garden', 'Darkmoon Tomb',
+    'Chamber of the Princess', 'Altar of the Gravelord', 'Sunlight Altar', 'The Abyss',
+    'Anor Londo', 'Daughter of Chaos', 'Stone Dragon', 'Firelink Shrine'
+  ],
+  zh: [
+    '地下墓地', '结晶洞穴', '公爵书库', '巨人墓地', '绘画世界·亚米阿斯',
+    '城外不死教区', '底层', '乌拉席露市镇：地牢', '深渊洞穴',
+    '乌拉席露市镇', '乌拉席露灵庙', '灵庙内庭', '暗月灵庙',
+    '公主的房间', '墓王祭坛', '太阳祭坛', '深渊',
+    '亚诺尔隆德', '混沌的女儿', '石身古龙', '传火祭祀场'
+  ]
+};
+
+// Map from display index (0-20) to bit index (3, 4-23)
+const BIT_INDICES = [3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+
+// Warp bits in +0x6B (bits 0-2) that are set together with the +0xAE flag
+const WARP_BIT_INDICES = [0, 1, 2];
+
+
+type Lang = 'en' | 'zh';
+
 export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacterUpdate }) => {
-  const [bonfireStatus, setBonfireStatus] = useState<{
-    unlocked: boolean;
-  } | null>(null);
+  const { lang } = useLang();
+  const [bonfires, setBonfires] = useState<boolean[]>([]);
+
+  const [warpFlag, setWarpFlag] = useState<boolean>(false);
+
   const [error, setError] = useState<string | null>(null);
 
-  const getStatus = (char: Character) => {
+  const loadStatus = () => {
     try {
-      const isUnlocked = char.areBonfiresUnlocked();
+      const flags = character.getBonfireWarpFlags();
+      setBonfires(flags);
+
+      setWarpFlag(character.getWarpFlag());
+
       setError(null);
-      return { unlocked: isUnlocked };
     } catch (err: any) {
       setError(err.message || 'Error checking bonfire status');
-      return null;
     }
   };
 
   useEffect(() => {
-    const status = getStatus(character);
-    if (status) {
-      setBonfireStatus(status);
-    } else {
-      setBonfireStatus(null);
-    }
+    loadStatus();
   }, [character]);
+
+  const handleToggle = (displayIndex: number) => {
+    try {
+      const bitIndex = BIT_INDICES[displayIndex];
+      const newState = !bonfires[bitIndex];
+      character.setBonfireWarpFlag(bitIndex, newState);
+      const newBonfires = [...bonfires];
+      newBonfires[bitIndex] = newState;
+      setBonfires(newBonfires);
+      onCharacterUpdate();
+    } catch (err: any) {
+      setError(err.message || 'Failed to toggle bonfire');
+    }
+  };
+
+
+  const handleToggleWarping = () => {
+    try {
+      const newState = !warpFlag;
+      WARP_BIT_INDICES.forEach(bitIndex => {
+        character.setBonfireWarpFlag(bitIndex, newState);
+      });
+      character.setWarpFlag(newState);
+      const newBonfires = [...bonfires];
+      WARP_BIT_INDICES.forEach(i => { newBonfires[i] = newState; });
+      setBonfires(newBonfires);
+      setWarpFlag(newState);
+      onCharacterUpdate();
+    } catch (err: any) {
+      setError(err.message || 'Failed to toggle warping');
+    }
+  };
+
 
   const handleUnlockAll = () => {
     try {
       character.unlockAllBonfires();
+      const flags = character.getBonfireWarpFlags();
+      setBonfires(flags);
 
-      // Update status
-      const status = getStatus(character);
-      if (status) {
-        setBonfireStatus(status);
-      }
+      setWarpFlag(character.getWarpFlag());
 
       onCharacterUpdate();
     } catch (err: any) {
@@ -48,9 +110,13 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
     }
   };
 
+  const names = BONFIRE_NAMES[lang] || BONFIRE_NAMES.en;
+  const unlockedCount = BIT_INDICES.filter(i => bonfires[i]).length;
+  const allUnlocked = BIT_INDICES.every(i => bonfires[i]);
+
   return (
     <div className="bonfires-tab">
-      <h2>Bonfires</h2>
+      <h2>{t('bonfires', lang)}</h2>
 
       {error && (
         <div className="error-message" style={{ color: 'red', marginBottom: '1rem' }}>
@@ -58,36 +124,46 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
         </div>
       )}
 
-      {bonfireStatus && (
-        <div className="bonfire-info">
-          <div className="status-section">
-            <h3>Status</h3>
-            <div className="status-display">
-              <span className={`status-indicator ${bonfireStatus.unlocked ? 'unlocked' : 'locked'}`}>
-                {bonfireStatus.unlocked ? '✓ All Warpable Bonfires Unlocked' : '✗ Not All Bonfires Unlocked'}
-              </span>
-            </div>
-          </div>
+      <div className="bonfire-actions">
+        <button
+          className="unlock-button primary-button"
+          onClick={handleUnlockAll}
+          disabled={allUnlocked}
+        >
+          {allUnlocked ? t('alreadyUnlocked', lang) : t('unlockAll', lang)}
+        </button>
+        <span className="bonfire-count">
+          {unlockedCount} / {names.length}
+        </span>
+      </div>
 
-          <div className="actions-section">
-            <button
-              className="unlock-button primary-button"
-              onClick={handleUnlockAll}
-              disabled={bonfireStatus.unlocked}
-            >
-              {bonfireStatus.unlocked ? 'All Bonfires Already Unlocked' : 'Unlock All Warpable Bonfires'}
-            </button>
-          </div>
+      <div className="bonfire-grid">
 
-          <div className="info-section">
-            <h4>ℹ️ Information</h4>
-            <ul>
-              <li>Unlocks all <strong>20 warpable bonfires</strong> in Dark Souls Remastered.</li>
-              <li>You still need to rest at each bonfire to register it in-game.</li>
-            </ul>
-          </div>
+        <div
+          className={`bonfire-item warp-item ${warpFlag ? 'unlocked' : 'locked'}`}
+          onClick={handleToggleWarping}
+        >
+          <span className={`bonfire-dot ${warpFlag ? 'dot-warp' : 'dot-off'}`} />
+          <span className="bonfire-name">{t('warping', lang)}</span>
         </div>
-      )}
+
+        {names.map((name, i) => {
+          const bitIndex = BIT_INDICES[i];
+          const isUnlocked = bonfires[bitIndex];
+          return (
+            <div
+              key={i}
+              className={`bonfire-item ${isUnlocked ? 'unlocked' : 'locked'}`}
+              onClick={() => handleToggle(i)}
+            >
+
+              <span className={`bonfire-dot ${isUnlocked ? 'dot-on' : 'dot-off'}`} />
+
+              <span className="bonfire-name">{name}</span>
+            </div>
+          );
+        })}
+      </div>
 
       <style>{`
         .bonfires-tab {
@@ -105,56 +181,11 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
           border-bottom: 1px solid rgba(255, 107, 53, 0.25);
         }
 
-        .bonfire-info {
+        .bonfire-actions {
           display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-        }
-
-        .status-section {
-          background: rgba(255, 255, 255, 0.03);
-          padding: 0.65rem 0.85rem;
-          border-radius: 4px;
-          border: 1px solid #252525;
-        }
-
-        .status-section h3 {
-          font-size: 0.75rem;
-          font-weight: 600;
-          color: #666;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin: 0 0 0.5rem;
-        }
-
-        .status-display {
-          margin: 0;
-        }
-
-        .status-indicator {
-          display: inline-block;
-          padding: 0.3rem 0.65rem;
-          border-radius: 3px;
-          font-weight: 500;
-          font-size: 0.82rem;
-        }
-
-        .status-indicator.unlocked {
-          background: rgba(76, 175, 80, 0.1);
-          color: #5a9a5a;
-          border: 1px solid rgba(76, 175, 80, 0.25);
-        }
-
-        .status-indicator.locked {
-          background: rgba(255, 152, 0, 0.08);
-          color: #a07830;
-          border: 1px solid rgba(255, 152, 0, 0.2);
-        }
-
-        .actions-section {
-          display: flex;
-          flex-direction: column;
-          gap: 0.35rem;
+          align-items: center;
+          gap: 1rem;
+          margin-bottom: 1rem;
         }
 
         .primary-button {
@@ -167,7 +198,6 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
           border-radius: 4px;
           cursor: pointer;
           transition: background 0.15s, border-color 0.15s;
-          align-self: flex-start;
         }
 
         .primary-button:hover:not(:disabled) {
@@ -180,34 +210,67 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
           cursor: not-allowed;
         }
 
-        .info-section {
-          background: rgba(33, 150, 243, 0.05);
-          padding: 0.65rem 0.85rem;
-          border-radius: 4px;
-          border-left: 2px solid rgba(33, 150, 243, 0.3);
-        }
-
-        .info-section h4 {
-          margin: 0 0 0.4rem;
-          font-size: 0.78rem;
-          color: #888;
-          font-weight: 600;
-        }
-
-        .info-section ul {
-          margin: 0;
-          padding-left: 1.25rem;
+        .bonfire-count {
+          font-size: 0.8rem;
           color: #666;
-          font-size: 0.78rem;
-          line-height: 1.6;
         }
 
-        .info-section li {
-          margin: 0.15rem 0;
+        .bonfire-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 0.5rem;
         }
 
-        .info-section strong {
-          color: #888;
+        .bonfire-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.5rem 0.75rem;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: all 0.15s;
+          border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .bonfire-item.unlocked {
+          background: rgba(255, 107, 53, 0.08);
+          border-color: rgba(255, 107, 53, 0.2);
+        }
+
+        .bonfire-item.locked {
+          background: rgba(255, 255, 255, 0.02);
+          opacity: 0.5;
+        }
+
+        .bonfire-item:hover {
+          border-color: rgba(255, 107, 53, 0.4);
+        }
+
+        .bonfire-dot {
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+
+        .dot-on {
+          background: #ff6b35;
+        }
+
+        .dot-warp {
+          background: #f0c040;
+        }
+
+        .dot-off {
+          background: transparent;
+          border: 1.5px solid #555;
+
+        }
+
+        .bonfire-name {
+          font-size: 0.8rem;
+          color: #c0c0c0;
         }
 
         .error-message {

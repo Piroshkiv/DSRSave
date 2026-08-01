@@ -8,6 +8,7 @@ export interface Npc {
   name: string;
   bits: NpcBitEntry[];
   warning?: string; // Optional warning message for NPC-specific bugs/issues
+  displayName?: string; // Localized display name (e.g. Chinese)
 }
 
 export interface NpcCollection {

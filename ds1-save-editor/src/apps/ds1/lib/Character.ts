@@ -378,6 +378,105 @@ export class Character {
   }
 
   // Bonfire methods - using relative offsets to Pattern1
+
+  // Get status of all bonfire warp flags from +0x6B/0x6C/0x6D
+  // Returns 24-element array indexed by bit index (0-23)
+  // bits 1-3 are reserved (always false), all others are bonfire flags
+  getBonfireWarpFlags(): boolean[] {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) return new Array(24).fill(false);
+
+    const byte6B = this.data[baseOffset + 0x6B];
+    const byte6C = this.data[baseOffset + 0x6C];
+    const byte6D = this.data[baseOffset + 0x6D];
+
+    return [
+      // byte 0x6B bits 0-7
+
+      ((byte6B >> 0) & 1) === 1, // bit 0: warp
+      ((byte6B >> 1) & 1) === 1, // bit 1: warp
+      ((byte6B >> 2) & 1) === 1, // bit 2: warp
+
+      ((byte6B >> 3) & 1) === 1, // bit 3: The Catacombs
+      ((byte6B >> 4) & 1) === 1, // bit 4: Crystal Cave
+      ((byte6B >> 5) & 1) === 1, // bit 5: The Duke's Archives
+      ((byte6B >> 6) & 1) === 1, // bit 6: Tomb of Giants
+      ((byte6B >> 7) & 1) === 1, // bit 7: Painted World of Ariamis
+      // byte 0x6C bits 0-7
+      ((byte6C >> 0) & 1) === 1, // bit 8: Undead Parish
+      ((byte6C >> 1) & 1) === 1, // bit 9: Depths
+      ((byte6C >> 2) & 1) === 1, // bit 10: Oolacile Township Dungeon
+      ((byte6C >> 3) & 1) === 1, // bit 11: Chasm of the Abyss
+      ((byte6C >> 4) & 1) === 1, // bit 12: Oolacile
+      ((byte6C >> 5) & 1) === 1, // bit 13: Oolacile Sanctuary
+      ((byte6C >> 6) & 1) === 1, // bit 14: Sanctuary Garden
+      ((byte6C >> 7) & 1) === 1, // bit 15: Darkmoon Tomb
+      // byte 0x6D bits 0-7
+      ((byte6D >> 0) & 1) === 1, // bit 16: Chamber of the Princess
+      ((byte6D >> 1) & 1) === 1, // bit 17: Altar of the Gravelord
+      ((byte6D >> 2) & 1) === 1, // bit 18: Sunlight Altar
+      ((byte6D >> 3) & 1) === 1, // bit 19: The Abyss
+      ((byte6D >> 4) & 1) === 1, // bit 20: Anor Londo
+      ((byte6D >> 5) & 1) === 1, // bit 21: Daughter of Chaos
+      ((byte6D >> 6) & 1) === 1, // bit 22: Stone Dragon
+      ((byte6D >> 7) & 1) === 1, // bit 23: Firelink Shrine
+    ];
+  }
+
+  // Set a single bonfire flag by bit index (0-23)
+  setBonfireWarpFlag(bitIndex: number, unlocked: boolean): void {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) return;
+
+    let byteOffset: number;
+    let bit: number;
+
+    if (bitIndex < 8) {
+      byteOffset = baseOffset + 0x6B;
+      bit = bitIndex;
+    } else if (bitIndex < 16) {
+      byteOffset = baseOffset + 0x6C;
+      bit = bitIndex - 8;
+    } else {
+      byteOffset = baseOffset + 0x6D;
+      bit = bitIndex - 16;
+    }
+
+    const current = this.data[byteOffset];
+    if (unlocked) {
+      this.data[byteOffset] = current | (1 << bit);
+    } else {
+      this.data[byteOffset] = current & ~(1 << bit);
+    }
+  }
+
+
+  getWarpFlag(): boolean {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) return false;
+    return this.data[baseOffset + BONFIRE_RELATIVE_FLAG_OFFSET] !== 0;
+  }
+
+  setWarpFlag(enabled: boolean): void {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) return;
+    this.data[baseOffset + BONFIRE_RELATIVE_FLAG_OFFSET] = enabled ? 0x22 : 0x00;
+  }
+
+
+  // World event flags
+  getWorldEventFlag(offset: string, bit: number, reverse: boolean): boolean {
+    const baseOffset = this.findPattern1();
+    if (baseOffset === -1) return false;
+
+    const relOff = parseInt(offset, 16);
+    const absOff = baseOffset + relOff;
+    if (absOff < 0 || absOff >= this.data.length) return false;
+
+    const rawBit = (this.data[absOff] >> bit) & 1;
+    return reverse ? !rawBit : !!rawBit;
+  }
+
   unlockAllBonfires(): void {
     // Находим базовое смещение Pattern1
     const baseOffset = this.findPattern1();
@@ -385,7 +484,7 @@ export class Character {
     if (baseOffset === -1) {
       throw new Error('Не удалось найти Pattern1 в данных сохранения. Убедитесь, что это допустимый файл сохранения Dark Souls Remastered.');
     }
-    
+
     // Рассчитываем абсолютные смещения
     const bonfireOffset1 = baseOffset + BONFIRE_RELATIVE_OFFSET_1;
     const bonfireOffset2 = baseOffset + BONFIRE_RELATIVE_OFFSET_2;
@@ -396,17 +495,18 @@ export class Character {
       throw new Error('Смещения костров выходят за границы файла. Возможно, файл сохранения поврежден.');
     }
 
-    // Записываем шаблон разблокировки (битовые флаги)
-    // 0xF0 = 11110000 - разблокирует 4 костра
-    // 0xFF = 11111111 - разблокирует 8 костров
-    // 0x22 = 00100010 - специфичный флаг варпа
-    this.data[bonfireOffset1] = 0xF0;
+    // Unlock all 21 warpable bonfires (bits 3, 4-23)
+    // 0xF8 = 11111000 - bit 3 (Catacombs) + bits 4-7 of 6B (Crystal Cave, Duke's Archives, Tomb of Giants, Painted World)
+    // 0xFF = 11111111 - all 8 bits of 6C (Undead Parish through Darkmoon Tomb)
+    // 0xFF = 11111111 - all 8 bits of 6D (Chamber of the Princess through Firelink Shrine)
+    // 0x22 = 00100010 - warp availability flag
+    this.data[bonfireOffset1] = 0xF8;
     this.data[bonfireOffset2] = 0xFF;
     this.data[bonfireOffset3] = 0xFF;
     this.data[warpFlagOffset] = 0x22;
 
     console.log('Разблокированы все костры, доступные для варпа:');
-    console.log(`  0x${bonfireOffset1.toString(16)} (Dif: 0x${BONFIRE_RELATIVE_OFFSET_1.toString(16)}): 0xF0`);
+    console.log(`  0x${bonfireOffset1.toString(16)} (Dif: 0x${BONFIRE_RELATIVE_OFFSET_1.toString(16)}): 0xF8`);
     console.log(`  0x${bonfireOffset2.toString(16)} (Dif: 0x${BONFIRE_RELATIVE_OFFSET_2.toString(16)}): 0xFF`);
     console.log(`  0x${bonfireOffset3.toString(16)} (Dif: 0x${BONFIRE_RELATIVE_OFFSET_3.toString(16)}): 0xFF`);
     console.log(`  0x${warpFlagOffset.toString(16)} (Dif: 0x${BONFIRE_RELATIVE_FLAG_OFFSET.toString(16)}): 0x22`);

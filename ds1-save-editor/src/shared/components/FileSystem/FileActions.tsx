@@ -1,4 +1,6 @@
 import React from 'react';
+import { useLang } from '../../../core/context/LanguageContext';
+import { t } from '../../../apps/ds1/lib/i18n';
 import './FileActions.css';
 
 interface FileActionsProps {
@@ -16,21 +18,22 @@ export const FileActions: React.FC<FileActionsProps> = ({
   disabled = false,
   disableSave = false,
 }) => {
+  const { lang } = useLang();
   return (
     <div className="file-actions">
       {onReload && (
         <button className="action-button reload-button" onClick={onReload} disabled={disabled}>
-          Reload
+          {t('reload', lang)}
         </button>
       )}
       {onSave && (
         <button className="action-button save-button" onClick={onSave} disabled={disabled || disableSave}>
-          Save
+          {t('save', lang)}
         </button>
       )}
       {onSaveAs && (
         <button className="action-button save-as-button" onClick={onSaveAs} disabled={disabled}>
-          Save As
+          {t('saveAs', lang)}
         </button>
       )}
     </div>
