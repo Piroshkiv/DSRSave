@@ -51,7 +51,7 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
     <div className="tab-panel">
       <div className="tabs-header">
         <div className="tabs">
-          {(['help', 'general', 'appearance', 'inventory', 'bonfires', 'npcs', 'bosses', 'world_events', 'table'] as TabType[]).map(tab => (
+          {(['general', 'appearance', 'inventory', 'bonfires', 'npcs', 'bosses', 'table'] as TabType[]).map(tab => (
             <button
               key={tab}
               className={`tab ${activeTab === tab ? 'active' : ''}`}
