@@ -45,6 +45,47 @@ export const RELATIVE_OFFSETS = {
   WEAPON_MEMORY: -0x9D,
 } as const;
 
+// ===== BONFIRES / event-flag block =====
+// The bonfire block moves with the (variable-length) inventory, so it can't be read at a
+// fixed offset. It is located with a DS1-style windowed anchor search — see
+// docs/ds3-bonfire-anchor.md. Verified byte-exact across 5 captures of 2 characters.
+//
+//   invStart = GA-table scan (same as findInventoryStart)
+//   est      = invStart + BONFIRE_COARSE_FROM_INV            (coarse block estimate)
+//   anchor   = LAST BONFIRE_PATTERN in [est-0x1500, est+0x200]
+//   rec0     = anchor + BONFIRE_ANCHOR_TO_BLOCK              (block start)
+export const BONFIRE_PATTERN = new Uint8Array([
+  0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+  0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
+]);
+export const BONFIRE_COARSE_FROM_INV = 0x12B1F;
+export const BONFIRE_ANCHOR_TO_BLOCK = 0xB5D;
+
+// "Unlock all bonfires" bitmask: [offset-from-block-start, byte value]. Each value is a
+// bitmask OR-ed into the byte, so only the bonfire bits are set — every other bit in the
+// same byte is preserved and no flag is ever cleared. The masks are exactly the bits the
+// game itself flips 0→1 on "unlock all" (captured as the lock→unlock diff and confirmed
+// identical on a second character). Records sit every 0x500 bytes; two u16 flag words per
+// record (at +0x0 and +0x40E).
+export const BONFIRE_UNLOCK_ALL: ReadonlyArray<readonly [number, number]> = [
+  // rec 0
+  [0x0000, 0xB0], [0x0001, 0x03], [0x0007, 0x80], [0x040E, 0x40], [0x040F, 0xEC],
+  // rec 1
+  [0x0500, 0x80], [0x0501, 0x03], [0x090F, 0xE0],
+  // rec 2
+  [0x0A00, 0xE0], [0x0A01, 0x03], [0x0E0F, 0xF8],
+  // rec 4
+  [0x1400, 0xC0], [0x1401, 0x03], [0x180F, 0xF0],
+  // rec 6
+  [0x1E00, 0xFE], [0x1E01, 0x02], [0x220E, 0x80], [0x220F, 0xBF],
+  // rec 8
+  [0x2801, 0x03], [0x2C0F, 0xC0],
+  // rec 9
+  [0x2D00, 0x80], [0x2D01, 0x03], [0x310F, 0xF0],
+  // rec 12
+  [0x3C00, 0xFE], [0x3C01, 0x03],
+];
+
 // Play time in milliseconds, u32 LE. Absolute offset in the decrypted slot header
 // (not pattern-relative). The game trusts this value and continues counting from it.
 export const PLAYTIME_OFFSET = 0x0C;

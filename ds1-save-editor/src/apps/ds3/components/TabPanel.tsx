@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DS3Character } from '../lib/Character';
 import { GeneralTab } from './GeneralTab';
 import { InventoryTab } from './InventoryTab';
+import { BonfiresTab } from './BonfiresTab';
 
 interface TabPanelProps {
   character: DS3Character | null;
@@ -10,7 +11,7 @@ interface TabPanelProps {
   onSafeModeChange: (v: boolean) => void;
 }
 
-type TabType = 'general' | 'inventory';
+type TabType = 'general' | 'inventory' | 'bonfires';
 
 export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, safeMode, onSafeModeChange }) => {
   const [activeTab, setActiveTab] = useState<TabType>('general');
@@ -41,6 +42,12 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
           >
             Inventory
           </button>
+          <button
+            className={`tab ${activeTab === 'bonfires' ? 'active' : ''}`}
+            onClick={() => setActiveTab('bonfires')}
+          >
+            Bonfires
+          </button>
         </div>
       </div>
 
@@ -55,6 +62,9 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
         )}
         {activeTab === 'inventory' && (
           <InventoryTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
+        )}
+        {activeTab === 'bonfires' && (
+          <BonfiresTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
       </div>
     </div>
