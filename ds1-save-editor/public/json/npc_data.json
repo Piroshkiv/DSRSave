@@ -526,6 +526,32 @@
       ]
     },
     {
+      "name": "Undead Female Merchant",
+      "displayName": "不死人女商人",
+      "bits": [
+        {
+          "offset": "0x103",
+          "bit": 5,
+          "reverse": false
+        },
+        {
+          "offset": "0x103",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x1493",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x16DA8",
+          "bit": 2,
+          "reverse": true
+        }
+      ]
+    },
+    {
       "name": "Oswald of Carim",
       "displayName": "卡利姆的奥斯瓦尔德",
       "bits": [
