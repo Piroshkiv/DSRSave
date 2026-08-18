@@ -7838,8 +7838,7 @@
       "Id": "0x4014EF60",
       "MaxStackCount": 1,
       "Category": "sorceries",
-      "Name": "Farron Hail",
-      "Safe": false
+      "Name": "Farron Hail"
     },
     {
       "Type": "0x40000000",
@@ -9427,8 +9426,7 @@
       "Id": "0x40000869",
       "MaxStackCount": 1,
       "Category": "multiplayer",
-      "Name": "Champions Bones",
-      "Safe": false
+      "Name": "Champions Bones"
     },
     {
       "Type": "0x40000000",
@@ -9512,8 +9510,7 @@
       "Id": "0x4000086F",
       "MaxStackCount": 99,
       "Category": "covenantitems",
-      "Name": "Young Grass Dew",
-      "Safe": false
+      "Name": "Young Grass Dew"
     },
     {
       "Type": "0x40000000",
