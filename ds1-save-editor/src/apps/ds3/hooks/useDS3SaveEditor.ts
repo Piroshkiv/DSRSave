@@ -16,7 +16,7 @@ import {
 } from '../lib/backups';
 import type { FileUploadRef } from '../components/FileUpload';
 
-const EMPTY_STEAM_ID_SUMMARY: SteamIdSummary = { system: null, slots: [], mismatched: false };
+const EMPTY_STEAM_ID_SUMMARY: SteamIdSummary = { system: null, slots: [], mismatched: false, unbound: [] };
 
 const AUTO_BACKUP_KEY = 'ds3-auto-backup';
 const MAX_BACKUPS_KEY = 'ds3-backup-max';
