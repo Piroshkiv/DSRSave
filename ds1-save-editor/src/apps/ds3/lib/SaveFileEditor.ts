@@ -295,10 +295,15 @@ export class DS3SaveFileEditor {
         steamId: character.getSteamId(),
       }));
 
-    const distinct = new Set<bigint | null>(slots.map((s) => s.steamId));
+    // Only real IDs can conflict. A slot with none is unbound, not foreign:
+    // imported characters carry no ID field, and the game loads them anyway.
+    const distinct = new Set<bigint>();
+    for (const slot of slots) if (slot.steamId !== null) distinct.add(slot.steamId);
     if (system !== null) distinct.add(system);
 
-    return { system, slots, mismatched: distinct.size > 1 };
+    const unbound = slots.filter((s) => s.steamId === null).map((s) => s.slotIndex);
+
+    return { system, slots, mismatched: distinct.size > 1, unbound };
   }
 
   /**

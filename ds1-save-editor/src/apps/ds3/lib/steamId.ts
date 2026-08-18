@@ -10,8 +10,19 @@
 export interface SteamIdSummary {
   system: bigint | null;
   slots: { slotIndex: number; steamId: bigint | null }[];
-  /** true when those IDs don't all agree — a save stitched from several accounts */
+  /**
+   * true when two *different* account IDs are present — a save stitched from
+   * several accounts, which is what actually needs rebinding.
+   *
+   * A slot carrying no ID at all does not count here: see `unbound`.
+   */
   mismatched: boolean;
+  /**
+   * Slots whose data holds no account ID anywhere — characters imported from a
+   * save that was never bound to an account. The game still loads them and
+   * there is no field to write into, so they are reported, not patched.
+   */
+  unbound: number[];
 }
 
 /** High 32 bits of every individual Steam account ID (universe 1, type 1, instance 1). */

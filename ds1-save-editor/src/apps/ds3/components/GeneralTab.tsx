@@ -736,10 +736,26 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
 
           {steamIdSummary.mismatched && (
             <p className="ds3-steamid-warning">
-              ⚠ Slots don&apos;t share one ID:{' '}
+              ⚠ Slots are bound to different accounts:{' '}
               {steamIdSummary.slots
-                .map((s) => `slot ${s.slotIndex + 1}: ${s.steamId === null ? '—' : showSteamId(s.steamId)}`)
+                .filter((s) => s.steamId !== null)
+                .map((s) => `slot ${s.slotIndex + 1}: ${showSteamId(s.steamId!)}`)
                 .join(' · ')}
+            </p>
+          )}
+
+          {/*
+            No ID in a slot is not a conflict: characters imported from a save
+            that was never bound to an account simply have no ID field, the game
+            loads them, and there is nothing for "apply to all" to write into.
+          */}
+          {steamIdSummary.unbound.length > 0 && (
+            <p className="ds3-steamid-notice">
+              {steamIdSummary.unbound.length === 1 ? 'Slot ' : 'Slots '}
+              {steamIdSummary.unbound.map((i) => i + 1).join(', ')}
+              {steamIdSummary.unbound.length === 1 ? ' carries' : ' carry'} no account ID —
+              imported characters usually don&apos;t. The game still loads them, and there is
+              no ID field to rewrite, so rebinding skips these slots.
             </p>
           )}
 
