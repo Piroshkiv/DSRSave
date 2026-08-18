@@ -311,3 +311,80 @@
 .modal-button-confirm:hover {
   background: #4a78a0;
 }
+
+/* ── Folder-ID prompt (browser only: no path to read the folder name from) ── */
+
+.ds3-folderid-modal {
+  max-width: 420px;
+}
+
+.ds3-folderid-modal .modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* The field's own `flex: 1 1 15rem` is a width in the toolbar row, but a height
+   in this column — pin it back to its content height. */
+.ds3-folderid-modal .ds3-steamid-input {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+.ds3-folderid-modal .modal-footer {
+  gap: 8px;
+}
+
+.modal-button-cancel {
+  background: #2a3040;
+  color: #a8b8c8;
+}
+
+.modal-button-cancel:hover {
+  background: #333c50;
+}
+
+.modal-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Post-save ban warning: shown when a save carried edited stats */
+.ds3-ban-modal {
+  max-width: 560px;
+}
+
+.ds3-ban-steps {
+  margin: 0;
+  padding-left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #c8d4e0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.ds3-ban-steps strong {
+  color: #ffd580;
+}
+
+.ds3-ban-note {
+  margin: 18px 0 0;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.ds3-ban-note.applied {
+  color: #8fd18f;
+  background: rgba(92, 184, 92, 0.1);
+  border: 1px solid rgba(92, 184, 92, 0.3);
+}
+
+.ds3-ban-note.unknown {
+  color: #e0b070;
+  background: rgba(217, 130, 43, 0.1);
+  border: 1px solid rgba(217, 130, 43, 0.3);
+}

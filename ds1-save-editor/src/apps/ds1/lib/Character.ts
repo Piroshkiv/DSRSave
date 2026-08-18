@@ -7,6 +7,14 @@ const BONFIRE_RELATIVE_OFFSET_3 = 0x6D; // Bonfire data 3
 const BONFIRE_RELATIVE_FLAG_OFFSET = 0xAE; // Warp flag
 const NG_PLUS_RELATIVE_OFFSET = -0xBC0; // NG+ counter (pattern1 - 0xBC0)
 
+/**
+ * Bit indices of the 21 warpable bonfires, in display order.
+ * Bits 0-2 of +0x6B are warp bits, not bonfires, so the list starts at 3.
+ */
+export const BONFIRE_BIT_INDICES = [
+  3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+] as const;
+
 export class Character {
   private data: Uint8Array;
   public slotNumber: number;
@@ -547,15 +555,19 @@ export class Character {
     };
   }
 
+  /**
+   * True when every warpable bonfire is unlocked.
+   *
+   * Decodes the actual flag bits via getBonfireWarpFlags() instead of
+   * comparing the raw bytes against fixed values. The old byte comparison
+   * expected 0xF0 in the first byte while unlockAllBonfires() writes 0xF8
+   * (0xF0 plus bit 3, The Catacombs), so it reported "locked" right after an
+   * unlock, and it also rejected any save where the warp bits 0-2 happened to
+   * be set. Bits 0-2 are warp bits, not bonfires, and are ignored here.
+   */
   areBonfiresUnlocked(): boolean {
-    const status = this.getBonfireStatus();
-    if (!status) return false;
-
-    // Проверяем соответствие целевым значениям разблокировки
-    return status.values[0] === 0xF0 &&
-              status.values[1] === 0xFF &&
-              status.values[2] === 0xFF &&
-              status.values[3] === 0x22;
+    const flags = this.getBonfireWarpFlags();
+    return BONFIRE_BIT_INDICES.every(bit => flags[bit]);
   }
 
   /**

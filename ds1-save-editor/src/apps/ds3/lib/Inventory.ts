@@ -1,4 +1,10 @@
 import { DS3Character } from './Character';
+import { ByteView } from '../../../shared/ByteView';
+import {
+  ItemCatalog,
+  fetchItemDatabase,
+  type Item,
+} from '../../../shared/items';
 import { COVENANT_BADGE_INVENTORY } from './constants';
 
 /**
@@ -48,122 +54,128 @@ export enum ItemCollectionType {
   Unknown = 'Unknown',
 }
 
-export interface Item {
-  Type: string;
-  Id: string;
-  MaxStackCount: number;
-  Category: string;
-  Name: string;
-  MaxUpgrade?: number;
-  CanInfuse?: boolean;
-  Durability?: number;
-  Safe?: boolean;
-}
+/**
+ * Collection precedence for raw-id lookups.
+ *
+ * The nine covenant badges repeat their ring counterparts' ids, and a save
+ * holding one of those ids means the badge — so covenant_items must be
+ * indexed first. Previously this ordering lived in a hand-rolled WeakMap
+ * index; it now configures the shared ItemCatalog.
+ */
+const DS3_COLLECTION_ORDER = [
+  'covenant_items',
+  'weapon_items',
+  'ring_items',
+  'armor_items',
+  'consumable_items',
+  'magic_items',
+  'ore_items',
+  'key_items',
+  'ammunition_items',
+] as const;
 
-export interface ItemsDatabase {
-  weapon_items?: Item[];
-  armor_items?: Item[];
-  ring_items?: Item[];
-  magic_items?: Item[];
-  consumable_items?: Item[];
-  ore_items?: Item[];
-  key_items?: Item[];
-  ammunition_items?: Item[];
-  covenant_items?: Item[];
-}
+/** Sub-category strings that map straight onto a collection type. */
+const CATEGORY_TO_TYPE: Record<string, ItemCollectionType> = {
+  keys: ItemCollectionType.Key,
+  covenants: ItemCollectionType.Covenant,
+  ores: ItemCollectionType.Ore,
+  ammunition: ItemCollectionType.Ammunition,
+  rings: ItemCollectionType.Ring,
+  sorceries: ItemCollectionType.Magic,
+  miracles: ItemCollectionType.Magic,
+  pyromancies: ItemCollectionType.Magic,
+  helms: ItemCollectionType.Armor,
+  chests: ItemCollectionType.Armor,
+  gauntlets: ItemCollectionType.Armor,
+  leggings: ItemCollectionType.Armor,
+};
+
+/** Which catalogue collection backs each collection type. */
+export const COLLECTION_FOR_TYPE: Partial<Record<ItemCollectionType, string>> = {
+  [ItemCollectionType.Weapon]: 'weapon_items',
+  [ItemCollectionType.Armor]: 'armor_items',
+  [ItemCollectionType.Ring]: 'ring_items',
+  [ItemCollectionType.Consumable]: 'consumable_items',
+  [ItemCollectionType.Magic]: 'magic_items',
+  [ItemCollectionType.Ore]: 'ore_items',
+  [ItemCollectionType.Key]: 'key_items',
+  [ItemCollectionType.Ammunition]: 'ammunition_items',
+  [ItemCollectionType.Covenant]: 'covenant_items',
+};
+
+/** Collections used when the sub-category does not identify the type on its own. */
+const DS3_COLLECTION_TO_TYPE: Record<string, ItemCollectionType> = {
+  weapon_items: ItemCollectionType.Weapon,
+  consumable_items: ItemCollectionType.Consumable,
+  magic_items: ItemCollectionType.Magic,
+  ammunition_items: ItemCollectionType.Ammunition,
+};
 
 /**
- * DS3 Inventory Item
- * Structure: 16 bytes per item (based on Final.py and analysis)
- *
- * Bytes 0-2: Prefix/Unknown
- * Byte 3: Separator (0x80=Weapons, 0x90=Armor, 0xA0=Rings, 0xB0=Consumables)
- * Bytes 4-7: Item ID (4 bytes, little-endian)
- * Byte 8: Quantity (1 byte) OR
- * Bytes 8-10: Quantity (3 bytes for stackable items)
- * Bytes 11-15: Unknown/Additional data
+ * Classify a catalogue entry: sub-category first, then the collection it came
+ * from. The collection step replaces the old `collection.includes(entry)`
+ * identity checks and covers the same four cases they did.
  */
-// Module-level WeakMap: same ItemsDatabase object → same pre-built lookup Map.
-// Built once per DB load, reused across all DS3InventoryItem instances.
-// covenant_items first so covenant badges win over duplicate ring_items entries.
-const _dbItemMaps = new WeakMap<ItemsDatabase, Map<number, Item>>();
-function _getDbItemMap(db: ItemsDatabase): Map<number, Item> {
-  let map = _dbItemMaps.get(db);
-  if (map) return map;
-  map = new Map<number, Item>();
-  const arrays = [
-    db.covenant_items, db.weapon_items, db.ring_items, db.armor_items,
-    db.consumable_items, db.magic_items, db.ore_items, db.key_items, db.ammunition_items,
-  ];
-  for (const arr of arrays) {
-    if (!arr) continue;
-    for (const item of arr) {
-      const id = parseInt(item.Id.replace('0x', '').replace('0X', ''), 16);
-      if (!map.has(id)) map.set(id, item); // first writer wins
-    }
-  }
-  _dbItemMaps.set(db, map);
-  return map;
+function ds3CollectionType(item: Item): ItemCollectionType {
+  return (
+    CATEGORY_TO_TYPE[item.category.toLowerCase()] ??
+    DS3_COLLECTION_TO_TYPE[item.collection] ??
+    ItemCollectionType.Unknown
+  );
 }
 
 export class DS3InventoryItem {
-  private data: Uint8Array;
-  private itemsDatabase: ItemsDatabase | null;
+  private data: ByteView;
+  private catalog: ItemCatalog | null;
   public slotIndex: number;
 
   private _cachedBaseItemId: number | null = null;
 
-  constructor(data: Uint8Array, slotIndex: number, itemsDatabase: ItemsDatabase | null = null) {
-    this.data = new Uint8Array(16);
+  constructor(data: Uint8Array, slotIndex: number, catalog: ItemCatalog | null = null) {
+    this.data = new ByteView(16);
     if (data) {
       this.data.set(data.slice(0, 16));
     }
     this.slotIndex = slotIndex;
-    this.itemsDatabase = itemsDatabase;
+    this.catalog = catalog;
   }
 
   /**
-   * Separator byte (byte 3) - indicates item category
+   * Byte offsets of the 16-byte slot record.
+   * Bytes 0-2 mirror the low bytes of the item id (see updateItemIdPrefix);
+   * bytes 12-15 hold the signature counters.
    */
+  private static readonly FIELD = {
+    separator: 3,
+    itemId: 4,
+    quantity: 8,
+    counter12: 12,
+    counter13: 13,
+  } as const;
+
+  /** Separator byte — item category (0x80 weapons, 0x90 armour, 0xA0 rings, 0xB0 goods). */
   get separator(): number {
-    return this.data[3];
+    return this.data[DS3InventoryItem.FIELD.separator];
   }
 
   set separator(value: number) {
-    this.data[3] = value & 0xFF;
+    this.data[DS3InventoryItem.FIELD.separator] = value & 0xff;
   }
 
-  /**
-   * Item ID (bytes 4-7, little-endian)
-   */
   get itemId(): number {
-    return (
-      this.data[4] |
-      (this.data[5] << 8) |
-      (this.data[6] << 16) |
-      (this.data[7] << 24)
-    ) >>> 0; // Unsigned 32-bit
+    return this.data.readUInt(DS3InventoryItem.FIELD.itemId, 4);
   }
 
   set itemId(value: number) {
-    this.data[4] = value & 0xFF;
-    this.data[5] = (value >> 8) & 0xFF;
-    this.data[6] = (value >> 16) & 0xFF;
-    this.data[7] = (value >> 24) & 0xFF;
+    this.data.write(DS3InventoryItem.FIELD.itemId, 4, value);
   }
 
-  /**
-   * Quantity (bytes 8-11, little-endian uint32)
-   */
   get quantity(): number {
-    return (this.data[8] | (this.data[9] << 8) | (this.data[10] << 16) | (this.data[11] << 24)) >>> 0;
+    return this.data.readUInt(DS3InventoryItem.FIELD.quantity, 4);
   }
 
   set quantity(value: number) {
-    this.data[8]  = value & 0xFF;
-    this.data[9]  = (value >> 8) & 0xFF;
-    this.data[10] = (value >> 16) & 0xFF;
-    this.data[11] = (value >> 24) & 0xFF;
+    this.data.write(DS3InventoryItem.FIELD.quantity, 4, value);
   }
 
   /**
@@ -181,19 +193,19 @@ export class DS3InventoryItem {
    * Based on Final.py logic
    */
   get counterByte12(): number {
-    return this.data[12];
+    return this.data[DS3InventoryItem.FIELD.counter12];
   }
 
   set counterByte12(value: number) {
-    this.data[12] = value & 0xFF;
+    this.data[DS3InventoryItem.FIELD.counter12] = value & 0xff;
   }
 
   get counterByte13(): number {
-    return this.data[13];
+    return this.data[DS3InventoryItem.FIELD.counter13];
   }
 
   set counterByte13(value: number) {
-    this.data[13] = value & 0xFF;
+    this.data[DS3InventoryItem.FIELD.counter13] = value & 0xff;
   }
 
   /**
@@ -246,12 +258,16 @@ export class DS3InventoryItem {
 
   /**
    * Get upgrade level for weapons (0-15)
-   * Formula: byte0 = base_byte0 + (infusion * 100) + upgrade
-   * So: upgrade = (byte0 - base_byte0) % 100
+   * Formula: id = base_id + (infusion * 100) + upgrade
+   * So: upgrade = (id - base_id) % 100
+   *
+   * The subtraction is on the whole id, not on its lower half: for eight weapons
+   * (Caestus, Avelyn, Large Club, …) the modifier carries into the upper half,
+   * and masking it away used to read those back as a different item.
    */
   get upgradeLevel(): number {
     // Only weapons have upgrade levels (separator 0x80)
-    if (this.separator !== 0x80 || !this.itemsDatabase) {
+    if (this.separator !== 0x80 || !this.catalog) {
       return 0;
     }
 
@@ -260,11 +276,7 @@ export class DS3InventoryItem {
       return 0; // No upgrade/infusion
     }
 
-    const low16 = this.itemId & 0xFFFF;
-    const baseLow16 = baseId & 0xFFFF;
-    const modifier = (low16 - baseLow16 + 0x10000) & 0xFFFF;
-
-    return modifier % 100;
+    return (this.itemId - baseId) % 100;
   }
 
   /**
@@ -274,7 +286,7 @@ export class DS3InventoryItem {
    */
   get infusion(): ItemInfusion {
     // Only weapons have infusions (separator 0x80)
-    if (this.separator !== 0x80 || !this.itemsDatabase) {
+    if (this.separator !== 0x80 || !this.catalog) {
       return ItemInfusion.Standard;
     }
 
@@ -283,23 +295,24 @@ export class DS3InventoryItem {
       return ItemInfusion.Standard; // No upgrade/infusion
     }
 
-    const low16 = this.itemId & 0xFFFF;
-    const baseLow16 = baseId & 0xFFFF;
-    const modifier = (low16 - baseLow16 + 0x10000) & 0xFFFF;
-
-    return Math.floor(modifier / 100) as ItemInfusion;
+    return Math.floor((this.itemId - baseId) / 100) as ItemInfusion;
   }
 
   /**
    * Get base item ID (without upgrade modifiers)
-   * Formula: byte0 = base_byte0 + (infusion * 100) + upgrade
+   * Formula: id = base_id + (infusion * 100) + upgrade, so the stored id sits at
+   * most 15*100 + 10 = 1510 above the base weapon's id.
    *
-   * For weapons, bytes 1-3 stay the same, only byte0 changes with upgrades/infusions.
-   * So we search for a weapon with matching bytes 1-3 in the database.
+   * The comparison runs on the whole id. Matching on the lower half alone missed
+   * the eight weapons whose modifier carries into the upper half (Caestus at
+   * 0xA7FFD0 becomes 0xA805AC when Hollow), which then read back as "Unknown".
+   * Real weapons are 10000 apart, so the 1510 window still picks out exactly one
+   * base; where several candidates fit (the cut "transparent" set is spaced 100
+   * apart) the nearest one below wins.
    */
   get baseItemId(): number {
     // Only weapons need ID cleaning (separator 0x80)
-    if (this.separator !== 0x80 || !this.itemsDatabase) {
+    if (this.separator !== 0x80 || !this.catalog) {
       return this.itemId;
     }
 
@@ -308,20 +321,17 @@ export class DS3InventoryItem {
       return this._cachedBaseItemId;
     }
 
-    const allWeapons = this.itemsDatabase.weapon_items || [];
-    const high16 = (this.itemId >>> 16) & 0xFFFF;
-    const low16 = this.itemId & 0xFFFF;
+    const allWeapons = this.catalog.byCollection('weapon_items');
+    const id = this.itemId;
 
-    // Search for weapon where upper 16 bits match and modifier (low16 diff) is within valid range (0-1510)
-    // Weapons in same category are spaced ~10000 apart so modifier <= 1510 uniquely identifies the base weapon
-    const found = allWeapons.find(w => {
-      const dbId = this.parseHex(w.Id);
-      if (((dbId >>> 16) & 0xFFFF) !== high16) return false;
-      const modifier = (low16 - (dbId & 0xFFFF) + 0x10000) & 0xFFFF;
-      return modifier <= 1510;
-    });
+    let best = -1;
+    for (const w of allWeapons) {
+      const modifier = id - w.rawId;
+      if (modifier < 0 || modifier > 1510) continue;
+      if (w.rawId > best) best = w.rawId;
+    }
 
-    const result = found ? this.parseHex(found.Id) : this.itemId;
+    const result = best >= 0 ? best : id;
     this._cachedBaseItemId = result;
     return result;
   }
@@ -329,10 +339,16 @@ export class DS3InventoryItem {
   /**
    * Get item info from database — O(1) via module-level WeakMap lookup
    */
+  /**
+   * The catalogue entry for this slot.
+   *
+   * A save stores the id without any `Type`, so resolution goes through the
+   * raw-id index, where DS3_COLLECTION_ORDER makes covenant badges win over
+   * the ring entries that share their ids.
+   */
   get itemInfo(): Item | null {
-    if (this.isEmpty || !this.itemsDatabase) return null;
-    const map = _getDbItemMap(this.itemsDatabase);
-    return map.get(this.baseItemId) ?? map.get(this.itemId) ?? null;
+    if (this.isEmpty || !this.catalog) return null;
+    return this.catalog.byRawId(this.baseItemId) ?? this.catalog.byRawId(this.itemId);
   }
 
   /**
@@ -343,37 +359,16 @@ export class DS3InventoryItem {
     if (!info) {
       return `Unknown (ID:0x${this.itemId.toString(16).toUpperCase()}, Sep:0x${this.separator.toString(16).toUpperCase()})`;
     }
-    return info.Name;
+    return info.displayName;
   }
 
   /**
    * Get collection type — O(1) via category string on the looked-up item
    */
   get collectionType(): ItemCollectionType {
-    const info = this.itemInfo;
-    if (!info) return ItemCollectionType.Unknown;
-
-    const category = info.Category?.toLowerCase();
-    if (category === 'keys') return ItemCollectionType.Key;
-    if (category === 'covenants') return ItemCollectionType.Covenant;
-    if (category === 'ores') return ItemCollectionType.Ore;
-    if (category === 'ammunition') return ItemCollectionType.Ammunition;
-    if (category === 'rings') return ItemCollectionType.Ring;
-    if (category === 'sorceries' || category === 'miracles' || category === 'pyromancies') return ItemCollectionType.Magic;
-    if (category === 'helms' || category === 'chests' || category === 'gauntlets' || category === 'leggings') return ItemCollectionType.Armor;
-
-    // Fallback for weapon/consumable/etc. categories not explicitly listed above
-    const db = this.itemsDatabase;
-    if (db?.weapon_items?.includes(info)) return ItemCollectionType.Weapon;
-    if (db?.consumable_items?.includes(info)) return ItemCollectionType.Consumable;
-    if (db?.magic_items?.includes(info)) return ItemCollectionType.Magic;
-    if (db?.ammunition_items?.includes(info)) return ItemCollectionType.Ammunition;
-
-    return ItemCollectionType.Unknown;
-  }
-
-  private parseHex(hex: string): number {
-    return parseInt(hex.replace('0x', '').replace('0X', ''), 16);
+    const item = this.itemInfo;
+    if (!item) return ItemCollectionType.Unknown;
+    return ds3CollectionType(item);
   }
 
   getRawData(): Uint8Array {
@@ -387,7 +382,7 @@ export class DS3InventoryItem {
  */
 export class DS3Inventory {
   private character: DS3Character;
-  private itemsDatabase: ItemsDatabase | null = null;
+  private catalog: ItemCatalog | null = null;
 
   private static readonly ITEM_SIZE = 16;
   // Key items live in a separate section immediately after the regular inventory
@@ -404,35 +399,19 @@ export class DS3Inventory {
    * Load items database from JSON
    */
   async loadItemsDatabase(): Promise<void> {
-    const isElectron = typeof window !== 'undefined' && window.location.protocol === 'file:';
-
-    const paths = isElectron
-      ? ['./json/ds3_items.json', '/json/ds3_items.json']
-      : ['/json/ds3_items.json', './json/ds3_items.json'];
-
-    let lastError: Error | null = null;
-
-    for (const jsonPath of paths) {
-      try {
-        const response = await fetch(jsonPath);
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        this.itemsDatabase = await response.json();
-        console.log('[DS3 Inventory] Items database loaded successfully');
-        return;
-      } catch (error) {
-        lastError = error instanceof Error ? error : new Error(String(error));
-        console.warn(`Failed to load DS3 items database from ${jsonPath}:`, lastError);
-      }
+    try {
+      const raw = await fetchItemDatabase('ds3_items.json');
+      this.catalog = ItemCatalog.from(raw, { collectionOrder: DS3_COLLECTION_ORDER });
+      console.log('[DS3 Inventory] Items database loaded successfully');
+    } catch (error) {
+      console.error('Could not load DS3 items database:', error);
+      throw new Error('Could not load DS3 items database. Please ensure ds3_items.json is available.');
     }
-
-    console.error('Could not load DS3 items database from any path:', lastError);
-    throw new Error('Could not load DS3 items database. Please ensure ds3_items.json is available.');
   }
 
-  getItemsDatabase(): ItemsDatabase | null {
-    return this.itemsDatabase;
+  /** Indexed catalogue used for all id lookups. */
+  getCatalog(): ItemCatalog {
+    return this.catalog ?? ItemCatalog.empty();
   }
 
   /**
@@ -786,7 +765,7 @@ export class DS3Inventory {
     for (let i = 0; i < DS3Inventory.REGULAR_SLOTS; i++) {
       const offset = inventoryStart + i * DS3Inventory.ITEM_SIZE;
       if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
-      const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.itemsDatabase);
+      const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.catalog);
       if (!item.isEmpty) items.push(item);
     }
 
@@ -795,7 +774,7 @@ export class DS3Inventory {
     for (let i = 0; i < keyCount; i++) {
       const offset = inventoryStart + DS3Inventory.KEY_SECTION_OFFSET + 4 + i * DS3Inventory.ITEM_SIZE;
       if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
-      const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), DS3Inventory.KEY_SLOT_BASE + i, this.itemsDatabase);
+      const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), DS3Inventory.KEY_SLOT_BASE + i, this.catalog);
       if (!item.isEmpty) items.push(item);
     }
 
@@ -818,7 +797,7 @@ export class DS3Inventory {
     if (offset < 0 || offset + DS3Inventory.ITEM_SIZE > data.length) {
       throw new Error('Slot index out of range');
     }
-    return new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), slotIndex, this.itemsDatabase);
+    return new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), slotIndex, this.catalog);
   }
 
   /**
@@ -833,26 +812,36 @@ export class DS3Inventory {
     data.set(item.getRawData(), offset);
   }
 
+  /** True when the regular slot holds no item (byte 3 is the category separator). */
+  private isSlotEmpty(data: Uint8Array, slotIndex: number): boolean {
+    const off = this.getInventoryStartOffset() + slotIndex * DS3Inventory.ITEM_SIZE;
+    if (off + DS3Inventory.ITEM_SIZE > data.length) return false;
+    return data[off + 3] === 0x00;
+  }
+
   /**
-   * Find next available slot (2 consecutive empty slots) in the regular inventory.
-   * Reads bytes directly to avoid one GA scan per slot.
+   * Find the next free slot (2 consecutive empty ones) in the regular inventory,
+   * starting the scan at `from`. Reads bytes directly to avoid one GA scan per slot.
+   *
+   * Returns -1 when there is no room: writing into slot 0 as a fallback used to
+   * overwrite whatever the character was already carrying.
    */
-  findNextAvailableSlot(): number {
+  findNextAvailableSlot(from = 0): number {
     const data = this.character.getRawData();
     const invStart = this.getInventoryStartOffset();
-    for (let i = 0; i < DS3Inventory.REGULAR_SLOTS - 1; i++) {
+    for (let i = Math.max(0, from); i < DS3Inventory.REGULAR_SLOTS - 1; i++) {
       const off1 = invStart + i * DS3Inventory.ITEM_SIZE;
       const off2 = off1 + DS3Inventory.ITEM_SIZE;
       if (off2 + DS3Inventory.ITEM_SIZE <= data.length && data[off1 + 3] === 0x00 && data[off2 + 3] === 0x00) return i;
     }
-    return 0;
+    return -1;
   }
 
   /**
    * Find existing item in inventory (regular + key section)
    */
   findExistingItem(itemInfo: Item): DS3InventoryItem | null {
-    const baseId = this.parseHex(itemInfo.Id);
+    const baseId = itemInfo.rawId;
     const collectionType = this.getCollectionTypeFromItem(itemInfo);
     let expectedSeparator = 0xB0;
     if (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Ammunition) expectedSeparator = 0x80;
@@ -879,11 +868,11 @@ export class DS3Inventory {
       collectionType !== ItemCollectionType.Weapon &&
       collectionType !== ItemCollectionType.Armor &&
       collectionType !== ItemCollectionType.Ring &&
-      itemInfo.MaxStackCount > 1
+      itemInfo.stackMax > 1
     ) {
       const existing = this.findExistingItem(itemInfo);
       if (existing) {
-        const newQuantity = Math.min(existing.quantity + quantity, itemInfo.MaxStackCount);
+        const newQuantity = Math.min(existing.quantity + quantity, itemInfo.stackMax);
         existing.quantity = newQuantity;
         this.writeSlot(existing.slotIndex, existing);
         return existing.slotIndex;
@@ -903,33 +892,29 @@ export class DS3Inventory {
         console.warn(`[DS3 Inventory] Invalid target slot ${targetSlot}`);
         return null;
       }
+      // Never write over an item that is already there: the slot the caller asks
+      // for may have filled up since it was picked, and overwriting it loses the
+      // item along with the equipment reference pointing at it.
+      if (!this.isSlotEmpty(this.character.getRawData(), targetSlot)) {
+        console.warn(`[DS3 Inventory] Target slot ${targetSlot} is occupied`);
+        return null;
+      }
       insertIndex = targetSlot;
     } else {
-      const rawData = this.character.getRawData();
-      const invStart = this.getInventoryStartOffset();
-      for (let i = 0; i < DS3Inventory.REGULAR_SLOTS - 1; i++) {
-        const off1 = invStart + i * DS3Inventory.ITEM_SIZE;
-        const off2 = off1 + DS3Inventory.ITEM_SIZE;
-        if (off2 + DS3Inventory.ITEM_SIZE <= rawData.length && rawData[off1 + 3] === 0x00 && rawData[off2 + 3] === 0x00) {
-          insertIndex = i;
-          break;
-        }
-      }
+      insertIndex = this.findNextAvailableSlot();
       if (insertIndex === -1) {
         console.warn('[DS3 Inventory] Could not find 2 consecutive empty slots');
         return null;
       }
     }
-    let finalItemId = this.parseHex(itemInfo.Id);
+    let finalItemId = itemInfo.rawId;
 
-    // For weapons, apply upgrade and infusion to lower 16 bits
-    // Formula: low16 = base_low16 + (infusion * 100) + upgrade
+    // For weapons, apply upgrade and infusion: id = base_id + (infusion * 100) + upgrade.
+    // Added to the whole id, so weapons sitting near a 0x10000 boundary (Caestus,
+    // Avelyn, Large Club, …) carry into the upper half instead of wrapping into
+    // some other weapon's id.
     if (collectionType === ItemCollectionType.Weapon && (upgradeLevel > 0 || infusion > 0)) {
-      const low16 = finalItemId & 0xFFFF;
-      const high16 = (finalItemId >>> 16) & 0xFFFF;
-      const modifier = (infusion * 100) + upgradeLevel;
-      const newLow16 = (low16 + modifier) & 0xFFFF;
-      finalItemId = ((high16 << 16) | newLow16) >>> 0;
+      finalItemId = (finalItemId + (infusion * 100) + upgradeLevel) >>> 0;
     }
 
     // Determine separator based on category
@@ -943,8 +928,11 @@ export class DS3Inventory {
     // For weapons/armor/ammunition, write GA entry first (modifies raw data; inventory offset shifts after)
     let gaHighest = 0;
     if (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Armor || collectionType === ItemCollectionType.Ammunition) {
+      // The catalogue reports 0 when an entry carries no durability, which is
+      // every DS3 weapon and armour piece — the game expects the per-type
+      // default there, not zero. `??` would not fire on 0.
       const durability = collectionType === ItemCollectionType.Ammunition ? 0
-        : (itemInfo.Durability ?? (collectionType === ItemCollectionType.Weapon ? 75 : 360));
+        : (itemInfo.durability || (collectionType === ItemCollectionType.Weapon ? 75 : 360));
       gaHighest = this.addGAEntry(finalItemId, collectionType, durability);
     }
 
@@ -973,7 +961,7 @@ export class DS3Inventory {
     }
 
     // Bytes 8-11: Quantity (uint32, little-endian)
-    const clampedQty = Math.min(quantity, itemInfo.MaxStackCount);
+    const clampedQty = Math.min(quantity, itemInfo.stackMax);
     newItemData[8]  = clampedQty & 0xFF;
     newItemData[9]  = (clampedQty >> 8) & 0xFF;
     newItemData[10] = (clampedQty >> 16) & 0xFF;
@@ -1010,12 +998,12 @@ export class DS3Inventory {
       }
     }
 
-    console.log(`[DS3 Add Item] Adding ${itemInfo.Name} to slot ${insertIndex}`);
+    console.log(`[DS3 Add Item] Adding ${itemInfo.name} to slot ${insertIndex}`);
     console.log(`  Item ID: 0x${finalItemId.toString(16).toUpperCase()}`);
     console.log(`  Full bytes: ${Array.from(newItemData).map(b => '0x' + b.toString(16).toUpperCase().padStart(2, '0')).join(' ')}`);
 
     // Write the new item
-    const newItem = new DS3InventoryItem(newItemData, insertIndex, this.itemsDatabase);
+    const newItem = new DS3InventoryItem(newItemData, insertIndex, this.catalog);
     this.writeSlot(insertIndex, newItem);
 
     // Keep counter2 (pattern+35300) >= newIndex so the game accepts the item on load.
@@ -1069,7 +1057,7 @@ export class DS3Inventory {
     for (let i = 0; i < maxSlots; i++) {
       const offset = storageStart + i * DS3Inventory.ITEM_SIZE;
       if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
-      const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.itemsDatabase);
+      const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.catalog);
       if (!item.isEmpty) items.push(item);
     }
     return items;
@@ -1101,14 +1089,14 @@ export class DS3Inventory {
       if (storageStart < 0) return false;
 
       const clampedQty = Math.min(600, Math.max(0, quantity));
-      const baseId = this.parseHex(itemInfo.Id);
+      const baseId = itemInfo.rawId;
       const maxSlots = Math.floor(Math.min(0x7800, data.length - storageStart) / DS3Inventory.ITEM_SIZE);
 
       // Try to find existing slot for this item
       for (let i = 0; i < maxSlots; i++) {
         const offset = storageStart + i * DS3Inventory.ITEM_SIZE;
         if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
-        const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.itemsDatabase);
+        const item = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.catalog);
         if (!item.isEmpty && item.baseItemId === baseId) {
           if (clampedQty === 0) {
             // Remove from storage
@@ -1133,7 +1121,7 @@ export class DS3Inventory {
       for (let i = 0; i < maxSlots; i++) {
         const offset = storageStart + i * DS3Inventory.ITEM_SIZE;
         if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
-        const slot = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.itemsDatabase);
+        const slot = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.catalog);
         if (slot.isEmpty) {
           const newSlot = new Uint8Array(16);
           newSlot[0] = baseId & 0xFF;
@@ -1176,11 +1164,9 @@ export class DS3Inventory {
     // Update upgrade/infusion for weapons
     if (raw[3] === 0x80) {
       const baseId = item.baseItemId;
-      const modifier = (infusion * 100) + upgradeLevel;
-      const baseLow16 = baseId & 0xFFFF;
-      const baseHigh16 = (baseId >>> 16) & 0xFFFF;
-      const newLow16 = (baseLow16 + modifier) & 0xFFFF;
-      const finalItemId = ((baseHigh16 << 16) | newLow16) >>> 0;
+      // Whole-id arithmetic, same reason as in addItem: masking the lower half
+      // turned an infused Caestus into a different item entirely.
+      const finalItemId = (baseId + (infusion * 100) + upgradeLevel) >>> 0;
       raw[4] = finalItemId & 0xFF;
       raw[5] = (finalItemId >> 8) & 0xFF;
       raw[6] = (finalItemId >> 16) & 0xFF;
@@ -1192,7 +1178,7 @@ export class DS3Inventory {
       this.updateGAEntryItemId(gaHighest, finalItemId);
     }
 
-    this.writeSlot(slotIndex, new DS3InventoryItem(raw, slotIndex, this.itemsDatabase));
+    this.writeSlot(slotIndex, new DS3InventoryItem(raw, slotIndex, this.catalog));
   }
 
   /**
@@ -1233,7 +1219,9 @@ export class DS3Inventory {
    */
   getWeaponLevel(item: DS3InventoryItem): number {
     if (item.separator !== 0x80) return 0;
-    const maxUp = item.itemInfo?.MaxUpgrade ?? 10;
+    // `?? 10` fires only when the item is unknown to the catalogue; a real
+    // MaxUpgrade of 0 (Dark Hand) means "cannot be upgraded" and must stay 0.
+    const maxUp = item.itemInfo?.maxUpgrade ?? 10;
     return item.upgradeLevel * (maxUp === 5 ? 2 : 1);
   }
 
@@ -1256,27 +1244,18 @@ export class DS3Inventory {
   }
 
   addAllItems(collectionType: ItemCollectionType, targetWL = 0): void {
-    if (!this.itemsDatabase) return;
-    const map: Record<string, Item[] | undefined> = {
-      [ItemCollectionType.Weapon]:      this.itemsDatabase.weapon_items,
-      [ItemCollectionType.Armor]:       this.itemsDatabase.armor_items,
-      [ItemCollectionType.Ring]:        this.itemsDatabase.ring_items,
-      [ItemCollectionType.Consumable]:  this.itemsDatabase.consumable_items,
-      [ItemCollectionType.Magic]:       this.itemsDatabase.magic_items,
-      [ItemCollectionType.Ore]:         this.itemsDatabase.ore_items,
-      [ItemCollectionType.Key]:         this.itemsDatabase.key_items,
-      [ItemCollectionType.Ammunition]:  this.itemsDatabase.ammunition_items,
-      [ItemCollectionType.Covenant]:    this.itemsDatabase.covenant_items,
-    };
+    const catalog = this.getCatalog();
+    if (catalog.isEmpty) return;
 
     // Build covenant ID set to exclude covenant badges from ring_items (they share IDs)
     const covenantIds = new Set(
-      (this.itemsDatabase.covenant_items || []).map(i => this.parseHex(i.Id))
+      catalog.byCollection('covenant_items').map(i => i.rawId)
     );
 
-    const items = (map[collectionType] || []).filter(item => {
-      if (item.Safe === false) return false;
-      const id = this.parseHex(item.Id);
+    const collection = COLLECTION_FOR_TYPE[collectionType];
+    const items = (collection ? catalog.byCollection(collection) : []).filter(item => {
+      if (!item.safe) return false;
+      const id = item.rawId;
       // Estus Flask (0x40000096–0x400000AB) and Ashen Estus Flask (0x400000BE–0x400000D3)
       if (id >= 0x40000096 && id <= 0x400000AB) return false;
       if (id >= 0x400000BE && id <= 0x400000D3) return false;
@@ -1286,18 +1265,20 @@ export class DS3Inventory {
     });
 
     if (collectionType === ItemCollectionType.Weapon) {
-      // Pre-find the first available slot pair and track it to avoid O(slots)
-      // scan inside addItem on every iteration.
+      // Walk the free slots instead of rescanning from 0 every time: the scan
+      // resumes right after the slot just filled, so occupied slots further on
+      // are skipped rather than written over.
       let nextSlot = this.findNextAvailableSlot();
       for (const item of items) {
+        if (nextSlot === -1) break;
         try {
-          const maxUp = item.MaxUpgrade ?? 10;
+          const maxUp = item.maxUpgrade;
           // Unique weapons (MaxUpgrade=5) count x2 per upgrade level.
           const upgradeLevel = maxUp === 5
             ? Math.min(Math.floor(targetWL / 2), 5)
             : Math.min(targetWL, maxUp);
           const slotUsed = this.addItem(item, 1, upgradeLevel, 0, nextSlot);
-          if (slotUsed !== null) nextSlot = slotUsed + 1;
+          nextSlot = this.findNextAvailableSlot(slotUsed === null ? nextSlot + 1 : slotUsed + 1);
         } catch {
           // skip if no space
         }
@@ -1305,9 +1286,10 @@ export class DS3Inventory {
     } else if (collectionType === ItemCollectionType.Armor) {
       let nextSlot = this.findNextAvailableSlot();
       for (const item of items) {
+        if (nextSlot === -1) break;
         try {
           const slotUsed = this.addItem(item, 1, 0, 0, nextSlot);
-          if (slotUsed !== null) nextSlot = slotUsed + 1;
+          nextSlot = this.findNextAvailableSlot(slotUsed === null ? nextSlot + 1 : slotUsed + 1);
         } catch {
           // skip if no space
         }
@@ -1316,9 +1298,10 @@ export class DS3Inventory {
       // Ammunition creates GA entries (like weapons) so track slots to avoid O(n²) scans.
       let nextSlot = this.findNextAvailableSlot();
       for (const item of items) {
+        if (nextSlot === -1) break;
         try {
-          const slotUsed = this.addItem(item, item.MaxStackCount, 0, 0, nextSlot);
-          if (slotUsed !== null) nextSlot = slotUsed + 1;
+          const slotUsed = this.addItem(item, item.stackMax, 0, 0, nextSlot);
+          nextSlot = this.findNextAvailableSlot(slotUsed === null ? nextSlot + 1 : slotUsed + 1);
         } catch {
           // skip if no space
         }
@@ -1327,9 +1310,9 @@ export class DS3Inventory {
       for (const item of items) {
         try {
           // Add max quantity to inventory
-          this.addItem(item, item.MaxStackCount);
+          this.addItem(item, item.stackMax);
           // Also fill storage box (bottomless box) to 600 for stackable items
-          if (item.MaxStackCount > 1) {
+          if (item.stackMax > 1) {
             this.setStorageQuantity(item, 600);
           }
         } catch {
@@ -1341,7 +1324,7 @@ export class DS3Inventory {
 
   clearAllItems(collectionType: ItemCollectionType): void {
     for (const item of this.getItemsByType(collectionType)) {
-      if (item.itemInfo?.Safe === false) continue;
+      if (item.itemInfo?.safe === false) continue;
       this.deleteItem(item.slotIndex);
     }
   }
@@ -1361,7 +1344,7 @@ export class DS3Inventory {
     const existing = this.findExistingItem(itemInfo);
     if (existing) return existing.slotIndex;
 
-    const finalItemId = this.parseHex(itemInfo.Id);
+    const finalItemId = itemInfo.rawId;
     const newSlot = new Uint8Array(16);
     newSlot[0] = finalItemId & 0xFF;
     newSlot[1] = (finalItemId >> 8) & 0xFF;
@@ -1376,11 +1359,11 @@ export class DS3Inventory {
     newSlot[14] = 0xEE; newSlot[15] = 0x02;
 
     const slotIndex = DS3Inventory.KEY_SLOT_BASE + currentCount;
-    const newItem = new DS3InventoryItem(newSlot, slotIndex, this.itemsDatabase);
+    const newItem = new DS3InventoryItem(newSlot, slotIndex, this.catalog);
     this.writeSlot(slotIndex, newItem);
     this.setKeyItemCount(data, currentCount + 1);
 
-    console.log(`[DS3 Key] Added ${itemInfo.Name} to key slot ${currentCount}`);
+    console.log(`[DS3 Key] Added ${itemInfo.name} to key slot ${currentCount}`);
     return slotIndex;
   }
 
@@ -1388,7 +1371,7 @@ export class DS3Inventory {
    * Delete item from slot (regular or key section)
    */
   deleteItem(slotIndex: number): void {
-    const emptyItem = new DS3InventoryItem(new Uint8Array(16).fill(0x00), slotIndex, this.itemsDatabase);
+    const emptyItem = new DS3InventoryItem(new Uint8Array(16).fill(0x00), slotIndex, this.catalog);
     this.writeSlot(slotIndex, emptyItem);
     // For key items: decrement count and compact
     if (slotIndex >= DS3Inventory.KEY_SLOT_BASE) {
@@ -1409,23 +1392,18 @@ export class DS3Inventory {
     }
   }
 
-  private parseHex(hex: string): number {
-    return parseInt(hex.replace('0x', '').replace('0X', ''), 16);
-  }
-
+  /**
+   * Classify a catalogue entry by value rather than by object identity.
+   *
+   * Uses the composite key here — the caller hands over the full entry, so
+   * `Type` is available and tells a ring apart from the covenant badge that
+   * shares its id. Slot-side lookups have only the id and fall back to
+   * `byRawId`, where covenant precedence applies.
+   */
   private getCollectionTypeFromItem(item: Item): ItemCollectionType {
-    if (!this.itemsDatabase) return ItemCollectionType.Unknown;
-
-    if (this.itemsDatabase.weapon_items?.includes(item)) return ItemCollectionType.Weapon;
-    if (this.itemsDatabase.covenant_items?.includes(item)) return ItemCollectionType.Covenant;
-    if (this.itemsDatabase.ring_items?.includes(item)) return ItemCollectionType.Ring;
-    if (this.itemsDatabase.armor_items?.includes(item)) return ItemCollectionType.Armor;
-    if (this.itemsDatabase.consumable_items?.includes(item)) return ItemCollectionType.Consumable;
-    if (this.itemsDatabase.magic_items?.includes(item)) return ItemCollectionType.Magic;
-    if (this.itemsDatabase.ore_items?.includes(item)) return ItemCollectionType.Ore;
-    if (this.itemsDatabase.key_items?.includes(item)) return ItemCollectionType.Key;
-    if (this.itemsDatabase.ammunition_items?.includes(item)) return ItemCollectionType.Ammunition;
-
-    return ItemCollectionType.Unknown;
+    const key = item.key;
+    const found = this.getCatalog().byKey(key);
+    if (!found) return ItemCollectionType.Unknown;
+    return ds3CollectionType(found);
   }
 }

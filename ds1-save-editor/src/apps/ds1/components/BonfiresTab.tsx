@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Character } from '../lib/Character';
+import { Character, BONFIRE_BIT_INDICES } from '../lib/Character';
 import { useLang } from '../../../core/context/LanguageContext';
 import { t } from '../lib/i18n';
 
@@ -30,7 +30,7 @@ const BONFIRE_NAMES: Record<Lang, string[]> = {
 };
 
 // Map from display index (0-20) to bit index (3, 4-23)
-const BIT_INDICES = [3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+const BIT_INDICES = BONFIRE_BIT_INDICES;
 
 // Warp bits in +0x6B (bits 0-2) that are set together with the +0xAE flag
 const WARP_BIT_INDICES = [0, 1, 2];

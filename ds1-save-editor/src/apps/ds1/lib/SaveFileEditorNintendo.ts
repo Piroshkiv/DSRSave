@@ -1,5 +1,5 @@
 import { Character } from './Character';
-import { toArrayBuffer } from './bufferUtils';
+import { toArrayBuffer } from '../../../shared/binary';
 import { getFileSystemAdapter, FileHandle } from './adapters';
 
 // Nintendo Switch constants

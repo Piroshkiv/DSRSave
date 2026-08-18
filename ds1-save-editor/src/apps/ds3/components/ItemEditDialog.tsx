@@ -26,12 +26,12 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   const [infusion, setInfusion] = useState<ItemInfusion>(item.infusion);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
 
-  const maxUpgrade = itemInfo?.MaxUpgrade ?? 0;
+  const maxUpgrade = itemInfo?.maxUpgrade ?? 0;
   const canUpgrade = item.collectionType === ItemCollectionType.Weapon && maxUpgrade > 0;
   const canInfuse = item.collectionType === ItemCollectionType.Weapon && (
-    safeMode ? (itemInfo?.CanInfuse === true) : true
+    safeMode ? (itemInfo?.canInfuse === true) : true
   );
-  const canStack = (itemInfo?.MaxStackCount ?? 1) > 1;
+  const canStack = (itemInfo?.stackMax ?? 1) > 1;
 
   // Recalculate safe upgrade max when infusion changes
   const effectiveMaxUpgrade = (() => {
@@ -72,7 +72,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
 
   const handleUpdate = () => {
     try {
-      const clampedQty = Math.min(quantity, itemInfo?.MaxStackCount ?? 1);
+      const clampedQty = Math.min(quantity, itemInfo?.stackMax ?? 1);
       inventory.editItem(item.slotIndex, clampedQty, upgradeLevel, infusion);
       if (canStack && itemInfo) {
         inventory.setStorageQuantity(itemInfo, storageQty);
@@ -100,12 +100,12 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
           {canStack && (
             <>
               <div className="form-group">
-                <label>Quantity (max: {itemInfo!.MaxStackCount})</label>
+                <label>Quantity (max: {itemInfo!.stackMax})</label>
                 <NumberInput
                   value={quantity}
                   onChange={setQuantity}
                   min={1}
-                  max={itemInfo!.MaxStackCount}
+                  max={itemInfo!.stackMax}
                 />
               </div>
               <div className="form-group">

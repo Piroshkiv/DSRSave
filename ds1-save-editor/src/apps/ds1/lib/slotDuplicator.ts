@@ -2,6 +2,53 @@ import { Character } from './Character';
 import { SaveFileEditor } from './SaveFileEditor';
 
 /**
+ * The slice of an editor a slot import needs.
+ * Structural so the Nintendo and PS4 editors qualify without inheriting.
+ */
+export interface SlotEditor {
+  getCharacters(): Character[];
+}
+
+/** Load screen entry (name, level, class shown on the load menu) per slot. */
+const LOAD_SCREEN_BASE = 0xC0;
+const LOAD_SCREEN_SIZE = 400;
+
+/**
+ * Occupied flags, one byte per slot (0 = empty, 1 = occupied).
+ *
+ * These ten bytes sit *inside* slot 0's load screen block (0xC0..0x24F), so any
+ * write of that block carries the flag array of all ten slots with it. Verified
+ * on a real save: slots 0-5 populated reads `01 01 01 01 01 01 00 00 00 00`.
+ */
+const OCCUPIED_FLAG_BASE = 0xC4;
+const SLOT_COUNT = 10;
+
+/** Snapshot the occupied flags so a load screen write cannot take them along. */
+function readOccupiedFlags(metadata: Character): number[] {
+  return Array.from({ length: SLOT_COUNT }, (_, i) => metadata.getByte(OCCUPIED_FLAG_BASE + i));
+}
+
+function writeOccupiedFlags(metadata: Character, flags: number[]): void {
+  flags.forEach((value, i) => metadata.setByte(OCCUPIED_FLAG_BASE + i, value));
+}
+
+/**
+ * Copy one slot's 400-byte load screen entry, leaving every slot's occupied
+ * flag as it was in the destination.
+ */
+function writeLoadScreenBlock(metadata: Character, destSlot: number, block: Uint8Array): void {
+  const flags = readOccupiedFlags(metadata);
+  const patternTo = LOAD_SCREEN_BASE + LOAD_SCREEN_SIZE * destSlot;
+  const raw = metadata.getRawData();
+
+  for (let i = 0; i < LOAD_SCREEN_SIZE && (patternTo + i) < raw.length; i++) {
+    metadata.setByte(patternTo + i, block[i]);
+  }
+
+  writeOccupiedFlags(metadata, flags);
+}
+
+/**
  * Export a character slot to a binary file
  *
  * @param character Character to export
@@ -39,7 +86,7 @@ export function downloadSlot(character: Character): void {
  * @param destSlot Destination slot number (0-9)
  */
 export function importSlotFromBinary(
-  destEditor: SaveFileEditor,
+  destEditor: SlotEditor,
   slotData: Uint8Array,
   destSlot: number
 ): void {
@@ -58,11 +105,11 @@ export function importSlotFromBinary(
     destChars[destCharIndex] = newChar;
   }
 
-  // Set flag that slot is not empty (0 = empty, 1 = not empty)
-  // Only update the occupied flag, NOT the 400 byte load screen metadata
   const destMetadata = destChars[10];
   if (destMetadata) {
-    destMetadata.setByte(0xC4 + destSlot, 1);
+    // Only the occupied flag: the load screen entry is cosmetic and the game
+    // rewrites it. (0 = empty, 1 = occupied)
+    destMetadata.setByte(OCCUPIED_FLAG_BASE + destSlot, 1);
   }
 }
 
@@ -120,18 +167,14 @@ export function copyCharacterSlot(
   const destMetadata = destChars[10];
 
   if (sourceMetadata && destMetadata) {
-    const destMetadataRaw = destMetadata.getRawData();
+    const patternFrom = LOAD_SCREEN_BASE + LOAD_SCREEN_SIZE * sourceSlot;
+    const block = sourceMetadata.getRawData().slice(patternFrom, patternFrom + LOAD_SCREEN_SIZE);
 
-    const patternTo = 0xC0 + 400 * destSlot;
-    const patternFrom = 0xC0 + 400 * sourceSlot;
-
-    // Copy 400 bytes of load screen data
-    for (let i = 0; i < 400 && (patternTo + i) < destMetadataRaw.length; i++) {
-      destMetadata.setByte(patternTo + i, sourceMetadata.getByte(patternFrom + i));
-    }
+    // Copy 400 bytes of load screen data, keeping the destination's own flags
+    writeLoadScreenBlock(destMetadata, destSlot, block);
 
     // Step 3: Set flag that slot is not empty (0 = empty, 1 = not empty)
-    destMetadata.setByte(0xC4 + destSlot, 1);
+    destMetadata.setByte(OCCUPIED_FLAG_BASE + destSlot, 1);
   }
 }
 

@@ -1,4 +1,10 @@
-import { CHARACTER_PATTERN } from './constants';
+import {
+  CHARACTER_PATTERN,
+  STEAMID_PATTERN,
+  STEAMID_PATTERN_TO_ID,
+  STEAMID_SLOT_PTR_OFFSET,
+  STEAMID_PTR_TO_ID,
+} from './constants';
 
 export interface OffsetPattern {
   id: string;
@@ -47,6 +53,41 @@ function findInventoryStart(data: Uint8Array): number | null {
   return inventoryStart;
 }
 
+/**
+ * Offset of the slot's SteamID64 (8 bytes LE), or null when the slot has none.
+ *
+ * Two independent locators, both verified on 23 populated slots across 5 saves
+ * and 2 accounts — see the STEAM ID block in constants.ts:
+ *
+ *   1. the pointer at 0x58, which is O(1) and is what SaveMerge uses;
+ *   2. STEAMID_PATTERN, unique per slot, used to confirm the pointer and as a
+ *      fallback when it doesn't land on an ID (foreign or hand-edited saves).
+ *
+ * A pattern hit alone is enough to accept an address: `01 00 10 01` at +4 is
+ * the SteamID64 prefix itself, so a match *is* an ID.
+ */
+export function findSteamIdOffset(data: Uint8Array): number | null {
+  const looksLikeId = (at: number) =>
+    at >= 0 &&
+    at + 8 <= data.length &&
+    STEAMID_PATTERN.every((b, i) => data[at + 4 + i] === b);
+
+  if (data.length >= STEAMID_SLOT_PTR_OFFSET + 4) {
+    const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+    const ptr = view.getUint32(STEAMID_SLOT_PTR_OFFSET, true);
+    // ptr === 0 means an empty slot; anything else must still pass the check.
+    if (ptr !== 0 && looksLikeId(ptr + STEAMID_PTR_TO_ID)) {
+      return ptr + STEAMID_PTR_TO_ID;
+    }
+  }
+
+  const match = findBytePattern(data, STEAMID_PATTERN);
+  if (match === null) return null;
+
+  const offset = match + STEAMID_PATTERN_TO_ID;
+  return offset >= 0 && offset + 8 <= data.length ? offset : null;
+}
+
 export const DS3_OFFSET_PATTERNS: OffsetPattern[] = [
   {
     id: 'character_stats',
@@ -67,6 +108,13 @@ export const DS3_OFFSET_PATTERNS: OffsetPattern[] = [
     label: 'Inventory Start',
     findOffset(data) {
       return findInventoryStart(data);
+    },
+  },
+  {
+    id: 'steam_id',
+    label: 'SteamID64 (01 00 10 01 at +4)',
+    findOffset(data) {
+      return findSteamIdOffset(data);
     },
   },
 ];

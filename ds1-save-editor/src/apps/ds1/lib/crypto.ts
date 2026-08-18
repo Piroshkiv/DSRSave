@@ -1,5 +1,6 @@
-import { md5 } from 'js-md5';
-import { toArrayBuffer } from './bufferUtils';
+import { toArrayBuffer } from '../../../shared/binary';
+
+export { calculateMD5 } from '../../../shared/md5';
 
 export async function decryptAesCbc(
   cipherData: Uint8Array,
@@ -43,12 +44,4 @@ export async function encryptAesCbc(
   );
 
   return new Uint8Array(encrypted);
-}
-
-export async function calculateMD5(data: Uint8Array): Promise<Uint8Array> {
-  // Use js-md5 library for correct MD5 calculation
-  const hash = md5.create();
-  hash.update(data);
-  const hashArray = hash.array();
-  return new Uint8Array(hashArray);
 }

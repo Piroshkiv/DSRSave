@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '../../shared/components/Layout';
-import { FileUpload, CharacterList, TabPanel, SaveWarningModal, type FileUploadRef } from './components';
+import { FileUpload, CharacterList, TabPanel, SaveWarningModal, BanWarningModal, type FileUploadRef } from './components';
 import { useDS3SaveEditor } from './hooks';
+import type { SaveOutcome } from './hooks/useDS3SaveEditor';
 import { detectEnvironment } from '../ds1/lib/adapters';
 
 const isWebEnv = detectEnvironment() === 'web';
@@ -42,6 +43,7 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
   const fileUploadRef = useRef<FileUploadRef>(null);
   const [showSaveWarning, setShowSaveWarning] = useState(false);
   const [saveWarningTriggersSave, setSaveWarningTriggersSave] = useState(false);
+  const [banWarning, setBanWarning] = useState<{ switchedOffline: boolean } | null>(null);
   const navigate = useNavigate();
 
   const {
@@ -50,6 +52,23 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
     selectedCharacterIndex,
     originalFilename,
     isSlotActive,
+    canEditSlotFlags,
+    setSlotActive,
+    online,
+    setOnline,
+    steamIdSummary,
+    folderSteamId,
+    setSlotSteamId,
+    applySteamIdToAll,
+    autoBackup,
+    maxBackupsPerSlot,
+    backupCounts,
+    backupsVersion,
+    setAutoBackup,
+    setMaxBackupsPerSlot,
+    backupSlotNow,
+    restoreBackup,
+    notifyBackupsChanged,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
@@ -88,9 +107,19 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
     setShowSaveWarning(true);
   };
 
+  /**
+   * The ban warning is only useful when stats actually moved, and .co2 saves are
+   * console exports that never reach the PC servers, so they are exempt.
+   */
+  const reportSaveOutcome = (outcome: SaveOutcome) => {
+    if (!outcome.statsChanged) return;
+    if (originalFilename.toLowerCase().endsWith('.co2')) return;
+    setBanWarning({ switchedOffline: outcome.switchedOffline });
+  };
+
   const runSaveAs = async () => {
     try {
-      await handleSaveAs();
+      reportSaveOutcome(await handleSaveAs());
     } catch (err: any) {
       if (err?.name === 'AbortError' || err?.message === 'User cancelled file save') return;
       console.error('Save As error:', err);
@@ -110,7 +139,7 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
 
   const handleSaveClick = async () => {
     try {
-      await handleSave();
+      reportSaveOutcome(await handleSave());
     } catch (err: any) {
       console.error('Save error:', err);
       const isRestricted =
@@ -140,6 +169,14 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
 
   const canSave = !!saveEditor?.hasFileHandle();
 
+  // Which account this save belongs to, for the backup history filter. The
+  // system entry is the authority; a save whose entry wouldn't decrypt falls
+  // back to the first slot that names an owner, then to the folder name.
+  const saveSteamId =
+    steamIdSummary.system ??
+    steamIdSummary.slots.find(slot => slot.steamId !== null)?.steamId ??
+    folderSteamId;
+
   const webLimitsButton = isWebEnv ? (
     <button className="tutorial-button" onClick={handleOpenWarning} title="Browser limitations for DS3 saves">
       <span className="button-icon">⚠️</span>
@@ -165,6 +202,7 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
           selectedIndex={selectedCharacterIndex}
           onSelectCharacter={handleCharacterSelect}
           isSlotActive={isSlotActive}
+          backupCounts={backupCounts}
         />
       )}
     </>
@@ -221,6 +259,17 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
               </span>
             </button>
             <button
+              className="ds1-safemode-btn"
+              onClick={() => setAutoBackup(!autoBackup)}
+              title="Snapshot every character slot when a save is loaded and after each save."
+            >
+              <span className={`ds1-safemode-dot ${autoBackup ? 'on' : 'off'}`}>●</span>
+              Auto Backup
+              <span className={`ds1-safemode-badge ${autoBackup ? 'on' : 'off'}`}>
+                {autoBackup ? 'ON' : 'OFF'}
+              </span>
+            </button>
+            <button
               className="ds1-action-btn"
               onClick={handleSaveClick}
               disabled={!canSave}
@@ -239,11 +288,36 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
         onCharacterUpdate={handleCharacterUpdate}
         safeMode={safeMode}
         onSafeModeChange={setSafeMode}
+        slotActive={selectedCharacter ? isSlotActive(selectedCharacter.slotIndex) : true}
+        canEditSlotFlags={canEditSlotFlags}
+        onSlotActiveChange={setSlotActive}
+        online={online}
+        onOnlineChange={setOnline}
+        steamIdSummary={saveEditor ? steamIdSummary : undefined}
+        folderSteamId={folderSteamId}
+        onSlotSteamIdChange={setSlotSteamId}
+        onSteamIdApplyAll={applySteamIdToAll}
+        backups={saveEditor ? {
+          maxPerSlot: maxBackupsPerSlot,
+          setMaxPerSlot: setMaxBackupsPerSlot,
+          version: backupsVersion,
+          currentSteamId: saveSteamId != null ? saveSteamId.toString(10) : '',
+          backupSlotNow,
+          restoreBackup,
+          notifyChanged: notifyBackupsChanged,
+        } : null}
       />
 
       <SaveWarningModal
         isOpen={showSaveWarning}
         onConfirm={handleWarningConfirm}
+      />
+
+      <BanWarningModal
+        isOpen={banWarning !== null}
+        switchedOffline={banWarning?.switchedOffline ?? false}
+        online={online}
+        onConfirm={() => setBanWarning(null)}
       />
     </AppLayout>
   );

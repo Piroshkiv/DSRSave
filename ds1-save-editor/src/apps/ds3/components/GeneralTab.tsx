@@ -1,16 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { DS3Character } from '../lib/Character';
 import { NumberInput } from '../../ds1/components/NumberInput';
-import { MAX_VALUES, PlayerClass, CLASS_NAMES, CLASS_STARTING_STATS } from '../lib/constants';
+import { MAX_VALUES, PlayerClass, CLASS_NAMES, CLASS_STARTING_STATS, STAT_ORDER } from '../lib/constants';
+import { parseSteamId, formatSteamId, formatSteamIdHex, type SteamIdSummary } from '../lib/steamId';
+import { FolderIdDialog } from './FolderIdDialog';
 
 interface GeneralTabProps {
   character: DS3Character;
   onCharacterUpdate: () => void;
   safeMode: boolean;
   onSafeModeChange?: (enabled: boolean) => void;
+  /** false when the slot holds data but the game marked it deleted */
+  slotActive?: boolean;
+  /** false when entry10 could not be decrypted, so the flag must not be edited */
+  canEditSlotFlags?: boolean;
+  onSlotActiveChange?: (slotIndex: number, active: boolean) => void;
+  /** Save-wide launch setting; null when entry10 could not be decrypted */
+  online?: boolean | null;
+  onOnlineChange?: (online: boolean) => void;
+  /** Steam IDs found in the save: system entry + one per populated slot */
+  steamIdSummary?: SteamIdSummary;
+  /** ID read off the save's folder name, when the platform exposes a path */
+  folderSteamId?: bigint | null;
+  /** Write the ID into this slot only */
+  onSlotSteamIdChange?: (slotIndex: number, steamId: bigint) => void;
+  /** Write the ID into the system entry and every populated slot */
+  onSteamIdApplyAll?: (steamId: bigint) => number;
 }
-
-const STAT_ORDER = ['VIG', 'ATN', 'END', 'VIT', 'STR', 'DEX', 'INT', 'FTH', 'LCK'];
 
 // Mapping from STAT_ORDER names to ClassStats property names
 const STAT_MAP: Record<string, keyof Omit<typeof CLASS_STARTING_STATS[PlayerClass.Knight], 'level' | 'totalStatsAtZero'>> = {
@@ -25,7 +41,7 @@ const STAT_MAP: Record<string, keyof Omit<typeof CLASS_STARTING_STATS[PlayerClas
   LCK: 'luck',
 };
 
-export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUpdate, safeMode }) => {
+export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUpdate, safeMode, slotActive = true, canEditSlotFlags = false, onSlotActiveChange, online = null, onOnlineChange, steamIdSummary, folderSteamId = null, onSlotSteamIdChange, onSteamIdApplyAll }) => {
   const [, setTick] = useState(0);
   const bump = () => setTick((t) => t + 1);
 
@@ -204,6 +220,119 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     onCharacterUpdate();
   };
 
+  // A slot only counts as deleted when it still holds data but the active flag is off.
+  const isSlotDeleted = !character.isEmpty && !slotActive;
+
+  const handleSlotToggle = () => {
+    if (!onSlotActiveChange) return;
+    if (!isSlotDeleted && !confirm(
+      `Remove slot ${character.slotIndex + 1} ("${character.name || 'Unnamed'}")?\n\n` +
+      'The character disappears from the in-game load menu. Its data stays in the file and can be restored here.'
+    )) return;
+
+    onSlotActiveChange(character.slotIndex, isSlotDeleted);
+    bump();
+    onCharacterUpdate();
+  };
+
+  // ===== STEAM ID =====
+  // The field always shows one ID: this slot's, falling back to the save-wide
+  // one from the system entry when the slot carries none.
+  const slotSteamId =
+    steamIdSummary?.slots.find((s) => s.slotIndex === character.slotIndex)?.steamId ?? null;
+  const currentSteamId = slotSteamId ?? steamIdSummary?.system ?? null;
+
+  const [steamIdInput, setSteamIdInput] = useState('');
+  const [steamIdNotice, setSteamIdNotice] = useState('');
+  // In the browser there is no path to read the folder from, so the user types
+  // it once and we keep it for the rest of the session.
+  const [askedFolderId, setAskedFolderId] = useState<bigint | null>(null);
+  const [folderDialogOpen, setFolderDialogOpen] = useState(false);
+  const knownFolderId = folderSteamId ?? askedFolderId;
+  // Which notation the field shows. Both are accepted on input either way;
+  // hex is the default because that is what the save folder is named after.
+  const [idFormat, setIdFormat] = useState<'hex' | 'dec'>('hex');
+
+  const showSteamId = (steamId: bigint, format = idFormat) =>
+    format === 'hex' ? formatSteamIdHex(steamId) : formatSteamId(steamId);
+
+  // Re-sync when the slot changes or the ID moves under us (apply-all), but not
+  // while typing: an input that already parses to the current ID is left alone,
+  // so hex input isn't rewritten into decimal mid-keystroke.
+  useEffect(() => {
+    if (parseSteamId(steamIdInput) === currentSteamId) return;
+    setSteamIdInput(currentSteamId === null ? '' : showSteamId(currentSteamId));
+    setSteamIdNotice('');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSteamId, character.slotIndex]);
+
+  const parsedSteamId = parseSteamId(steamIdInput);
+  const steamIdInvalid = steamIdInput.trim() !== '' && parsedSteamId === null;
+
+  // An empty slot carries no ID field, so there is nothing to write into it —
+  // the field still shows the save-wide ID, just read-only.
+  const canEditSteamId = !!onSlotSteamIdChange && slotSteamId !== null;
+
+  /** Writes into this slot as soon as the field holds a complete ID. */
+  const applySteamIdToSlot = (steamId: bigint) => {
+    if (!canEditSteamId || steamId === slotSteamId) return;
+    onSlotSteamIdChange(character.slotIndex, steamId);
+    setSteamIdNotice('');
+    bump();
+    onCharacterUpdate();
+  };
+
+  const handleSteamIdInput = (text: string) => {
+    setSteamIdInput(text);
+    setSteamIdNotice('');
+    const parsed = parseSteamId(text);
+    if (parsed !== null) applySteamIdToSlot(parsed);
+  };
+
+  const useSteamId = (steamId: bigint) => {
+    setSteamIdInput(showSteamId(steamId));
+    applySteamIdToSlot(steamId);
+  };
+
+  // Switching notation only rewrites what is on screen — the save is untouched.
+  const changeIdFormat = (format: 'hex' | 'dec') => {
+    setIdFormat(format);
+    if (parsedSteamId !== null) setSteamIdInput(showSteamId(parsedSteamId, format));
+  };
+
+  const handleUseFolderId = () => {
+    if (knownFolderId !== null) {
+      useSteamId(knownFolderId);
+      return;
+    }
+    setFolderDialogOpen(true);
+  };
+
+  const handleFolderIdEntered = (steamId: bigint) => {
+    setAskedFolderId(steamId);
+    setFolderDialogOpen(false);
+    useSteamId(steamId);
+  };
+
+  // The ID the *other* populated slots agree on, when they do and this slot
+  // disagrees — the "one imported character among your own" case.
+  const otherSlotIds = (steamIdSummary?.slots ?? [])
+    .filter((s) => s.slotIndex !== character.slotIndex && s.steamId !== null)
+    .map((s) => s.steamId as bigint);
+  const sharedOtherId =
+    otherSlotIds.length > 0 && otherSlotIds.every((id) => id === otherSlotIds[0])
+      ? otherSlotIds[0]
+      : null;
+  const canTakeFromOtherSlots = sharedOtherId !== null && sharedOtherId !== slotSteamId;
+
+  const handleSteamIdApplyToAll = () => {
+    if (!parsedSteamId || !onSteamIdApplyAll) return;
+    const patched = onSteamIdApplyAll(parsedSteamId);
+    setSteamIdNotice(`Applied to ${patched} slot${patched === 1 ? '' : 's'}.`);
+    bump();
+    onCharacterUpdate();
+  };
+
   const playtimeSec = Math.floor(character.playtimeMs / 1000);
   const playtimeParts = {
     h: Math.floor(playtimeSec / 3600),
@@ -357,6 +486,20 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               </div>
             ))}
           </div>
+
+          <button
+            className={`ds3-net-toggle ${online ? 'net-online' : 'net-offline'}`}
+            onClick={() => onOnlineChange?.(!online)}
+            disabled={online === null || !onOnlineChange}
+            title={
+              online === null
+                ? 'The launch setting could not be read from this save.'
+                : 'Applies to the whole save file, not just this character. Load an edited character offline once before going online.'
+            }
+          >
+            <span className="ds3-slot-status-dot" />
+            <span>{online === null ? 'Unavailable' : online ? 'Online' : 'Offline'}</span>
+          </button>
         </div>
 
         <div className="info-column">
@@ -384,45 +527,51 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
             </select>
           </div>
 
-          <div className="form-group">
-            <label>HP</label>
-            <NumberInput value={character.hp} onChange={handleHPChange} min={0} max={9999} disabled={safeMode} />
-          </div>
+          <div className="ds3-two-col">
+            <div>
+              <div className="form-group">
+                <label>HP</label>
+                <NumberInput value={character.hp} onChange={handleHPChange} min={0} max={9999} disabled={safeMode} />
+              </div>
 
-          <div className="form-group">
-            <label>FP</label>
-            <NumberInput value={character.fp} onChange={handleFPChange} min={0} max={999} disabled={safeMode} />
-          </div>
+              <div className="form-group">
+                <label>FP</label>
+                <NumberInput value={character.fp} onChange={handleFPChange} min={0} max={999} disabled={safeMode} />
+              </div>
 
-          <div className="form-group">
-            <label>Stamina</label>
-            <NumberInput value={character.stamina} onChange={handleStaminaChange} min={0} max={999} disabled={safeMode} />
-          </div>
+              <div className="form-group">
+                <label>Stamina</label>
+                <NumberInput value={character.stamina} onChange={handleStaminaChange} min={0} max={999} disabled={safeMode} />
+              </div>
+            </div>
 
-          <div className="form-group">
-            <label>Souls</label>
-            <NumberInput value={character.souls} onChange={handleSoulsChange} min={0} max={MAX_VALUES.SOULS} />
-          </div>
+            <div>
+              <div className="form-group">
+                <label>NG+ Cycle</label>
+                <NumberInput value={character.ngCycle} onChange={handleNGCycleChange} min={0} max={MAX_VALUES.NG_CYCLE} />
+              </div>
 
-          <div className="form-group">
-            <label>Soul Memory (total collected)</label>
-            <NumberInput
-              value={character.soulMemory}
-              onChange={handleSoulMemoryChange}
-              min={0}
-              max={0xFFFFFFFF}
-              disabled={safeMode}
-            />
-            {safeMode && (
-              <p className="ds3-export-hint">
-                Auto-set to a plausible minimum for the level (level-up cost + 20%).
-              </p>
-            )}
-          </div>
+              <div className="form-group">
+                <label>Souls</label>
+                <NumberInput value={character.souls} onChange={handleSoulsChange} min={0} max={MAX_VALUES.SOULS} />
+              </div>
 
-          <div className="form-group">
-            <label>NG+ Cycle</label>
-            <NumberInput value={character.ngCycle} onChange={handleNGCycleChange} min={0} max={MAX_VALUES.NG_CYCLE} />
+              <div className="form-group">
+                <label>Soul Memory (total collected)</label>
+                <NumberInput
+                  value={character.soulMemory}
+                  onChange={handleSoulMemoryChange}
+                  min={0}
+                  max={0xFFFFFFFF}
+                  disabled={safeMode}
+                />
+                {safeMode && (
+                  <p className="ds3-export-hint" title="Auto-set to a plausible minimum for the level (level-up cost + 20%)">
+                    Auto-set from level (+20%).
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="form-group">
@@ -496,6 +645,113 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
           </div>
         </div>
       </div>
+
+      <div className="ds3-slot-section">
+        <h3>Save Slot</h3>
+        <button
+          className={`ds3-slot-status ${isSlotDeleted ? 'deleted' : 'active'}`}
+          onClick={handleSlotToggle}
+          disabled={!canEditSlotFlags || character.isEmpty}
+        >
+          <span className="ds3-slot-status-dot" />
+          <span>{isSlotDeleted ? 'Restore Slot' : 'Remove Slot'}</span>
+        </button>
+        <p className="ds3-export-hint">
+          Slot {character.slotIndex + 1} — {isSlotDeleted ? 'Deleted' : 'Active'}.{' '}
+          {!canEditSlotFlags
+            ? 'Slot flags could not be read from this save, so they cannot be changed.'
+            : isSlotDeleted
+              ? 'The game hides this slot, but its data is intact. Restoring flips the flag back so the character reappears in the load menu.'
+              : 'Removing only hides it from the load menu — the data stays in the file and can be restored here.'}
+        </p>
+      </div>
+
+      {steamIdSummary && (
+        <div className="ds3-slot-section">
+          <h3>Steam ID</h3>
+
+          <div className="ds3-steamid-row">
+            <input
+              type="text"
+              className={`ds3-steamid-input${steamIdInvalid ? ' invalid' : ''}`}
+              value={steamIdInput}
+              placeholder={idFormat === 'hex' ? '0110000100000000' : '76561198000000000'}
+              spellCheck={false}
+              readOnly={!canEditSteamId}
+              onChange={(e) => handleSteamIdInput(e.target.value)}
+            />
+            <span className="ds3-idformat">
+              {(['hex', 'dec'] as const).map((format, i) => (
+                <React.Fragment key={format}>
+                  {i > 0 && <span className="ds3-idformat-sep">/</span>}
+                  <button
+                    className={`ds3-idformat-link${idFormat === format ? ' active' : ''}`}
+                    onClick={() => changeIdFormat(format)}
+                  >
+                    {format}
+                  </button>
+                </React.Fragment>
+              ))}
+            </span>
+            <button
+              className="ds3-steamid-btn"
+              onClick={handleUseFolderId}
+              disabled={!canEditSteamId || knownFolderId === slotSteamId}
+              title={knownFolderId !== null ? showSteamId(knownFolderId) : 'Enter the save folder name'}
+            >
+              Use folder ID
+            </button>
+            {canTakeFromOtherSlots && (
+              <button
+                className="ds3-steamid-btn"
+                onClick={() => useSteamId(sharedOtherId!)}
+                disabled={!canEditSteamId}
+                title={showSteamId(sharedOtherId!)}
+              >
+                Take ID from other slots
+              </button>
+            )}
+            {steamIdSummary.mismatched && (
+              <button
+                className="ds3-steamid-btn primary"
+                onClick={handleSteamIdApplyToAll}
+                disabled={!onSteamIdApplyAll || parsedSteamId === null}
+              >
+                Apply ID to other slots
+              </button>
+            )}
+          </div>
+
+          <p className="ds3-export-hint">
+            {steamIdInvalid
+              ? 'Not a Steam ID — use hex (the save folder name) or the decimal form.'
+              : (parsedSteamId ?? currentSteamId) !== null
+                ? <>
+                    The game won&apos;t load a save bound to another ID:{' '}
+                    <code>{showSteamId((parsedSteamId ?? currentSteamId)!)}</code>
+                    {idFormat === 'hex' && ' — the save folder is named after it.'}
+                  </>
+                : 'The game won’t load a save bound to another ID. The save folder is named after it, in hex.'}
+          </p>
+
+          {steamIdSummary.mismatched && (
+            <p className="ds3-steamid-warning">
+              ⚠ Slots don&apos;t share one ID:{' '}
+              {steamIdSummary.slots
+                .map((s) => `slot ${s.slotIndex + 1}: ${s.steamId === null ? '—' : showSteamId(s.steamId)}`)
+                .join(' · ')}
+            </p>
+          )}
+
+          {steamIdNotice && <p className="ds3-steamid-notice">{steamIdNotice}</p>}
+
+          <FolderIdDialog
+            isOpen={folderDialogOpen}
+            onCancel={() => setFolderDialogOpen(false)}
+            onConfirm={handleFolderIdEntered}
+          />
+        </div>
+      )}
     </div>
   );
 };

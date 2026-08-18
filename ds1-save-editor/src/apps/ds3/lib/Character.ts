@@ -17,6 +17,7 @@ import {
   BONFIRE_ANCHOR_TO_BLOCK,
   BONFIRE_UNLOCK_ALL,
 } from './constants';
+import { findSteamIdOffset } from './offsetPatterns';
 
 /**
  * Represents a DS3 character save data
@@ -136,6 +137,36 @@ export class DS3Character {
     for (let i = 0x10; i < 0x40; i++) {
       if (this.data[i] !== 0x00) return false;
     }
+    return true;
+  }
+
+  // ===== STEAM ID =====
+
+  /**
+   * SteamID64 stored in this slot, or null when the slot has none (empty slot,
+   * or a save whose layout we can't recognise). Located by findSteamIdOffset —
+   * pointer at 0x58 first, STEAMID_PATTERN as confirmation/fallback.
+   */
+  getSteamId(): bigint | null {
+    const offset = findSteamIdOffset(this.data);
+    if (offset === null) return null;
+    return new DataView(this.data.buffer, this.data.byteOffset, this.data.byteLength)
+      .getBigUint64(offset, true);
+  }
+
+  /**
+   * Rebind this slot to another Steam account. Returns false when the slot has
+   * no ID field to write (nothing is changed in that case).
+   *
+   * Only the low 4 bytes actually differ between accounts, but all 8 are
+   * written so a save from a hypothetical non-Steam namespace can't keep a
+   * stale prefix.
+   */
+  setSteamId(steamId: bigint): boolean {
+    const offset = findSteamIdOffset(this.data);
+    if (offset === null) return false;
+    new DataView(this.data.buffer, this.data.byteOffset, this.data.byteLength)
+      .setBigUint64(offset, BigInt.asUintN(64, steamId), true);
     return true;
   }
 

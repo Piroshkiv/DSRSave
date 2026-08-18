@@ -1,4 +1,10 @@
 import { Character } from './Character';
+import { ByteView } from '../../../shared/ByteView';
+import {
+  ItemCatalog,
+  loadItemCatalog,
+  type Item,
+} from '../../../shared/items';
 
 export enum ItemInfusion {
   Standard = 0,
@@ -37,149 +43,139 @@ export enum ItemCollectionType {
   Unknown = 'Unknown',
 }
 
-export interface Item {
-  Type: string;
-  Id: string;
-  MaxStackCount: number;
-  Category: string;
-  Name: string;
-  MaxUpgrade?: number;
-  CanInfuse?: boolean;
-  Durability?: number;
-  MugenMonkeyName?: string;
-  SoulsplannerName?: string;
-  displayName?: string;
-}
+/**
+ * Which ItemCollectionType each catalogue collection maps to.
+ * Replaces the old chain of `collection.includes(entry)` identity checks.
+ */
+const COLLECTION_TO_TYPE: Record<string, ItemCollectionType> = {
+  weapon_items: ItemCollectionType.Weapon,
+  ring_items: ItemCollectionType.Ring,
+  armor_items: ItemCollectionType.Armor,
+  consumable_items: ItemCollectionType.Consumable,
+  soul_items: ItemCollectionType.Soul,
+  upgrade_items: ItemCollectionType.Upgrade,
+  key_items: ItemCollectionType.Key,
+  spell_items: ItemCollectionType.Spell,
+  usable_items: ItemCollectionType.Usable,
+  ammunition_items: ItemCollectionType.Ammunition,
+  material_items: ItemCollectionType.Material,
+  magic_items: ItemCollectionType.Magic,
+  specials: ItemCollectionType.Special,
+};
 
-export interface ItemsDatabase {
-  weapon_items: Item[];
-  ring_items: Item[];
-  armor_items: Item[];
-  consumable_items: Item[];
-  soul_items: Item[];
-  upgrade_items: Item[];
-  key_items: Item[];
-  spell_items: Item[];
-  usable_items: Item[];
-  ammunition_items: Item[];
-  material_items: Item[];
-  magic_items: Item[];
-  specials: Item[];
-}
+/**
+ * Which catalogue collection backs each collection type — the inverse of
+ * COLLECTION_TO_TYPE. Used by the item picker to list a category.
+ */
+export const COLLECTION_FOR_TYPE: Partial<Record<ItemCollectionType, string>> =
+  Object.fromEntries(
+    Object.entries(COLLECTION_TO_TYPE).map(([collection, type]) => [type, collection]),
+  ) as Partial<Record<ItemCollectionType, string>>;
+
+/** Collections that "add all" is allowed to draw from. */
+const ADD_ALL_COLLECTIONS: Partial<Record<ItemCollectionType, string>> = {
+  [ItemCollectionType.Weapon]: 'weapon_items',
+  [ItemCollectionType.Armor]: 'armor_items',
+  [ItemCollectionType.Ring]: 'ring_items',
+  [ItemCollectionType.Usable]: 'usable_items',
+  [ItemCollectionType.Material]: 'material_items',
+  [ItemCollectionType.Key]: 'key_items',
+  [ItemCollectionType.Magic]: 'magic_items',
+  [ItemCollectionType.Ammunition]: 'ammunition_items',
+};
 
 export class InventoryItem {
-  private data: Uint8Array;
-  private itemsDatabase: ItemsDatabase | null;
+  private data: ByteView;
+  private catalog: ItemCatalog | null;
   public slotIndex: number;
 
-  constructor(data: Uint8Array, slotIndex: number, itemsDatabase: ItemsDatabase | null = null) {
-    this.data = new Uint8Array(28);
+  constructor(data: Uint8Array, slotIndex: number, catalog: ItemCatalog | null = null) {
+    this.data = new ByteView(28);
     if (data) {
       this.data.set(data.slice(0, 28));
     }
     this.slotIndex = slotIndex;
-    this.itemsDatabase = itemsDatabase;
+    this.catalog = catalog;
   }
 
+  /**
+   * Byte offsets of the 28-byte slot record. Every field below is a signed
+   * 32-bit little-endian integer except `itemType`, which is big-endian and
+   * stored shifted left by one nibble.
+   */
+  private static readonly FIELD = {
+    itemType: 0,
+    itemId: 4,
+    quantity: 8,
+    order: 12,
+    exists: 16,
+    durability: 20,
+  } as const;
+
   get itemType(): number {
-    const value =
-      (this.data[0] << 24) |
-      (this.data[1] << 16) |
-      (this.data[2] << 8) |
-      this.data[3];
-    return Math.floor(value / 16);
+    return Math.floor(this.data.readIntBE(InventoryItem.FIELD.itemType, 4) / 16);
   }
 
   set itemType(value: number) {
-    const stored = value * 16;
-    this.data[0] = (stored >> 24) & 0xff;
-    this.data[1] = (stored >> 16) & 0xff;
-    this.data[2] = (stored >> 8) & 0xff;
-    this.data[3] = stored & 0xff;
+    this.data.writeBE(InventoryItem.FIELD.itemType, 4, value * 16);
   }
 
   get itemId(): number {
-    return (
-      this.data[4] |
-      (this.data[5] << 8) |
-      (this.data[6] << 16) |
-      (this.data[7] << 24)
-    );
+    return this.data.readInt(InventoryItem.FIELD.itemId, 4);
   }
 
   set itemId(value: number) {
-    this.data[4] = value & 0xff;
-    this.data[5] = (value >> 8) & 0xff;
-    this.data[6] = (value >> 16) & 0xff;
-    this.data[7] = (value >> 24) & 0xff;
+    this.data.write(InventoryItem.FIELD.itemId, 4, value);
   }
 
   get quantity(): number {
-    return (
-      this.data[8] |
-      (this.data[9] << 8) |
-      (this.data[10] << 16) |
-      (this.data[11] << 24)
-    );
+    return this.data.readInt(InventoryItem.FIELD.quantity, 4);
   }
 
   set quantity(value: number) {
-    this.data[8] = value & 0xff;
-    this.data[9] = (value >> 8) & 0xff;
-    this.data[10] = (value >> 16) & 0xff;
-    this.data[11] = (value >> 24) & 0xff;
+    this.data.write(InventoryItem.FIELD.quantity, 4, value);
   }
 
   get order(): number {
-    return (
-      this.data[12] |
-      (this.data[13] << 8) |
-      (this.data[14] << 16) |
-      (this.data[15] << 24)
-    );
+    return this.data.readInt(InventoryItem.FIELD.order, 4);
   }
 
   set order(value: number) {
-    this.data[12] = value & 0xff;
-    this.data[13] = (value >> 8) & 0xff;
-    this.data[14] = (value >> 16) & 0xff;
-    this.data[15] = (value >> 24) & 0xff;
+    this.data.write(InventoryItem.FIELD.order, 4, value);
   }
 
   get exists(): number {
-    return (
-      this.data[16] |
-      (this.data[17] << 8) |
-      (this.data[18] << 16) |
-      (this.data[19] << 24)
-    );
+    return this.data.readInt(InventoryItem.FIELD.exists, 4);
   }
 
   set exists(value: number) {
-    this.data[16] = value & 0xff;
-    this.data[17] = (value >> 8) & 0xff;
-    this.data[18] = (value >> 16) & 0xff;
-    this.data[19] = (value >> 24) & 0xff;
+    this.data.write(InventoryItem.FIELD.exists, 4, value);
   }
 
   get durability(): number {
-    return (
-      this.data[20] |
-      (this.data[21] << 8) |
-      (this.data[22] << 16) |
-      (this.data[23] << 24)
-    );
+    return this.data.readInt(InventoryItem.FIELD.durability, 4);
   }
 
   set durability(value: number) {
-    this.data[20] = value & 0xff;
-    this.data[21] = (value >> 8) & 0xff;
-    this.data[22] = (value >> 16) & 0xff;
-    this.data[23] = (value >> 24) & 0xff;
+    this.data.write(InventoryItem.FIELD.durability, 4, value);
   }
 
   get isEmpty(): boolean {
     return this.exists === 0 || this.data.every((b) => b === 0 || b === 0xff);
+  }
+
+  /**
+   * The one weapon id window that does not follow the usual
+   * `base + infusion * 100 + level` layout: Greatsword of Artorias (cursed),
+   * weapon 311000.
+   *
+   * Armour reuses these numbers — Holy Robe is 311000, Travelling Gloves
+   * (Holy Set) is 312000 — so the window must be scoped to category 0.
+   * Unscoped it collapsed every id in the range onto 311000, which under
+   * category 1 is the Holy Robe: adding the gloves wrote a robe instead.
+   */
+  private get isArtoriasCursedRange(): boolean {
+    return this.itemType === 0 && this.itemId >= 311000 && this.itemId <= 312705;
   }
 
   get baseItemId(): number {
@@ -195,7 +191,7 @@ export class InventoryItem {
       return 1332000;
     }
 
-    if (this.itemId >= 311000 && this.itemId <= 312705) {
+    if (this.isArtoriasCursedRange) {
       return 311000;
     }
 
@@ -217,10 +213,6 @@ export class InventoryItem {
       return Math.floor((this.itemId - 1332000) / 100);
     }
 
-    if (this.itemId >= 311000 && this.itemId <= 312705) {
-      return this.itemId % 100;
-    }
-
     return this.itemId % 100;
   }
 
@@ -237,7 +229,7 @@ export class InventoryItem {
       return;
     }
 
-    if (baseId === 311000) {
+    if (this.isArtoriasCursedRange && baseId === 311000) {
       this.itemId = 311000 + value;
       return;
     }
@@ -251,10 +243,7 @@ export class InventoryItem {
       return ItemInfusion.Standard;
     }
 
-    if (
-      (this.itemId >= 1330000 && this.itemId <= 1332500) ||
-      (this.itemId >= 311000 && this.itemId <= 312705)
-    ) {
+    if ((this.itemId >= 1330000 && this.itemId <= 1332500) || this.isArtoriasCursedRange) {
       return ItemInfusion.Standard;
     }
 
@@ -265,10 +254,7 @@ export class InventoryItem {
   }
 
   set infusion(value: ItemInfusion) {
-    if (
-      (this.itemId >= 1330000 && this.itemId <= 1332500) ||
-      (this.itemId >= 311000 && this.itemId <= 312705)
-    ) {
+    if ((this.itemId >= 1330000 && this.itemId <= 1332500) || this.isArtoriasCursedRange) {
       return;
     }
 
@@ -277,70 +263,32 @@ export class InventoryItem {
     this.itemId = baseId + value * 100 + upgradeLevel;
   }
 
+  /**
+   * The catalogue entry for this slot, resolved by (category nibble, item id).
+   *
+   * Was a linear scan over the whole flattened catalogue on every read; now a
+   * single map hit. Still returns the raw JSON entry so existing callers and
+   * a single map hit.
+   */
+  /**
+   * The catalogue entry for this slot, resolved by (category nibble, item id).
+   * Was a linear scan over the whole flattened catalogue on every read.
+   */
   get itemInfo(): Item | null {
-    if (this.isEmpty || !this.itemsDatabase) {
-      return null;
-    }
-
-    const allItems = this.getAllItems();
-    return (
-      allItems.find(
-        (item) =>
-          this.parseHex(item.Id) === this.baseItemId &&
-          Math.floor(this.parseHex(item.Type) / 0x10000000) === this.itemType
-      ) || null
-    );
+    if (this.isEmpty || !this.catalog) return null;
+    return this.catalog.lookup(this.itemType, this.baseItemId);
   }
 
   get itemName(): string {
     const info = this.itemInfo;
     if (!info) return `Unknown (Type:0x${this.itemType.toString(16)}, ID:0x${this.itemId.toString(16)})`;
-    return info.displayName || info.Name;
+    return info.displayName;
   }
 
   get collectionType(): ItemCollectionType {
-    const info = this.itemInfo;
-    if (!info) return ItemCollectionType.Unknown;
-
-    if (this.itemsDatabase?.weapon_items?.includes(info)) return ItemCollectionType.Weapon;
-    if (this.itemsDatabase?.ring_items?.includes(info)) return ItemCollectionType.Ring;
-    if (this.itemsDatabase?.armor_items?.includes(info)) return ItemCollectionType.Armor;
-    if (this.itemsDatabase?.consumable_items?.includes(info)) return ItemCollectionType.Consumable;
-    if (this.itemsDatabase?.soul_items?.includes(info)) return ItemCollectionType.Soul;
-    if (this.itemsDatabase?.upgrade_items?.includes(info)) return ItemCollectionType.Upgrade;
-    if (this.itemsDatabase?.key_items?.includes(info)) return ItemCollectionType.Key;
-    if (this.itemsDatabase?.spell_items?.includes(info)) return ItemCollectionType.Spell;
-    if (this.itemsDatabase?.usable_items?.includes(info)) return ItemCollectionType.Usable;
-    if (this.itemsDatabase?.ammunition_items?.includes(info)) return ItemCollectionType.Ammunition;
-    if (this.itemsDatabase?.material_items?.includes(info)) return ItemCollectionType.Material;
-    if (this.itemsDatabase?.magic_items?.includes(info)) return ItemCollectionType.Magic;
-    if (this.itemsDatabase?.specials?.includes(info)) return ItemCollectionType.Special;
-
-    return ItemCollectionType.Unknown;
-  }
-
-  private parseHex(hex: string): number {
-    return parseInt(hex.replace('0x', '').replace('0X', ''), 16);
-  }
-
-  private getAllItems(): Item[] {
-    if (!this.itemsDatabase) return [];
-
-    return [
-      ...(this.itemsDatabase.weapon_items || []),
-      ...(this.itemsDatabase.ring_items || []),
-      ...(this.itemsDatabase.armor_items || []),
-      ...(this.itemsDatabase.consumable_items || []),
-      ...(this.itemsDatabase.soul_items || []),
-      ...(this.itemsDatabase.upgrade_items || []),
-      ...(this.itemsDatabase.key_items || []),
-      ...(this.itemsDatabase.spell_items || []),
-      ...(this.itemsDatabase.usable_items || []),
-      ...(this.itemsDatabase.ammunition_items || []),
-      ...(this.itemsDatabase.material_items || []),
-      ...(this.itemsDatabase.magic_items || []),
-      ...(this.itemsDatabase.specials || []),
-    ];
+    const item = this.itemInfo;
+    if (!item) return ItemCollectionType.Unknown;
+    return COLLECTION_TO_TYPE[item.collection] ?? ItemCollectionType.Unknown;
   }
 
   getRawData(): Uint8Array {
@@ -350,7 +298,7 @@ export class InventoryItem {
 
 export class Inventory {
   private character: Character;
-  private itemsDatabase: ItemsDatabase | null = null;
+  private catalog: ItemCatalog | null = null;
 
   private static readonly INVENTORY_START = 0x370;
   private static readonly ITEM_SIZE = 28;
@@ -369,38 +317,18 @@ export class Inventory {
   }
 
   async loadItemsDatabase(): Promise<void> {
-    // Check if running in Electron (file:// protocol) or web (http/https)
-    const isElectron = typeof window !== 'undefined' && window.location.protocol === 'file:';
-    
-    // In Electron, use relative path; in web, use absolute path
-    const paths = isElectron 
-      ? ['./json/items.json', '/json/items.json']
-      : ['/json/items.json', './json/items.json'];
-    
-    let lastError: Error | null = null;
-    
-    for (const jsonPath of paths) {
-      try {
-        const response = await fetch(jsonPath);
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        this.itemsDatabase = await response.json();
-        return; // Success, exit early
-      } catch (error) {
-        lastError = error instanceof Error ? error : new Error(String(error));
-        console.warn(`Failed to load items database from ${jsonPath}:`, lastError);
-        // Continue to try next path
-      }
+    try {
+      const { catalog } = await loadItemCatalog('items.json');
+      this.catalog = catalog;
+    } catch (error) {
+      console.error('Could not load items database:', error);
+      throw new Error('Could not load items database. Please ensure items.json is available.');
     }
-    
-    // All paths failed
-    console.error('Could not load items database from any path:', lastError);
-    throw new Error('Could not load items database. Please ensure items.json is available.');
   }
 
-  getItemsDatabase(): ItemsDatabase | null {
-    return this.itemsDatabase;
+  /** Indexed catalogue used for all id lookups. */
+  getCatalog(): ItemCatalog {
+    return this.catalog ?? ItemCatalog.empty();
   }
 
   get weaponLevel(): number {
@@ -449,15 +377,15 @@ export class Inventory {
       return item.upgradeLevel;
     }
 
-    if (!itemInfo.MaxUpgrade) {
+    if (!itemInfo.maxUpgrade) {
       return 0;
     }
 
-    if (itemInfo.MaxUpgrade === 5) {
+    if (itemInfo.maxUpgrade === 5) {
       return 5 + item.upgradeLevel * 2;
     }
 
-    const baseMaxUpgrade = itemInfo.MaxUpgrade;
+    const baseMaxUpgrade = itemInfo.maxUpgrade;
     const maxUpgradeForInfusion = Inventory.getMaxUpgradeForInfusion(baseMaxUpgrade, item.infusion);
     const currentUpgrade = item.upgradeLevel;
 
@@ -482,7 +410,7 @@ export class Inventory {
       if (offset + Inventory.ITEM_SIZE > data.length) break;
 
       const itemData = data.slice(offset, offset + Inventory.ITEM_SIZE);
-      const item = new InventoryItem(itemData, i, this.itemsDatabase);
+      const item = new InventoryItem(itemData, i, this.catalog);
 
       if (!item.isEmpty) {
         items.push(item);
@@ -505,7 +433,7 @@ export class Inventory {
     }
 
     const itemData = data.slice(offset, offset + Inventory.ITEM_SIZE);
-    return new InventoryItem(itemData, slotIndex, this.itemsDatabase);
+    return new InventoryItem(itemData, slotIndex, this.catalog);
   }
 
   writeSlot(slotIndex: number, item: InventoryItem): void {
@@ -586,8 +514,8 @@ export class Inventory {
   }
 
   findExistingItem(itemInfo: Item, upgradeLevel: number, infusion: ItemInfusion): InventoryItem | null {
-    const baseId = this.parseHex(itemInfo.Id);
-    const typeNumeric = Math.floor(this.parseHex(itemInfo.Type) / 0x10000000);
+    const baseId = itemInfo.id;
+    const typeNumeric = itemInfo.typeNibble;
     const collectionType = this.getCollectionTypeFromItem(itemInfo);
 
     // For Key Items, search in slots 0-63, for others search in slots 64+
@@ -624,11 +552,11 @@ export class Inventory {
       collectionType !== ItemCollectionType.Weapon &&
       collectionType !== ItemCollectionType.Armor &&
       collectionType !== ItemCollectionType.Ring &&
-      itemInfo.MaxStackCount > 1
+      itemInfo.stackMax > 1
     ) {
       const existing = this.findExistingItem(itemInfo, upgradeLevel, infusion);
       if (existing) {
-        const newQuantity = Math.min(existing.quantity + quantity, itemInfo.MaxStackCount);
+        const newQuantity = Math.min(existing.quantity + quantity, itemInfo.stackMax);
         existing.quantity = newQuantity;
         this.writeSlot(existing.slotIndex, existing);
         this.updateItemsNumber(existing.slotIndex);
@@ -644,16 +572,16 @@ export class Inventory {
     for (let i = startSlot; i < endSlot; i++) {
       const slot = this.readSlot(i);
       if (slot.isEmpty) {
-        const typeNumeric = Math.floor(this.parseHex(itemInfo.Type) / 0x10000000);
-        const idNumeric = this.parseHex(itemInfo.Id);
+        const typeNumeric = itemInfo.typeNibble;
+        const idNumeric = itemInfo.id;
 
         slot.itemType = typeNumeric;
         slot.itemId = idNumeric;
-        slot.quantity = Math.min(quantity, itemInfo.MaxStackCount);
+        slot.quantity = Math.min(quantity, itemInfo.stackMax);
         slot.order = i;
         slot.exists = 1;
 
-        let baseDurability = itemInfo.Durability || 0;
+        let baseDurability = itemInfo.durability;
         if (infusion === ItemInfusion.Crystal) {
           baseDurability = Math.floor(baseDurability / 10);
         }
@@ -674,7 +602,7 @@ export class Inventory {
 
   deleteItem(slotIndex: number): void {
     this.clearEquipmentSlots(slotIndex);
-    const emptyItem = new InventoryItem(new Uint8Array(28).fill(0xff), slotIndex, this.itemsDatabase);
+    const emptyItem = new InventoryItem(new Uint8Array(28).fill(0xff), slotIndex, this.catalog);
     emptyItem.exists = 0;
     this.writeSlot(slotIndex, emptyItem);
   }
@@ -703,28 +631,9 @@ export class Inventory {
     }
   }
 
-  private parseHex(hex: string): number {
-    return parseInt(hex.replace('0x', '').replace('0X', ''), 16);
-  }
-
+  /** Which section of the inventory an entry belongs to. */
   private getCollectionTypeFromItem(item: Item): ItemCollectionType {
-    if (!this.itemsDatabase) return ItemCollectionType.Unknown;
-
-    if (this.itemsDatabase.weapon_items?.includes(item)) return ItemCollectionType.Weapon;
-    if (this.itemsDatabase.ring_items?.includes(item)) return ItemCollectionType.Ring;
-    if (this.itemsDatabase.armor_items?.includes(item)) return ItemCollectionType.Armor;
-    if (this.itemsDatabase.consumable_items?.includes(item)) return ItemCollectionType.Consumable;
-    if (this.itemsDatabase.soul_items?.includes(item)) return ItemCollectionType.Soul;
-    if (this.itemsDatabase.upgrade_items?.includes(item)) return ItemCollectionType.Upgrade;
-    if (this.itemsDatabase.key_items?.includes(item)) return ItemCollectionType.Key;
-    if (this.itemsDatabase.spell_items?.includes(item)) return ItemCollectionType.Spell;
-    if (this.itemsDatabase.usable_items?.includes(item)) return ItemCollectionType.Usable;
-    if (this.itemsDatabase.ammunition_items?.includes(item)) return ItemCollectionType.Ammunition;
-    if (this.itemsDatabase.material_items?.includes(item)) return ItemCollectionType.Material;
-    if (this.itemsDatabase.magic_items?.includes(item)) return ItemCollectionType.Magic;
-    if (this.itemsDatabase.specials?.includes(item)) return ItemCollectionType.Special;
-
-    return ItemCollectionType.Unknown;
+    return COLLECTION_TO_TYPE[item.collection] ?? ItemCollectionType.Unknown;
   }
 
   /**
@@ -732,7 +641,7 @@ export class Inventory {
    * Returns null if the weapon cannot be at or below targetWL even at upgrade 0.
    */
   private computeUpgradeLevelForWL(item: Item, targetWL: number): number | null {
-    const itemId = this.parseHex(item.Id);
+    const itemId = item.id;
 
     // Pyromancy Flame (regular) — upgrades 0–15 via ID encoding, WL = upgradeLevel
     if (itemId === 0x144B50) {
@@ -745,7 +654,7 @@ export class Inventory {
       return targetWL >= 15 ? 5 : null;
     }
 
-    const maxUpgrade = item.MaxUpgrade;
+    const maxUpgrade = item.maxUpgrade;
 
     // No upgrade possible → WL = 0, always valid
     if (!maxUpgrade || maxUpgrade === 0) {
@@ -776,8 +685,8 @@ export class Inventory {
     collectionType: ItemCollectionType,
     targetWL?: number
   ): number {
-    const db = this.itemsDatabase;
-    if (!db) return 0;
+    const catalog = this.getCatalog();
+    if (catalog.isEmpty) return 0;
 
     // Items to always skip
     const SKIP_NAMES = new Set([
@@ -802,18 +711,9 @@ export class Inventory {
       'Egg', 'Big Egg',
     ]);
 
-    let items: Item[] = [];
-    switch (collectionType) {
-      case ItemCollectionType.Weapon:      items = db.weapon_items || []; break;
-      case ItemCollectionType.Armor:       items = db.armor_items || []; break;
-      case ItemCollectionType.Ring:        items = db.ring_items || []; break;
-      case ItemCollectionType.Usable:      items = db.usable_items || []; break;
-      case ItemCollectionType.Material:    items = db.material_items || []; break;
-      case ItemCollectionType.Key:         items = db.key_items || []; break;
-      case ItemCollectionType.Magic:       items = db.magic_items || []; break;
-      case ItemCollectionType.Ammunition:  items = db.ammunition_items || []; break;
-      default: return 0;
-    }
+    const collection = ADD_ALL_COLLECTIONS[collectionType];
+    if (!collection) return 0;
+    const items = catalog.byCollection(collection);
 
     let count = 0;
     // Deduplicate by name within a single Add All run
@@ -821,9 +721,9 @@ export class Inventory {
     const seenNames = new Set<string>();
 
     for (const item of items) {
-      if (SKIP_NAMES.has(item.Name)) continue;
-      if (seenNames.has(item.Name)) continue;
-      seenNames.add(item.Name);
+      if (SKIP_NAMES.has(item.name)) continue;
+      if (seenNames.has(item.name)) continue;
+      seenNames.add(item.name);
 
       if (collectionType === ItemCollectionType.Weapon) {
         const wl = targetWL ?? this.weaponLevel;
@@ -839,14 +739,14 @@ export class Inventory {
 
       } else if (collectionType === ItemCollectionType.Armor) {
         // Duplicates allowed, add at max upgrade level
-        const maxUpgrade = item.MaxUpgrade || 0;
+        const maxUpgrade = item.maxUpgrade || 0;
         const slotIndex = this.addItem(item, 1, maxUpgrade, ItemInfusion.Standard);
         if (slotIndex !== null) count++;
 
       } else {
         // No duplicates for all other categories
-        const maxQty = Math.max(1, item.MaxStackCount || 1);
-        if ((item.MaxStackCount || 1) <= 1) {
+        const maxQty = Math.max(1, item.stackMax || 1);
+        if ((item.stackMax || 1) <= 1) {
           // Non-stackable: skip if already exists
           const existing = this.findExistingItem(item, 0, ItemInfusion.Standard);
           if (existing) continue;

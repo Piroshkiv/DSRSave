@@ -5,6 +5,7 @@ import { t } from '../lib/i18n';
 import { Npc } from '../types/npc';
 import { NpcEditor } from '../lib/npc';
 import './EntityListTab.css';
+import { matchesItemSearch } from '../../../shared/items';
 
 export interface EntityListTabConfig {
   entityType: 'boss' | 'npc';
@@ -105,9 +106,7 @@ export const EntityListTab: React.FC<EntityListTabProps> = ({ character, onChara
     }
   };
 
-  const filteredEntities = entities.filter(entity =>
-    entity.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredEntities = entities.filter(entity => matchesItemSearch(entity.name, searchQuery));
 
   return (
     <div className={`entity-list-tab entity-list-tab--${config.entityType}`}>

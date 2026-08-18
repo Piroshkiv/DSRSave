@@ -4,29 +4,40 @@ import {
   BND4_HEADER_SIZE,
   ENTRY_HEADER_SIZE,
   BND4_SIGNATURE,
-  CLASS_STARTING_STATS
+  CLASS_STARTING_STATS,
+  SYSTEM_ENTRY_STEAMID_OFFSET,
+  SLOT_ACTIVE_FLAGS_OFFSET,
+  ONLINE_FLAG_OFFSET,
+  SLOT_SUMMARY_BASE,
+  SLOT_SUMMARY_SIZE,
+  SLOT_COUNT,
+  STAT_ORDER
 } from './constants';
+import type { SteamIdSummary } from './steamId';
 import { getFileSystemAdapter, FileHandle } from '../../ds1/lib/adapters';
-import { toArrayBuffer } from './bufferUtils';
-
-// Stats order for level calculation
-const STAT_ORDER = ['VIG', 'ATN', 'END', 'VIT', 'STR', 'DEX', 'INT', 'FTH', 'LCK'];
+import { toArrayBuffer } from '../../../shared/binary';
 
 /**
  * DS3 Save File Editor
  * Handles BND4 format with AES-CBC encryption
  * Based on DS3SaveEditor.cs ReadSave and WriteSave methods
  */
-// entry10 offset of the 10-byte per-slot active flag array.
-// 0x01 = slot has an active (non-deleted) character, 0x00 = empty or deleted.
-const SLOT_ACTIVE_FLAGS_OFFSET = 0x1098;
+/**
+ * Index of the BND4 entry holding save-wide (non-character) state: per-slot
+ * active flags, and other global settings such as the online/offline flag.
+ * It is decrypted on load and kept in memory so any feature can read or patch
+ * it without a second decrypt pass — see getSystemEntryData()/writeSystemEntryBytes().
+ */
+const SYSTEM_ENTRY_INDEX = 10;
 
 export class DS3SaveFileEditor {
   private saveData: Uint8Array;
   private characters: DS3Character[] = [];
   private fileHandle: FileHandle | null = null;
-  /** Per-slot active flags read from entry10. Index = slot number. */
-  private slotActiveFlags: boolean[] = [];
+  /** Decrypted system entry, kept live so it can be read and patched at any time. */
+  private systemEntryData: Uint8Array | null = null;
+  /** Set when the system entry was modified and must be re-encrypted on export. */
+  private systemEntryDirty = false;
 
   private constructor(saveData: Uint8Array, fileHandle?: FileHandle) {
     this.saveData = saveData;
@@ -60,40 +71,259 @@ export class DS3SaveFileEditor {
 
     const editor = new DS3SaveFileEditor(saveData, fileHandle || undefined);
     await editor.loadCharacters();
-    await editor.loadSlotActiveFlags();
+    await editor.loadSystemEntry();
     return editor;
   }
 
   /**
-   * Decrypt entry10 and read the 10-byte per-slot active flag array at offset 0x1098.
-   * Falls back to all-true (show all non-empty slots) if entry10 is unavailable.
+   * Decrypt the system entry once at load time and keep it in memory.
+   * Never throws: if the entry is missing or fails to decrypt the editor stays
+   * usable and every system-entry feature reports itself as unavailable.
    */
-  private async loadSlotActiveFlags(): Promise<void> {
+  private async loadSystemEntry(): Promise<void> {
     try {
-      const entryCount = new DataView(this.saveData.buffer).getUint32(0x0C, true);
-      if (entryCount < 11) return; // no entry10
+      if (this.getEntryCount() <= SYSTEM_ENTRY_INDEX) return;
 
-      const entry10 = await this.loadCharacter(10); // same decrypt logic
-      const data = entry10.getRawData();
-
-      this.slotActiveFlags = [];
-      for (let i = 0; i < 10; i++) {
-        const off = SLOT_ACTIVE_FLAGS_OFFSET + i;
-        this.slotActiveFlags[i] = off < data.length ? data[off] === 0x01 : false;
-      }
-      console.log('[DS3] Slot active flags:', this.slotActiveFlags);
+      const entry = await this.loadCharacter(SYSTEM_ENTRY_INDEX); // same decrypt logic
+      this.systemEntryData = entry.getRawData();
     } catch (err) {
-      console.warn('[DS3] Could not read slot active flags:', err);
-      // fallback: treat all non-empty slots as active
-      this.slotActiveFlags = Array(10).fill(true);
+      console.warn('[DS3] Could not decrypt the system entry:', err);
     }
   }
 
   /**
+   * True when the system entry is decrypted and available for reading/patching.
+   */
+  hasSystemEntry(): boolean {
+    return this.systemEntryData !== null;
+  }
+
+  /**
+   * Live reference to the decrypted system entry, or null when unavailable.
+   * Mutating it directly requires a markSystemEntryDirty() call so the change
+   * is re-encrypted on export; prefer writeSystemEntryBytes(), which does both.
+   */
+  getSystemEntryData(): Uint8Array | null {
+    return this.systemEntryData;
+  }
+
+  /** Flag the system entry for re-encryption on the next export. */
+  markSystemEntryDirty(): void {
+    this.systemEntryDirty = true;
+  }
+
+  /**
+   * Copy `length` bytes out of the system entry at `offset`.
+   */
+  readSystemEntryBytes(offset: number, length: number): Uint8Array {
+    const data = this.requireSystemEntry(offset, length);
+    return data.slice(offset, offset + length);
+  }
+
+  /**
+   * Patch bytes into the system entry. Persisted by exportSaveFile().
+   */
+  writeSystemEntryBytes(offset: number, bytes: ArrayLike<number>): void {
+    const data = this.requireSystemEntry(offset, bytes.length);
+    data.set(bytes, offset);
+    this.systemEntryDirty = true;
+  }
+
+  private requireSystemEntry(offset: number, length: number): Uint8Array {
+    const data = this.systemEntryData;
+    if (!data) {
+      throw new Error('System entry is unavailable (it could not be decrypted)');
+    }
+    if (offset < 0 || offset + length > data.length) {
+      throw new Error(
+        `System entry range 0x${offset.toString(16)}+${length} is outside the entry ` +
+        `(size 0x${data.length.toString(16)})`
+      );
+    }
+    return data;
+  }
+
+  /**
    * Returns true if the given character slot contains an active (non-deleted) character.
+   * Falls back to true (show every non-empty slot) when the flags cannot be read.
    */
   isSlotActive(slotIndex: number): boolean {
-    return this.slotActiveFlags[slotIndex] === true;
+    const data = this.systemEntryData;
+    if (!data) return true;
+
+    const off = SLOT_ACTIVE_FLAGS_OFFSET + slotIndex;
+    return off < data.length ? data[off] === 0x01 : false;
+  }
+
+  /**
+   * True when slot flags come from the real save and may be edited.
+   */
+  canEditSlotFlags(): boolean {
+    return this.hasSystemEntry();
+  }
+
+  /**
+   * Mark a character slot as active (restore) or deleted.
+   * Only flips the flag byte; the slot's own data is left untouched, so a
+   * restored character comes back exactly as the game last wrote it.
+   * The change is persisted by exportSaveFile().
+   */
+  setSlotActive(slotIndex: number, active: boolean): void {
+    if (slotIndex < 0 || slotIndex >= SLOT_COUNT) {
+      throw new Error(`Slot index ${slotIndex} out of range (0–9)`);
+    }
+    this.writeSystemEntryBytes(SLOT_ACTIVE_FLAGS_OFFSET + slotIndex, [active ? 0x01 : 0x00]);
+  }
+
+  // ===== ONLINE / OFFLINE =====
+
+  /**
+   * The save-wide network setting, or null when the system entry is unavailable.
+   * true = Play Online, false = Play Offline.
+   */
+  isOnline(): boolean | null {
+    const data = this.systemEntryData;
+    if (!data || ONLINE_FLAG_OFFSET >= data.length) return null;
+    return data[ONLINE_FLAG_OFFSET] === 0x01;
+  }
+
+  /**
+   * Switch the save between online and offline play. Persisted by exportSaveFile().
+   */
+  setOnline(online: boolean): void {
+    this.writeSystemEntryBytes(ONLINE_FLAG_OFFSET, [online ? 0x01 : 0x00]);
+  }
+
+  // ===== LOAD-MENU SUMMARY =====
+
+  /**
+   * One slot's load-menu summary block (name, soul level, appearance), or null
+   * when the system entry is unavailable.
+   *
+   * This is what the load menu shows before a slot is opened. Copying a slot
+   * without it leaves the menu describing whoever used to live there until the
+   * character is loaded once and the game rewrites the block.
+   */
+  readSlotSummary(slotIndex: number): Uint8Array | null {
+    if (slotIndex < 0 || slotIndex >= SLOT_COUNT) {
+      throw new Error(`Slot index ${slotIndex} out of range (0–9)`);
+    }
+    if (!this.systemEntryData) return null;
+    return this.readSystemEntryBytes(SLOT_SUMMARY_BASE + SLOT_SUMMARY_SIZE * slotIndex, SLOT_SUMMARY_SIZE);
+  }
+
+  /** Replace one slot's load-menu summary. Persisted by exportSaveFile(). */
+  writeSlotSummary(slotIndex: number, block: Uint8Array): void {
+    if (slotIndex < 0 || slotIndex >= SLOT_COUNT) {
+      throw new Error(`Slot index ${slotIndex} out of range (0–9)`);
+    }
+    if (block.length !== SLOT_SUMMARY_SIZE) {
+      throw new Error(
+        `Summary block must be ${SLOT_SUMMARY_SIZE} bytes, got ${block.length}`
+      );
+    }
+    this.writeSystemEntryBytes(SLOT_SUMMARY_BASE + SLOT_SUMMARY_SIZE * slotIndex, block);
+  }
+
+  /**
+   * Swap in another character's decrypted bytes for a slot.
+   *
+   * The BND4 entry has a fixed size, so the replacement must be exactly as long
+   * as what is there; anything else would only fail later, inside the export.
+   */
+  replaceCharacter(slotIndex: number, plainData: Uint8Array): DS3Character {
+    if (slotIndex < 0 || slotIndex >= SLOT_COUNT) {
+      throw new Error(`Slot index ${slotIndex} out of range (0–9)`);
+    }
+
+    const expected = this.getSlotDataSize();
+    if (expected !== null && plainData.length !== expected) {
+      throw new Error(
+        `Slot data must be ${expected} bytes for this save, got ${plainData.length}`
+      );
+    }
+
+    const replacement = new DS3Character(new Uint8Array(plainData), slotIndex);
+    const index = this.characters.findIndex(c => c.slotIndex === slotIndex);
+    if (index === -1) {
+      throw new Error(`Slot ${slotIndex} is not loaded`);
+    }
+    this.characters[index] = replacement;
+    return replacement;
+  }
+
+  /**
+   * Decrypted size of a character slot in this save, or null when no slot could
+   * be decrypted. Every character entry has the same size, so any loaded slot
+   * answers for all of them.
+   */
+  getSlotDataSize(): number | null {
+    for (const character of this.characters) {
+      const size = character.getRawData().length;
+      if (size > 0) return size;
+    }
+    return null;
+  }
+
+  // ===== STEAM ID =====
+
+  /**
+   * SteamID64 the save is bound to, read from the system entry, or null when
+   * that entry is unavailable.
+   */
+  getSteamId(): bigint | null {
+    const data = this.systemEntryData;
+    if (!data || data.length < SYSTEM_ENTRY_STEAMID_OFFSET + 8) return null;
+    return new DataView(data.buffer, data.byteOffset, data.byteLength)
+      .getBigUint64(SYSTEM_ENTRY_STEAMID_OFFSET, true);
+  }
+
+  /**
+   * Every SteamID64 in the save, so the UI can tell "this save belongs to one
+   * account" from "this save is a mix" — the usual state of a file assembled
+   * from downloaded characters.
+   *
+   * Only populated slots are listed; empty ones carry no ID and would force a
+   * pointless full-slot scan.
+   */
+  getSteamIdSummary(): SteamIdSummary {
+    const system = this.getSteamId();
+    const slots = this.characters
+      .filter((character) => !character.isEmpty)
+      .map((character) => ({
+        slotIndex: character.slotIndex,
+        steamId: character.getSteamId(),
+      }));
+
+    const distinct = new Set<bigint | null>(slots.map((s) => s.steamId));
+    if (system !== null) distinct.add(system);
+
+    return { system, slots, mismatched: distinct.size > 1 };
+  }
+
+  /**
+   * Rebind the whole save to another Steam account: the system entry plus every
+   * populated character slot, which is what the game checks. Returns how many
+   * character slots were rewritten; the system entry is not counted.
+   *
+   * This is the one edit a downloaded save actually needs — without it the game
+   * refuses characters that belong to someone else.
+   */
+  setSteamId(steamId: bigint): number {
+    const id = BigInt.asUintN(64, steamId);
+
+    if (this.systemEntryData && this.systemEntryData.length >= SYSTEM_ENTRY_STEAMID_OFFSET + 8) {
+      const bytes = new Uint8Array(8);
+      new DataView(bytes.buffer).setBigUint64(0, id, true);
+      this.writeSystemEntryBytes(SYSTEM_ENTRY_STEAMID_OFFSET, bytes);
+    }
+
+    let patched = 0;
+    for (const character of this.characters) {
+      if (character.isEmpty) continue;
+      if (character.setSteamId(id)) patched++;
+    }
+    return patched;
   }
 
   /**
@@ -252,46 +482,52 @@ export class DS3SaveFileEditor {
         continue;
       }
 
-      // Calculate entry header offset
-      const entryHeaderOffset = BND4_HEADER_SIZE + (character.slotIndex * ENTRY_HEADER_SIZE);
+      await this.writeEntry(newSaveData, view, character.slotIndex, character.getRawData());
+    }
 
-      // Read entry size and data offset
-      const entrySize = Number(view.getBigUint64(entryHeaderOffset + 0x08, true));
-      const entryDataOffset = view.getUint32(entryHeaderOffset + 0x10, true);
-
-      // Read existing IV (we reuse it)
-      const iv = newSaveData.slice(
-        entryDataOffset + 16,
-        entryDataOffset + 32
-      );
-
-      // Encrypt modified character data
-      const encryptedData = await encryptAesCbc(character.getRawData(), iv);
-
-      // Verify encrypted data size matches expected size
-      const expectedEncryptedSize = entrySize - 32;
-      if (encryptedData.length !== expectedEncryptedSize) {
-        throw new Error(
-          `Data size mismatch for slot ${character.slotIndex}. ` +
-          `Expected ${expectedEncryptedSize}, got ${encryptedData.length}`
-        );
-      }
-
-      // Write encrypted data back to buffer
-      newSaveData.set(encryptedData, entryDataOffset + 32);
-
-      // Calculate new MD5 checksum (IV + EncryptedData)
-      const dataToHash = new Uint8Array(16 + encryptedData.length);
-      dataToHash.set(iv, 0);
-      dataToHash.set(encryptedData, 16);
-
-      const checksum = await calculateMD5(dataToHash);
-
-      // Write checksum to beginning of entry
-      newSaveData.set(checksum, entryDataOffset);
+    // Persist system-entry edits (slot active/deleted flags, and anything else patched there)
+    if (this.systemEntryDirty && this.systemEntryData && entryCount > SYSTEM_ENTRY_INDEX) {
+      await this.writeEntry(newSaveData, view, SYSTEM_ENTRY_INDEX, this.systemEntryData);
     }
 
     return newSaveData;
+  }
+
+  /**
+   * Re-encrypt a BND4 entry in place using its existing IV and refresh its MD5.
+   * Entry layout: [MD5 (16)] [IV (16)] [Encrypted Data]
+   */
+  private async writeEntry(
+    saveData: Uint8Array,
+    view: DataView,
+    entryIndex: number,
+    plainData: Uint8Array
+  ): Promise<void> {
+    const entryHeaderOffset = BND4_HEADER_SIZE + (entryIndex * ENTRY_HEADER_SIZE);
+    const entrySize = Number(view.getBigUint64(entryHeaderOffset + 0x08, true));
+    const entryDataOffset = view.getUint32(entryHeaderOffset + 0x10, true);
+
+    // Reuse the existing IV
+    const iv = saveData.slice(entryDataOffset + 16, entryDataOffset + 32);
+
+    const encryptedData = await encryptAesCbc(plainData, iv);
+
+    const expectedEncryptedSize = entrySize - 32;
+    if (encryptedData.length !== expectedEncryptedSize) {
+      throw new Error(
+        `Data size mismatch for entry ${entryIndex}. ` +
+        `Expected ${expectedEncryptedSize}, got ${encryptedData.length}`
+      );
+    }
+
+    saveData.set(encryptedData, entryDataOffset + 32);
+
+    // MD5 is calculated over IV + EncryptedData
+    const dataToHash = new Uint8Array(16 + encryptedData.length);
+    dataToHash.set(iv, 0);
+    dataToHash.set(encryptedData, 16);
+
+    saveData.set(await calculateMD5(dataToHash), entryDataOffset);
   }
 
   /**

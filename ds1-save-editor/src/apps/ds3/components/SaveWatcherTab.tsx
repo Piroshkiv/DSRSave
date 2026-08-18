@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSaveWatcher } from '../hooks/useSaveWatcher';
+import { useSaveWatcher, SETTINGS_SLOT } from '../hooks/useSaveWatcher';
 
 interface SaveWatcherTabProps {
   onClose: () => void;
@@ -50,7 +50,7 @@ export const SaveWatcherTab: React.FC<SaveWatcherTabProps> = ({ onClose }) => {
           </div>
 
           <div className="offset-search-control-group">
-            <label>Character slot</label>
+            <label>Watched entry</label>
             <select
               value={slot}
               onChange={e => setSlot(Number(e.target.value))}
@@ -59,6 +59,7 @@ export const SaveWatcherTab: React.FC<SaveWatcherTabProps> = ({ onClose }) => {
               {Array.from({ length: 10 }, (_, i) => (
                 <option key={i} value={i}>Slot {i}</option>
               ))}
+              <option value={SETTINGS_SLOT}>Settings (entry {SETTINGS_SLOT})</option>
             </select>
           </div>
 

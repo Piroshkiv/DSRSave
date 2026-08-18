@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Inventory, ItemInfusion, InventoryItem, Item } from '../lib/Inventory';
+import { Inventory, ItemInfusion, InventoryItem } from '../lib/Inventory';
+import type { Item } from '../../../shared/items';
 import { NumberInput } from './NumberInput';
 import { t } from '../lib/i18n';
 import { useLang } from '../../../core/context/LanguageContext';
@@ -23,8 +24,8 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   const { lang } = useLang();
   const itemInfo = item.itemInfo;
   // For Estus Flask: if empty, quantity must be 0; if not empty, use current quantity or default to 20
-  const initialQuantity = itemInfo?.Name?.includes('Estus Flask') 
-    ? (itemInfo.Name.includes('(empty)') ? 0 : (item.quantity || 20))
+  const initialQuantity = itemInfo?.name?.includes('Estus Flask') 
+    ? (itemInfo.name.includes('(empty)') ? 0 : (item.quantity || 20))
     : item.quantity;
   const [quantity, setQuantity] = useState<number>(initialQuantity);
   const [upgradeLevel, setUpgradeLevel] = useState<number>(item.upgradeLevel);
@@ -35,25 +36,25 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   const quantityInputRef = useRef<HTMLInputElement>(null);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
 
-  const isPyromancyFlame = itemInfo?.Name === 'Pyromancy Flame' || itemInfo?.Name === 'Pyromancy Flame (Ascended)';
-  const isEstusFlask = itemInfo?.Name?.includes('Estus Flask');
-  const isEstusFlaskEmpty = isEstusFlask && itemInfo?.Name?.includes('(empty)');
+  const isPyromancyFlame = itemInfo?.name === 'Pyromancy Flame' || itemInfo?.name === 'Pyromancy Flame (Ascended)';
+  const isEstusFlask = itemInfo?.name?.includes('Estus Flask');
+  const isEstusFlaskEmpty = isEstusFlask && itemInfo?.name?.includes('(empty)');
 
   useEffect(() => {
     if (isPyromancyFlame) {
       // Pyromancy Flame special logic: can upgrade from 0 to 15 for base, 0 to 5 for ascended
-      if (itemInfo?.Name === 'Pyromancy Flame (Ascended)') {
+      if (itemInfo?.name === 'Pyromancy Flame (Ascended)') {
         setMaxUpgrade(5);
       } else {
         setMaxUpgrade(15);
       }
-    } else if (itemInfo && itemInfo.MaxUpgrade !== undefined) {
+    } else if (itemInfo && itemInfo.maxUpgrade !== undefined) {
       let max: number;
       if (safeMode) {
-        max = Inventory.getMaxUpgradeForInfusion(itemInfo.MaxUpgrade, infusion);
+        max = Inventory.getMaxUpgradeForInfusion(itemInfo.maxUpgrade, infusion);
       } else {
         // In unsafe mode, allow max upgrade based on item's absolute max
-        max = itemInfo.MaxUpgrade;
+        max = itemInfo.maxUpgrade;
       }
       setMaxUpgrade(max);
       // Only auto-cap upgrade level in safe mode
@@ -67,13 +68,10 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
     try {
       // Special handling for Estus Flask - change to selected variant
       if (isEstusFlask && selectedEstusFlask) {
-        const typeNumeric = Math.floor(parseInt(selectedEstusFlask.Type.replace('0x', ''), 16) / 0x10000000);
-        const idNumeric = parseInt(selectedEstusFlask.Id.replace('0x', ''), 16);
-
-        item.itemType = typeNumeric;
-        item.itemId = idNumeric;
+        item.itemType = selectedEstusFlask.typeNibble;
+        item.itemId = selectedEstusFlask.id;
         // For empty Estus Flask, quantity must be 0, otherwise use the specified quantity
-        if (selectedEstusFlask.Name?.includes('(empty)')) {
+        if (selectedEstusFlask.name?.includes('(empty)')) {
           item.quantity = 0;
         } else {
           item.quantity = quantity;
@@ -115,17 +113,17 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
     }
   };
 
-  const canUpgrade = isPyromancyFlame || (itemInfo?.MaxUpgrade !== undefined && itemInfo.MaxUpgrade > 0);
-  const canInfuse = safeMode ? (itemInfo?.CanInfuse === true && !isPyromancyFlame) : !isPyromancyFlame;
-  const canStack = itemInfo && itemInfo.MaxStackCount > 1;
-  const hasDurability = (item.collectionType === 'Weapon' || item.collectionType === 'Armor') && itemInfo?.Durability !== undefined;
+  const canUpgrade = isPyromancyFlame || (itemInfo?.maxUpgrade !== undefined && itemInfo.maxUpgrade > 0);
+  const canInfuse = safeMode ? (itemInfo?.canInfuse === true && !isPyromancyFlame) : !isPyromancyFlame;
+  const canStack = itemInfo && itemInfo.stackMax > 1;
+  const hasDurability = (item.collectionType === 'Weapon' || item.collectionType === 'Armor') && itemInfo?.durability !== undefined;
 
   // Get all Estus Flask variants
   const getEstusFlaskVariants = (): Item[] => {
-    const db = inventory.getItemsDatabase();
-    if (!db || !db.usable_items) return [];
-
-    return db.usable_items.filter(i => i.Name?.includes('Estus Flask'));
+    return inventory
+      .getCatalog()
+      .byCollection('usable_items')
+      .filter(i => i.name.includes('Estus Flask'));
   };
 
   const estusFlaskVariants = isEstusFlask ? getEstusFlaskVariants() : [];
@@ -133,10 +131,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   // Apply Chinese names when language is Chinese
   useEffect(() => {
     if (lang === 'zh') {
-      const db = inventory.getItemsDatabase();
-      if (db) {
-        applyChineseNames(db);
-      }
+      applyChineseNames(inventory.getCatalog());
     }
   }, [lang, inventory]);
 
@@ -153,7 +148,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   // Scroll to quantity field when dialog opens (if quantity field exists)
   useEffect(() => {
     // Check if quantity field should be visible
-    const shouldHaveQuantity = canStack || (isEstusFlask && (!selectedEstusFlask ? !isEstusFlaskEmpty : !selectedEstusFlask.Name?.includes('(empty)')));
+    const shouldHaveQuantity = canStack || (isEstusFlask && (!selectedEstusFlask ? !isEstusFlaskEmpty : !selectedEstusFlask.name?.includes('(empty)')));
     
     if (shouldHaveQuantity && quantityInputRef.current) {
       // Use setTimeout to ensure the DOM is updated
@@ -222,13 +217,14 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
               <div className="form-group">
                 <label>{t('estusFlask', lang)}</label>
                 <select
-                  value={selectedEstusFlask?.Id || itemInfo?.Id || ''}
+                  value={String(selectedEstusFlask?.id ?? itemInfo?.id ?? '')}
                   onChange={(e) => {
-                    const selected = estusFlaskVariants.find(v => v.Id === e.target.value);
+                    // Catalogue ids are numbers; the select carries them as strings.
+                    const selected = estusFlaskVariants.find(v => String(v.id) === e.target.value);
                     setSelectedEstusFlask(selected || null);
                     // If empty variant selected, set quantity to 0, otherwise default to 20
                     if (selected) {
-                      if (selected.Name?.includes('(empty)')) {
+                      if (selected.name?.includes('(empty)')) {
                         setQuantity(0);
                       } else {
                         setQuantity(20);
@@ -238,8 +234,8 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
                 >
                   <option value="">{t('keepCurrent', lang)}</option>
                   {estusFlaskVariants.map(variant => (
-                    <option key={variant.Id} value={variant.Id}>
-                      {variant.displayName || variant.Name}
+                    <option key={variant.id} value={variant.id}>
+                      {variant.displayName || variant.name}
                     </option>
                   ))}
                 </select>
@@ -249,7 +245,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
                 // 1. No variant selected (Keep Current) and current item is not empty
                 // 2. Variant selected and it's not empty
                 const showQuantity = selectedEstusFlask
-                  ? !selectedEstusFlask.Name?.includes('(empty)')
+                  ? !selectedEstusFlask.name?.includes('(empty)')
                   : !isEstusFlaskEmpty;
 
                 return showQuantity ? (
@@ -269,12 +265,12 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
             <>
               {canStack && (
                 <div className="form-group">
-                  <label>{t('quantity', lang)} (max: {itemInfo.MaxStackCount})</label>
+                  <label>{t('quantity', lang)} (max: {itemInfo.stackMax})</label>
                   <NumberInput
                     value={quantity}
                     onChange={setQuantity}
                     min={1}
-                    max={itemInfo.MaxStackCount}
+                    max={itemInfo.stackMax}
                   />
                 </div>
               )}

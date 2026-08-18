@@ -41,6 +41,12 @@ const POLL_INTERVAL_MS = 500;
 const MAX_CAPTURES_PER_EVENT = 100;
 const CHECKPOINT_PREFIX = 'checkpoint_';
 const LS_KEY = 'ds3-save-watcher';
+/** BND4 entry 10 — the system/settings entry (slot flags, SteamID, load-menu summary) */
+export const SETTINGS_SLOT = 10;
+
+export function slotLabel(slot: number): string {
+  return slot === SETTINGS_SLOT ? 'settings entry' : `slot ${slot}`;
+}
 
 function dirName(path: string): string {
   const i = Math.max(path.lastIndexOf('\\'), path.lastIndexOf('/'));
@@ -60,7 +66,7 @@ async function readSaveFile(path: string): Promise<Uint8Array> {
   return fs.readFile(path);
 }
 
-/** Decrypt one character slot out of raw .sl2 bytes */
+/** Decrypt one BND4 entry (character slot 0–9, or the settings entry) out of raw .sl2 bytes */
 async function decryptSlot(sl2Bytes: Uint8Array, slot: number): Promise<Uint8Array> {
   const buf = sl2Bytes.buffer instanceof ArrayBuffer ? sl2Bytes.buffer : new Uint8Array(sl2Bytes).buffer;
   const file = new File([new Blob([buf])], 'save.sl2');
@@ -358,8 +364,8 @@ export function useSaveWatcher() {
         isBusy: false,
         captures: [],
         status: existing > 0
-          ? `Watching "${name}" — continuing from #${String(existing + 1).padStart(3, '0')} (${existing} older capture(s) kept)`
-          : `Watching "${name}" — save the game to capture (slot ${slot}, every ${POLL_INTERVAL_MS} ms)`,
+          ? `Watching "${name}" (${slotLabel(slot)}) — continuing from #${String(existing + 1).padStart(3, '0')} (${existing} older capture(s) kept)`
+          : `Watching "${name}" — save the game to capture (${slotLabel(slot)}, every ${POLL_INTERVAL_MS} ms)`,
       }));
     } catch (e) {
       setState(s => ({
