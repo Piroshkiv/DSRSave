@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { DS3Inventory, ItemCollectionType, Item, ItemInfusion } from '../lib/Inventory';
+import { DS3Inventory, ItemCollectionType, ItemInfusion, COLLECTION_FOR_TYPE } from '../lib/Inventory';
+import { matchesItemSearch, type Item } from '../../../shared/items';
 import { NumberInput } from '../../ds1/components/NumberInput';
 
 interface ItemCreateDialogProps {
@@ -32,66 +33,38 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   // Set default slot on mount
   useEffect(() => {
     const nextSlot = inventory.findNextAvailableSlot();
-    setTargetSlot(nextSlot);
+    // -1 means the inventory is full; keep the field at 0 so it stays usable,
+    // addItem refuses to overwrite an occupied slot anyway.
+    setTargetSlot(nextSlot === -1 ? 0 : nextSlot);
   }, [inventory]);
 
   useEffect(() => {
-    const db = inventory.getItemsDatabase();
-    if (!db) return;
+    const catalog = inventory.getCatalog();
+    if (catalog.isEmpty) return;
 
-    // Hide Fists and Unknown items in safe mode
+    // Hide Fists, Unknown and cut/debug items in safe mode
     const hiddenNames = ['Fists', 'Fist'];
 
-    const filterItems = (items: Item[]) => {
-      if (safeMode) {
-        return items.filter(item => {
-          if (hiddenNames.includes(item.Name)) return false;
-          if (item.Name.startsWith('Unknown (')) return false;
-          return true;
-        });
-      }
-      return items;
-    };
+    const collection = COLLECTION_FOR_TYPE[collectionType];
+    const all = collection ? catalog.byCollection(collection) : [];
 
-    let items: Item[] = [];
-    switch (collectionType) {
-      case ItemCollectionType.Weapon:
-        items = filterItems(db.weapon_items || []);
-        break;
-      case ItemCollectionType.Armor:
-        items = filterItems(db.armor_items || []);
-        break;
-      case ItemCollectionType.Ring:
-        items = filterItems(db.ring_items || []);
-        break;
-      case ItemCollectionType.Consumable:
-        items = filterItems(db.consumable_items || []);
-        break;
-      case ItemCollectionType.Magic:
-        items = filterItems(db.magic_items || []);
-        break;
-      case ItemCollectionType.Ore:
-        items = filterItems(db.ore_items || []);
-        break;
-      case ItemCollectionType.Key:
-        items = filterItems(db.key_items || []);
-        break;
-      case ItemCollectionType.Ammunition:
-        items = filterItems(db.ammunition_items || []);
-        break;
-      case ItemCollectionType.Covenant:
-        items = filterItems(db.covenant_items || []);
-        break;
-    }
-
-    setAvailableItems(items);
+    setAvailableItems(
+      safeMode
+        ? all.filter(
+            item =>
+              item.safe &&
+              !hiddenNames.includes(item.name) &&
+              !item.name.startsWith('Unknown ('),
+          )
+        : [...all],
+    );
   }, [collectionType, safeMode, inventory]);
 
   useEffect(() => {
-    if (selectedItem && selectedItem.MaxUpgrade !== undefined) {
-      setMaxUpgrade(selectedItem.MaxUpgrade);
-      if (upgradeLevel > selectedItem.MaxUpgrade) {
-        setUpgradeLevel(selectedItem.MaxUpgrade);
+    if (selectedItem && selectedItem.maxUpgrade !== undefined) {
+      setMaxUpgrade(selectedItem.maxUpgrade);
+      if (upgradeLevel > selectedItem.maxUpgrade) {
+        setUpgradeLevel(selectedItem.maxUpgrade);
       }
     } else {
       setMaxUpgrade(0);
@@ -101,8 +74,8 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
   const handleItemSelect = (item: Item) => {
     setSelectedItem(item);
-    setQuantity(item.MaxStackCount);
-    setStorageQty(item.MaxStackCount > 1 ? item.MaxStackCount : 0);
+    setQuantity(item.stackMax);
+    setStorageQty(item.stackMax > 1 ? item.stackMax : 0);
     setUpgradeLevel(0);
     setInfusion(ItemInfusion.Standard);
   };
@@ -118,7 +91,11 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
         infusion,
         targetSlot
       );
-      if (storageQty > 0 && selectedItem.MaxStackCount > 1) {
+      if (slotIndex === null) {
+        alert(`Slot ${targetSlot} is occupied or out of range — pick another slot.`);
+        return;
+      }
+      if (storageQty > 0 && selectedItem.stackMax > 1) {
         inventory.setStorageQuantity(selectedItem, storageQty);
       }
       onItemCreated(slotIndex);
@@ -128,38 +105,17 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     }
   };
 
-  const isStaffPyromancyOrChime = selectedItem ? checkIsStaffPyromancyOrChime(selectedItem) : false;
+  // Safe mode: only what DS3 actually accepts a gem on — the catalogue's CanInfuse
+  // flag, which excludes bows, crossbows, torches, catalysts and boss weapons.
+  // Unsafe mode: no check at all, the user is on their own.
+  const canInfuse = safeMode ? selectedItem?.canInfuse === true : selectedItem !== null;
 
-  // Infusion rules (like DS1, but without durability):
-  // Safe mode: MaxUpgrade == 10 AND not staff/pyromancy/chime
-  // Unsafe mode: always allow if MaxUpgrade == 10
-  const canInfuse = safeMode
-    ? (selectedItem?.MaxUpgrade === 10 && !isStaffPyromancyOrChime)
-    : (selectedItem?.MaxUpgrade === 10);
+  const canUpgrade = selectedItem?.maxUpgrade !== undefined && selectedItem.maxUpgrade > 0;
+  const canStack = selectedItem && selectedItem.stackMax > 1;
 
-  const canUpgrade = selectedItem?.MaxUpgrade !== undefined && selectedItem.MaxUpgrade > 0;
-  const canStack = selectedItem && selectedItem.MaxStackCount > 1;
-
-  function checkIsStaffPyromancyOrChime(item: Item): boolean {
-    const category = item.Category?.toLowerCase() || '';
-    const name = item.Name?.toLowerCase() || '';
-
-    // Check category
-    if (category.includes('staff') || category.includes('staves')) return true;
-    if (category.includes('pyromancy') || category.includes('flames')) return true;
-    if (category.includes('chime') || category.includes('talisman')) return true;
-
-    // Check name patterns
-    if (name.includes('staff')) return true;
-    if (name.includes('chime')) return true;
-    if (name.includes('talisman')) return true;
-    if (name.includes('flame') && name.includes('pyromancy')) return true;
-
-    return false;
-  }
 
   const filteredItems = availableItems.filter((item) =>
-    item.Name.toLowerCase().includes(searchQuery.toLowerCase())
+    matchesItemSearch(item.displayName || item.name, searchQuery)
   );
 
   // Prevent body scroll when dialog is open
@@ -247,11 +203,11 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
             <div className="items-select-list">
               {filteredItems.map((item) => (
                 <div
-                  key={`${item.Type}-${item.Id}`}
+                  key={item.key}
                   className={`item-select-option ${selectedItem === item ? 'selected' : ''}`}
                   onClick={() => handleItemSelect(item)}
                 >
-                  {item.Name}
+                  {item.name}
                 </div>
               ))}
             </div>
@@ -272,12 +228,12 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               {canStack && (
                 <>
                   <div className="form-group">
-                    <label>Quantity (max: {selectedItem.MaxStackCount})</label>
+                    <label>Quantity (max: {selectedItem.stackMax})</label>
                     <NumberInput
                       value={quantity}
                       onChange={setQuantity}
                       min={1}
-                      max={selectedItem.MaxStackCount}
+                      max={selectedItem.stackMax}
                     />
                   </div>
                   <div className="form-group">

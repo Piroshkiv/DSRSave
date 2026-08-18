@@ -1,7 +1,7 @@
 // Chinese item names loader
 // Maps item IDs to Chinese names using the official DS1 translations
 
-import { ItemsDatabase } from './Inventory';
+import type { ItemCatalog } from '../../../shared/items';
 
 interface ChineseNames {
   weapons: Record<string, string>;
@@ -10,6 +10,19 @@ interface ChineseNames {
   magic: Record<string, string>;
   items: Record<string, string>;
 }
+
+/** Which translation namespace each catalogue collection draws from. */
+const COLLECTION_NAMESPACE: Record<string, keyof ChineseNames> = {
+  weapon_items: 'weapons',
+  armor_items: 'armor',
+  ring_items: 'rings',
+  magic_items: 'magic',
+  // Consumables, keys, materials and ammunition share one namespace.
+  usable_items: 'items',
+  key_items: 'items',
+  material_items: 'items',
+  ammunition_items: 'items',
+};
 
 let cachedNames: ChineseNames | null = null;
 
@@ -31,36 +44,24 @@ export async function loadChineseNames(): Promise<ChineseNames> {
   }
 }
 
-function hexToDecimalId(hexId: string): string {
-  return String(parseInt(hexId, 16));
-}
-
-export async function applyChineseNames(database: ItemsDatabase): Promise<void> {
+/**
+ * Overlay Chinese names onto a catalogue.
+ *
+ * The translation tables are keyed by decimal item id within a namespace, so
+ * the collection an item came from decides which table to consult. Names land
+ * on the catalogue entries themselves — previously this wrote `displayName`
+ * into the raw JSON objects, which coupled the overlay to the raw database.
+ */
+export async function applyChineseNames(catalog: ItemCatalog): Promise<void> {
   const names = await loadChineseNames();
 
-  const applyToItems = (items: any[] | undefined, category: keyof ChineseNames) => {
-    if (!items) return;
-    const nameMap = names[category];
-    if (!nameMap) return;
+  for (const [collection, namespace] of Object.entries(COLLECTION_NAMESPACE)) {
+    const table = names[namespace];
+    if (!table) continue;
 
-    for (const item of items) {
-      const decimalId = hexToDecimalId(item.Id);
-      if (nameMap[decimalId]) {
-        item.displayName = nameMap[decimalId];
-      }
+    for (const item of catalog.byCollection(collection)) {
+      const translated = table[String(item.rawId)];
+      if (translated) item.setDisplayName(translated);
     }
-  };
-
-  // Map items to their Chinese name categories
-  applyToItems(database.weapon_items, 'weapons');
-  applyToItems(database.armor_items, 'armor');
-  applyToItems(database.ring_items, 'rings');
-
-  // For magic, consumables, key items, materials, ammunition - they share the 'items' namespace
-  // but magic has its own IDs, so we need to check both
-  applyToItems(database.magic_items, 'magic');
-  applyToItems(database.usable_items, 'items');
-  applyToItems(database.key_items, 'items');
-  applyToItems(database.material_items, 'items');
-  applyToItems(database.ammunition_items, 'items');
+  }
 }

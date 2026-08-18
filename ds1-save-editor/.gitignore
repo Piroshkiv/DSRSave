@@ -28,3 +28,7 @@ src-tauri/target
 *.njsproj
 *.sln
 *.sw?
+
+# Research/scratch scripts — only the SEO generator is used by `npm run build`
+scripts/*
+!scripts/generate-seo-pages.js

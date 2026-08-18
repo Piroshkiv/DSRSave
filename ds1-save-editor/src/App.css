@@ -321,6 +321,230 @@
   font-size: 0.8em;
 }
 
+/* Paired field columns in the DS3 General tab (HP/FP/Stamina vs Souls/SM/NG+) */
+.ds3-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+  align-items: start;
+}
+
+@media (max-width: 700px) {
+  .ds3-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Save Slot and Steam ID stack under the columns, each with a Stats/General-style header */
+.ds3-slot-section {
+  margin-top: 1.75rem;
+  max-width: 900px;
+}
+
+/* Slot remove/restore toggle — green while the slot is live, amber once removed */
+.ds3-slot-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ds3-slot-status:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ds3-slot-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ds3-slot-status.active {
+  color: #5cb85c;
+  background: rgba(92, 184, 92, 0.12);
+  border: 1px solid rgba(92, 184, 92, 0.35);
+}
+
+.ds3-slot-status.active:hover:not(:disabled) {
+  background: rgba(92, 184, 92, 0.2);
+  border-color: rgba(92, 184, 92, 0.6);
+}
+
+.ds3-slot-status.deleted {
+  color: #d9822b;
+  background: rgba(217, 130, 43, 0.12);
+  border: 1px solid rgba(217, 130, 43, 0.35);
+}
+
+.ds3-slot-status.deleted:hover:not(:disabled) {
+  background: rgba(217, 130, 43, 0.2);
+  border-color: rgba(217, 130, 43, 0.6);
+}
+
+/* Save-wide online/offline toggle, sitting under the stat list. Colours are
+   inverted from the slot ones on purpose: for an edited save offline is the
+   safe state, so green marks offline here. */
+.ds3-net-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  /* Bottom of the stats column, lifted clear of the export hint in the next
+     column so it lines up with the export button itself */
+  margin-top: auto;
+  margin-bottom: 35px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ds3-net-toggle:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ds3-net-toggle.net-offline {
+  color: #5cb85c;
+  background: rgba(92, 184, 92, 0.12);
+  border: 1px solid rgba(92, 184, 92, 0.35);
+}
+
+.ds3-net-toggle.net-offline:hover:not(:disabled) {
+  background: rgba(92, 184, 92, 0.2);
+  border-color: rgba(92, 184, 92, 0.6);
+}
+
+.ds3-net-toggle.net-online {
+  color: #d9822b;
+  background: rgba(217, 130, 43, 0.12);
+  border: 1px solid rgba(217, 130, 43, 0.35);
+}
+
+.ds3-net-toggle.net-online:hover:not(:disabled) {
+  background: rgba(217, 130, 43, 0.2);
+  border-color: rgba(217, 130, 43, 0.6);
+}
+
+/* Steam ID: one field, one per-slot write, one save-wide write */
+.ds3-steamid-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ds3-steamid-input {
+  flex: 1 1 15rem;
+  min-width: 12rem;
+  padding: 5px 8px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #2a2a2a;
+  color: #e0e0e0;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.9rem;
+}
+
+.ds3-steamid-input.invalid {
+  border-color: #c9302c;
+}
+
+/* hex / dec switch — plain links, the active one picked out in the accent colour */
+.ds3-idformat {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+}
+
+.ds3-idformat-link {
+  padding: 2px 2px;
+  border: none;
+  background: none;
+  color: #666;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+.ds3-idformat-link:hover {
+  color: #a0a0a0;
+}
+
+.ds3-idformat-link.active {
+  color: #ff6b35;
+  text-decoration: none;
+  cursor: default;
+}
+
+.ds3-idformat-sep {
+  color: #444;
+}
+
+.ds3-steamid-btn {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #2a2a2a;
+  color: #e0e0e0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ds3-steamid-btn:hover:not(:disabled) {
+  background: #333;
+  border-color: #777;
+}
+
+.ds3-steamid-btn.primary {
+  color: #5cb85c;
+  background: rgba(92, 184, 92, 0.12);
+  border-color: rgba(92, 184, 92, 0.35);
+}
+
+.ds3-steamid-btn.primary:hover:not(:disabled) {
+  background: rgba(92, 184, 92, 0.2);
+  border-color: rgba(92, 184, 92, 0.6);
+}
+
+.ds3-steamid-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ds3-steamid-warning {
+  margin: 0.5rem 0 0;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: #d9822b;
+  background: rgba(217, 130, 43, 0.1);
+  border: 1px solid rgba(217, 130, 43, 0.3);
+}
+
+.ds3-steamid-notice {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  color: #5cb85c;
+}
+
 .character-name {
   color: #e0e0e0;
   font-weight: 500;
@@ -593,8 +817,11 @@
   max-width: 900px;
 }
 
+/* Column, so the online/offline toggle can be pushed to the bottom of it */
 .stats-column {
   flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
 }
 
 .info-column {
@@ -603,7 +830,8 @@
 }
 
 .stats-column h3,
-.info-column h3 {
+.info-column h3,
+.ds3-slot-section h3 {
   color: #c0c0c0;
   font-size: 0.95rem;
   margin-bottom: 1rem;
@@ -618,6 +846,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  /* Floor for the gap to the toggle below, which is otherwise margin-auto'd away */
+  margin-bottom: 10px;
 }
 
 .stat-row {

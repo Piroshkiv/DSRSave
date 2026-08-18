@@ -52,6 +52,10 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
     platform,
     autoDetect,
     autoDetectAvailable,
+    autoBackup,
+    maxBackupsPerSlot,
+    backupCounts,
+    backupsVersion,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
@@ -59,6 +63,11 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
     handleSaveAs,
     handleReload,
     setAutoDetect,
+    setAutoBackup,
+    setMaxBackupsPerSlot,
+    backupSlotNow,
+    restoreBackup,
+    notifyBackupsChanged,
   } = useDS1SaveEditor();
 
   const [showTerms, setShowTerms] = useState(false);
@@ -108,6 +117,7 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
         selectedIndex={selectedCharacterIndex}
         onSelectCharacter={handleCharacterSelect}
         platform={saveEditor ? platform : null}
+        backupCounts={backupCounts}
       />
     </>
   );
@@ -242,6 +252,17 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
                   {safeMode ? t('on', lang) : t('off', lang)}
                 </span>
               </button>
+              <button
+                className="ds1-safemode-btn"
+                onClick={() => setAutoBackup(!autoBackup)}
+                title={t('autoBackupTitle', lang)}
+              >
+                <span className={`ds1-safemode-dot ${autoBackup ? 'on' : 'off'}`}>●</span>
+                {t('autoBackup', lang)}
+                <span className={`ds1-safemode-badge ${autoBackup ? 'on' : 'off'}`}>
+                  {autoBackup ? t('on', lang) : t('off', lang)}
+                </span>
+              </button>
               <button className="ds1-action-btn" onClick={handleSave}>
                 {t('save', lang)}
               </button>
@@ -256,6 +277,14 @@ export const DS1App: React.FC<DS1AppProps> = ({ onHome }) => {
           character={selectedCharacter}
           onCharacterUpdate={handleCharacterUpdate}
           safeMode={safeMode}
+          backups={saveEditor ? {
+            maxPerSlot: maxBackupsPerSlot,
+            setMaxPerSlot: setMaxBackupsPerSlot,
+            version: backupsVersion,
+            backupSlotNow,
+            restoreBackup,
+            notifyChanged: notifyBackupsChanged,
+          } : null}
         />
       </AppLayout>
 

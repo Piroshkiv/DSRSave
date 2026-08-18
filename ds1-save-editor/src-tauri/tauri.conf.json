@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "DS1 Save Editor",
-  "version": "1.7.2",
+  "version": "1.7.4",
   "identifier": "com.ds1saveeditor.app",
   "build": {
     "frontendDist": "../dist",

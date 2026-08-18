@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Inventory, ItemCollectionType, Item, ItemInfusion } from '../lib/Inventory';
+import { Inventory, ItemCollectionType, ItemInfusion, COLLECTION_FOR_TYPE } from '../lib/Inventory';
+import { matchesItemSearch, type Item } from '../../../shared/items';
 import { useLang } from '../../../core/context/LanguageContext';
 import { applyChineseNames } from '../lib/itemNamesZh';
 import { NumberInput } from './NumberInput';
@@ -33,69 +34,22 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const { lang } = useLang();
 
   useEffect(() => {
-    const db = inventory.getItemsDatabase();
-    if (!db) return;
+    const catalog = inventory.getCatalog();
+    if (catalog.isEmpty) return;
 
     // Names to hide in safe mode: Fists, No helm, No armor, No gauntlets, No legs
     const hiddenNames = ['Fists', 'No helm', 'No armor', 'No gauntlets', 'No legs'];
 
-    const filterItems = (items: Item[]) => {
-      if (safeMode) {
-        return items.filter(item => !hiddenNames.includes(item.Name));
-      }
-      return items;
-    };
+    const collection = COLLECTION_FOR_TYPE[collectionType];
+    const all = collection ? catalog.byCollection(collection) : [];
+    const items = safeMode
+      ? all.filter(item => item.safe && !hiddenNames.includes(item.name))
+      : [...all];
 
-    let items: Item[] = [];
-    switch (collectionType) {
-      case ItemCollectionType.Weapon:
-        items = filterItems(db.weapon_items || []);
-        break;
-      case ItemCollectionType.Armor:
-        items = filterItems(db.armor_items || []);
-        break;
-      case ItemCollectionType.Ring:
-        items = filterItems(db.ring_items || []);
-        break;
-      case ItemCollectionType.Consumable:
-        items = filterItems(db.consumable_items || []);
-        break;
-      case ItemCollectionType.Soul:
-        items = filterItems(db.soul_items || []);
-        break;
-      case ItemCollectionType.Upgrade:
-        items = filterItems(db.upgrade_items || []);
-        break;
-      case ItemCollectionType.Key:
-        items = filterItems(db.key_items || []);
-        break;
-      case ItemCollectionType.Spell:
-        items = filterItems(db.spell_items || []);
-        break;
-      case ItemCollectionType.Usable:
-        items = filterItems(db.usable_items || []);
-        break;
-      case ItemCollectionType.Ammunition:
-        items = filterItems(db.ammunition_items || []);
-        break;
-      case ItemCollectionType.Material:
-        items = filterItems(db.material_items || []);
-        break;
-      case ItemCollectionType.Magic:
-        items = filterItems(db.magic_items || []);
-        break;
-      case ItemCollectionType.Special:
-        items = filterItems(db.specials || []);
-        break;
-    }
-
-    // Apply Chinese names if language is Chinese
+    // Chinese names are an overlay on the catalogue entries themselves, so the
+    // list only needs re-rendering once the overlay has been applied.
     if (lang === 'zh') {
-      applyChineseNames(db).then(() => {
-        // Re-filter after applying Chinese names
-        const reFiltered = items.map(item => ({...item}));
-        setAvailableItems(reFiltered);
-      });
+      applyChineseNames(catalog).then(() => setAvailableItems([...items]));
     } else {
       setAvailableItems(items);
     }
@@ -104,21 +58,21 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   useEffect(() => {
     if (selectedItem) {
       // Special handling for Pyromancy Flame
-      const isPyromancyFlame = selectedItem.Name === 'Pyromancy Flame' || selectedItem.Name === 'Pyromancy Flame (Ascended)';
+      const isPyromancyFlame = selectedItem.name === 'Pyromancy Flame' || selectedItem.name === 'Pyromancy Flame (Ascended)';
       if (isPyromancyFlame) {
         // Pyromancy Flame special logic: can upgrade from 0 to 15 for base, 0 to 5 for ascended
-        if (selectedItem.Name === 'Pyromancy Flame (Ascended)') {
+        if (selectedItem.name === 'Pyromancy Flame (Ascended)') {
           setMaxUpgrade(5);
         } else {
           setMaxUpgrade(15);
         }
-      } else if (selectedItem.MaxUpgrade !== undefined) {
+      } else if (selectedItem.maxUpgrade !== undefined) {
         let max: number;
         if (safeMode) {
-          max = Inventory.getMaxUpgradeForInfusion(selectedItem.MaxUpgrade, infusion);
+          max = Inventory.getMaxUpgradeForInfusion(selectedItem.maxUpgrade, infusion);
         } else {
           // In unsafe mode, allow max upgrade based on item's absolute max
-          max = selectedItem.MaxUpgrade;
+          max = selectedItem.maxUpgrade;
         }
         setMaxUpgrade(max);
         // Only auto-cap upgrade level in safe mode
@@ -135,19 +89,19 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const handleItemSelect = (item: Item) => {
     setSelectedItem(item);
     // Special handling for Estus Flask
-    if (item.Name?.includes('Estus Flask')) {
-      if (item.Name?.includes('(empty)')) {
+    if (item.name?.includes('Estus Flask')) {
+      if (item.name?.includes('(empty)')) {
         setQuantity(0);
       } else {
         setQuantity(20);
       }
     } else {
-      setQuantity(Math.min(1, item.MaxStackCount));
+      setQuantity(Math.min(1, item.stackMax));
     }
     setUpgradeLevel(0);
     setInfusion(ItemInfusion.Standard);
-    if (item.Durability !== undefined) {
-      setDurability(item.Durability);
+    if (item.durability !== undefined) {
+      setDurability(item.durability);
     }
   };
 
@@ -187,19 +141,19 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     }
   };
 
-  const isPyromancyFlame = selectedItem?.Name === 'Pyromancy Flame' || selectedItem?.Name === 'Pyromancy Flame (Ascended)';
-  const isEstusFlask = selectedItem?.Name?.includes('Estus Flask');
-  const isEstusFlaskEmpty = isEstusFlask && selectedItem?.Name?.includes('(empty)');
-  const canUpgrade = isPyromancyFlame || (selectedItem?.MaxUpgrade !== undefined && selectedItem.MaxUpgrade > 0);
-  const canInfuse = safeMode ? (selectedItem?.CanInfuse === true && !isPyromancyFlame) : !isPyromancyFlame;
-  const canStack = selectedItem && selectedItem.MaxStackCount > 1;
-  const hasDurability = selectedItem?.Durability !== undefined &&
+  const isPyromancyFlame = selectedItem?.name === 'Pyromancy Flame' || selectedItem?.name === 'Pyromancy Flame (Ascended)';
+  const isEstusFlask = selectedItem?.name?.includes('Estus Flask');
+  const isEstusFlaskEmpty = isEstusFlask && selectedItem?.name?.includes('(empty)');
+  const canUpgrade = isPyromancyFlame || (selectedItem?.maxUpgrade !== undefined && selectedItem.maxUpgrade > 0);
+  const canInfuse = safeMode ? (selectedItem?.canInfuse === true && !isPyromancyFlame) : !isPyromancyFlame;
+  const canStack = selectedItem && selectedItem.stackMax > 1;
+  const hasDurability = selectedItem?.durability !== undefined &&
     (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Armor);
 
-  const filteredItems = availableItems.filter((item) => {
-    const searchName = (item.displayName || item.Name).toLowerCase();
-    return searchName.includes(searchQuery.toLowerCase()) || item.Name.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+  const filteredItems = availableItems.filter((item) =>
+    matchesItemSearch(item.displayName || item.name, searchQuery) ||
+    matchesItemSearch(item.name, searchQuery)
+  );
 
   // Prevent body scroll when dialog is open
   useEffect(() => {
@@ -286,11 +240,11 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
             <div className="items-select-list">
               {filteredItems.map((item) => (
                 <div
-                  key={`${item.Type}-${item.Id}`}
+                  key={item.key}
                   className={`item-select-option ${selectedItem === item ? 'selected' : ''}`}
                   onClick={() => handleItemSelect(item)}
                 >
-                  {item.displayName || item.Name}
+                  {item.displayName}
                 </div>
               ))}
             </div>
@@ -303,7 +257,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                   <label>
                     {isEstusFlask
                       ? `${t('quantity', lang)} ${isEstusFlaskEmpty ? `(${t('estusFlaskEmpty', lang)})` : '(max: 20)'}`
-                      : `${t('quantity', lang)} (max: ${selectedItem.MaxStackCount})`
+                      : `${t('quantity', lang)} (max: ${selectedItem.stackMax})`
                     }
                   </label>
                   <NumberInput
@@ -316,7 +270,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                       }
                     }}
                     min={isEstusFlaskEmpty ? 0 : (isEstusFlask ? 0 : 1)}
-                    max={isEstusFlask ? 20 : selectedItem.MaxStackCount}
+                    max={isEstusFlask ? 20 : selectedItem.stackMax}
                     disabled={isEstusFlaskEmpty}
                   />
                 </div>

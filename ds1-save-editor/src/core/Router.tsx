@@ -8,7 +8,7 @@ import { MetaTags } from './MetaTags';
 import { ErrorPage } from './ErrorPage';
 import { ErrorBoundary } from './ErrorBoundary';
 import { AboutFullPage, TermsFullPage, DS1TutorialPage, FixSavePage, MergeExportPage, SaveWatcherTab as DS1SaveWatcherTab } from '../apps/ds1/components';
-import { OffsetSearchTab, SaveWatcherTab } from '../apps/ds3/components';
+import { OffsetSearchTab, SaveWatcherTab, MergeExportPage as DS3MergeExportPage } from '../apps/ds3/components';
 
 // Wrapper to use ErrorPage with React Router hooks
 const ErrorPageWrapper: React.FC<{ errorType?: 'notFound' | 'redirect' | 'general' }> = ({ errorType }) => {
@@ -188,6 +188,12 @@ const DS3OffsetSearchWrapper: React.FC = () => {
   return <OffsetSearchTab onClose={() => navigate('/ds3')} />;
 };
 
+// DS3 Merge Export Page Wrapper
+const DS3MergeExportWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return <DS3MergeExportPage onClose={() => navigate('/ds3')} />;
+};
+
 // DS3 Save Watcher Page Wrapper
 const DS3SaveWatcherWrapper: React.FC = () => {
   const navigate = useNavigate();
@@ -224,6 +230,7 @@ export const Router: React.FC = () => {
           )}
           <Route path="/ds3" element={<DS3AppWrapper />} />
           <Route path="/ds3/offset-search" element={<DS3OffsetSearchWrapper />} />
+          <Route path="/ds3/merge-export" element={<DS3MergeExportWrapper />} />
           {import.meta.env.DEV && (
             <Route path="/ds3/save-watcher" element={<DS3SaveWatcherWrapper />} />
           )}

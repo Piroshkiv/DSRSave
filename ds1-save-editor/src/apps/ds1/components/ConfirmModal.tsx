@@ -10,7 +10,8 @@ interface ConfirmModalProps {
   onCancel: () => void;
   confirmText?: string;
   cancelText?: string;
-  type?: 'warning' | 'info' | 'success' | 'error';
+  /** `neutral` drops the accent colour for dialogs that shouldn't shout. */
+  type?: 'warning' | 'info' | 'success' | 'error' | 'neutral';
 }
 
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -38,12 +39,24 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
         return '#ef4444';
       case 'info':
         return '#3b82f6';
+      case 'neutral':
+        return 'rgba(255, 255, 255, 0.14)';
       default:
         return '#ff6b35';
     }
   };
 
   const typeColor = getTypeColor();
+  const isNeutral = type === 'neutral';
+
+  // Neutral keeps one grey through frame, title and buttons; the accented types
+  // stay exactly as they were
+  const frame = isNeutral ? `1px solid ${typeColor}` : `2px solid ${typeColor}`;
+  const titleColor = isNeutral ? 'rgba(255, 255, 255, 0.87)' : typeColor;
+  const titleSize = isNeutral ? '1.15rem' : '1.5rem';
+  const confirmBg = isNeutral ? 'rgba(255, 255, 255, 0.09)' : typeColor;
+  const confirmBorder = isNeutral ? 'transparent' : typeColor;
+  const confirmColor = isNeutral ? 'rgba(255, 255, 255, 0.9)' : '#fff';
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
@@ -90,7 +103,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
         .modal-content {
           background: #1a1a1a;
-          border: 2px solid ${typeColor};
+          border: ${frame};
           border-radius: 8px;
           width: 90%;
           max-width: 500px;
@@ -116,8 +129,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
         .modal-header h3 {
           margin: 0;
-          color: ${typeColor};
-          font-size: 1.5rem;
+          color: ${titleColor};
+          font-size: ${titleSize};
           font-weight: 600;
         }
 
@@ -165,14 +178,15 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
         }
 
         .confirm-button {
-          background: ${typeColor};
-          border-color: ${typeColor};
-          color: #fff;
+          background: ${confirmBg};
+          border-color: ${confirmBorder};
+          color: ${confirmColor};
         }
 
         .confirm-button:hover {
           filter: brightness(1.2);
-          transform: translateY(-2px);
+          transform: ${isNeutral ? 'none' : 'translateY(-2px)'};
+          ${isNeutral ? 'background: rgba(255, 255, 255, 0.15);' : ''}
         }
 
         .modal-button:active {

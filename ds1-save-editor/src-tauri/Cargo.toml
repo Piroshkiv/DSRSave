@@ -1,6 +1,6 @@
 [package]
 name = "app"
-version = "1.7.2"
+version = "1.7.4"
 description = "DS1 Save Editor"
 authors = ["CWin", "daochen"]
 license = ""

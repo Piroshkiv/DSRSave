@@ -16,6 +16,8 @@ interface CharacterListProps {
   selectedIndex: number | null;
   onSelectCharacter: (index: number) => void;
   platform?: 'pc' | 'nintendo' | 'ps4' | 'unknown' | null;
+  /** Stored backups per slot — an empty slot with history stays clickable. */
+  backupCounts?: Record<number, number>;
 }
 
 export const CharacterList: React.FC<CharacterListProps> = ({
@@ -23,6 +25,7 @@ export const CharacterList: React.FC<CharacterListProps> = ({
   selectedIndex,
   onSelectCharacter,
   platform,
+  backupCounts,
 }) => {
   const [isToolsExpanded, setIsToolsExpanded] = useState(false);
   const navigate = useNavigate();
@@ -47,20 +50,25 @@ export const CharacterList: React.FC<CharacterListProps> = ({
             <span className="char-list-count">{nonEmpty} / {characters.length}</span>
           </div>
           <div className="character-slots">
-            {characters.map((char, index) => (
-              <div
-                key={index}
-                className={`character-slot ${char.isEmpty ? 'empty' : ''} ${selectedIndex === index ? 'selected' : ''}`}
-                onClick={() => !char.isEmpty && onSelectCharacter(index)}
-              >
-                <div className="character-name">
-                  {char.isEmpty ? t('emptySlot', lang) : char.name || t('unnamed', lang)}
+            {characters.map((char, index) => {
+              const backups = backupCounts?.[char.slotNumber] ?? 0;
+              const selectable = !char.isEmpty || backups > 0;
+
+              return (
+                <div
+                  key={index}
+                  className={`character-slot ${char.isEmpty ? 'empty' : ''} ${selectedIndex === index ? 'selected' : ''} ${char.isEmpty && backups > 0 ? 'has-backups' : ''}`}
+                  onClick={() => selectable && onSelectCharacter(index)}
+                >
+                  <div className="character-name">
+                    {char.isEmpty ? t('emptySlot', lang) : char.name || t('unnamed', lang)}
+                  </div>
+                  <div className="character-level">
+                    {char.isEmpty ? '' : `${t('levelShort', lang)} ${char.level}`}
+                  </div>
                 </div>
-                <div className="character-level">
-                  {char.isEmpty ? '' : `${t('levelShort', lang)} ${char.level}`}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
@@ -92,6 +100,18 @@ export const CharacterList: React.FC<CharacterListProps> = ({
       </div>
 
       <style>{`
+        /* An empty slot that still has backups is a valid destination to restore
+           into, so it stays lit and clickable unlike a plain empty slot */
+        .character-slot.empty.has-backups {
+          opacity: 0.7;
+          cursor: pointer;
+        }
+
+        .character-slot.empty.has-backups:hover {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: rgba(255, 255, 255, 0.1);
+        }
+
         .platform-badge {
           padding: 0.3rem 0.6rem;
           background-color: rgba(0, 0, 0, 0.2);

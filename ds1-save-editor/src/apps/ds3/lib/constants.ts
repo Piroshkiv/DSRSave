@@ -45,6 +45,9 @@ export const RELATIVE_OFFSETS = {
   WEAPON_MEMORY: -0x9D,
 } as const;
 
+/** The nine levelled stats, in the order the game's status screen lists them. */
+export const STAT_ORDER = ['VIG', 'ATN', 'END', 'VIT', 'STR', 'DEX', 'INT', 'FTH', 'LCK'];
+
 // ===== BONFIRES / event-flag block =====
 // The bonfire block moves with the (variable-length) inventory, so it can't be read at a
 // fixed offset. It is located with a DS1-style windowed anchor search — see
@@ -101,6 +104,62 @@ export const BONFIRE_UNLOCK_ALL: ReadonlyArray<readonly [number, number]> = [
   // rec 22
   [0x6E01, 0x03], [0x720F, 0xC0],
 ];
+
+// ===== STEAM ID =====
+// SteamID64 of the account the save belongs to, stored LE in two places:
+//   * every populated character slot, at `u32 LE @0x58` + STEAMID_PTR_TO_ID;
+//   * the system entry (entry 10), at SYSTEM_ENTRY_STEAMID_OFFSET.
+// The game rejects a save whose IDs don't match the running account, which is
+// what makes transferring someone else's save a two-step patch.
+//
+// The slot address is NOT reachable from CHARACTER_PATTERN (or from the GA
+// table / inventory / bonfire anchors): the ID sits *after* the variable-length
+// inventory, so every delta drifts — measured +0x66168…+0x66dc0 from the
+// character pattern across 23 slots in 5 saves. Two locators that do hold on
+// all 23:
+//   1. the pointer at 0x58 (exact, O(1)) — same one SaveMerge uses;
+//   2. STEAMID_PATTERN, the high half of the ID itself: 0x01100001 is the
+//      universe/type/instance prefix every individual Steam account shares, so
+//      it is account-independent, and it occurs exactly once per slot.
+export const STEAMID_SLOT_PTR_OFFSET = 0x58;
+export const STEAMID_PTR_TO_ID = 0x6F;
+
+/** `01 00 10 01` = high 4 bytes of any SteamID64, LE. Sits at ID + 4. */
+export const STEAMID_PATTERN = new Uint8Array([0x01, 0x00, 0x10, 0x01]);
+export const STEAMID_PATTERN_TO_ID = -4;
+
+/** SteamID64 in the system entry (entry 10), 8 bytes LE. */
+export const SYSTEM_ENTRY_STEAMID_OFFSET = 0x08;
+
+// The save-wide network setting ("Launch Setting" in the game's system menu):
+// 0x01 = Play Online, 0x00 = Play Offline.
+//
+// Verified by diffing 13 decrypted entry-10 captures taken around a toggle in
+// game: 0x23 is the *only* byte of the 393,220-byte entry that is stable within
+// each group and differs across them (seven offline captures 0x00, six online
+// 0x01), and checkpoints plus the live save agree. It sits in the entry's fixed
+// header — a rewrite that touched 0x12F2..0x60003 left everything below 0x2000
+// alone — so unlike the bonfire block this absolute offset does not drift.
+export const ONLINE_FLAG_OFFSET = 0x23;
+
+// ===== SYSTEM ENTRY (entry 10) SLOT TABLES =====
+// Two per-slot tables sit back to back near the start of the system entry:
+//
+//   0x1098  ten active flags, one byte per slot (0x01 = an active character,
+//           0x00 = empty or deleted);
+//   0x10A2  ten load-menu summary blocks of 0x22A bytes each — what the game
+//           shows *before* a slot is loaded (name at +0x00 as UTF-16, soul level
+//           at +0x22 as u32 LE, appearance data behind a "FACE" marker at +0x3A).
+//
+// Verified on a real save: all ten blocks parse at that stride, and the name and
+// level of each populated block match the character in the matching slot. This
+// is the DS3 counterpart of DS1's 400-byte load screen entry, with one welcome
+// difference — the summary blocks sit *after* the flag array rather than inside
+// slot 0's block, so writing one slot's summary cannot disturb another's flag.
+export const SLOT_ACTIVE_FLAGS_OFFSET = 0x1098;
+export const SLOT_SUMMARY_BASE = 0x10A2;
+export const SLOT_SUMMARY_SIZE = 0x22A;
+export const SLOT_COUNT = 10;
 
 // Play time in milliseconds, u32 LE. Absolute offset in the decrypted slot header
 // (not pattern-relative). The game trusts this value and continues counting from it.

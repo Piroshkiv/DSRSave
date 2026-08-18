@@ -8,6 +8,7 @@ import { Inventory, ItemCollectionType, ItemInfusion, InventoryItem } from '../l
 import { ItemCreateDialog } from './ItemCreateDialog';
 import { ItemEditDialog } from './ItemEditDialog';
 import { NumberInput } from './NumberInput';
+import { matchesItemSearch } from '../../../shared/items';
 
 interface InventoryTabProps {
   character: Character;
@@ -80,9 +81,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
     // Apply search filter
     if (searchQuery.trim()) {
-      filteredItems = filteredItems.filter(item =>
-        item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filteredItems = filteredItems.filter(item => matchesItemSearch(item.itemName, searchQuery));
     }
 
     // Apply infusion filter (only for weapons, armor)
@@ -114,8 +113,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
         await newInventory.loadItemsDatabase();
         // Apply Chinese names if language is Chinese
         if (lang === 'zh') {
-          const db = newInventory.getItemsDatabase();
-          if (db) await applyChineseNames(db);
+          await applyChineseNames(newInventory.getCatalog());
         }
         // Refresh items after loading database
         const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
@@ -129,9 +127,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
         // Apply search filter
         if (searchQuery.trim()) {
-          filteredItems = filteredItems.filter(item =>
-            item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
-          );
+          filteredItems = filteredItems.filter(item => matchesItemSearch(item.itemName, searchQuery));
         }
 
         // Apply infusion filter (only for weapons, armor)
@@ -171,23 +167,14 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
   // Apply Chinese names when language changes
   useEffect(() => {
-    if (!loading && inventory) {
-      const db = inventory.getItemsDatabase();
-      if (db) {
-        if (lang === 'zh') {
-          applyChineseNames(db).then(() => refreshItems());
-        } else {
-          // Reset to English names
-          for (const cat of Object.values(db)) {
-            if (Array.isArray(cat)) {
-              for (const item of cat) {
-                item.displayName = undefined;
-              }
-            }
-          }
-          refreshItems();
-        }
-      }
+    if (loading || !inventory) return;
+
+    const catalog = inventory.getCatalog();
+    if (lang === 'zh') {
+      applyChineseNames(catalog).then(() => refreshItems());
+    } else {
+      catalog.clearDisplayNames();
+      refreshItems();
     }
   }, [lang]);
 

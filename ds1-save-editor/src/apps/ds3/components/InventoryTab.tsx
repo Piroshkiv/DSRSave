@@ -5,6 +5,7 @@ import { DS3Inventory, ItemCollectionType, DS3InventoryItem, ItemInfusion } from
 import { ItemCreateDialog } from './ItemCreateDialog';
 import { ItemEditDialog } from './ItemEditDialog';
 import { NumberInput } from '../../ds1/components/NumberInput';
+import { matchesItemSearch } from '../../../shared/items';
 
 interface InventoryTabProps {
   character: DS3Character;
@@ -57,7 +58,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
   // Weapons with MaxUpgrade=5 count each level as 2 WL (so +5 = WL 10)
   const getEffectiveWL = (item: DS3InventoryItem): number => {
-    const maxUp = item.itemInfo?.MaxUpgrade ?? 10;
+    const maxUp = item.itemInfo?.maxUpgrade ?? 10;
     return item.upgradeLevel * (maxUp === 5 ? 2 : 1);
   };
 
@@ -70,15 +71,14 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
     if (safeMode) {
       filtered = filtered.filter(item => {
+        if (item.itemInfo?.safe === false) return false;
         const n = item.itemName;
         return !n.startsWith('Unknown (') && n !== 'Fists' && n !== 'Fist';
       });
     }
 
     if (searchQuery.trim()) {
-      filtered = filtered.filter(item =>
-        item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = filtered.filter(item => matchesItemSearch(item.itemName, searchQuery));
     }
 
     if (infusionFilter !== 'all' && activeSubTab === 'weapons') {
@@ -135,6 +135,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
   const handleItemCreated = (slotIndex: number | null) => {
     if (slotIndex !== null) pendingScrollSlot.current = slotIndex;
+    inventory.calibrateWeaponMemory();
     refreshItems();
     onCharacterUpdate();
   };
@@ -146,6 +147,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
   };
 
   const handleItemUpdated = () => {
+    inventory.calibrateWeaponMemory();
     refreshItems();
     onCharacterUpdate();
   };

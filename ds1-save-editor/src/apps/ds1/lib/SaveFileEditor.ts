@@ -1,6 +1,6 @@
 import { Character } from './Character';
 import { decryptAesCbc, encryptAesCbc, calculateMD5 } from './crypto';
-import { toArrayBuffer } from './bufferUtils';
+import { toArrayBuffer } from '../../../shared/binary';
 import {
   SAVE_FILE_SIZE,
   SAVE_SLOT_SIZE,
@@ -11,6 +11,40 @@ import {
 } from './constants';
 import { getFileSystemAdapter, FileHandle } from './adapters';
 
+/**
+ * On-disk layout of one DSR slot, verified byte-exact against a real
+ * `DRAKS0005.sl2` (all 11 entries):
+ *
+ *   [ MD5 (16) ][ IV (16) ][ AES-128-CBC ciphertext ]
+ *   \________ SAVE_SLOT_SIZE = 0x60030 ________/
+ *
+ * with `MD5 = md5(IV ‖ ciphertext)` — the same scheme DS3 uses, see
+ * `apps/ds3/lib/SaveFileEditor.writeEntry`.
+ *
+ * This editor deliberately reads it one field "late": the stored MD5 is fed to
+ * AES as the IV, and the real IV is swallowed as the first ciphertext block.
+ * That is self-consistent rather than broken:
+ *
+ *   decrypt: block0 = D(IV) ⊕ MD5  ← phantom, not save data
+ *            blockN = correct plaintext, shifted 16 bytes later
+ *   encrypt: E(block0 ⊕ MD5) = E(D(IV)) = IV  ← the real IV is restored exactly
+ *
+ * so an export reproduces a byte-identical, game-valid file, and the checksum
+ * written over `[offset+16 …]` covers exactly `IV ‖ ciphertext` as the game
+ * expects. Two consequences worth knowing:
+ *
+ *   1. Every offset in this app (`constants.ts`, `Character`, `slotDuplicator`)
+ *      is 16 bytes higher than the same field in tools that parse the entry
+ *      properly — e.g. the character name sits at 0x108 here, 0xF8 there.
+ *   2. Bytes 0x00–0x0F of a decrypted slot are that phantom block, never save
+ *      data. Writing to them is harmless (it only re-rolls the stored IV, and
+ *      the ciphertext is re-derived from it in the same pass) but reading them
+ *      as character data is meaningless.
+ *
+ * Fixing the shift would mean re-basing every offset in the DS1 editor for no
+ * behavioural gain, so it stays — documented and pinned by tests in
+ * `tests/ds1/saveFile.test.ts`.
+ */
 export class SaveFileEditor {
   private saveData: Uint8Array;
   private characters: Character[];
@@ -47,10 +81,11 @@ export class SaveFileEditor {
     for (let i = 0; i < USER_DATA_FILE_COUNT; i++) {
       const offset = BASE_SLOT_OFFSET + i * SAVE_SLOT_SIZE;
 
-      const iv = this.saveData.slice(offset, offset + 16);
+      // The stored MD5 doubles as the AES IV here — see the class comment.
+      const checksum = this.saveData.slice(offset, offset + 16);
       const encrypted = this.saveData.slice(offset + 16, offset + 16 + USER_DATA_SIZE);
 
-      const decrypted = await decryptAesCbc(encrypted, AES_KEY, iv);
+      const decrypted = await decryptAesCbc(encrypted, AES_KEY, checksum);
       this.characters.push(new Character(decrypted, i));
     }
   }
@@ -69,8 +104,14 @@ export class SaveFileEditor {
     for (const character of this.characters) {
       const offset = BASE_SLOT_OFFSET + character.slotNumber * SAVE_SLOT_SIZE;
 
-      const iv = newSaveData.slice(offset, offset + 16);
-      const encrypted = await encryptAesCbc(character.getRawData(), AES_KEY, iv);
+      // Encrypt with the checksum the slot was *decrypted* with, not the one
+      // about to be written: that is what makes the phantom first block
+      // re-encrypt into the slot's original IV (see the class comment).
+      // `newSaveData` is still a pristine copy here — each slot is visited once.
+      const decryptChecksum = newSaveData.slice(offset, offset + 16);
+      const encrypted = await encryptAesCbc(character.getRawData(), AES_KEY, decryptChecksum);
+
+      // md5 over the whole re-encrypted region, i.e. over IV ‖ ciphertext.
       const checksum = await calculateMD5(encrypted);
 
       // Write checksum

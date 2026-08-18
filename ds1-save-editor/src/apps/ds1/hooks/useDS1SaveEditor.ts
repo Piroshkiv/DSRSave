@@ -5,11 +5,30 @@ import { SaveFileEditorPS4 } from '../lib/SaveFileEditorPS4';
 import { Character } from '../lib/Character';
 import { FileHandle, getFileSystemAdapter, detectEnvironment } from '../lib/adapters';
 import { getFilePathFromHandle, extractFilename } from '../lib/filePathUtils';
+import { importSlotFromBinary } from '../lib/slotDuplicator';
+import {
+  backupAllSlots,
+  createBackup,
+  getBackupCounts,
+  getBackupPayload,
+  DEFAULT_MAX_PER_SLOT,
+  MAX_PER_SLOT_LIMIT,
+  CreateBackupResult,
+} from '../lib/backups';
 
 type SaveEditor = SaveFileEditor | SaveFileEditorNintendo | SaveFileEditorPS4;
 
 // Auto-detect works reliably only in Tauri (web FileSystemObserver/permissions are flaky)
 const AUTO_DETECT_AVAILABLE = detectEnvironment() === 'tauri';
+
+const AUTO_BACKUP_KEY = 'ds1-auto-backup';
+const MAX_BACKUPS_KEY = 'ds1-backup-max';
+
+function readMaxPerSlot(): number {
+  const stored = Number(localStorage.getItem(MAX_BACKUPS_KEY));
+  if (!Number.isFinite(stored) || stored < 1) return DEFAULT_MAX_PER_SLOT;
+  return Math.min(MAX_PER_SLOT_LIMIT, Math.floor(stored));
+}
 
 export interface UseDS1SaveEditorResult {
   saveEditor: SaveEditor | null;
@@ -20,6 +39,13 @@ export interface UseDS1SaveEditorResult {
   autoDetect: boolean;
   autoDetectAvailable: boolean;
 
+  autoBackup: boolean;
+  maxBackupsPerSlot: number;
+  /** Number of stored backups per slot, for the slot list badges. */
+  backupCounts: Record<number, number>;
+  /** Bumped whenever the store changes, so lists can refetch. */
+  backupsVersion: number;
+
   handleFileLoaded: (file: File, fileHandle: FileHandle | null, opts?: { preserveSelection?: boolean }) => Promise<void>;
   handleCharacterSelect: (index: number) => void;
   handleCharacterUpdate: () => void;
@@ -27,6 +53,11 @@ export interface UseDS1SaveEditorResult {
   handleSaveAs: () => Promise<void>;
   handleReload: () => Promise<void>;
   setAutoDetect: (value: boolean) => void;
+  setAutoBackup: (value: boolean) => void;
+  setMaxBackupsPerSlot: (value: number) => void;
+  backupSlotNow: (slot: number) => Promise<CreateBackupResult>;
+  restoreBackup: (id: number, targetSlot: number) => Promise<void>;
+  notifyBackupsChanged: () => void;
 }
 
 export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
@@ -41,6 +72,42 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     return AUTO_DETECT_AVAILABLE && localStorage.getItem('ds1-auto-detect') === 'on';
   });
   const stopWatchRef = useRef<(() => void) | null>(null);
+
+  const [autoBackup, setAutoBackup] = useState(() => localStorage.getItem(AUTO_BACKUP_KEY) !== 'off');
+  const [maxBackupsPerSlot, setMaxBackupsPerSlot] = useState(readMaxPerSlot);
+  const [backupCounts, setBackupCounts] = useState<Record<number, number>>({});
+  const [backupsVersion, setBackupsVersion] = useState(0);
+
+  // Read inside callbacks that must not be re-created when a setting changes —
+  // handleFileLoaded feeds handleReload, which the file watcher effect depends on
+  const autoBackupRef = useRef(autoBackup);
+  const maxBackupsRef = useRef(maxBackupsPerSlot);
+  useEffect(() => { autoBackupRef.current = autoBackup; }, [autoBackup]);
+  useEffect(() => { maxBackupsRef.current = maxBackupsPerSlot; }, [maxBackupsPerSlot]);
+
+  const notifyBackupsChanged = useCallback(() => {
+    setBackupsVersion(v => v + 1);
+  }, []);
+
+  useEffect(() => {
+    getBackupCounts()
+      .then(setBackupCounts)
+      .catch(error => console.error('[useDS1SaveEditor] Failed to read backup counts:', error));
+  }, [backupsVersion]);
+
+  /** Snapshot every non-empty slot; unchanged slots are skipped by content hash. */
+  const runAutoBackup = useCallback(async (editor: SaveEditor) => {
+    if (!autoBackupRef.current) return;
+    try {
+      const result = await backupAllSlots(editor.getCharacters(), 'auto', maxBackupsRef.current);
+      if (result.created > 0) {
+        console.log(`[useDS1SaveEditor] Backed up slots ${result.slots.join(', ')}`);
+        notifyBackupsChanged();
+      }
+    } catch (error) {
+      console.error('[useDS1SaveEditor] Auto-backup failed:', error);
+    }
+  }, [notifyBackupsChanged]);
 
   const handleFileLoaded = useCallback(async (file: File, fileHandle: FileHandle | null, opts?: { preserveSelection?: boolean }) => {
     try {
@@ -73,12 +140,16 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
       setCharacters(displayedCharacters);
 
       const firstNonEmptyIndex = displayedCharacters.findIndex(char => !char.isEmpty);
-      // On reload keep the current selection as long as that slot still has a character
+      // On reload keep the current selection — an emptied slot stays reachable
+      // because its backups are still browsable there
       setSelectedCharacterIndex(prev =>
-        opts?.preserveSelection && prev !== null && displayedCharacters[prev] && !displayedCharacters[prev].isEmpty
+        opts?.preserveSelection && prev !== null && displayedCharacters[prev]
           ? prev
           : (firstNonEmptyIndex !== -1 ? firstNonEmptyIndex : null)
       );
+
+      // Snapshot what was on disk before any edit — the baseline to roll back to
+      void runAutoBackup(editor);
     } catch (error) {
       console.error('Error loading save file:', error);
       alert('Error loading save file. Please make sure it is a valid Dark Souls save file.');
@@ -107,11 +178,55 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
         const filename = extractFilename(originalFilename);
         await saveEditor.downloadSaveFile(filename);
       }
+
+      // Record the state that just went to disk; saving twice in a row is a
+      // no-op here because the slot bytes still hash to the last backup
+      await runAutoBackup(saveEditor);
     } catch (error) {
       console.error('Error saving file:', error);
       alert('Error saving file. Please try again.');
     }
-  }, [saveEditor, originalFilename]);
+  }, [saveEditor, originalFilename, runAutoBackup]);
+
+  /** Back up a single slot on demand, ignoring the auto-backup toggle. */
+  const backupSlotNow = useCallback(async (slot: number) => {
+    if (!saveEditor) throw new Error('No save file loaded');
+    const chars = saveEditor.getCharacters();
+    const character = chars[slot];
+    if (!character) throw new Error(`Slot ${slot} not found`);
+
+    const result = await createBackup(character, 'manual', maxBackupsRef.current);
+    if (result.created) notifyBackupsChanged();
+    return result;
+  }, [saveEditor, notifyBackupsChanged]);
+
+  /**
+   * Put a stored slot back into the loaded editor.
+   *
+   * Same mechanics as a merge import — slot bytes plus the load screen block —
+   * but nothing touches the disk until the user saves. The slot being replaced
+   * is snapshotted first so a restore is itself undoable.
+   */
+  const restoreBackup = useCallback(async (id: number, targetSlot: number) => {
+    if (!saveEditor) throw new Error('No save file loaded');
+    if (targetSlot < 0 || targetSlot >= 10) throw new Error('Invalid target slot');
+
+    const slotData = await getBackupPayload(id);
+    if (!slotData) throw new Error('Backup data is missing');
+
+    const chars = saveEditor.getCharacters();
+    const current = chars[targetSlot];
+    if (current && !current.isEmpty) {
+      await createBackup(current, 'pre-restore', maxBackupsRef.current);
+    }
+
+    importSlotFromBinary(saveEditor, slotData, targetSlot);
+
+    setCharacters(saveEditor.getCharacters().slice(0, 10));
+    setSelectedCharacterIndex(targetSlot);
+    setUpdateTrigger(prev => prev + 1);
+    notifyBackupsChanged();
+  }, [saveEditor, notifyBackupsChanged]);
 
   const handleSaveAs = useCallback(async () => {
     if (!saveEditor) return;
@@ -187,8 +302,21 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     localStorage.setItem('ds1-auto-detect', autoDetect ? 'on' : 'off');
   }, [autoDetect]);
 
+  useEffect(() => {
+    localStorage.setItem(AUTO_BACKUP_KEY, autoBackup ? 'on' : 'off');
+  }, [autoBackup]);
+
+  useEffect(() => {
+    localStorage.setItem(MAX_BACKUPS_KEY, String(maxBackupsPerSlot));
+  }, [maxBackupsPerSlot]);
+
   const setAutoDetectValue = useCallback((value: boolean) => {
     setAutoDetect(value);
+  }, []);
+
+  const setMaxBackupsPerSlotValue = useCallback((value: number) => {
+    if (!Number.isFinite(value)) return;
+    setMaxBackupsPerSlot(Math.max(1, Math.min(MAX_PER_SLOT_LIMIT, Math.floor(value))));
   }, []);
 
   return {
@@ -199,6 +327,10 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     platform,
     autoDetect,
     autoDetectAvailable: AUTO_DETECT_AVAILABLE,
+    autoBackup,
+    maxBackupsPerSlot,
+    backupCounts,
+    backupsVersion,
     handleFileLoaded,
     handleCharacterSelect,
     handleCharacterUpdate,
@@ -206,5 +338,10 @@ export const useDS1SaveEditor = (): UseDS1SaveEditorResult => {
     handleSaveAs,
     handleReload,
     setAutoDetect: setAutoDetectValue,
+    setAutoBackup,
+    setMaxBackupsPerSlot: setMaxBackupsPerSlotValue,
+    backupSlotNow,
+    restoreBackup,
+    notifyBackupsChanged,
   };
 };
