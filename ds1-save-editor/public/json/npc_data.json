@@ -3925,6 +3925,81 @@
           "reverse": true
         }
       ]
+    },
+    {
+      "name": "5",
+      "bits": [
+        {
+          "offset": "0xC4",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x111",
+          "bit": 1,
+          "reverse": false
+        },
+        {
+          "offset": "0x116",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x125",
+          "bit": 5,
+          "reverse": false
+        },
+        {
+          "offset": "0x1493",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x1495",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x149E",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x469D",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x46A1",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x5F55",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0xA0A8",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0xFA75",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x14A54",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x1545E",
+          "bit": 4,
+          "reverse": true
+        }
+      ]
     }
   ]
 }
