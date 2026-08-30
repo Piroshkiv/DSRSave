@@ -4000,6 +4000,66 @@
           "reverse": true
         }
       ]
+    },
+    {
+      "name": "6",
+      "bits": [
+        {
+          "offset": "0x113",
+          "bit": 2,
+          "reverse": false
+        },
+        {
+          "offset": "0x11A",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x1493",
+          "bit": 1,
+          "reverse": true
+        },
+        {
+          "offset": "0x1495",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x149E",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x5093",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x5093",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x509C",
+          "bit": 6,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E59",
+          "bit": 0,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E59",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E5A",
+          "bit": 1,
+          "reverse": true
+        }
+      ]
     }
   ]
 }
