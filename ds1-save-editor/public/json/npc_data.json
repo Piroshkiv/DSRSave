@@ -3835,6 +3835,56 @@
           "reverse": true
         }
       ]
+    },
+    {
+      "name": "3",
+      "bits": [
+        {
+          "offset": "0xB1",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x113",
+          "bit": 2,
+          "reverse": false
+        },
+        {
+          "offset": "0x11A",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x5093",
+          "bit": 4,
+          "reverse": true
+        },
+        {
+          "offset": "0x5095",
+          "bit": 5,
+          "reverse": true
+        },
+        {
+          "offset": "0x5096",
+          "bit": 7,
+          "reverse": true
+        },
+        {
+          "offset": "0x15E5A",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D6C",
+          "bit": 2,
+          "reverse": true
+        },
+        {
+          "offset": "0x16D70",
+          "bit": 7,
+          "reverse": true
+        }
+      ]
     }
   ]
 }
