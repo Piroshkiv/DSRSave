@@ -3,9 +3,18 @@ import { DS3Character } from '../lib/Character';
 import { GeneralTab } from './GeneralTab';
 import { InventoryTab } from './InventoryTab';
 import { BonfiresTab } from './BonfiresTab';
+import { AppearanceTab } from './AppearanceTab';
+import { GesturesTab } from './GesturesTab';
 import { BackupsTab } from './BackupsTab';
 import type { SteamIdSummary } from '../lib/steamId';
 import type { CreateBackupResult } from '../lib/backups';
+
+/** The game's own six appearance preset slots, when the system entry is readable. */
+export interface PresetControls {
+  slots: { index: number; face: Uint8Array | null }[];
+  save: (index: number, face: Uint8Array) => void;
+  clear: (index: number) => void;
+}
 
 export interface BackupControls {
   maxPerSlot: number;
@@ -38,20 +47,23 @@ interface TabPanelProps {
   onSlotSteamIdChange?: (slotIndex: number, steamId: bigint) => void;
   onSteamIdApplyAll?: (steamId: bigint) => number;
   backups?: BackupControls | null;
+  presets?: PresetControls | null;
 }
 
-type TabType = 'general' | 'inventory' | 'bonfires' | 'backups';
+type TabType = 'general' | 'inventory' | 'appearance' | 'bonfires' | 'gestures' | 'backups';
 
 const TAB_LABELS: Record<TabType, string> = {
   general: 'General',
   inventory: 'Inventory',
+  appearance: 'Appearance',
   bonfires: 'Bonfires',
+  gestures: 'Gestures',
   backups: 'Backups',
 };
 
-const FULL_TABS: TabType[] = ['general', 'inventory', 'bonfires', 'backups'];
+const FULL_TABS: TabType[] = ['general', 'inventory', 'appearance', 'bonfires', 'gestures', 'backups'];
 
-export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, safeMode, onSafeModeChange, slotActive = true, canEditSlotFlags = false, onSlotActiveChange, online = null, onOnlineChange, steamIdSummary, folderSteamId, onSlotSteamIdChange, onSteamIdApplyAll, backups }) => {
+export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, safeMode, onSafeModeChange, slotActive = true, canEditSlotFlags = false, onSlotActiveChange, online = null, onOnlineChange, steamIdSummary, folderSteamId, onSlotSteamIdChange, onSteamIdApplyAll, backups, presets }) => {
   const [activeTab, setActiveTab] = useState<TabType>('general');
 
   // An empty slot is reachable only for its backup history, so that is all it offers
@@ -119,8 +131,19 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
         {activeTab === 'inventory' && !isEmptySlot && (
           <InventoryTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
         )}
+        {activeTab === 'appearance' && !isEmptySlot && (
+          <AppearanceTab
+            character={character}
+            onCharacterUpdate={onCharacterUpdate}
+            safeMode={safeMode}
+            presets={presets ?? null}
+          />
+        )}
         {activeTab === 'bonfires' && !isEmptySlot && (
           <BonfiresTab character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
+        {activeTab === 'gestures' && !isEmptySlot && (
+          <GesturesTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
         {activeTab === 'backups' && backups && (
           <BackupsTab

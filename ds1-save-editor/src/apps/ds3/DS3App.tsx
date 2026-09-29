@@ -306,6 +306,17 @@ export const DS3App: React.FC<DS3AppProps> = ({ onHome }) => {
           restoreBackup,
           notifyChanged: notifyBackupsChanged,
         } : null}
+        presets={saveEditor && saveEditor.hasSystemEntry() ? {
+          slots: saveEditor.listAppearancePresets(),
+          save: (index: number, face: Uint8Array) => {
+            saveEditor.writeAppearancePreset(index, face);
+            handleCharacterUpdate();
+          },
+          clear: (index: number) => {
+            saveEditor.clearAppearancePreset(index);
+            handleCharacterUpdate();
+          },
+        } : null}
       />
 
       <SaveWarningModal

@@ -30,6 +30,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   tab_appearance: { en: 'Appearance', zh: '外观' },
   tab_inventory: { en: 'Inventory', zh: '物品' },
   tab_bonfires: { en: 'Bonfires', zh: '篝火' },
+  tab_gestures: { en: 'Gestures', zh: '姿势' },
   tab_npcs: { en: 'NPCs', zh: 'NPC' },
   tab_bosses: { en: 'Bosses', zh: 'Boss' },
 
@@ -139,6 +140,12 @@ export const translations: Record<string, Record<Lang, string>> = {
   infoText1: { en: 'Unlocks all 20 warpable bonfires in Dark Souls Remastered.', zh: '解锁所有 20 个可传送篝火。' },
   infoText2: { en: 'You still need to rest at each bonfire to register it in-game.', zh: '仍需在每个篝火处休息以在游戏内注册。' },
 
+  // 姿势
+  gestures: { en: 'Gestures', zh: '姿势' },
+  unlockAllGestures: { en: 'Unlock All Gestures', zh: '解锁所有姿势' },
+  allGesturesUnlocked: { en: 'All Gestures Already Unlocked', zh: '所有姿势已解锁' },
+  gestureTableMissing: { en: 'Gesture data not found in this slot', zh: '此存档位未找到姿势数据' },
+
   // NPC/Boss
   searchNpcs: { en: 'Search NPCs...', zh: '搜索NPC...' },
   loadingNpcs: { en: 'Loading NPC data...', zh: '正在加载NPC数据...' },
@@ -170,20 +177,22 @@ export const translations: Record<string, Record<Lang, string>> = {
   eyeColor: { en: 'Eye Color', zh: '眼睛颜色' },
 
   hairColor: { en: 'Hair Color', zh: '发色' },
-  colorRange: { en: 'Color range:', zh: '颜色范围:' },
-  safe: { en: 'Safe (0–1)', zh: '安全 (0–1)' },
-  unsafe: { en: 'Unsafe (0–10)', zh: '不安全 (0–10)' },
   unsafeWarning: { en: 'Values above 1.0 will prevent online multiplayer — you won\'t get banned, but other players won\'t be able to connect to you.', zh: '超过1.0的值可能影响在线多人游戏 — 不会被封号，但其他玩家可能无法连接到你。' },
   gameMax: { en: 'In-game max is 1.0 — higher values increase saturation', zh: '游戏内最大值为1.0，更高值会增加饱和度' },
-  approximate: { en: 'Approximate', zh: '近似' },
-  faceData: { en: 'Face Data (50 bytes)', zh: '面部数据 (50字节)' },
-  fullHex: { en: 'Full 50 bytes (hex)', zh: '完整50字节 (十六进制)' },
-  params: { en: 'Parameters (bytes 0–31)', zh: '参数 (字节 0–31)' },
-  unlabeled: { en: 'Bytes 32–49 (unlabeled)', zh: '字节 32–49 (未标记)' },
-  skinColor: { en: 'Skin Color (50 bytes)', zh: '肤色 (50字节)' },
-  dsrchrDesc: { en: '.dsrchr Appearance Presets — Compatible with DSR Appearance Preset Tool by BobDoleOwndU. Import a .dsrchr file to apply all appearance data, or export the current character.', zh: '.dsrchr 外观预设 — 与 DSR Appearance Preset Tool (作者: BobDoleOwndU) 兼容。导入 .dsrchr 文件以应用所有外观数据，或导出当前角色。' },
   importDsrchr: { en: '↑ Import .dsrchr', zh: '↑ 导入 .dsrchr' },
   exportDsrchr: { en: '↓ Export .dsrchr', zh: '↓ 导出 .dsrchr' },
+  approximate: { en: 'Approximate', zh: '近似' },
+  presets: { en: 'presets', zh: '预设' },
+  presetApplied: { en: 'Applied', zh: '已应用' },
+  presetExported: { en: 'Preset exported.', zh: '预设已导出。' },
+  basics: { en: 'Basics', zh: '基础' },
+  colors: { en: 'Colors', zh: '颜色' },
+  hairstyleHint: { en: 'The save stores the ID of the equipped hair part. An ID from the other gender’s list is kept as is and shown by number.', zh: '存档中保存的是所佩戴发型部件的ID。来自另一性别列表的ID会原样保留并以数字显示。' },
+  faceShape: { en: 'Face shape', zh: '脸型' },
+  faceUnlabelled: { en: 'Face — unlabelled', zh: '面部 — 未标记' },
+  skinTone: { en: 'Skin tone', zh: '肤色' },
+  byteLabel: { en: 'Byte', zh: '字节' },
+  rawHex: { en: 'Raw bytes (hex)', zh: '原始字节 (十六进制)' },
 
   // 十六进制表格
   findPattern: { en: 'Find Pattern1', zh: '查找Pattern1' },
@@ -369,6 +378,8 @@ export const translations: Record<string, Record<Lang, string>> = {
   inventoryTabDesc: { en: 'Add, modify, or remove Weapons, Armor, Rings, Consumables, Upgrade Materials, Key Items, Spells, and calibrate Weapon Level', zh: '添加、修改或删除武器、防具、戒指、消耗品、强化素材、关键道具、魔法，以及校准武器等级' },
   bonfiresTab: { en: 'Bonfires Tab', zh: '篝火标签页' },
   bonfiresTabDesc: { en: 'Unlock bonfires and warp points', zh: '解锁篝火和传送点' },
+  gesturesTab: { en: 'Gestures Tab', zh: '姿势标签页' },
+  gesturesTabDesc: { en: 'Unlock gestures without hunting down the NPCs that teach them', zh: '无需寻找教学NPC即可解锁姿势' },
   npcsTab: { en: 'NPCs & Bosses Tabs', zh: 'NPC和Boss标签页' },
   npcsTabDesc: { en: 'Change NPC states and mark bosses as defeated', zh: '修改NPC状态和标记Boss为已击败' },
   step6Title: { en: 'Step 6: Save Your Changes', zh: '步骤6: 保存更改' },

@@ -101,8 +101,6 @@ export const HAIRSTYLE_MALE_ZH = [
   '狂野', '中分', '半长发', '卷发', '波波头'
 ];
 
-export const HAIRSTYLE_SAVE_BASE = 0x500; // 1280
-
 export const FACE_PARAM_LABELS: string[] = [
   'Face Width (0=Wide, 255=Narrow)',
   'Face Height (0=Short, 255=Tall)',

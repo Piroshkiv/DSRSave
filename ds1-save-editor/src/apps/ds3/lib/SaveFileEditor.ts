@@ -11,7 +11,19 @@ import {
   SLOT_SUMMARY_BASE,
   SLOT_SUMMARY_SIZE,
   SLOT_COUNT,
-  STAT_ORDER
+  STAT_ORDER,
+  FACE_BLOCK_SIZE,
+  APPEARANCE_PRESET_BASE,
+  APPEARANCE_PRESET_RECORD_SIZE,
+  APPEARANCE_PRESET_COUNT,
+  FACE_RECORD_MAGIC,
+  FACE_RECORD_VERSION,
+  FACE_RECORD_DECLARED_SIZE,
+  FACE_RECORD_HEADER_SIZE,
+  FACE_RECORD_FILL_OFFSET,
+  FACE_RECORD_FILL_LENGTH,
+  FACE_RECORD_FILL_BYTE,
+  FACE_RECORD_USED_OFFSET,
 } from './constants';
 import type { SteamIdSummary } from './steamId';
 import { getFileSystemAdapter, FileHandle } from '../../ds1/lib/adapters';
@@ -192,6 +204,87 @@ export class DS3SaveFileEditor {
    */
   setOnline(online: boolean): void {
     this.writeSystemEntryBytes(ONLINE_FLAG_OFFSET, [online ? 0x01 : 0x00]);
+  }
+
+  // ===== APPEARANCE PRESETS =====
+
+  /** Byte offset of preset slot `index` inside the system entry. */
+  private presetOffset(index: number): number {
+    if (index < 0 || index >= APPEARANCE_PRESET_COUNT) {
+      throw new Error(
+        `Preset slot ${index} out of range (0–${APPEARANCE_PRESET_COUNT - 1})`
+      );
+    }
+    return APPEARANCE_PRESET_BASE + index * APPEARANCE_PRESET_RECORD_SIZE;
+  }
+
+  /** True when the slot holds a record rather than the zeros of a never-used slot. */
+  hasAppearancePreset(index: number): boolean {
+    if (!this.systemEntryData) return false;
+    const at = this.presetOffset(index);
+    if (at + APPEARANCE_PRESET_RECORD_SIZE > this.systemEntryData.length) return false;
+    return FACE_RECORD_MAGIC.every((b, i) => this.systemEntryData![at + i] === b)
+      && this.systemEntryData[at + 4] === FACE_RECORD_VERSION;
+  }
+
+  /**
+   * The face block stored in preset slot `index`, or null when the slot is empty.
+   * Same 208 bytes a character carries, so it drops straight into DS3Character.
+   */
+  readAppearancePreset(index: number): Uint8Array | null {
+    if (!this.hasAppearancePreset(index)) return null;
+    const at = this.presetOffset(index) + FACE_RECORD_HEADER_SIZE;
+    return this.readSystemEntryBytes(at, FACE_BLOCK_SIZE);
+  }
+
+  /**
+   * Store a face in preset slot `index`, so the game offers it in the character
+   * creator. Persisted by exportSaveFile().
+   *
+   * An occupied slot keeps its trailer and only the face is replaced — those
+   * bytes carry values we have not decoded, and the game wrote them. An empty
+   * slot gets a fresh record built the way the game's own minimal ones look:
+   * header, face, 21 bytes of 0x7F, then zeros with the used flag set.
+   */
+  writeAppearancePreset(index: number, face: Uint8Array): void {
+    if (face.length !== FACE_BLOCK_SIZE) {
+      throw new Error(`Face block must be ${FACE_BLOCK_SIZE} bytes, got ${face.length}`);
+    }
+    const at = this.presetOffset(index);
+    if (this.hasAppearancePreset(index)) {
+      this.writeSystemEntryBytes(at + FACE_RECORD_HEADER_SIZE, face);
+      return;
+    }
+
+    const record = new Uint8Array(APPEARANCE_PRESET_RECORD_SIZE);
+    record.set(FACE_RECORD_MAGIC, 0);
+    const view = new DataView(record.buffer);
+    view.setUint32(4, FACE_RECORD_VERSION, true);
+    view.setUint32(8, FACE_RECORD_DECLARED_SIZE, true);
+    record.set(face, FACE_RECORD_HEADER_SIZE);
+    record.fill(
+      FACE_RECORD_FILL_BYTE,
+      FACE_RECORD_HEADER_SIZE + FACE_RECORD_FILL_OFFSET,
+      FACE_RECORD_HEADER_SIZE + FACE_RECORD_FILL_OFFSET + FACE_RECORD_FILL_LENGTH,
+    );
+    view.setUint16(FACE_RECORD_HEADER_SIZE + FACE_RECORD_USED_OFFSET, 1, true);
+    this.writeSystemEntryBytes(at, record);
+  }
+
+  /** Empty a preset slot — the game shows nothing there. */
+  clearAppearancePreset(index: number): void {
+    this.writeSystemEntryBytes(
+      this.presetOffset(index),
+      new Uint8Array(APPEARANCE_PRESET_RECORD_SIZE),
+    );
+  }
+
+  /** All six slots in order, each with its face block or null. */
+  listAppearancePresets(): { index: number; face: Uint8Array | null }[] {
+    return Array.from({ length: APPEARANCE_PRESET_COUNT }, (_, index) => ({
+      index,
+      face: this.readAppearancePreset(index),
+    }));
   }
 
   // ===== LOAD-MENU SUMMARY =====

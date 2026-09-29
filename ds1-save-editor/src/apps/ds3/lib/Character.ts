@@ -15,7 +15,27 @@ import {
   BONFIRE_PATTERN,
   BONFIRE_COARSE_FROM_INV,
   BONFIRE_ANCHOR_TO_BLOCK,
+  BONFIRE_BLOCK_TO_NG_CYCLE,
   BONFIRE_UNLOCK_ALL,
+  GESTURE_COUNT,
+  GESTURE_RECORD_COUNT,
+  GESTURE_RECORD_SIZE,
+  GESTURE_COARSE_FROM_BONFIRE,
+  GESTURE_SEARCH_RADIUS,
+  FACE_BLOCK_SIZE,
+  FACE_COARSE_FROM_BONFIRE,
+  FACE_SEARCH_RADIUS,
+  FACE_ID_COUNT,
+  FACE_COLORS_OFFSET,
+  FACE_COLOR_COUNT,
+  APPEARANCE_PRESET_MAGIC,
+  APPEARANCE_PRESET_VERSION,
+  APPEARANCE_PRESET_HEADER_SIZE,
+  APPEARANCE_PRESET_SIZE,
+  FACE_BUILD_OFFSET,
+  FACE_AGE_NAMES,
+  FACE_PUPIL_ID_OFFSETS,
+  FACE_PUPIL_COLOR_OFFSETS,
 } from './constants';
 import { findSteamIdOffset } from './offsetPatterns';
 
@@ -535,19 +555,42 @@ export class DS3Character {
 
   // ===== PROGRESSION =====
   /**
-   * Get NG+ Cycle (1 byte)
+   * Offset of the NG+ cycle (u32 LE), or -1 when the bonfire block can't be located.
+   * Recomputed per call, like every other bonfire-anchored offset.
    */
-  get ngCycle(): number {
-    if (this.isEmpty) return 0;
-    return this.data[this.getOffset('NG_CYCLE')];
+  private findNGCycleOffset(): number {
+    const rec0 = this.findBonfireBlock();
+    if (rec0 === -1) return -1;
+    const offset = rec0 + BONFIRE_BLOCK_TO_NG_CYCLE;
+    return (offset >= 0 && offset + 4 <= this.data.length) ? offset : -1;
   }
 
   /**
-   * Set NG+ Cycle (1 byte)
+   * Get NG+ Cycle (u32 LE): 0 = NG, 1 = NG+1, ... Anchored to the bonfire /
+   * event-flag block — see BONFIRE_BLOCK_TO_NG_CYCLE.
+   */
+  get ngCycle(): number {
+    const offset = this.findNGCycleOffset();
+    if (offset === -1) return 0;
+    return (
+      this.data[offset] |
+      (this.data[offset + 1] << 8) |
+      (this.data[offset + 2] << 16) |
+      (this.data[offset + 3] << 24)
+    ) >>> 0;
+  }
+
+  /**
+   * Set NG+ Cycle (u32 LE). No-op when the bonfire block can't be located.
    */
   set ngCycle(value: number) {
+    const offset = this.findNGCycleOffset();
+    if (offset === -1) return;
     value = Math.max(0, Math.min(MAX_VALUES.NG_CYCLE, value));
-    this.data[this.getOffset('NG_CYCLE')] = value & 0xFF;
+    this.data[offset] = value & 0xFF;
+    this.data[offset + 1] = (value >>> 8) & 0xFF;
+    this.data[offset + 2] = (value >>> 16) & 0xFF;
+    this.data[offset + 3] = (value >>> 24) & 0xFF;
   }
 
   // ===== ESTUS =====
@@ -735,6 +778,377 @@ export class DS3Character {
     for (const [off, val] of BONFIRE_UNLOCK_ALL) {
       this.data[rec0 + off] |= val;
     }
+  }
+
+  // ===== GESTURES =====
+
+  /** True when `offset` holds all GESTURE_RECORD_COUNT well-formed gesture records. */
+  private isGestureTableAt(offset: number): boolean {
+    if (offset < 0 || offset + GESTURE_RECORD_COUNT * GESTURE_RECORD_SIZE > this.data.length) {
+      return false;
+    }
+    for (let i = 0; i < GESTURE_RECORD_COUNT; i++) {
+      const o = offset + i * GESTURE_RECORD_SIZE;
+      const value = this.data[o] | (this.data[o + 1] << 8);
+      const index = this.data[o + 2] | (this.data[o + 3] << 8);
+      // value carries the unlock flag in bit 0, so compare it shifted out
+      if (index !== i || (value >> 1) !== i + 1) return false;
+    }
+    return true;
+  }
+
+  /** First offset at or after `from` (below `to`) that holds the table, else -1. */
+  private scanForGestureTable(from: number, to: number): number {
+    const limit = Math.min(to, this.data.length - GESTURE_RECORD_COUNT * GESTURE_RECORD_SIZE);
+    for (let i = Math.max(0, from); i <= limit; i += GESTURE_RECORD_SIZE) {
+      // Cheap reject: record 0 is always `02 00 00 00` or `03 00 00 00`.
+      if ((this.data[i] | 1) !== 0x03 || this.data[i + 1] !== 0x00 ||
+          this.data[i + 2] !== 0x00 || this.data[i + 3] !== 0x00) {
+        continue;
+      }
+      if (this.isGestureTableAt(i)) return i;
+    }
+    return -1;
+  }
+
+  /**
+   * Find the gesture table, or -1 when this slot has none.
+   *
+   * The table has no fixed offset — it moves between characters and even
+   * between two saves of the same character — so it is located the way the
+   * bonfire block is: a coarse estimate from the bonfire block, a windowed
+   * search around it, and a full scan as the fallback. See the GESTURES block
+   * in constants.ts for the measurements behind GESTURE_COARSE_FROM_BONFIRE.
+   *
+   * The first match wins. Copies of the table also appear in the slot's runtime
+   * scratch tail, but those sit far later (0x819F8 / 0x9B528 in a 0xC0010-byte
+   * slot) and float between saves, so taking the lowest match keeps the real
+   * one — verified on all 43 captures of the sweep.
+   */
+  findGestureTable(): number {
+    if (this.isEmpty) return -1;
+
+    const rec0 = this.findBonfireBlock();
+    if (rec0 !== -1) {
+      const est = rec0 + GESTURE_COARSE_FROM_BONFIRE;
+      const hit = this.scanForGestureTable(est - GESTURE_SEARCH_RADIUS,
+                                           est + GESTURE_SEARCH_RADIUS);
+      if (hit !== -1) return hit;
+    }
+    return this.scanForGestureTable(0, this.data.length);
+  }
+
+  /** Unlock state of the real, usable gestures, in game order. */
+  getGestureFlags(): boolean[] {
+    const base = this.findGestureTable();
+    if (base === -1) return new Array(GESTURE_COUNT).fill(false);
+    return Array.from({ length: GESTURE_COUNT }, (_, i) =>
+      (this.data[base + i * GESTURE_RECORD_SIZE] & 1) === 1
+    );
+  }
+
+  /** Flip a single gesture. Only bit 0 of the record is touched. */
+  setGestureFlag(index: number, unlocked: boolean): void {
+    if (index < 0 || index >= GESTURE_COUNT) {
+      throw new Error(`Gesture index ${index} out of range (0-${GESTURE_COUNT - 1})`);
+    }
+    const base = this.findGestureTable();
+    if (base === -1) {
+      throw new Error('Could not locate the gesture table in this save. It may not be a valid Dark Souls 3 save, or the slot is empty.');
+    }
+    const offset = base + index * GESTURE_RECORD_SIZE;
+    this.data[offset] = unlocked
+      ? this.data[offset] | 1
+      : this.data[offset] & ~1;
+  }
+
+  /**
+   * Unlock the usable gestures (records 0-33) and clear the cut ones (34-40).
+   *
+   * The trailing records — "Lord of Cinder" and the FDP_MenuText placeholders —
+   * have no gesture behind them and show up broken in the in-game menu. They are
+   * cleared rather than skipped, so this also repairs a save that already had
+   * them unlocked. See the GESTURES block in constants.ts.
+   */
+  unlockAllGestures(): void {
+    const base = this.findGestureTable();
+    if (base === -1) {
+      throw new Error('Could not locate the gesture table in this save. It may not be a valid Dark Souls 3 save, or the slot is empty.');
+    }
+    for (let i = 0; i < GESTURE_RECORD_COUNT; i++) {
+      const offset = base + i * GESTURE_RECORD_SIZE;
+      if (i < GESTURE_COUNT) {
+        this.data[offset] |= 1;
+      } else {
+        this.data[offset] &= ~1;
+      }
+    }
+  }
+
+  get allGesturesUnlocked(): boolean {
+    const base = this.findGestureTable();
+    if (base === -1) return false;
+    return this.getGestureFlags().every(Boolean);
+  }
+
+  // ===== APPEARANCE =====
+
+  /** Gender: 0 = female, 1 = male. */
+  get gender(): number {
+    if (this.isEmpty) return 0;
+    return this.data[this.getOffset('GENDER')] & 1;
+  }
+
+  set gender(value: number) {
+    this.data[this.getOffset('GENDER')] = value ? 1 : 0;
+  }
+
+  /** Voice: 0 = young, 1 = mature, 2 = aged. */
+  get voice(): number {
+    if (this.isEmpty) return 0;
+    return this.data[this.getOffset('VOICE')];
+  }
+
+  set voice(value: number) {
+    this.data[this.getOffset('VOICE')] = Math.max(0, Math.min(2, value)) & 0xFF;
+  }
+
+  /**
+   * Age, muscular build and chest hair share face block byte 0 as decimal
+   * digits: 100 * muscular + 10 * chestHair + age. See FACE_BUILD_OFFSET.
+   */
+  private getBuildDigit(divisor: number): number {
+    return Math.floor(this.getFaceId(FACE_BUILD_OFFSET) / divisor) % 10;
+  }
+
+  private setBuild(age: number, muscular: boolean, chestHair: boolean): void {
+    const clamped = Math.max(0, Math.min(FACE_AGE_NAMES.length - 1, age));
+    this.setFaceId(FACE_BUILD_OFFSET, (muscular ? 100 : 0) + (chestHair ? 10 : 0) + clamped);
+  }
+
+  /** Face age: 0 young, 1 mature, 2 aged. */
+  get faceAge(): number {
+    return Math.min(FACE_AGE_NAMES.length - 1, this.getBuildDigit(1));
+  }
+
+  set faceAge(value: number) {
+    this.setBuild(value, this.muscular, this.chestHair);
+  }
+
+  get muscular(): boolean {
+    return this.getBuildDigit(100) === 1;
+  }
+
+  set muscular(value: boolean) {
+    this.setBuild(this.faceAge, value, this.chestHair);
+  }
+
+  get chestHair(): boolean {
+    return this.getBuildDigit(10) === 1;
+  }
+
+  set chestHair(value: boolean) {
+    this.setBuild(this.faceAge, this.muscular, value);
+  }
+
+  /**
+   * Both pupils as one value, the way the creator's "Pupils" control works, or
+   * null when the two eyes currently differ. See FACE_PUPIL_ID_OFFSETS.
+   */
+  getPupilId(): number | null {
+    const [left, right] = FACE_PUPIL_ID_OFFSETS.map((o) => this.getFaceId(o));
+    return left === right ? left : null;
+  }
+
+  setPupilId(value: number): void {
+    for (const offset of FACE_PUPIL_ID_OFFSETS) this.setFaceId(offset, value);
+  }
+
+  /** Both pupil colors as one, or null when the eyes differ. */
+  getPupilColor(): [number, number, number] | null {
+    const [left, right] = FACE_PUPIL_COLOR_OFFSETS.map((o) => this.getFaceColor(o));
+    return left.every((v, i) => v === right[i]) ? left : null;
+  }
+
+  setPupilColor(r: number, g: number, b: number): void {
+    for (const offset of FACE_PUPIL_COLOR_OFFSETS) this.setFaceColor(offset, r, g, b);
+  }
+
+  /** True when `offset` holds a well-formed face block — see FACE_ID_COUNT. */
+  private isFaceBlockAt(offset: number): boolean {
+    if (offset < 0 || offset + FACE_BLOCK_SIZE > this.data.length) return false;
+    for (let i = 0; i < FACE_ID_COUNT; i++) {
+      const o = offset + i * 4;
+      // model IDs are small, so the upper three bytes of each u32 are zero
+      if (this.data[o + 1] !== 0 || this.data[o + 2] !== 0 || this.data[o + 3] !== 0) {
+        return false;
+      }
+    }
+    for (let i = 0; i < FACE_COLOR_COUNT; i++) {
+      if (this.data[offset + FACE_COLORS_OFFSET + i * 4 + 3] !== 0xFF) return false;
+    }
+    return true;
+  }
+
+  /** Every offset in [from, to) that holds a face block. */
+  private scanForFaceBlocks(from: number, to: number): number[] {
+    const hits: number[] = [];
+    const limit = Math.min(to, this.data.length - FACE_BLOCK_SIZE);
+    for (let i = Math.max(0, from); i <= limit; i++) {
+      // cheap reject: the first color's alpha byte
+      if (this.data[i + FACE_COLORS_OFFSET + 3] !== 0xFF) continue;
+      if (this.isFaceBlockAt(i)) hits.push(i);
+    }
+    return hits;
+  }
+
+  /**
+   * Find the appearance block, or -1 when this slot has none.
+   *
+   * Same shape as findGestureTable: the block has no fixed offset, so it is a
+   * coarse estimate off the bonfire block, a windowed signature search around
+   * it, and a full scan as the fallback. When more than one candidate lands in
+   * the window the closest to the estimate wins.
+   *
+   * A full scan alone would not do: the signature also matches clusters spaced
+   * 0x1B8 apart deeper in the slot (up to 40 in a levelled character), which
+   * look like a cache of other players' faces. On 99 characters across 15 save
+   * files the window held exactly one candidate every time and the fallback
+   * never ran.
+   */
+  findFaceBlock(): number {
+    if (this.isEmpty) return -1;
+
+    const rec0 = this.findBonfireBlock();
+    let est = -1;
+    if (rec0 !== -1) {
+      est = rec0 + FACE_COARSE_FROM_BONFIRE;
+      const hits = this.scanForFaceBlocks(est - FACE_SEARCH_RADIUS, est + FACE_SEARCH_RADIUS);
+      if (hits.length === 1) return hits[0];
+      if (hits.length > 1) {
+        return hits.reduce((a, b) => (Math.abs(a - est) <= Math.abs(b - est) ? a : b));
+      }
+    }
+
+    const all = this.scanForFaceBlocks(0, this.data.length);
+    if (all.length === 0) return -1;
+    if (est === -1) return all[0];
+    return all.reduce((a, b) => (Math.abs(a - est) <= Math.abs(b - est) ? a : b));
+  }
+
+  /** Copy of the face block, or an empty array when it can't be located. */
+  getFaceBlock(): Uint8Array {
+    const base = this.findFaceBlock();
+    if (base === -1) return new Uint8Array(0);
+    return this.data.slice(base, base + FACE_BLOCK_SIZE);
+  }
+
+  /** Overwrite the whole face block. */
+  setFaceBlock(block: Uint8Array): void {
+    if (block.length !== FACE_BLOCK_SIZE) {
+      throw new Error(`Face block must be ${FACE_BLOCK_SIZE} bytes, got ${block.length}`);
+    }
+    const base = this.findFaceBlock();
+    if (base === -1) {
+      throw new Error('Could not locate the appearance block in this save. It may not be a valid Dark Souls 3 save, or the slot is empty.');
+    }
+    this.data.set(block, base);
+  }
+
+  /** One 0..255 slider, by its offset inside the face block. */
+  getFaceByte(offset: number): number {
+    const base = this.findFaceBlock();
+    if (base === -1 || offset < 0 || offset >= FACE_BLOCK_SIZE) return 0;
+    return this.data[base + offset];
+  }
+
+  setFaceByte(offset: number, value: number): void {
+    const base = this.findFaceBlock();
+    if (base === -1 || offset < 0 || offset >= FACE_BLOCK_SIZE) return;
+    this.data[base + offset] = Math.max(0, Math.min(255, value)) & 0xFF;
+  }
+
+  /**
+   * One model ID (u32 LE) by its offset inside the face block.
+   *
+   * Writing a value the game has no model for makes it crash on load, so the UI
+   * must offer only IDs seen in real saves — see APPEARANCE_IDS in constants.ts.
+   */
+  getFaceId(offset: number): number {
+    const base = this.findFaceBlock();
+    if (base === -1) return 0;
+    const o = base + offset;
+    return (
+      this.data[o] |
+      (this.data[o + 1] << 8) |
+      (this.data[o + 2] << 16) |
+      (this.data[o + 3] << 24)
+    ) >>> 0;
+  }
+
+  setFaceId(offset: number, value: number): void {
+    const base = this.findFaceBlock();
+    if (base === -1) return;
+    const o = base + offset;
+    const v = value >>> 0;
+    this.data[o] = v & 0xFF;
+    this.data[o + 1] = (v >>> 8) & 0xFF;
+    this.data[o + 2] = (v >>> 16) & 0xFF;
+    this.data[o + 3] = (v >>> 24) & 0xFF;
+  }
+
+  /** RGB of one color; the alpha byte that follows it is left alone. */
+  getFaceColor(offset: number): [number, number, number] {
+    const base = this.findFaceBlock();
+    if (base === -1) return [0, 0, 0];
+    return [this.data[base + offset], this.data[base + offset + 1], this.data[base + offset + 2]];
+  }
+
+  setFaceColor(offset: number, r: number, g: number, b: number): void {
+    const base = this.findFaceBlock();
+    if (base === -1) return;
+    const clamp = (v: number) => Math.max(0, Math.min(255, Math.round(v))) & 0xFF;
+    this.data[base + offset] = clamp(r);
+    this.data[base + offset + 1] = clamp(g);
+    this.data[base + offset + 2] = clamp(b);
+  }
+
+  /** Pack the current look into a .ds3chr preset. */
+  exportAppearancePreset(): Uint8Array {
+    const face = this.getFaceBlock();
+    if (face.length === 0) {
+      throw new Error('Could not locate the appearance block in this save.');
+    }
+    const out = new Uint8Array(APPEARANCE_PRESET_SIZE);
+    for (let i = 0; i < 4; i++) out[i] = APPEARANCE_PRESET_MAGIC.charCodeAt(i);
+    out[4] = APPEARANCE_PRESET_VERSION;
+    out[5] = this.gender;
+    out[6] = this.voice;
+    out[7] = 0;
+    out.set(face, APPEARANCE_PRESET_HEADER_SIZE);
+    return out;
+  }
+
+  /** Apply a .ds3chr preset. Throws with a readable reason on a bad file. */
+  importAppearancePreset(bytes: Uint8Array): void {
+    if (bytes.length < APPEARANCE_PRESET_HEADER_SIZE) {
+      throw new Error('File is too short to be an appearance preset.');
+    }
+    const magic = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]);
+    if (magic !== APPEARANCE_PRESET_MAGIC) {
+      throw new Error(bytes.length === 130
+        ? 'This looks like a DS1 .dsrchr preset, which does not fit DS3.'
+        : 'Not a DS3 appearance preset.');
+    }
+    if (bytes[4] !== APPEARANCE_PRESET_VERSION) {
+      throw new Error(`Preset version ${bytes[4]} is not supported (expected ${APPEARANCE_PRESET_VERSION}).`);
+    }
+    if (bytes.length < APPEARANCE_PRESET_SIZE) {
+      throw new Error('Preset file is truncated.');
+    }
+    this.setFaceBlock(bytes.slice(APPEARANCE_PRESET_HEADER_SIZE, APPEARANCE_PRESET_SIZE));
+    this.gender = bytes[5];
+    this.voice = bytes[6];
   }
 
   /**
