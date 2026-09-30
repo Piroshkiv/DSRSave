@@ -6,6 +6,22 @@ import {
   ENTRY_HEADER_SIZE,
   BND4_SIGNATURE,
   ONLINE_FLAG_OFFSET,
+  APPEARANCE_SLIDERS,
+  APPEARANCE_COLORS,
+  APPEARANCE_IDS,
+  APPEARANCE_ID_VALUES,
+  FACE_BLOCK_SIZE,
+  APPEARANCE_PRESET_COUNT,
+  APPEARANCE_PRESET_BASE,
+  APPEARANCE_PRESET_RECORD_SIZE,
+  FACE_RECORD_MAGIC,
+  FACE_RECORD_VERSION,
+  FACE_RECORD_DECLARED_SIZE,
+  FACE_RECORD_HEADER_SIZE,
+  FACE_RECORD_FILL_OFFSET,
+  FACE_RECORD_FILL_LENGTH,
+  FACE_RECORD_FILL_BYTE,
+  FACE_RECORD_USED_OFFSET,
 } from '../../src/apps/ds3/lib/constants';
 import { hasDS3Save, ds3SaveFile, readSaveBytes, DS3_SAVE_PATH, toFile } from '../helpers/saves';
 
@@ -306,6 +322,209 @@ describe.skipIf(!hasDS3Save)('DS3 SaveFileEditor (real save)', () => {
       expect(editor.hasFileHandle()).toBe(false);
       expect(editor.getFileHandle()).toBeNull();
       await expect(editor.saveToOriginalFile()).rejects.toThrow(/No file handle/);
+    });
+  });
+  // The editor is only useful if an edited look survives the trip through the
+  // container: re-encrypted, re-hashed, written out and parsed back. Loading
+  // throws on a checksum mismatch, so a clean reload also proves the hashes.
+  describe('appearance survives export', () => {
+    const reload = async (editor: DS3SaveFileEditor) =>
+      DS3SaveFileEditor.fromFileData(
+        toFile(await editor.exportSaveFile(), 'DS30000.sl2'),
+        null,
+      );
+
+    it('writes every kind of appearance edit into the file', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const hero = editor.getCharacters().find((c) => !c.isEmpty)!;
+      const slot = hero.slotIndex;
+
+      const slider = APPEARANCE_SLIDERS[10];
+      const color = APPEARANCE_COLORS[1];          // hair
+      const id = APPEARANCE_IDS[0];                // hair style
+      const idValue = APPEARANCE_ID_VALUES[id.offset].at(-1)!;
+
+      hero.setFaceByte(slider.offset, 0x2A);
+      hero.setFaceColor(color.offset, 200, 100, 50);
+      hero.setFaceId(id.offset, idValue);
+      hero.faceAge = 2;
+      hero.muscular = true;
+      hero.chestHair = false;
+      hero.gender = 1;
+      hero.voice = 2;
+      const expected = hero.getFaceBlock();
+
+      const back = (await reload(editor)).getCharacters()[slot];
+      expect(back.findFaceBlock()).toBeGreaterThan(0);
+      expect(back.getFaceByte(slider.offset), slider.label).toBe(0x2A);
+      expect(back.getFaceColor(color.offset), color.label).toEqual([200, 100, 50]);
+      expect(back.getFaceId(id.offset), id.label).toBe(idValue);
+      expect(back.faceAge).toBe(2);
+      expect(back.muscular).toBe(true);
+      expect(back.chestHair).toBe(false);
+      expect(back.gender).toBe(1);
+      expect(back.voice).toBe(2);
+      expect(back.getFaceBlock()).toEqual(expected);
+    });
+
+    it('touches nothing else in the block', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const hero = editor.getCharacters().find((c) => !c.isEmpty)!;
+      const before = hero.getFaceBlock();
+
+      const { offset } = APPEARANCE_SLIDERS[3];
+      hero.setFaceByte(offset, (before[offset] + 1) & 0xFF);
+
+      const after = (await reload(editor)).getCharacters()[hero.slotIndex].getFaceBlock();
+      expect(after).toHaveLength(FACE_BLOCK_SIZE);
+      for (let i = 0; i < FACE_BLOCK_SIZE; i++) {
+        if (i === offset) continue;
+        expect(after[i], `byte 0x${i.toString(16)} moved`).toBe(before[i]);
+      }
+      expect(after[offset]).toBe((before[offset] + 1) & 0xFF);
+    });
+
+    it('leaves every other character untouched', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const populated = editor.getCharacters().filter((c) => !c.isEmpty);
+      if (populated.length < 2) return;
+
+      const [hero, ...others] = populated;
+      const untouched = others.map((c) => ({ slot: c.slotIndex, face: c.getFaceBlock() }));
+      hero.setFaceByte(APPEARANCE_SLIDERS[5].offset, 0x77);
+
+      const reloaded = await reload(editor);
+      for (const { slot, face } of untouched) {
+        expect(reloaded.getCharacters()[slot].getFaceBlock(), `slot ${slot}`).toEqual(face);
+      }
+    });
+
+    it('carries a preset from one character to another through the file', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const populated = editor.getCharacters().filter((c) => !c.isEmpty);
+      if (populated.length < 2) return;
+
+      const [source, target] = populated;
+      source.setFaceId(APPEARANCE_IDS[0].offset, APPEARANCE_ID_VALUES[0x04].at(-1)!);
+      source.setFaceColor(APPEARANCE_COLORS[0].offset, 33, 66, 99);
+      const preset = source.exportAppearancePreset();
+      target.importAppearancePreset(preset);
+
+      const reloaded = await reload(editor);
+      const back = reloaded.getCharacters()[target.slotIndex];
+      expect(back.getFaceBlock()).toEqual(source.getFaceBlock());
+      expect(back.getFaceColor(APPEARANCE_COLORS[0].offset)).toEqual([33, 66, 99]);
+      expect(back.exportAppearancePreset()).toEqual(preset);
+    });
+  });
+  // The game's own appearance presets — six records at the front of the system
+  // entry. These tests never assume a preset exists: the fixture save gains and
+  // loses them as the game is played.
+  describe('appearance presets', () => {
+    it('the fill offset really is the end of the face block', () => {
+      expect(FACE_RECORD_FILL_OFFSET).toBe(FACE_BLOCK_SIZE);
+      expect(FACE_RECORD_HEADER_SIZE + FACE_RECORD_USED_OFFSET + 2)
+        .toBeLessThanOrEqual(APPEARANCE_PRESET_RECORD_SIZE);
+    });
+
+    it('reports six slots, each empty or a full face block', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const slots = editor.listAppearancePresets();
+      expect(slots).toHaveLength(APPEARANCE_PRESET_COUNT);
+      for (const { index, face } of slots) {
+        expect(editor.hasAppearancePreset(index)).toBe(face !== null);
+        if (face) expect(face, `slot ${index}`).toHaveLength(FACE_BLOCK_SIZE);
+      }
+    });
+
+    it('rejects a slot index outside the six', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      expect(() => editor.readAppearancePreset(-1)).toThrow(/out of range/);
+      expect(() => editor.readAppearancePreset(APPEARANCE_PRESET_COUNT)).toThrow(/out of range/);
+    });
+
+    it('writing a face into an occupied slot keeps the rest of the record', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const hero = editor.getCharacters().find((c) => !c.isEmpty)!;
+      const slot = editor.listAppearancePresets().find((p) => p.face !== null)?.index;
+      if (slot === undefined) return;   // this save has no presets saved in game
+
+      const at = APPEARANCE_PRESET_BASE + slot * APPEARANCE_PRESET_RECORD_SIZE;
+      const before = editor.readSystemEntryBytes(at, APPEARANCE_PRESET_RECORD_SIZE);
+      editor.writeAppearancePreset(slot, hero.getFaceBlock());
+
+      const after = editor.readSystemEntryBytes(at, APPEARANCE_PRESET_RECORD_SIZE);
+      expect(editor.readAppearancePreset(slot)).toEqual(hero.getFaceBlock());
+      // header and trailer untouched
+      expect(after.slice(0, FACE_RECORD_HEADER_SIZE))
+        .toEqual(before.slice(0, FACE_RECORD_HEADER_SIZE));
+      const tail = FACE_RECORD_HEADER_SIZE + FACE_BLOCK_SIZE;
+      expect(after.slice(tail)).toEqual(before.slice(tail));
+    });
+
+    it('builds a valid record when the slot was empty', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const hero = editor.getCharacters().find((c) => !c.isEmpty)!;
+      const slot = APPEARANCE_PRESET_COUNT - 1;
+
+      editor.clearAppearancePreset(slot);
+      expect(editor.hasAppearancePreset(slot)).toBe(false);
+      expect(editor.readAppearancePreset(slot)).toBeNull();
+
+      editor.writeAppearancePreset(slot, hero.getFaceBlock());
+      const at = APPEARANCE_PRESET_BASE + slot * APPEARANCE_PRESET_RECORD_SIZE;
+      const rec = editor.readSystemEntryBytes(at, APPEARANCE_PRESET_RECORD_SIZE);
+      const view = new DataView(rec.buffer, rec.byteOffset, rec.byteLength);
+
+      expect(Array.from(rec.slice(0, 4))).toEqual(FACE_RECORD_MAGIC);
+      expect(view.getUint32(4, true)).toBe(FACE_RECORD_VERSION);
+      expect(view.getUint32(8, true)).toBe(FACE_RECORD_DECLARED_SIZE);
+      expect(editor.readAppearancePreset(slot)).toEqual(hero.getFaceBlock());
+
+      const fillAt = FACE_RECORD_HEADER_SIZE + FACE_RECORD_FILL_OFFSET;
+      for (let i = 0; i < FACE_RECORD_FILL_LENGTH; i++) {
+        expect(rec[fillAt + i], `fill byte ${i}`).toBe(FACE_RECORD_FILL_BYTE);
+      }
+      expect(view.getUint16(FACE_RECORD_HEADER_SIZE + FACE_RECORD_USED_OFFSET, true)).toBe(1);
+    });
+
+    it('a written preset survives export and reload', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const hero = editor.getCharacters().find((c) => !c.isEmpty)!;
+      hero.setFaceColor(APPEARANCE_COLORS[1].offset, 7, 8, 9);
+      const face = hero.getFaceBlock();
+
+      const slot = 2;
+      editor.writeAppearancePreset(slot, face);
+      const reloaded = await DS3SaveFileEditor.fromFileData(
+        toFile(await editor.exportSaveFile(), 'DS30000.sl2'),
+        null,
+      );
+      expect(reloaded.readAppearancePreset(slot)).toEqual(face);
+    });
+
+    it('clearing a preset survives export and reload', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      editor.clearAppearancePreset(0);
+      const reloaded = await DS3SaveFileEditor.fromFileData(
+        toFile(await editor.exportSaveFile(), 'DS30000.sl2'),
+        null,
+      );
+      expect(reloaded.hasAppearancePreset(0)).toBe(false);
+      const at = APPEARANCE_PRESET_BASE;
+      expect(Array.from(reloaded.readSystemEntryBytes(at, APPEARANCE_PRESET_RECORD_SIZE)))
+        .toEqual(new Array(APPEARANCE_PRESET_RECORD_SIZE).fill(0));
+    });
+
+    it('a preset applies onto a character byte for byte', async () => {
+      const editor = await DS3SaveFileEditor.fromFileData(await ds3SaveFile(), null);
+      const populated = editor.getCharacters().filter((c) => !c.isEmpty);
+      if (populated.length < 2) return;
+
+      const [source, target] = populated;
+      editor.writeAppearancePreset(3, source.getFaceBlock());
+      target.setFaceBlock(editor.readAppearancePreset(3)!);
+      expect(target.getFaceBlock()).toEqual(source.getFaceBlock());
     });
   });
 });

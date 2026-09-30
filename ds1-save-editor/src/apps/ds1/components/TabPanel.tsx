@@ -6,6 +6,7 @@ import { CreateBackupResult } from '../lib/backups';
 import { GeneralTab } from './GeneralTab';
 import { InventoryTab } from './InventoryTab';
 import { BonfiresTab } from './BonfiresTab';
+import { GesturesTab } from './GesturesTab';
 import { NPCsTab } from './NPCsTab';
 import { BossesTab } from './BossesTab';
 import { WorldEventsTab } from './WorldEventsTab';
@@ -30,7 +31,7 @@ interface TabPanelProps {
   backups?: BackupControls | null;
 }
 
-type TabType = 'help' | 'general' | 'appearance' | 'inventory' | 'bonfires' | 'npcs' | 'bosses' | 'world_events' | 'backups' | 'table';
+type TabType = 'help' | 'general' | 'appearance' | 'inventory' | 'bonfires' | 'gestures' | 'npcs' | 'bosses' | 'world_events' | 'backups' | 'table';
 
 const TAB_KEYS: Record<TabType, string> = {
   help: 'tab_help',
@@ -38,6 +39,7 @@ const TAB_KEYS: Record<TabType, string> = {
   appearance: 'tab_appearance',
   inventory: 'tab_inventory',
   bonfires: 'tab_bonfires',
+  gestures: 'tab_gestures',
   npcs: 'tab_npcs',
   bosses: 'tab_bosses',
   world_events: 'tab_world_events',
@@ -45,7 +47,7 @@ const TAB_KEYS: Record<TabType, string> = {
   table: 'tab_table',
 };
 
-const FULL_TABS: TabType[] = ['general', 'appearance', 'inventory', 'bonfires', 'npcs', 'bosses', 'backups', 'table'];
+const FULL_TABS: TabType[] = ['general', 'appearance', 'inventory', 'bonfires', 'gestures', 'npcs', 'bosses', 'backups', 'table'];
 
 
 export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, safeMode, backups }) => {
@@ -104,13 +106,16 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
           <GeneralTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
         )}
         {activeTab === 'appearance' && !isEmptySlot && (
-          <AppearanceTab character={character} onCharacterUpdate={onCharacterUpdate} />
+          <AppearanceTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
         )}
         {activeTab === 'inventory' && !isEmptySlot && (
           <InventoryTab character={character} onCharacterUpdate={onCharacterUpdate} safeMode={safeMode} />
         )}
         {activeTab === 'bonfires' && !isEmptySlot && (
           <BonfiresTab character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
+        {activeTab === 'gestures' && !isEmptySlot && (
+          <GesturesTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
         {activeTab === 'npcs' && !isEmptySlot && (
           <NPCsTab character={character} onCharacterUpdate={onCharacterUpdate} />

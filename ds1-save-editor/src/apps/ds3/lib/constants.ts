@@ -38,11 +38,18 @@ export const RELATIVE_OFFSETS = {
   FP: -0x124,
   STAMINA: -0x114,
 
-  NG_CYCLE: -0x6,
   ESTUS_MAX: -0x4E,
   ASHEN_ESTUS_MAX: -0x4D,
   CLASS: -0xA2,
   WEAPON_MEMORY: -0x9D,
+
+  // Gender and voice live here rather than in the face block. In memory they sit
+  // at PlayerGameData+0xAA/+0xAB, four bytes ahead of class (+0xAE) — and CLASS is
+  // already anchored at -0xA2, which puts these two exactly where they landed when
+  // the sweeper located them. Gender reads 0 or 1 on all 99 characters checked;
+  // voice read 0 on every one of them, so its offset is plausible but unproven.
+  GENDER: -0xA6,
+  VOICE: -0xA5,
 } as const;
 
 /** The nine levelled stats, in the order the game's status screen lists them. */
@@ -63,6 +70,70 @@ export const BONFIRE_PATTERN = new Uint8Array([
 ]);
 export const BONFIRE_COARSE_FROM_INV = 0x12B1F;
 export const BONFIRE_ANCHOR_TO_BLOCK = 0xB5D;
+
+// ===== GESTURES =====
+// Gesture unlock table: 41 records of `[u16 value][u16 index]` in the fixed game
+// order, where
+//
+//   value = (index + 1) * 2 + (unlocked ? 1 : 0)
+//
+// so bit 0 of the first byte is the unlock flag and the rest of the record is a
+// self-describing id/index pair. Identical in layout to the array the game keeps
+// at [[[GameDataMan]+0x10]+0x7B8]+0x10 (the "Unlock All Gestures" script in
+// DS3_TGA_v3.4.0.CT) and to the DS1 table, which has 15 records instead of 41.
+//
+// Mapped by ds3-gesture-sweeper: each gesture was toggled alone in the game's
+// memory, the game was forced to save (ESC x2), and the decrypted slots were
+// diffed bit by bit. All 41 gestures landed on exactly `table + index*4` bit 0.
+//
+// The table has NO usable fixed anchor. Measured across 6 characters, every
+// candidate drifts: CHARACTER_PATTERN (+0x114A0 / +0x114C8 / +0x11500),
+// inventory start, the SteamID and the absolute offset all vary, and the offset
+// even moves between two saves of the SAME character (0x21F98 -> 0x219E8).
+// What does hold is the distance to the bonfire block: constant at -0x1863 over
+// all 43 captures of one character, and within 0x40 of it across characters
+// (-0x185B / -0x1863 / -0x189B). So the block is located the same way the
+// bonfire block itself is — a coarse estimate plus a windowed search — with the
+// record structure as the actual acceptance test.
+/**
+ * Records in the on-disk table. All 41 are present and well-formed, so all 41
+ * are checked when accepting a candidate offset — that full structure is what
+ * makes the search reliable.
+ */
+export const GESTURE_RECORD_COUNT = 41;
+export const GESTURE_RECORD_SIZE = 4;
+/**
+ * Gestures the editor exposes: records 0-33, Point Forward through Unmannered Bow.
+ *
+ * Records 34-40 are broken and are never set. "Lord of Cinder" (34) is an
+ * unfinished gesture — it was meant to strike the Soul of Cinder's idle pose but
+ * plays a placeholder kukri-throw animation; FDP_MenuText(301140)-(301145)
+ * (35-40) are empty placeholders. The records exist and the flag sticks, so
+ * unlocking them just adds broken entries to the in-game gesture menu
+ * (confirmed in-game). "Unlock all" clears them rather than skipping them, so it
+ * also repairs a save that already has them on.
+ *
+ * Record 33, Unmannered Bow, is cut content too but has a finished animation and
+ * is kept. It is not obtainable in normal play, so it does mark the save as
+ * edited; no ban reports for it were found, but DS3 is known to soft-ban on
+ * anomalous save data in general.
+ */
+export const GESTURE_COUNT = 34;
+export const GESTURE_COARSE_FROM_BONFIRE = -0x1863;
+export const GESTURE_SEARCH_RADIUS = 0x800;
+
+// NG+ cycle ("journey" counter) — u32 LE at BONFIRE_BLOCK_TO_NG_CYCLE from the block
+// start: 0 = NG, 1 = NG+1, ... It sits just before the event-flag block, behind an
+// `FF*16 00*4` header, and is the only save-semantic byte an NG+ step changes (a
+// captured NG+1 -> NG+2 transition touched 44 bytes of the slot; the rest were the
+// play time, the save's hash fields and the runtime scratch tail).
+//
+// The delta is anchored to the bonfire block, not to CHARACTER_PATTERN: measured
+// against the character pattern it drifts (0x115DA / 0x115EE / 0x115F2 / 0x11866 on
+// four different slots), while -0x1721 from the block start holds on all 8 populated
+// slots of 6 saves. The old pattern-relative RELATIVE_OFFSETS.NG_CYCLE (-0x6) pointed
+// at a byte that reads 0 in every one of those slots, including a character on NG+2.
+export const BONFIRE_BLOCK_TO_NG_CYCLE = -0x1721;
 
 // "Unlock all bonfires" bitmask: [offset-from-block-start, byte value]. Each value is a
 // bitmask OR-ed into the byte, so only the bonfire bits are set — every other bit in the
@@ -160,6 +231,45 @@ export const SLOT_ACTIVE_FLAGS_OFFSET = 0x1098;
 export const SLOT_SUMMARY_BASE = 0x10A2;
 export const SLOT_SUMMARY_SIZE = 0x22A;
 export const SLOT_COUNT = 10;
+
+// ===== APPEARANCE PRESETS (the game's own) =====
+// DS3 lets a player store finished faces in the character creator, and it keeps
+// them in the system entry — six fixed-size records right at the front, before
+// the slot flags and the load-menu summaries.
+//
+// Each record is self-describing, which is what makes it safe to find:
+//
+//   "FACE" | u32 version = 3 | u32 size = 0xF4 | payload 0xF8 bytes
+//
+// and the payload opens with exactly the same 208-byte face block a character
+// slot carries, so a preset and a character speak the same format. After the
+// face come 21 bytes of 0x7F, three zeros, and a u16 that reads 1 on every
+// preset actually saved in-game.
+//
+// Measured on a save where six presets exist, and on eleven others where the
+// whole 0xB0..0x6DC range is zeros — an unused slot is not an empty record but
+// no record at all, so the magic is the presence test.
+export const APPEARANCE_PRESET_BASE = 0xB0;
+export const APPEARANCE_PRESET_RECORD_SIZE = 0x104;
+export const APPEARANCE_PRESET_COUNT = 6;
+
+export const FACE_RECORD_MAGIC = [0x46, 0x41, 0x43, 0x45]; // "FACE"
+export const FACE_RECORD_VERSION = 3;
+export const FACE_RECORD_DECLARED_SIZE = 0xF4;
+export const FACE_RECORD_HEADER_SIZE = 12;
+/** Record size minus header — the face block plus its trailer. */
+export const FACE_RECORD_PAYLOAD_SIZE =
+  APPEARANCE_PRESET_RECORD_SIZE - FACE_RECORD_HEADER_SIZE;
+/**
+ * 21 bytes of 0x7F sit right after the face block in every record seen.
+ * The offset is FACE_BLOCK_SIZE, spelled out because that constant is declared
+ * further down the file; the test suite pins the two together.
+ */
+export const FACE_RECORD_FILL_OFFSET = 0xD0;
+export const FACE_RECORD_FILL_LENGTH = 21;
+export const FACE_RECORD_FILL_BYTE = 0x7F;
+/** u16, reads 1 on presets saved in game. */
+export const FACE_RECORD_USED_OFFSET = 0xE8;
 
 // Play time in milliseconds, u32 LE. Absolute offset in the decrypted slot header
 // (not pattern-relative). The game trusts this value and continues counting from it.
@@ -477,3 +587,289 @@ export const COVENANT_BADGE_INVENTORY: Record<number, { byte13_upper: number; by
   0x20002760: { byte13_upper: 0x4, byte14: 0x90, byte15: 0x02 }, // Rosaria's Fingers
   0x2000276A: { byte13_upper: 0x4, byte14: 0xA9, byte15: 0x02 }, // Spears of the Church
 };
+
+// ===========================================================================
+// APPEARANCE
+// ===========================================================================
+// Offsets come from DS3_TGA_v3.4.0.CT (group "Appearance" and the
+// "Save / Restore Current FaceData" script; the table is maintained by
+// The Grand Archives), then verified against
+// real saves with ds3-appearance-sweeper: a marker run wrote a distinct value
+// into every slider and all 111 of them came back out of the .sl2, and a
+// memory-vs-save comparison matched 122 of 122 fields.
+//
+// In memory the data lives at PlayerGameData ([[GameDataMan]+0x10]) + 0x6B8.
+// The CT script saves 192 bytes of it, but the block is longer: the last 16
+// bytes (Lipstick, Laugh Lines, Skin Tone, Skin Color Layers...) also travel
+// into the save, proven when a crashed run left marker values there and the
+// next save wrote exactly those. So the block is 0x6B8..0x787 = 208 bytes.
+//
+// gender/voice are NOT part of it — they sit in the stat block, next to CLASS.
+export const FACE_BLOCK_SIZE = 0xD0;
+
+/**
+ * The face block has no fixed offset — it moves between characters and even
+ * between two saves of the same character (one save had the gesture table at
+ * the address the face block occupied three minutes earlier). It is located the
+ * way the bonfire block and the gesture table are: a coarse estimate off the
+ * bonfire block, a windowed signature search, and a full scan as the fallback.
+ *
+ * Measured on 99 characters across 15 files (4 profiles plus editor backups):
+ * the delta from the bonfire block stays within -0xA153..-0xA337, and the
+ * midpoint below put exactly one candidate in the window every single time.
+ */
+export const FACE_COARSE_FROM_BONFIRE = -0xA245;
+export const FACE_SEARCH_RADIUS = 0x800;
+
+/**
+ * Structural signature of the block, used to recognise it without knowing the
+ * character's appearance: nine u32 model IDs whose values are small (so the top
+ * three bytes of each are zero), followed by nine RGBA colors whose alpha byte
+ * is always 0xFF. 27 zero bytes and 9 0xFF bytes in fixed positions.
+ *
+ * A full scan finds more matches — clusters spaced 0x1B8 apart, up to 40 in a
+ * levelled character's slot, which look like a cache of other players' faces.
+ * The window is what keeps the right one, so never take "first match in slot".
+ */
+export const FACE_ID_COUNT = 9;
+export const FACE_COLOR_COUNT = 9;
+export const FACE_COLORS_OFFSET = 0x24;
+
+/**
+ * Model IDs (u32 each). These are NOT free-form numbers: the value indexes a
+ * model table, and an out-of-range one makes the game load a nonexistent asset
+ * and crash — that is exactly how the first sweep run ended. The editor must
+ * only ever offer values seen in real saves.
+ *
+ * Observed across 81 characters: Hair 3/6/9/106/108/111 (111 is the last entry
+ * in the in-game list), Eyebrows 1/12, Eyelashes 2/3, Pupils 0/5, Tattoo 0/20,
+ * Beard 0. Age reads 0 or 1 (and 100 in four edited saves) although the CT
+ * dropdown claims 0..3, so its dropdown is not trustworthy either.
+ */
+/**
+ * Face block byte 0 is not a model ID at all — it packs three separate character
+ * creation settings into decimal digits:
+ *
+ *     value = 100 * muscular + 10 * chestHair + age      (age 0..2)
+ *
+ * The Cheat Engine table calls the whole byte "Age" with a 0..3 dropdown, which
+ * is why real saves looked like they held nonsense (0, 1, 100, 110, 111, 112).
+ * Each digit was confirmed on its own in the character creator: toggling the
+ * muscular build flipped 112 <-> 12, chest hair flipped 112 <-> 102, and the age
+ * option cycled the last digit through 0, 1, 2 — every time leaving the other
+ * digits untouched. That makes 12 valid values, and the editor shows the three
+ * settings separately rather than the number.
+ */
+export const FACE_BUILD_OFFSET = 0x00;
+export const FACE_AGE_NAMES = ['Young', 'Mature', 'Aged'] as const;
+
+/**
+ * The eyes have three controls in the character creator, not two: "Pupils"
+ * alongside "Left Pupil" and "Right Pupil". The pair one is not a field of its
+ * own — watching memory while it is used shows it writing both eyes at once,
+ * shape and color together, always to the same value. So the editor offers the
+ * same pair control on top of the two real fields.
+ */
+export const FACE_PUPIL_ID_OFFSETS = [0x08, 0x0C] as const;
+export const FACE_PUPIL_COLOR_OFFSETS = [0x2C, 0x30] as const;
+
+/**
+ * The ids and the colors are two parallel lists in the same order, so each
+ * index is one "part plus its color": build/skin, hair, left eye, right eye,
+ * brows, beard, ???, tattoo, eyelashes.
+ *
+ * Index 6 is the odd one out and the editor leaves it alone. Across 82
+ * characters from four profiles its id is always 0 and its color always
+ * 00 00 00 FF, with no exception — while the tattoo next to it does vary, and
+ * even keeps a color while its id is 0, which is what a used-but-disabled slot
+ * looks like. Nothing in the character creator touched it in any capture run
+ * either. It reads as a slot the structure reserves and the game never fills,
+ * and since neither its meaning nor its valid ids are known, offering it would
+ * be the same crash risk as any other unverified model id.
+ */
+export const FACE_UNUSED_ID_OFFSET = 0x18;
+export const FACE_UNUSED_COLOR_OFFSET = 0x3C;
+
+export const APPEARANCE_IDS: ReadonlyArray<{ offset: number; label: string }> = [
+  { offset: 0x04, label: 'Hair' },
+  { offset: 0x08, label: 'Left Pupil' },
+  { offset: 0x0C, label: 'Right Pupil' },
+  { offset: 0x10, label: 'Eyebrows' },
+  { offset: 0x14, label: 'Beard' },
+  { offset: 0x1C, label: 'Tattoo / Mark' },
+  { offset: 0x20, label: 'Eyelashes' },
+];
+
+const idRange = (from: number, to: number, missing: number[] = []): number[] =>
+  Array.from({ length: to - from + 1 }, (_, i) => from + i).filter((v) => !missing.includes(v));
+
+/**
+ * The model IDs the game actually has, per face-block offset.
+ *
+ * These were read off the game itself: ds3-appearance-sweeper's `--watch-ids`
+ * polls the field while the list is scrolled in the appearance menu, so every
+ * value here is one the game selected on its own. Nothing is interpolated —
+ * the IDs are sparse and a value with no model behind it crashes the game on
+ * load, so the lists say exactly what was seen and nothing more.
+ *
+ * Two things the ranges alone would get wrong:
+ *
+ * - Hair is not one run. It is 0..11 and 101..112, 24 styles in two families,
+ *   which matches the 24 entries the in-game list offers.
+ * - Tattoo / Mark runs 0..55 but genuinely skips 11, 12, 16, 19, 31 and 46 —
+ *   two independent passes over the whole list produced the same 50 values and
+ *   the same six holes, so those IDs do not exist.
+ *
+ * Byte 0 is absent on purpose: it is not an ID but three packed settings, see
+ * FACE_BUILD_OFFSET.
+ */
+export const APPEARANCE_ID_VALUES: Readonly<Record<number, number[]>> = {
+  0x04: [...idRange(0, 11), ...idRange(101, 112)],  // Hair, 24 styles
+  0x08: idRange(0, 8),                              // Left Pupil
+  0x0C: idRange(0, 8),                              // Right Pupil
+  0x10: idRange(0, 16),                             // Eyebrows
+  0x14: idRange(0, 11),                             // Beard
+  0x1C: idRange(0, 55, [11, 12, 16, 19, 31, 46]),   // Tattoo / Mark, 50 marks
+  0x20: idRange(0, 3),                              // Eyelashes
+};
+
+/** Colors are RGBA; only RGB is editable, alpha is always 0xFF. */
+export const APPEARANCE_COLORS: ReadonlyArray<{ offset: number; label: string }> = [
+  { offset: 0x24, label: 'Skin' },
+  { offset: 0x28, label: 'Hair' },
+  { offset: 0x2C, label: 'Left Pupil' },
+  { offset: 0x30, label: 'Right Pupil' },
+  { offset: 0x34, label: 'Eyebrows' },
+  { offset: 0x38, label: 'Beard' },
+  { offset: 0x40, label: 'Tattoo / Mark' },
+  { offset: 0x44, label: 'Eyelashes' },
+];
+
+/**
+ * Appearance preset file — our own format, the way DS1 has .dsrchr.
+ *
+ *   0x00   4   magic "D3CH"
+ *   0x04   1   version
+ *   0x05   1   gender
+ *   0x06   1   voice
+ *   0x07   1   reserved
+ *   0x08 208   the face block verbatim
+ *
+ * Everything that defines a look lives in the face block, so a preset is lossless.
+ * The Cheat Engine table's own preset format is deliberately not used: it stores
+ * 192 bytes of face data and drops the last 16 (Lipstick 1/2, Laugh Lines, Nasal
+ * Size, Nose Bridge Color, Skin Tone, Skin Color Layers 1-4), and its <body> tag
+ * holds the runtime float scales that never reach the save at all.
+ *
+ * The magic exists because a headerless file would be indistinguishable from a
+ * DS1 .dsrchr, and loading one into DS3 would quietly write garbage into a face.
+ */
+export const APPEARANCE_PRESET_MAGIC = 'D3CH';
+export const APPEARANCE_PRESET_VERSION = 1;
+export const APPEARANCE_PRESET_HEADER_SIZE = 8;
+export const APPEARANCE_PRESET_SIZE = APPEARANCE_PRESET_HEADER_SIZE + FACE_BLOCK_SIZE;
+export const APPEARANCE_PRESET_EXTENSION = '.ds3chr';
+
+/** Plain 0..255 sliders — anything here is safe to set to any byte value. */
+export const APPEARANCE_SLIDERS: ReadonlyArray<{ offset: number; label: string; group: string }> = [
+  { offset: 0x48, label: 'Position, Horizontal', group: 'Tattoo / Mark' },
+  { offset: 0x49, label: 'Position, Vertical', group: 'Tattoo / Mark' },
+  { offset: 0x4A, label: 'Rotation', group: 'Tattoo / Mark' },
+  { offset: 0x4B, label: 'Size', group: 'Tattoo / Mark' },
+  { offset: 0x4C, label: 'Head', group: 'Body Proportions' },
+  { offset: 0x4D, label: 'Chest', group: 'Body Proportions' },
+  { offset: 0x4E, label: 'Abdomen', group: 'Body Proportions' },
+  { offset: 0x4F, label: 'Upper Arms', group: 'Body Proportions' },
+  { offset: 0x50, label: 'Thighs', group: 'Body Proportions' },
+  { offset: 0x51, label: 'Forearms', group: 'Body Proportions' },
+  { offset: 0x52, label: 'Calves', group: 'Body Proportions' },
+  { offset: 0x66, label: 'Apparent Age', group: 'Features' },
+  { offset: 0x67, label: 'Facial Aesthetic', group: 'Features' },
+  { offset: 0x68, label: 'Form Emphasis', group: 'Features' },
+  { offset: 0x6A, label: 'Brow Ridge Height', group: 'Brow Ridge' },
+  { offset: 0x6B, label: 'Inner Brow Ridge', group: 'Brow Ridge' },
+  { offset: 0x6C, label: 'Outer Brow Ridge', group: 'Brow Ridge' },
+  { offset: 0x6D, label: 'Cheekbone Height', group: 'Cheeks' },
+  { offset: 0x6E, label: 'Cheekbone Depth', group: 'Cheeks' },
+  { offset: 0x6F, label: 'Cheekbone Width', group: 'Cheeks' },
+  { offset: 0x70, label: 'Cheekbone Prominence', group: 'Cheeks' },
+  { offset: 0x71, label: 'Cheek Fullness', group: 'Cheeks' },
+  { offset: 0x72, label: 'Chin Tip Position', group: 'Chin' },
+  { offset: 0x73, label: 'Chin Length', group: 'Chin' },
+  { offset: 0x74, label: 'Chin Protrusion', group: 'Chin' },
+  { offset: 0x75, label: 'Chin Depth', group: 'Chin' },
+  { offset: 0x76, label: 'Chin Size', group: 'Chin' },
+  { offset: 0x77, label: 'Chin Height', group: 'Chin' },
+  { offset: 0x78, label: 'Chin Width', group: 'Chin' },
+  { offset: 0x79, label: 'Eye Position', group: 'Eyes' },
+  { offset: 0x7A, label: 'Eye Size', group: 'Eyes' },
+  { offset: 0x7B, label: 'Eye Slant', group: 'Eyes' },
+  { offset: 0x7C, label: 'Eye Spacing', group: 'Eyes' },
+  { offset: 0x7D, label: 'Nose Size', group: 'Facial Balance' },
+  { offset: 0x7E, label: 'Nose/Forehead Ratio', group: 'Facial Balance' },
+  { offset: 0x80, label: 'Face Protrusion', group: 'Facial Balance' },
+  { offset: 0x81, label: 'Vertical Facial Spacing', group: 'Facial Balance' },
+  { offset: 0x82, label: 'Facial Feature Slant', group: 'Facial Balance' },
+  { offset: 0x83, label: 'Horizontal Facial Spacing', group: 'Facial Balance' },
+  { offset: 0x85, label: 'Forehead Depth', group: 'Forehead & Glabella' },
+  { offset: 0x86, label: 'Forehead Protrusion', group: 'Forehead & Glabella' },
+  { offset: 0x88, label: 'Jaw Position', group: 'Jaw' },
+  { offset: 0x89, label: 'Jaw Width', group: 'Jaw' },
+  { offset: 0x8A, label: 'Lower Jaw', group: 'Jaw' },
+  { offset: 0x8B, label: 'Jaw Contour', group: 'Jaw' },
+  { offset: 0x8C, label: 'Lip Shape', group: 'Lips' },
+  { offset: 0x8D, label: 'Mouth Expression', group: 'Lips' },
+  { offset: 0x8E, label: 'Lip Fullness', group: 'Lips' },
+  { offset: 0x8F, label: 'Lip Size', group: 'Lips' },
+  { offset: 0x90, label: 'Lip Protrusion', group: 'Lips' },
+  { offset: 0x92, label: 'Mouth Protrusion', group: 'Mouth' },
+  { offset: 0x93, label: 'Mouth Slant', group: 'Mouth' },
+  { offset: 0x94, label: 'Occlusion', group: 'Mouth' },
+  { offset: 0x95, label: 'Mouth Position', group: 'Mouth' },
+  { offset: 0x96, label: 'Mouth Width', group: 'Mouth' },
+  { offset: 0x97, label: 'Mouth-Chin Distance', group: 'Mouth' },
+  { offset: 0x98, label: 'Nose Ridge Depth', group: 'Nose Ridge' },
+  { offset: 0x99, label: 'Nose Ridge Length', group: 'Nose Ridge' },
+  { offset: 0x9A, label: 'Nose Position', group: 'Nose Ridge' },
+  { offset: 0x9B, label: 'Nose Tip Height', group: 'Nose Ridge' },
+  { offset: 0x9C, label: 'Nostril Slant', group: 'Nostrils' },
+  { offset: 0x9D, label: 'Nostril Size', group: 'Nostrils' },
+  { offset: 0x9E, label: 'Nostril Width', group: 'Nostrils' },
+  { offset: 0x9F, label: 'Nose Protrusion', group: 'Nose Ridge' },
+  { offset: 0xA0, label: 'Nose Bridge Height', group: 'Forehead & Glabella' },
+  { offset: 0xA1, label: 'Bridge Protrusion 1', group: 'Forehead & Glabella' },
+  { offset: 0xA2, label: 'Bridge Protrusion 2', group: 'Forehead & Glabella' },
+  { offset: 0xA3, label: 'Nose Bridge Width', group: 'Forehead & Glabella' },
+  { offset: 0xA4, label: 'Nose Height', group: 'Nose Ridge' },
+  { offset: 0xA5, label: 'Nose Slant', group: 'Nose Ridge' },
+  { offset: 0xAD, label: 'Cheek Color', group: 'Skin' },
+  { offset: 0xAE, label: 'Tone Around Eyes', group: 'Cosmetics' },
+  { offset: 0xAF, label: 'Eye Socket', group: 'Cosmetics' },
+  { offset: 0xB9, label: 'Eyelid Brightness', group: 'Cosmetics' },
+  { offset: 0xBA, label: 'Eyelid Color', group: 'Cosmetics' },
+  { offset: 0xBB, label: 'Eyeliner', group: 'Cosmetics' },
+  { offset: 0xBC, label: 'Eye Shadow', group: 'Cosmetics' },
+  { offset: 0xC1, label: 'Lipstick 1', group: 'Cosmetics' },
+  { offset: 0xC2, label: 'Lipstick 2', group: 'Cosmetics' },
+  { offset: 0xC3, label: 'Laugh Lines', group: 'Skin' },
+  { offset: 0xC4, label: 'Nasal Size', group: 'Nostrils' },
+  { offset: 0xC5, label: 'Nose Bridge Color', group: 'Skin' },
+  { offset: 0xC6, label: 'Skin Color Layer 4', group: 'Skin' },
+  { offset: 0xC7, label: 'Skin Tone', group: 'Skin' },
+  { offset: 0xC8, label: 'Skin Color Layer 1', group: 'Skin' },
+  { offset: 0xC9, label: 'Skin Color Layer 2', group: 'Skin' },
+  { offset: 0xCA, label: 'Skin Color Layer 3', group: 'Skin' },
+
+  // Three bytes the reference table has no entry for, but the game does drive:
+  // switching between the built-in face presets rewrote 81 bytes of the block
+  // and these were among them. 0x91 sits between Lip Protrusion and Mouth
+  // Protrusion, 0xAB/0xAC just ahead of Cheek Color. What each does is unknown,
+  // hence the offsets for names — but they are part of the look, so leaving them
+  // out would mean the editor cannot reproduce a face the game can.
+  //
+  // The other 46 undescribed bytes of the block stayed put through the same
+  // preset sweep, so they are not exposed.
+  { offset: 0x91, label: 'Unnamed 0x91', group: 'Unlabelled' },
+  { offset: 0xAB, label: 'Unnamed 0xAB', group: 'Unlabelled' },
+  { offset: 0xAC, label: 'Unnamed 0xAC', group: 'Unlabelled' },
+];  // 90

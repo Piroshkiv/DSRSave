@@ -837,21 +837,69 @@ export class DS3Inventory {
     return -1;
   }
 
+  /** Separator byte the given catalogue item is stored under. */
+  private separatorForItem(itemInfo: Item): number {
+    const collectionType = this.getCollectionTypeFromItem(itemInfo);
+    if (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Ammunition) return 0x80;
+    if (collectionType === ItemCollectionType.Armor) return 0x90;
+    if (collectionType === ItemCollectionType.Ring || collectionType === ItemCollectionType.Covenant) return 0xA0;
+    return 0xB0;
+  }
+
+  /**
+   * Slot index of an item stored under exactly `rawId`, or -1.
+   *
+   * Reads bytes directly instead of building a DS3InventoryItem per slot: a bulk
+   * add does one lookup per catalogue entry, and the object path walks the
+   * weapon catalogue for every slot it touches.
+   * Only valid for non-weapons, whose stored id is the catalogue id unchanged.
+   */
+  private findSlotByRawId(rawId: number, separator: number): number {
+    const data = this.character.getRawData();
+    const inventoryStart = this.getInventoryStartOffset();
+
+    // Bytes 4-7 hold the full item id, little-endian (DS3InventoryItem.FIELD.itemId).
+    const matches = (offset: number): boolean =>
+      data[offset + 3] === separator &&
+      ((data[offset + 4] |
+        (data[offset + 5] << 8) |
+        (data[offset + 6] << 16) |
+        (data[offset + 7] << 24)) >>> 0) === rawId;
+
+    for (let i = 0; i < DS3Inventory.REGULAR_SLOTS; i++) {
+      const offset = inventoryStart + i * DS3Inventory.ITEM_SIZE;
+      if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
+      if (matches(offset)) return i;
+    }
+
+    const keyCount = Math.min(this.getKeyItemCount(data), DS3Inventory.MAX_KEY_SLOTS);
+    for (let i = 0; i < keyCount; i++) {
+      const offset = inventoryStart + DS3Inventory.KEY_SECTION_OFFSET + 4 + i * DS3Inventory.ITEM_SIZE;
+      if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
+      if (matches(offset)) return DS3Inventory.KEY_SLOT_BASE + i;
+    }
+
+    return -1;
+  }
+
   /**
    * Find existing item in inventory (regular + key section)
    */
   findExistingItem(itemInfo: Item): DS3InventoryItem | null {
     const baseId = itemInfo.rawId;
-    const collectionType = this.getCollectionTypeFromItem(itemInfo);
-    let expectedSeparator = 0xB0;
-    if (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Ammunition) expectedSeparator = 0x80;
-    else if (collectionType === ItemCollectionType.Armor) expectedSeparator = 0x90;
-    else if (collectionType === ItemCollectionType.Ring || collectionType === ItemCollectionType.Covenant) expectedSeparator = 0xA0;
+    const expectedSeparator = this.separatorForItem(itemInfo);
 
-    for (const item of this.getAllItems()) {
-      if (!item.isEmpty && item.separator === expectedSeparator && item.baseItemId === baseId) return item;
+    // Weapons store base id + infusion/upgrade modifiers, so they need the
+    // catalogue-backed baseItemId to be recognised at all.
+    if (expectedSeparator === 0x80) {
+      for (const item of this.getAllItems()) {
+        if (!item.isEmpty && item.separator === expectedSeparator && item.baseItemId === baseId) return item;
+      }
+      return null;
     }
-    return null;
+
+    const slotIndex = this.findSlotByRawId(baseId, expectedSeparator);
+    return slotIndex === -1 ? null : this.readSlot(slotIndex);
   }
 
   /**
@@ -863,18 +911,20 @@ export class DS3Inventory {
   addItem(itemInfo: Item, quantity: number = 1, upgradeLevel: number = 0, infusion: number = 0, targetSlot?: number): number | null {
     const collectionType = this.getCollectionTypeFromItem(itemInfo);
 
-    // For stackable items, check if item already exists
+    // Only weapons and armour are worth holding in multiples; every other
+    // category is deduplicated. Stackables grow the stack they already have,
+    // non-stackables (rings, spells, covenant badges, keys) are left as they
+    // are and the caller gets back the slot the item already occupies.
     if (
       collectionType !== ItemCollectionType.Weapon &&
-      collectionType !== ItemCollectionType.Armor &&
-      collectionType !== ItemCollectionType.Ring &&
-      itemInfo.stackMax > 1
+      collectionType !== ItemCollectionType.Armor
     ) {
       const existing = this.findExistingItem(itemInfo);
       if (existing) {
-        const newQuantity = Math.min(existing.quantity + quantity, itemInfo.stackMax);
-        existing.quantity = newQuantity;
-        this.writeSlot(existing.slotIndex, existing);
+        if (itemInfo.stackMax > 1) {
+          existing.quantity = Math.min(existing.quantity + quantity, itemInfo.stackMax);
+          this.writeSlot(existing.slotIndex, existing);
+        }
         return existing.slotIndex;
       }
     }
@@ -1048,6 +1098,87 @@ export class DS3Inventory {
     }
   }
 
+  /** How many 16-byte slots the bottomless box array holds (same size as the inventory's). */
+  private storageSlotCount(data: Uint8Array, storageStart: number): number {
+    return Math.floor(Math.min(0x7800, data.length - storageStart) / DS3Inventory.ITEM_SIZE);
+  }
+
+  /**
+   * The box array is preceded by a u32 saying how many items it holds, exactly
+   * like the key sections. The game reads that many entries and ignores the
+   * rest, so an entry written past the count is invisible in game however
+   * correct its bytes are.
+   */
+  getStorageItemCount(): number {
+    const data = this.character.getRawData();
+    const storageStart = this.getStorageBoxStart(data);
+    const off = storageStart - 4;
+    if (storageStart < 0 || off < 0 || off + 4 > data.length) return 0;
+    return (data[off] | (data[off+1] << 8) | (data[off+2] << 16) | (data[off+3] << 24)) >>> 0;
+  }
+
+  private setStorageItemCount(data: Uint8Array, storageStart: number, count: number): void {
+    const off = storageStart - 4;
+    if (off < 0 || off + 4 > data.length) return;
+    data[off]   = count & 0xFF;
+    data[off+1] = (count >> 8) & 0xFF;
+    data[off+2] = (count >> 16) & 0xFF;
+    data[off+3] = (count >> 24) & 0xFF;
+  }
+
+  /**
+   * An unused item slot is not blank: the game leaves bytes 4-7 at 0xFFFFFFFF
+   * and zeroes the rest, in the inventory as well as in the box.
+   */
+  private static writeEmptySlot(data: Uint8Array, offset: number): void {
+    data.fill(0x00, offset, offset + DS3Inventory.ITEM_SIZE);
+    data[offset + 4] = 0xFF;
+    data[offset + 5] = 0xFF;
+    data[offset + 6] = 0xFF;
+    data[offset + 7] = 0xFF;
+  }
+
+  /**
+   * Guard against writing 30KB over the wrong part of the save: every slot of a
+   * real box array is either empty or carries one of the four category bytes.
+   */
+  private storageRegionLooksValid(data: Uint8Array, storageStart: number): boolean {
+    const slots = this.storageSlotCount(data, storageStart);
+    if (slots < DS3Inventory.REGULAR_SLOTS) return false;
+    for (let i = 0; i < slots; i++) {
+      const sep = data[storageStart + i * DS3Inventory.ITEM_SIZE + 3];
+      if (sep !== 0x00 && sep !== 0x80 && sep !== 0x90 && sep !== 0xA0 && sep !== 0xB0) return false;
+    }
+    return true;
+  }
+
+  /**
+   * Pack the box's live entries into one run at the front, blank the rest and
+   * write the count ahead of them — the shape the game itself saves.
+   * Returns the number of live entries, or -1 if the region failed validation.
+   */
+  private normalizeStorage(data: Uint8Array, storageStart: number): number {
+    if (!this.storageRegionLooksValid(data, storageStart)) {
+      console.warn('[DS3 Storage] region does not look like an item array, leaving it alone');
+      return -1;
+    }
+
+    const slots = this.storageSlotCount(data, storageStart);
+    let write = 0;
+    for (let read = 0; read < slots; read++) {
+      const src = storageStart + read * DS3Inventory.ITEM_SIZE;
+      if (data[src + 3] === 0x00) continue;
+      const dst = storageStart + write * DS3Inventory.ITEM_SIZE;
+      if (dst !== src) data.copyWithin(dst, src, src + DS3Inventory.ITEM_SIZE);
+      write++;
+    }
+    for (let i = write; i < slots; i++) {
+      DS3Inventory.writeEmptySlot(data, storageStart + i * DS3Inventory.ITEM_SIZE);
+    }
+    this.setStorageItemCount(data, storageStart, write);
+    return write;
+  }
+
   getAllStorageItems(): DS3InventoryItem[] {
     const items: DS3InventoryItem[] = [];
     const data = this.character.getRawData();
@@ -1100,12 +1231,15 @@ export class DS3Inventory {
         if (!item.isEmpty && item.baseItemId === baseId) {
           if (clampedQty === 0) {
             // Remove from storage
-            data.fill(0x00, offset, offset + DS3Inventory.ITEM_SIZE);
+            DS3Inventory.writeEmptySlot(data, offset);
+            this.normalizeStorage(data, storageStart);
           } else {
             data[offset + 8]  = clampedQty & 0xFF;
             data[offset + 9]  = (clampedQty >> 8) & 0xFF;
             data[offset + 10] = (clampedQty >> 16) & 0xFF;
             data[offset + 11] = (clampedQty >> 24) & 0xFF;
+            // Repair the count for boxes an earlier build filled without it.
+            this.normalizeStorage(data, storageStart);
           }
           return true;
         }
@@ -1113,12 +1247,17 @@ export class DS3Inventory {
 
       if (clampedQty === 0) return true; // Nothing to add
 
-      // Item not in storage — find first empty slot
+      // Item not in storage — append it to the live run and raise the count.
+      // Anything written past that count is not part of the box as far as the
+      // game is concerned, so the entry alone is not enough.
+      const liveCount = this.normalizeStorage(data, storageStart);
+      if (liveCount < 0) return false;
+
       const collectionType = this.getCollectionTypeFromItem(itemInfo);
       let separator = 0xB0;
       if (collectionType === ItemCollectionType.Ring) separator = 0xA0;
 
-      for (let i = 0; i < maxSlots; i++) {
+      for (let i = liveCount; i < maxSlots; i++) {
         const offset = storageStart + i * DS3Inventory.ITEM_SIZE;
         if (offset + DS3Inventory.ITEM_SIZE > data.length) break;
         const slot = new DS3InventoryItem(data.slice(offset, offset + DS3Inventory.ITEM_SIZE), i, this.catalog);
@@ -1136,11 +1275,22 @@ export class DS3Inventory {
           newSlot[9]  = (clampedQty >> 8) & 0xFF;
           newSlot[10] = (clampedQty >> 16) & 0xFF;
           newSlot[11] = (clampedQty >> 24) & 0xFF;
-          newSlot[12] = 0x90;
-          newSlot[13] = 0xA0;
-          newSlot[14] = 0xEE;
-          newSlot[15] = 0x02;
+          // Bytes 12-15 are the entry's index and the item's static sort key.
+          // A box entry the game wrote carries the same four bytes as the
+          // inventory entry for that item, so copy them over when the character
+          // is holding one; the constants below are only a fallback.
+          const twin = this.findExistingItem(itemInfo);
+          const twinTail = twin ? twin.getRawData().slice(12, 16) : null;
+          if (twinTail) {
+            newSlot.set(twinTail, 12);
+          } else {
+            newSlot[12] = 0x90;
+            newSlot[13] = 0xA0;
+            newSlot[14] = 0xEE;
+            newSlot[15] = 0x02;
+          }
           data.set(newSlot, offset);
+          this.setStorageItemCount(data, storageStart, i + 1);
           return true;
         }
       }
@@ -1252,9 +1402,15 @@ export class DS3Inventory {
       catalog.byCollection('covenant_items').map(i => i.rawId)
     );
 
+    // Some items appear several times in the database under one name with
+    // different ids (Budding Green Blossom, Young White Branch); keep the first.
+    const seenNames = new Set<string>();
+
     const collection = COLLECTION_FOR_TYPE[collectionType];
     const items = (collection ? catalog.byCollection(collection) : []).filter(item => {
       if (!item.safe) return false;
+      if (seenNames.has(item.name)) return false;
+      seenNames.add(item.name);
       const id = item.rawId;
       // Estus Flask (0x40000096–0x400000AB) and Ashen Estus Flask (0x400000BE–0x400000D3)
       if (id >= 0x40000096 && id <= 0x400000AB) return false;
@@ -1301,7 +1457,10 @@ export class DS3Inventory {
         if (nextSlot === -1) break;
         try {
           const slotUsed = this.addItem(item, item.stackMax, 0, 0, nextSlot);
-          nextSlot = this.findNextAvailableSlot(slotUsed === null ? nextSlot + 1 : slotUsed + 1);
+          // A stack the character already carries is topped up in place, which
+          // leaves nextSlot free — only move past it when it was written to.
+          if (slotUsed === null) nextSlot = this.findNextAvailableSlot(nextSlot + 1);
+          else if (slotUsed === nextSlot) nextSlot = this.findNextAvailableSlot(slotUsed + 1);
         } catch {
           // skip if no space
         }
@@ -1371,8 +1530,9 @@ export class DS3Inventory {
    * Delete item from slot (regular or key section)
    */
   deleteItem(slotIndex: number): void {
-    const emptyItem = new DS3InventoryItem(new Uint8Array(16).fill(0x00), slotIndex, this.catalog);
-    this.writeSlot(slotIndex, emptyItem);
+    const blank = new Uint8Array(DS3Inventory.ITEM_SIZE);
+    DS3Inventory.writeEmptySlot(blank, 0);
+    this.writeSlot(slotIndex, new DS3InventoryItem(blank, slotIndex, this.catalog));
     // For key items: decrement count and compact
     if (slotIndex >= DS3Inventory.KEY_SLOT_BASE) {
       const data = this.character.getRawData();
@@ -1386,8 +1546,8 @@ export class DS3Inventory {
         const dst = sectionBase + i * DS3Inventory.ITEM_SIZE;
         data.set(data.slice(src, src + DS3Inventory.ITEM_SIZE), dst);
       }
-      // Zero last slot
-      data.fill(0x00, sectionBase + (count - 1) * DS3Inventory.ITEM_SIZE, sectionBase + count * DS3Inventory.ITEM_SIZE);
+      // Blank the slot the tail was shifted out of
+      DS3Inventory.writeEmptySlot(data, sectionBase + (count - 1) * DS3Inventory.ITEM_SIZE);
       this.setKeyItemCount(data, Math.max(0, count - 1));
     }
   }

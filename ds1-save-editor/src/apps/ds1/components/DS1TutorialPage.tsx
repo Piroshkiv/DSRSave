@@ -130,6 +130,11 @@ export const DS1TutorialPage: React.FC<DS1TutorialPageProps> = ({ onClose }) => 
               <img src={getScreenshotPath('screen7.png')} alt="Bonfires tab - bonfire management" className="tutorial-screenshot" />
             </div>
 
+            <h4>{t('gesturesTab', lang)}</h4>
+            <p>
+              {t('gesturesTabDesc', lang)}
+            </p>
+
             <h4>{t('npcsTab', lang)}</h4>
             <p>
               {t('npcsTabDesc', lang)}

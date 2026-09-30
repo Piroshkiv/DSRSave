@@ -389,6 +389,165 @@ describe.skipIf(!hasDS3Save)('DS3 Inventory (real save)', () => {
     });
   });
 
+  describe('duplicates', () => {
+    const countOf = (type: ItemCollectionType) =>
+      inventory.getAllItems().filter((i) => i.collectionType === type).length;
+
+    const safeFrom = (collection: string) =>
+      db.byCollection(collection).filter((i) => i.safe);
+
+    it('adds a ring once, however many times it is asked for', () => {
+      const ring = safeFrom('ring_items')[5];
+      const before = countOf(ItemCollectionType.Ring);
+
+      const first = inventory.addItem(ring, 1, 0, ItemInfusion.Standard);
+      const second = inventory.addItem(ring, 1, 0, ItemInfusion.Standard);
+
+      expect(second).toBe(first);
+      expect(countOf(ItemCollectionType.Ring)).toBe(before + 1);
+    });
+
+    it('adds a spell once, however many times it is asked for', () => {
+      const spell = safeFrom('magic_items')[3];
+      const before = countOf(ItemCollectionType.Magic);
+
+      const first = inventory.addItem(spell, 1, 0, ItemInfusion.Standard);
+      const second = inventory.addItem(spell, 1, 0, ItemInfusion.Standard);
+
+      expect(second).toBe(first);
+      expect(countOf(ItemCollectionType.Magic)).toBe(before + 1);
+    });
+
+    const idempotent: [string, ItemCollectionType][] = [
+      ['rings', ItemCollectionType.Ring],
+      ['consumables', ItemCollectionType.Consumable],
+      ['spells', ItemCollectionType.Magic],
+      ['ores', ItemCollectionType.Ore],
+      ['ammunition', ItemCollectionType.Ammunition],
+      ['keys', ItemCollectionType.Key],
+      ['covenants', ItemCollectionType.Covenant],
+    ];
+
+    for (const [label, type] of idempotent) {
+      it(`bulk-adding ${label} twice leaves the same number of slots`, () => {
+        inventory.addAllItems(type, 0);
+        const afterFirst = countOf(type);
+        inventory.addAllItems(type, 0);
+
+        expect(afterFirst).toBeGreaterThan(0);
+        expect(countOf(type)).toBe(afterFirst);
+      });
+    }
+
+    it('still stacks a second helping of a stackable good', () => {
+      const good = safeFrom('consumable_items').find(
+        (i) => i.stackMax > 1 && inventory.findExistingItem(i) === null
+      )!;
+      const slot = inventory.addItem(good, 1)!;
+      inventory.addItem(good, 2);
+      expect(inventory.readSlot(slot).quantity).toBe(3);
+    });
+
+    it('keeps duplicating weapons and armour, which are held in multiples', () => {
+      for (const type of [ItemCollectionType.Weapon, ItemCollectionType.Armor]) {
+        inventory.addAllItems(type, 0);
+        const afterFirst = countOf(type);
+        inventory.addAllItems(type, 0);
+        expect(countOf(type)).toBeGreaterThan(afterFirst);
+      }
+    });
+  });
+
+  describe('bottomless box', () => {
+    const boxStart = () => (inventory as any).getStorageBoxStart(hero.getRawData()) as number;
+
+    const liveEntries = () => {
+      const data = hero.getRawData();
+      const start = boxStart();
+      let n = 0;
+      for (let i = 0; i < 1920; i++) if (data[start + i * 16 + 3] !== 0x00) n++;
+      return n;
+    };
+
+    const firstGap = () => {
+      const data = hero.getRawData();
+      const start = boxStart();
+      for (let i = 0; i < 1920; i++) if (data[start + i * 16 + 3] === 0x00) return i;
+      return 1920;
+    };
+
+    const stackable = () => db.byCollection('consumable_items').filter((i) => i.safe && i.stackMax > 1);
+
+    it('finds the box', () => {
+      expect(boxStart()).toBeGreaterThan(0);
+    });
+
+    it('counts the entries it writes', () => {
+      // The count ahead of the array is what the game reads; entries written
+      // past it never show up in the box in game.
+      const good = stackable()[0];
+      inventory.setStorageQuantity(good, 600);
+
+      expect(inventory.getStorageItemCount()).toBe(liveEntries());
+      expect(inventory.getStorageQuantity(good.rawId)).toBe(600);
+    });
+
+    it('keeps the count in step across a bulk add', () => {
+      inventory.addAllItems(ItemCollectionType.Consumable, 0);
+
+      expect(liveEntries()).toBeGreaterThan(10);
+      expect(inventory.getStorageItemCount()).toBe(liveEntries());
+    });
+
+    it('leaves no gap in the run of entries', () => {
+      inventory.addAllItems(ItemCollectionType.Consumable, 0);
+
+      expect(firstGap()).toBe(liveEntries());
+    });
+
+    it('closes the gap and drops the count when an item is taken out', () => {
+      const goods = stackable().slice(0, 3);
+      for (const g of goods) inventory.setStorageQuantity(g, 600);
+      const before = inventory.getStorageItemCount();
+
+      inventory.setStorageQuantity(goods[0], 0);
+
+      expect(inventory.getStorageItemCount()).toBe(before - 1);
+      expect(liveEntries()).toBe(before - 1);
+      expect(firstGap()).toBe(before - 1);
+      expect(inventory.getStorageQuantity(goods[0].rawId)).toBe(0);
+      expect(inventory.getStorageQuantity(goods[1].rawId)).toBe(600);
+    });
+
+    it('blanks a freed slot the way the game does', () => {
+      const good = stackable()[0];
+      inventory.setStorageQuantity(good, 600);
+      inventory.setStorageQuantity(good, 0);
+
+      const data = hero.getRawData();
+      const freed = boxStart() + liveEntries() * 16;
+      // An unused slot is 0x00 except for bytes 4-7, which the game leaves at 0xFF.
+      expect(Array.from(data.slice(freed, freed + 16))).toEqual([
+        0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0, 0, 0, 0, 0, 0,
+      ]);
+    });
+
+    it('survives encrypt → decrypt with the count intact', async () => {
+      const slotIndex = hero.slotIndex;
+      const good = stackable()[0];
+      inventory.setStorageQuantity(good, 600);
+      const expected = inventory.getStorageItemCount();
+
+      const exported = await editor.exportSaveFile();
+      const reloaded = await DS3SaveFileEditor.fromFileData(toFile(exported, 'out.sl2'), null);
+      const inv = new DS3Inventory(reloaded.getCharacter(slotIndex)!);
+      await inv.loadItemsDatabase();
+
+      expect(inv.getStorageItemCount()).toBe(expected);
+      expect(inv.getStorageQuantity(good.rawId)).toBe(600);
+    });
+  });
+
   describe('persistence', () => {
     it('an added weapon survives encrypt → decrypt', async () => {
       const slotIndex = hero.slotIndex;

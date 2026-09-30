@@ -1,7 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { SaveFileEditor } from '../../src/apps/ds1/lib/SaveFileEditor';
 import { Character } from '../../src/apps/ds1/lib/Character';
-import { BONFIRE_BIT_INDICES } from '../../src/apps/ds1/lib/Character';
+import {
+  BONFIRE_BIT_INDICES,
+  GESTURE_COUNT,
+  DSRCHR_SIZE,
+  hairIdForIndex,
+  hairIndexForId,
+} from '../../src/apps/ds1/lib/Character';
 import {
   STATS_OFFSETS,
   VIT_TO_HP,
@@ -252,6 +258,57 @@ describe.skipIf(!hasDS1Save)('DS1 Character (real save)', () => {
       hero.setFaceData(new Uint8Array(64).fill(0xee));
       expect(hero.getByte(0xe434 + 50)).toBe(before);
     });
+
+    it('reads the hairstyle as a hair part ID from the equipment block', () => {
+      // Every creator hairstyle is 1000+100*i (male) or 3000+100*i (female).
+      const id = hero.hairstyle;
+      expect(hairIndexForId(0, id) >= 0 || hairIndexForId(1, id) >= 0).toBe(true);
+    });
+
+    it('writes the hair ID at 0x344 and only syncs the creator index byte', () => {
+      hero.gender = 0;
+      const neighbours = [0x174, 0x176, 0x177, 0x178].map((o) => hero.getByte(o));
+      hero.hairstyle = hairIdForIndex(0, 7);
+      expect(hero.getByte(0x344) | (hero.getByte(0x345) << 8)).toBe(3700);
+      expect(hero.getByte(0x175)).toBe(7);
+      // The old editor wrote an int32 at 0x175 and clobbered these.
+      expect([0x174, 0x176, 0x177, 0x178].map((o) => hero.getByte(o))).toEqual(neighbours);
+    });
+
+    it('keeps a hair ID from the other gender without touching the creator index', () => {
+      hero.gender = 0;
+      hero.hairstyle = hairIdForIndex(0, 2);
+      hero.hairstyle = 1100;
+      expect(hero.hairstyle).toBe(1100);
+      expect(hero.getByte(0x175)).toBe(2);
+    });
+
+    it('round-trips a .dsrchr preset byte for byte', () => {
+      const preset = new Uint8Array(DSRCHR_SIZE).map((_, i) => (i * 7 + 1) & 0xff);
+      preset[0] = 1;
+      preset[1] = 4;
+      new DataView(preset.buffer).setInt32(2, 1800, true);
+      hero.importDsrchr(preset);
+      expect(hero.gender).toBe(1);
+      expect(hero.physique).toBe(4);
+      expect(hero.hairstyle).toBe(1800);
+      expect(Array.from(hero.exportDsrchr())).toEqual(Array.from(preset));
+    });
+
+    it('maps .dsrchr fields onto the save the way the preset tool maps them onto memory', () => {
+      const preset = hero.exportDsrchr();
+      const raw = hero.getRawData();
+      expect(preset[0]).toBe(raw[0x12a]);
+      expect(preset[1]).toBe(raw[0x12f]);
+      expect(Array.from(preset.slice(2, 6))).toEqual(Array.from(raw.slice(0x344, 0x348)));
+      expect(Array.from(preset.slice(6, 18))).toEqual(Array.from(raw.slice(0xe414, 0xe420)));
+      expect(Array.from(preset.slice(18, 30))).toEqual(Array.from(raw.slice(0xe424, 0xe430)));
+      expect(Array.from(preset.slice(30, 130))).toEqual(Array.from(raw.slice(0xe434, 0xe498)));
+    });
+
+    it('rejects a truncated .dsrchr file', () => {
+      expect(() => hero.importDsrchr(new Uint8Array(DSRCHR_SIZE - 1))).toThrow();
+    });
   });
 
   describe('pattern anchor', () => {
@@ -280,6 +337,103 @@ describe.skipIf(!hasDS1Save)('DS1 Character (real save)', () => {
       expect(() => {
         blankCharacter().ngPlus = 1;
       }).toThrow(/Pattern1 not found/);
+    });
+  });
+
+  describe('gestures', () => {
+    // Layout mapped by ds1-gesture-sweeper: 15 records of [u16 value][u16 index]
+    // at a fixed offset, value = (index + 1) * 2 + unlocked.
+    it('finds the gesture table in a populated slot', () => {
+      expect(hero.findGestureTable()).toBeGreaterThanOrEqual(0);
+    });
+
+    it('exposes one flag per gesture', () => {
+      expect(hero.getGestureFlags()).toHaveLength(GESTURE_COUNT);
+    });
+
+    it('round-trips an individual flag at every index', () => {
+      for (let i = 0; i < GESTURE_COUNT; i++) {
+        hero.setGestureFlag(i, true);
+        expect(hero.getGestureFlags()[i], `gesture ${i} set`).toBe(true);
+        hero.setGestureFlag(i, false);
+        expect(hero.getGestureFlags()[i], `gesture ${i} cleared`).toBe(false);
+      }
+    });
+
+    it('setting one flag does not disturb its neighbours', () => {
+      for (let i = 0; i < GESTURE_COUNT; i++) hero.setGestureFlag(i, false);
+      hero.setGestureFlag(7, true);
+      const flags = hero.getGestureFlags();
+      expect(flags.filter(Boolean)).toHaveLength(1);
+      expect(flags[7]).toBe(true);
+    });
+
+    it('only touches bit 0 of a record, leaving the id/index pair intact', () => {
+      const base = hero.findGestureTable();
+      const raw = hero.getRawData();
+      for (let i = 0; i < GESTURE_COUNT; i++) {
+        hero.setGestureFlag(i, true);
+        const o = base + i * 4;
+        // value >> 1 is the gesture id, and the index field must still be i
+        expect(raw[o] >> 1, `gesture ${i} id`).toBe(i + 1);
+        expect(raw[o + 1], `gesture ${i} value high byte`).toBe(0);
+        expect(raw[o + 2] | (raw[o + 3] << 8), `gesture ${i} index`).toBe(i);
+      }
+    });
+
+    it('toggling every gesture twice returns the slot to its original bytes', () => {
+      const before = new Uint8Array(hero.getRawData());
+      for (let i = 0; i < GESTURE_COUNT; i++) {
+        const was = hero.getGestureFlags()[i];
+        hero.setGestureFlag(i, !was);
+        hero.setGestureFlag(i, was);
+      }
+      expect(hero.getRawData()).toEqual(before);
+    });
+
+    it('unlockAllGestures sets every flag', () => {
+      hero.unlockAllGestures();
+      expect(hero.getGestureFlags().every(Boolean)).toBe(true);
+      expect(hero.areGesturesUnlocked()).toBe(true);
+    });
+
+    it('reports locked when any single gesture is missing', () => {
+      hero.unlockAllGestures();
+      for (let i = 0; i < GESTURE_COUNT; i++) {
+        hero.setGestureFlag(i, false);
+        expect(hero.areGesturesUnlocked(), `gesture ${i} cleared`).toBe(false);
+        hero.setGestureFlag(i, true);
+      }
+      expect(hero.areGesturesUnlocked()).toBe(true);
+    });
+
+    it('rejects an out-of-range index', () => {
+      expect(() => hero.setGestureFlag(-1, true)).toThrow();
+      expect(() => hero.setGestureFlag(GESTURE_COUNT, true)).toThrow();
+    });
+
+    it('finds the table by signature when it is not at the usual offset', () => {
+      // A buffer holding only the 15 records, nowhere near 0x1E4A8.
+      const buf = new Uint8Array(0x1000);
+      const at = 0x200;
+      for (let i = 0; i < GESTURE_COUNT; i++) {
+        buf[at + i * 4] = (i + 1) * 2;
+        buf[at + i * 4 + 2] = i;
+      }
+      const c = new Character(buf, 0);
+      expect(c.findGestureTable()).toBe(at);
+      expect(c.getGestureFlags().some(Boolean)).toBe(false);
+      c.unlockAllGestures();
+      expect(c.getGestureFlags().every(Boolean)).toBe(true);
+    });
+
+    it('reports no table in a blank slot instead of editing random bytes', () => {
+      const c = blankCharacter();
+      expect(c.findGestureTable()).toBe(-1);
+      expect(c.getGestureFlags()).toEqual(new Array(GESTURE_COUNT).fill(false));
+      expect(c.areGesturesUnlocked()).toBe(false);
+      expect(() => c.unlockAllGestures()).toThrow();
+      expect(() => c.setGestureFlag(0, true)).toThrow();
     });
   });
 

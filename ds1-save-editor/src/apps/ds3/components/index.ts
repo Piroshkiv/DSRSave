@@ -3,6 +3,8 @@ export { FileUpload, type FileUploadRef } from './FileUpload';
 export { GeneralTab } from './GeneralTab';
 export { InventoryTab } from './InventoryTab';
 export { BonfiresTab } from './BonfiresTab';
+export { AppearanceTab } from './AppearanceTab';
+export { GesturesTab } from './GesturesTab';
 export { BackupsTab } from './BackupsTab';
 export { DualFileUpload } from './DualFileUpload';
 export { SlotGrid } from './SlotGrid';

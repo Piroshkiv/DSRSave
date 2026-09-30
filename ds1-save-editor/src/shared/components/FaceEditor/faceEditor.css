@@ -1,0 +1,210 @@
+/* Appearance editor layout shared by the DS1 and DS3 Appearance tabs. */
+.face-tab { padding: 0; }
+.face-tab h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #c0c0c0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.25);
+}
+.face-error, .face-notice, .face-warning {
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  margin-bottom: 0.75rem;
+}
+.face-error {
+  background: rgba(244, 67, 54, 0.07);
+  border-left: 2px solid rgba(244, 67, 54, 0.4);
+  color: #c05050;
+}
+.face-notice {
+  background: rgba(76, 175, 80, 0.07);
+  border-left: 2px solid rgba(76, 175, 80, 0.4);
+  color: #5a9a5a;
+}
+.face-warning {
+  background: rgba(255, 107, 53, 0.06);
+  border-left: 2px solid rgba(255, 107, 53, 0.35);
+  color: #9a8578;
+  line-height: 1.4;
+}
+.face-preset {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.7rem 0.85rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+}
+.face-preset-text { flex: 1 1 260px; }
+.face-preset-title {
+  font-size: 0.82rem;
+  color: #c0c0c0;
+  margin-bottom: 0.2rem;
+}
+.face-preset-desc { font-size: 0.75rem; color: #777; line-height: 1.4; }
+.face-preset-desc a { color: #c8825f; text-decoration: none; }
+.face-preset-desc a:hover { text-decoration: underline; }
+.face-preset-buttons { display: flex; gap: 0.5rem; }
+.face-btn {
+  background: rgba(255, 107, 53, 0.1);
+  color: #c8825f;
+  border: 1px solid rgba(255, 107, 53, 0.28);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.face-btn:hover:not(:disabled) { background: rgba(255, 107, 53, 0.16); border-color: rgba(255, 107, 53, 0.5); }
+.face-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.face-btn.ghost { background: transparent; color: #8a8a8a; border-color: rgba(255, 255, 255, 0.12); }
+.face-btn.ghost:hover:not(:disabled) { color: #c05050; border-color: rgba(244, 67, 54, 0.4); background: rgba(244, 67, 54, 0.06); }
+.face-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.5rem;
+}
+.face-slot {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  padding: 0.55rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.face-slot.filled { background: rgba(255, 107, 53, 0.05); border-color: rgba(255, 107, 53, 0.18); }
+.face-slot.empty { background: rgba(255, 255, 255, 0.015); }
+.face-slot-head { display: flex; align-items: center; gap: 0.5rem; }
+.face-slot-swatch {
+  width: 22px; height: 22px; border-radius: 3px; flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.face-slot-name { font-size: 0.8rem; color: #c0c0c0; }
+.face-slot-meta { font-size: 0.72rem; color: #6d6d6d; margin-left: auto; }
+.face-slot-actions { display: flex; gap: 0.35rem; }
+.face-slot-actions .face-btn { padding: 0.25rem 0.6rem; font-size: 0.74rem; flex: 1; }
+.face-section { margin-bottom: 0.75rem; }
+.face-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #8a8a8a;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 0.5rem;
+}
+.face-section-title.clickable { cursor: pointer; user-select: none; }
+.face-section-title.clickable:hover { color: #c0c0c0; }
+.face-count {
+  font-size: 0.7rem;
+  color: #555;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+}
+.face-chevron { margin-left: auto; font-size: 0.6rem; color: #666; }
+.face-basics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.5rem 0.75rem;
+}
+.face-select { display: flex; flex-direction: column; gap: 0.2rem; }
+.face-select > span { font-size: 0.75rem; color: #888; }
+.face-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  align-self: end;
+  padding-bottom: 0.35rem;
+  font-size: 0.78rem;
+  color: #c0c0c0;
+  cursor: pointer;
+}
+.face-check input { accent-color: #ff6b35; cursor: pointer; }
+.face-hint {
+  margin-top: 0.45rem;
+  font-size: 0.73rem;
+  color: #6d6d6d;
+  line-height: 1.4;
+}
+.face-select select, .face-select input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  color: #c0c0c0;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.4rem;
+}
+.face-colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.5rem 0.75rem;
+}
+.face-color { display: flex; align-items: center; gap: 0.5rem; }
+.face-swatch {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.face-color-body { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.face-color-label { font-size: 0.75rem; color: #888; }
+.face-channels { display: flex; gap: 0.25rem; }
+.face-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.3rem 1rem;
+}
+.face-row { display: flex; align-items: center; gap: 0.5rem; }
+.face-label {
+  font-size: 0.75rem;
+  color: #999;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.face-num {
+  width: 3.4rem;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  color: #c0c0c0;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.3rem;
+  text-align: right;
+}
+.face-num.wide { width: auto; flex: 1 1 0; min-width: 0; max-width: 5.5rem; }
+/* DS1 keeps colours as floats: three wider fields need a wider card. */
+.face-colors.float { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.face-colors.float .face-color-body { flex: 1 1 auto; }
+.face-range { width: 90px; flex-shrink: 0; accent-color: #ff6b35; }
+.face-hex {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  color: #c0c0c0;
+  font-family: monospace;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.4rem;
+  margin-bottom: 0.5rem;
+}
