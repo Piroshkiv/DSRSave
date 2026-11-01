@@ -112,6 +112,7 @@ export const translations: Record<string, Record<Lang, string>> = {
   female: { en: 'Female', zh: '女' },
   male: { en: 'Male', zh: '男' },
   class_label: { en: 'Class', zh: '职业' },
+  covenant_label: { en: 'Covenant', zh: '誓约' },
   hp: { en: 'HP', zh: '生命' },
   souls: { en: 'Souls', zh: '魂' },
   stamina: { en: 'Stamina', zh: '精力' },
@@ -508,6 +509,18 @@ export const translations: Record<string, Record<Lang, string>> = {
   classPyromancer: { en: 'Pyromancer', zh: '咒术师' },
   classCleric: { en: 'Cleric', zh: '圣职' },
   classDeprived: { en: 'Deprived', zh: '裸徒' },
+
+  // 誓约名
+  covenantNone: { en: 'None', zh: '无' },
+  covenantWayOfWhite: { en: 'Way of White', zh: '白教' },
+  covenantPrincessGuard: { en: "Princess's Guard", zh: '公主的守卫' },
+  covenantWarriorOfSunlight: { en: 'Warrior of Sunlight', zh: '太阳的战士' },
+  covenantDarkwraith: { en: 'Darkwraith', zh: '黑暗教派' },
+  covenantPathOfTheDragon: { en: 'Path of the Dragon', zh: '石龙教' },
+  covenantGravelordServant: { en: 'Gravelord Servant', zh: '墓王的仆人' },
+  covenantForestHunter: { en: 'Forest Hunter', zh: '森林猎人' },
+  covenantDarkmoonBlade: { en: 'Darkmoon Blade', zh: '暗月之刃' },
+  covenantChaosServant: { en: 'Chaos Servant', zh: '混沌仆役' },
 
   // 体型名
   physiqueAverage: { en: 'Average', zh: '普通' },

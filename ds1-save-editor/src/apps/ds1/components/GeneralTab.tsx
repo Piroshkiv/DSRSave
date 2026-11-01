@@ -3,6 +3,7 @@ import { Character } from '../lib/Character';
 import { useLang } from '../../../core/context/LanguageContext';
 import { t } from '../lib/i18n';
 import { NumberInput } from './NumberInput';
+import { Covenant } from '../lib/constants';
 
 interface GeneralTabProps {
   character: Character;
@@ -21,6 +22,19 @@ const STAT_I18N_KEYS: Record<string, string> = {
   RES: 'statRES',
   INT: 'statINT',
   FTH: 'statFTH',
+};
+
+const COVENANT_KEYS: Record<number, string> = {
+  [Covenant.None]: 'covenantNone',
+  [Covenant.WayOfWhite]: 'covenantWayOfWhite',
+  [Covenant.PrincessGuard]: 'covenantPrincessGuard',
+  [Covenant.WarriorOfSunlight]: 'covenantWarriorOfSunlight',
+  [Covenant.Darkwraith]: 'covenantDarkwraith',
+  [Covenant.PathOfTheDragon]: 'covenantPathOfTheDragon',
+  [Covenant.GravelordServant]: 'covenantGravelordServant',
+  [Covenant.ForestHunter]: 'covenantForestHunter',
+  [Covenant.DarkmoonBlade]: 'covenantDarkmoonBlade',
+  [Covenant.ChaosServant]: 'covenantChaosServant',
 };
 
 const CLASS_KEYS: Record<number, string> = {
@@ -153,6 +167,12 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
     }
   };
 
+  const handleCovenantChange = (value: string) => {
+    character.covenant = parseInt(value, 10);
+    forceUpdate({});
+    onCharacterUpdate();
+  };
+
   const handleLevelChange = (numValue: number) => {
     character.level = numValue;
     forceUpdate({});
@@ -269,6 +289,20 @@ export const GeneralTab: React.FC<GeneralTabProps> = ({ character, onCharacterUp
               {Object.entries(CLASS_KEYS).map(([classId, classKey]) => (
                 <option key={classId} value={classId}>
                   {t(classKey, lang)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label>{t('covenant_label', lang)}</label>
+            <select
+              value={character.covenant}
+              onChange={(e) => handleCovenantChange(e.target.value)}
+            >
+              {Object.entries(COVENANT_KEYS).map(([covenantId, covenantKey]) => (
+                <option key={covenantId} value={covenantId}>
+                  {t(covenantKey, lang)}
                 </option>
               ))}
             </select>

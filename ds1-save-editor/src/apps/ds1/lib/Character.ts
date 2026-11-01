@@ -1,4 +1,4 @@
-import { STATS_OFFSETS, PlayerClass, VIT_TO_HP, END_TO_STAMINA } from './constants';
+import { STATS_OFFSETS, PlayerClass, Covenant, VIT_TO_HP, END_TO_STAMINA } from './constants';
 
 // Relative offsets to the base address found by findPattern1()
 const BONFIRE_RELATIVE_OFFSET_1 = 0x6B; // Bonfire data 1
@@ -6,6 +6,15 @@ const BONFIRE_RELATIVE_OFFSET_2 = 0x6C; // Bonfire data 2
 const BONFIRE_RELATIVE_OFFSET_3 = 0x6D; // Bonfire data 3
 const BONFIRE_RELATIVE_FLAG_OFFSET = 0xAE; // Warp flag
 const NG_PLUS_RELATIVE_OFFSET = -0xBC0; // NG+ counter (pattern1 - 0xBC0)
+
+/**
+ * Current covenant, PGD+0x113 (PGD = stats block - 0x60, see HAIR_MENU_INDEX_OFFSET
+ * comment). Matches `1FRDarkSoulsRemastered.CT`'s "Current Covenant" chain
+ * (`[[BaseB]+0x10]+0x113`) and the legacy C# `CovenantEditor`'s `0x0173`, both
+ * confirmed against this same slot-data coordinate system via VIT (CT +0x40 ==
+ * here 0x00A0) and HP/Level/Class, which already matched byte-for-byte.
+ */
+const COVENANT_OFFSET = 0x173;
 
 /**
  * Bit indices of the 21 warpable bonfires, in display order.
@@ -386,6 +395,14 @@ export class Character {
 
   set playerClass(value: PlayerClass) {
     this.data[0x012E] = value;
+  }
+
+  get covenant(): Covenant {
+    return this.data[COVENANT_OFFSET] as Covenant;
+  }
+
+  set covenant(value: Covenant) {
+    this.data[COVENANT_OFFSET] = value;
   }
 
   get hp(): number {
