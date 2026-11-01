@@ -48,6 +48,34 @@ export const CLASS_NAMES: Record<PlayerClass, string> = {
   [PlayerClass.Deprived]: 'Deprived'
 };
 
+// Values and order verified against 1FRDarkSoulsRemastered.CT
+// ("Current Covenant" DropDownList, chain [BaseB]+0x10+0x113).
+export enum Covenant {
+  None = 0,
+  WayOfWhite = 1,
+  PrincessGuard = 2,
+  WarriorOfSunlight = 3,
+  Darkwraith = 4,
+  PathOfTheDragon = 5,
+  GravelordServant = 6,
+  ForestHunter = 7,
+  DarkmoonBlade = 8,
+  ChaosServant = 9
+}
+
+export const COVENANT_NAMES: Record<Covenant, string> = {
+  [Covenant.None]: 'None',
+  [Covenant.WayOfWhite]: 'Way of White',
+  [Covenant.PrincessGuard]: "Princess's Guard",
+  [Covenant.WarriorOfSunlight]: 'Warrior of Sunlight',
+  [Covenant.Darkwraith]: 'Darkwraith',
+  [Covenant.PathOfTheDragon]: 'Path of the Dragon',
+  [Covenant.GravelordServant]: 'Gravelord Servant',
+  [Covenant.ForestHunter]: 'Forest Hunter',
+  [Covenant.DarkmoonBlade]: 'Darkmoon Blade',
+  [Covenant.ChaosServant]: 'Chaos Servant'
+};
+
 export const VIT_TO_HP: Record<number, number> = {
   1: 400, 2: 415, 3: 433, 4: 451, 5: 471,
   6: 490, 7: 511, 8: 531, 9: 552, 10: 573,
