@@ -144,37 +144,7 @@ namespace DSRSave.Editors.NpcStateMachine
                 SetFlags(fa, c, axisCfg.AlwaysClearTraps, 0);
 
             if (axisName == "alive")
-            {
                 ApplyChrObjBits(p1, c.GetRawData(), axisCfg, targetTrue);
-                EnforceSiblingExclusivity(p1, c.GetRawData(), axis.PerStage, axisCfg, targetTrue);
-            }
-        }
-
-        /// <summary>For a multi-placement NPC (e.g. Trusty Patches: Catacombs/Tomb of Giants/
-        /// Firelink, each its own map + ChrBit), at most ONE placement can ever be the "real"
-        /// forced-dead one at a time -- otherwise detection (DetectCurrentStage's CHR-blob
-        /// tie-break) sees 2+ placements dead simultaneously and can't tell which is real, and
-        /// the game engine itself could render him at multiple locations. So this is symmetric,
-        /// not revive-only: reviving at one placement force-KILLS every other placement's
-        /// ChrBit (so only this one is alive); killing at one placement force-REVIVES every
-        /// other placement's ChrBit (so this is unambiguously the one place he's dead -- a kill
-        /// at placement A must not leave a stale "also dead" bit at placement B from an earlier
-        /// action). See project memory, ds1_npc_bug_classes.md, 'multi-placement mutual
-        /// exclusivity' (including the 2026-11-24 follow-up: revive-only killing of siblings was
-        /// insufficient, found via live testing).</summary>
-        private void EnforceSiblingExclusivity(int p1, byte[] buf, Dictionary<string, AxisStageConfig> perStage, AxisStageConfig currentAxisCfg, bool targetTrue)
-        {
-            if (currentAxisCfg.ChrBit == null) return;
-            var chrBlob = new ChrBlob(Schema, p1, buf);
-            var seen = new HashSet<string> { $"{currentAxisCfg.ChrBit.Map}:{currentAxisCfg.ChrBit.MsbIndex}" };
-            int siblingValue = targetTrue ? 1 : 0;
-            foreach (var cfg in perStage.Values)
-            {
-                if (cfg.ChrBit == null) continue;
-                string key = $"{cfg.ChrBit.Map}:{cfg.ChrBit.MsbIndex}";
-                if (!seen.Add(key)) continue;
-                chrBlob.SetBits(cfg.ChrBit.Map, new[] { cfg.ChrBit.MsbIndex }, siblingValue);
-            }
         }
 
         /// <summary>Some NPCs' native death-watcher wipes their WHOLE PersonalFlagRange on
@@ -549,10 +519,7 @@ namespace DSRSave.Editors.NpcStateMachine
             }
 
             if (axisName == "alive")
-            {
                 ApplyChrObjBits(p1, c.GetRawData(), axisCfg, targetTrue);
-                EnforceSiblingExclusivity(p1, c.GetRawData(), perStage, axisCfg, targetTrue);
-            }
         }
     }
 }

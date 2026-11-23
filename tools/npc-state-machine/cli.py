@@ -385,7 +385,6 @@ def apply_axis_for_stage(fa, buf, npc, axis_name, target_true, stage_id):
         set_flags(fa, buf, {t: 0 for t in traps})
     if axis_name == "alive":
         apply_chr_obj_bits(schema_global, fa.p1, buf, axis_cfg, target_true)
-        enforce_sibling_exclusivity(schema_global, fa.p1, buf, per_stage, axis_cfg, target_true)
 
 
 def apply_npc_stage(fa, buf, npc, stage_id):
@@ -600,7 +599,6 @@ def cmd_axis_action(schema, args, axis_name, target_true):
 
     if axis_name == "alive":
         apply_chr_obj_bits(schema, p1, buf, axis_cfg, target_true)
-        enforce_sibling_exclusivity(schema, p1, buf, per_stage, axis_cfg, target_true)
 
     write_slot(args.save, raw, off, checksum, buf, args.slot, f"{args.npc}_{axis_name}_{target_true}")
 
@@ -626,38 +624,6 @@ def restore_location_flags_if_wiped(fa, buf, npc, ids, stage_id):
         return
     print(f"  location flags for '{stage_id}' were wiped/inconsistent -- restoring {wanted_on}")
     apply_stage_flags_on(fa, buf, ids, wanted_on)
-
-
-def enforce_sibling_exclusivity(schema, p1, buf, per_stage, current_axis_cfg, target_true):
-    """For a multi-placement NPC (e.g. Trusty Patches: Catacombs/Tomb of
-    Giants/Firelink, each its own map + chr_bit), at most ONE placement can
-    ever be the "real" forced-dead one at a time -- otherwise detection
-    (detect_current_stage's CHR-blob tie-break) sees 2+ placements dead
-    simultaneously and can't tell which is real, and the game engine itself
-    could render him at multiple locations. So this is symmetric, not
-    revive-only: reviving at one placement force-KILLS every other
-    placement's chr_bit (so only this one is alive); killing at one
-    placement force-REVIVES every other placement's chr_bit (so this is
-    unambiguously the one place he's dead -- a kill at placement A must not
-    leave a stale "also dead" bit at placement B from an earlier action).
-    See project memory, ds1_npc_bug_classes.md, 'multi-placement mutual
-    exclusivity' (including the 2026-11-24 follow-up: revive-only killing of
-    siblings was insufficient, found via live testing)."""
-    current = current_axis_cfg.get("chr_bit")
-    if not current:
-        return
-    chr_blob = ChrBlob(schema, p1, buf)
-    seen = {(current["map"], current["msb_index"])}
-    sibling_value = 1 if target_true else 0
-    for cfg in per_stage.values():
-        cb = cfg.get("chr_bit")
-        if not cb:
-            continue
-        key = (cb["map"], cb["msb_index"])
-        if key in seen:
-            continue
-        seen.add(key)
-        chr_blob.set_bits(cb["map"], [cb["msb_index"]], sibling_value)
 
 
 def main():

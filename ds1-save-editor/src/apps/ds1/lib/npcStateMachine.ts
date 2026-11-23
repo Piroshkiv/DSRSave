@@ -353,40 +353,7 @@ export class NpcStateMachineEngine {
     this.setFlags(fa, p1, c, toSet);
     if (axisCfg.always_clear_traps?.length) this.setFlagIds(fa, c, axisCfg.always_clear_traps, 0);
 
-    if (axisName === 'alive') {
-      this.applyChrObjBits(p1, c, axisCfg, targetTrue);
-      this.enforceSiblingExclusivity(p1, c, axis.per_stage, axisCfg, targetTrue);
-    }
-  }
-
-  /** For a multi-placement NPC (e.g. Trusty Patches: Catacombs/Tomb of
-   * Giants/Firelink, each its own map + chr_bit), at most ONE placement can
-   * ever be the "real" forced-dead one at a time -- otherwise detection
-   * (detectCurrentStage's CHR-blob tie-break) sees 2+ placements dead
-   * simultaneously and can't tell which is real, and the game engine itself
-   * could render him at multiple locations. So this is symmetric, not
-   * revive-only: reviving at one placement force-KILLS every other
-   * placement's chr_bit (so only this one is alive); killing at one
-   * placement force-REVIVES every other placement's chr_bit (so this is
-   * unambiguously the one place he's dead -- a kill at placement A must not
-   * leave a stale "also dead" bit at placement B from an earlier action).
-   * See project memory, ds1_npc_bug_classes.md, 'multi-placement mutual
-   * exclusivity' (including the 2026-11-24 follow-up: revive-only killing
-   * of siblings was insufficient, found via live testing). */
-  private enforceSiblingExclusivity(p1: number, c: Character, perStage: Record<string, AxisStageConfig>, currentAxisCfg: AxisStageConfig, targetTrue: boolean): void {
-    const current = currentAxisCfg.chr_bit;
-    if (!current) return;
-    const chrBlob = new ChrBlob(this.schema, p1, c);
-    const seen = new Set<string>([`${current.map}:${current.msb_index}`]);
-    const siblingValue = targetTrue ? 1 : 0;
-    for (const cfg of Object.values(perStage)) {
-      const cb = cfg.chr_bit;
-      if (!cb) continue;
-      const key = `${cb.map}:${cb.msb_index}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      chrBlob.setBits(cb.map, [cb.msb_index], siblingValue);
-    }
+    if (axisName === 'alive') this.applyChrObjBits(p1, c, axisCfg, targetTrue);
   }
 
   /** Some NPCs' native death-watcher wipes their WHOLE personal_flag_range on
@@ -631,9 +598,6 @@ export class NpcStateMachineEngine {
     const toSet = targetTrue ? axisCfg.set_true : axisCfg.set_false;
     this.setFlags(fa, p1, character, toSet);
     if (axisCfg.always_clear_traps?.length) this.setFlagIds(fa, character, axisCfg.always_clear_traps, 0);
-    if (axisName === 'alive') {
-      this.applyChrObjBits(p1, character, axisCfg, targetTrue);
-      this.enforceSiblingExclusivity(p1, character, perStage, axisCfg, targetTrue);
-    }
+    if (axisName === 'alive') this.applyChrObjBits(p1, character, axisCfg, targetTrue);
   }
 }
