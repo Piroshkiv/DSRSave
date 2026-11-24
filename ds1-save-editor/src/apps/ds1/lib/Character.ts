@@ -17,12 +17,172 @@ const NG_PLUS_RELATIVE_OFFSET = -0xBC0; // NG+ counter (pattern1 - 0xBC0)
 const COVENANT_OFFSET = 0x173;
 
 /**
+ * Per-covenant rank, 7 contiguous bytes at PGD+0xED..+0xF3 (file 0x14D..0x153,
+ * same PGD->file +0x60 shift as COVENANT_OFFSET). One byte per covenant,
+ * WarriorOfSunlight(3)..ChaosServant(9) in ascending covenant-id order; WayOfWhite
+ * and PrincessGuard have no rank. Confirmed real (not padding) via Ghidra:
+ * PlayerGameData::Save (FUN_140761bb0) reads these 7 bytes individually and
+ * copies each into a separate cached field right before the save buffer is
+ * finalized — DarkmoonBlade's byte (+0xF2) notably lands in its own non-sequential
+ * slot there, consistent with its rank being used separately for PvP matchmaking.
+ *
+ * The byte is the RAW CUMULATIVE OFFERING COUNT (0-80+), not the 0-3 rank
+ * tier directly — writing a literal "3" doesn't show as rank 3 in-game
+ * (confirmed by the user). Vanilla DS1's covenant mechanic converts this to a
+ * displayed rank via fixed thresholds (10/30/80 total offerings for ranks
+ * 1/2/3, the same pattern across all 7 covenants per the game's own
+ * "Mechanics Common to all Covenants"); offerings beyond 80 give no further
+ * benefit. `getCovenantRank`/`setCovenantRank` convert through these
+ * thresholds so callers work in rank-tier (0-3) terms.
+ */
+const COVENANT_RANK_BASE_OFFSET = 0x14D;
+const COVENANT_RANK_MIN = Covenant.WarriorOfSunlight;
+const COVENANT_RANK_MAX = Covenant.ChaosServant;
+const COVENANT_RANK_THRESHOLDS = [0, 10, 30, 80] as const;
+
+/**
+ * Covenant availability: a 2-byte (16-bit) bitfield at file offset 0x180,
+ * bit index = `Covenant` enum value directly (0=None .. 9=ChaosServant). A
+ * covenant's bit is what DSR's "switch covenant at a bonfire" QoL menu
+ * checks to decide whether it's selectable — distinct from rank/offerings,
+ * confirmed because a character could have a maxed offering count on a
+ * covenant (set via this editor) that still didn't show as selectable
+ * in-game until actually joined through normal play.
+ *
+ * Found via a live diff (join WayOfWhite, then separately join
+ * PathOfTheDragon(enum 5) on top of it): the byte at 0x180 was already `3`
+ * (bits 0 and 1 — None and WayOfWhite) even on a completely fresh,
+ * covenant-less character, confirming those two are always available by
+ * default; joining PathOfTheDragon set exactly bit 5, nothing else. Verified
+ * against 9 real characters in the user's live save — e.g. a character whose
+ * only joined covenant ever was Darkwraith(4) has exactly bit 4 set (no
+ * bit 0/1 default in that case), and one who'd only ever joined
+ * PathOfTheDragon(5) has bits {0,1,5}.
+ */
+const COVENANT_AVAILABLE_OFFSET = 0x180;
+
+/**
  * Bit indices of the 21 warpable bonfires, in display order.
  * Bits 0-2 of +0x6B are warp bits, not bonfires, so the list starts at 3.
  */
 export const BONFIRE_BIT_INDICES = [
   3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
 ] as const;
+
+/**
+ * Bonfire kindling array: a run of fixed-size records (one per bonfire/
+ * rest-point entity, including some non-warpable ones — more than the
+ * 21-item warp menu), each 20 bytes. Record layout (relative to its own
+ * start):
+ *   +0: marker byte, always 0x0B
+ *   +4..+6: 3-byte LE bonfire/area entity id (matches DS1's `area*10000 +
+ *           1960+n` sub-zone code scheme used elsewhere in this file)
+ *   +8: kindling value
+ *   +12: an unrelated per-bonfire flag, always 1 on exactly the id==...960
+ *        (first-in-area) record of several areas — left alone, not exposed
+ *
+ * Found via a live 4-step diff (base -> kindled x1/x2/x3/x4): the value byte
+ * at +8 rose 10 -> 20 -> 30 -> 40 in lockstep with each kindle action on one
+ * specific record, while the others stayed fixed. 10/20/30/40 maps exactly
+ * onto the real max-Estus progression 10/15/20/(25, past the vanilla cap —
+ * that test exceeded the normal 3-kindle limit) via `maxEstus = 5 + value/2`,
+ * i.e. `value = (maxEstus - 5) * 2`.
+ *
+ * NOT at a fixed pattern1-relative offset, and NOT a fixed record count:
+ * checked across 6 real characters in one live save, the array's offset
+ * relative to pattern1 and its record count (30-44) both varied with no
+ * simple formula found. So, like the gesture table above, this is found by
+ * scanning for the longest run of consecutive valid-looking 20-byte records
+ * rather than computed — see `findBonfireKindleArray()`.
+ */
+const BONFIRE_KINDLE_RECORD_SIZE = 20;
+const BONFIRE_KINDLE_ID_OFFSET = 4;
+const BONFIRE_KINDLE_VALUE_OFFSET = 8;
+const BONFIRE_KINDLE_ID_MIN = 1_000_000;
+const BONFIRE_KINDLE_ID_MAX = 2_000_000;
+const BONFIRE_KINDLE_MIN_RUN = 10;
+
+/**
+ * `maxEstus = value/2` — confirmed by the user testing every tier directly
+ * in-game (two earlier passes here both had this off by +5: one assumed a
+ * "+5 base" that doesn't exist, another wrongly special-cased value=40 as a
+ * sentinel). value=40 is the real, confirmed max (20 Estus); the user also
+ * confirmed in-game that nothing beyond 20 is achievable, so there's no
+ * "test" tier beyond 40 — a value=50 option offered earlier was removed.
+ */
+export const BONFIRE_KINDLE_VALUES = [0, 10, 20, 30, 40] as const;
+export const BONFIRE_KINDLE_VALUE_LABELS: Record<number, string> = {
+  0: 'kindleUnkindled',
+};
+export const BONFIRE_KINDLE_VALUE_ESTUS: Record<number, number> = {
+  0: 0, 10: 5, 20: 10, 30: 15, 40: 20,
+};
+
+/**
+ * Entity id -> real bonfire name. Two sources, cross-validated against each
+ * other (every id present in both agrees on area):
+ *  - The 21 official warp-menu names: read directly out of the exe's own
+ *    warp-destination table (21 x [event_flag, entity_id, text_id] int32
+ *    triples at 0x141a325c0, found via Ghidra), cross-referenced with the
+ *    event_flag->name mapping from `docs/exe-re-findings.md` §7.1. Only 11 of
+ *    these 21 actually appear in the save's 30-entry kindle array (the other
+ *    10 — Painted World, Duke's Archives, Crystal Cave, The Abyss, Altar of
+ *    the Gravelord, and the 5 Oolacile-DLC bonfires — are presumably
+ *    always-maxed "Fire Keeper" bonfires with nothing to track).
+ *  - The other 19 (non-warpable) names: from a hand-made Cheat Engine table's
+ *    "Last Bonfire" dropdown list (`1FRDarkSoulsRemastered.CT`), whose ids
+ *    are this array's entity ids + 1000 (verified against all 11 exe-table
+ *    entries above, e.g. our 1021960 = Firelink Shrine = CT's 1022960). One
+ *    of these (`1011962`) was also independently confirmed as "Blacksmith"
+ *    via a screenshot of the "Better Bonfire Menu" mod's own in-game UI.
+ */
+const BONFIRE_KINDLE_ID_NAMES: Record<number, string> = {
+  1021960: 'Firelink Shrine',
+  1011961: 'Sunlight Altar',
+  1011962: 'Blacksmith (Undead Burg)',
+  1511960: 'Anor Londo',
+  1511950: 'Chamber of the Princess',
+  1511962: 'Darkmoon Tomb',
+  1601950: 'The Abyss',
+  1401960: 'Daughter of Chaos',
+  1311950: 'Altar of the Gravelord',
+  1321960: 'Stone Dragon',
+  1211963: 'Sanctuary Garden',
+  1211961: 'Oolacile Sanctuary',
+  1211962: 'Oolacile Township',
+  1211950: 'Chasm of the Abyss',
+  1211964: 'Oolacile Township Dungeon',
+  1001960: 'Depths',
+  1011964: 'Undead Parish',
+  1101960: 'Painted World of Ariamis',
+  1311961: 'Tomb of Giants',
+  1701960: "Duke's Archives",
+  1701950: 'Crystal Cave',
+  1301962: 'Catacombs',
+  // Non-warpable, named via the CT's "Last Bonfire" dropdown (id - 1000):
+  1511961: 'Anor Londo (Interior Bonfire)',
+  1811961: 'Northern Undead Asylum (Bonfire #2)',
+  1811960: 'Northern Undead Asylum (Bonfire #1)',
+  1411964: 'Lost Izalith (Bonfire #1)',
+  1411963: 'Demon Ruins (Bonfire #3)',
+  1411962: 'Demon Ruins (Bonfire #2)',
+  1411961: 'Demon Ruins (Bonfire #1)',
+  1411960: 'Lost Izalith (Bonfire #2)',
+  1401962: 'Blighttown (Bridge Bonfire)',
+  1401961: 'Blighttown (Swamp Bonfire)',
+  1601961: 'Darkroot Basin',
+  1501961: "Sen's Fortress",
+  1311960: 'Tomb of the Giants (Bonfire #1)',
+  1321961: 'Ash Lake (Bonfire #1)',
+  1321962: 'Great Hollow',
+  1301960: 'The Catacombs (Bonfire #1)',
+  1301961: 'The Catacombs (Bonfire #2)',
+  1201961: 'Darkroot Garden',
+  1701961: "Duke's Archives (Cell Bonfire)",
+  1701962: "Duke's Archives (Elevator Bonfire)",
+  1411950: 'Lost Izalith (Bed of Chaos)',
+  1801960: 'Firelink Altar',
+};
 
 /**
  * Gesture unlock table — 15 records of `[u16 value][u16 index]`, in the fixed
@@ -51,6 +211,38 @@ export const BONFIRE_BIT_INDICES = [
 export const GESTURE_COUNT = 15;
 const GESTURE_RECORD_SIZE = 4;
 const GESTURE_TABLE_OFFSET = 0x1E4A8;
+
+/**
+ * Visited-area/sub-zone list, right after the gesture table's own
+ * `FE FF FF FF` terminator (`GESTURE_TABLE_OFFSET + 15*4 + 4 = 0x1E4E8`).
+ * Each 4-byte LE entry is a decimal area/sub-zone code — e.g. `101000` =
+ * "Undead Burg Start" — confirmed by cross-referencing a hand-curated area
+ * code list and by live-watching entries appear while walking between
+ * zones. Entries sit in the ~100000-180000 range, far below the ~1.6M+
+ * range item/weapon IDs occupy, so `AREA_CODE_MAX` safely tells a real
+ * entry apart from the `0xFFFFFFFF`/`0x00000000` filler that follows them.
+ *
+ * `AREA_LIST_COUNT_OFFSET` (0x1E4E8) holds a count too, but isn't safe to
+ * trust alone: a corrupted or non-character slot can hold garbage there
+ * with nothing to catch it. Counting entries by content shape instead
+ * matched that field exactly across every real character tested (670
+ * entries, 4 independent save files, zero exceptions) and degrades to 0
+ * instead of garbage on invalid data — see docs/exe-re-findings.md.
+ *
+ * `PATTERN1_BASE` is the anchor for bonfire warp flags, NG+, and world
+ * event flags, and shifts forward by exactly 4 bytes per list entry. The
+ * byte-signature scan this replaced took the *last* match of a 16-byte
+ * FF/00 pattern across 0x1F000-0x1FFFF, which is unreliable: a fresh
+ * character has hundreds of bytes of genuine filler that all match it, and
+ * real (non-filler) save data occasionally matches it by coincidence
+ * further in the file.
+ */
+const AREA_LIST_START = 0x1E4F0;
+const AREA_LIST_COUNT_OFFSET = 0x1E4E8;
+const AREA_CODE_MIN = 1;
+const AREA_CODE_MAX = 500_000;
+const AREA_LIST_MAX_SCAN = 2000;
+const PATTERN1_BASE = 0x1F17E;
 
 /**
  * Appearance. The game keeps it in PlayerGameData (`PGD = [[BaseB]+0x10]`),
@@ -101,6 +293,7 @@ export class Character {
   private data: Uint8Array;
   public slotNumber: number;
   private gestureTableOffset: number | null = null;
+  private bonfireKindleArray: { start: number; count: number } | null | undefined = undefined;
 
   constructor(data: Uint8Array, slotNumber: number) {
     this.data = data;
@@ -405,6 +598,59 @@ export class Character {
     this.data[COVENANT_OFFSET] = value;
   }
 
+  hasCovenantRank(covenant: Covenant): boolean {
+    return covenant >= COVENANT_RANK_MIN && covenant <= COVENANT_RANK_MAX;
+  }
+
+  /** Raw cumulative offering count (0-255), independent of the rank-tier conversion below. */
+  getCovenantOfferings(covenant: Covenant): number {
+    if (!this.hasCovenantRank(covenant)) return 0;
+    return this.data[COVENANT_RANK_BASE_OFFSET + (covenant - COVENANT_RANK_MIN)];
+  }
+
+  /** Rank tier (0-3), converted from the raw offering count via the 10/30/80 thresholds. */
+  getCovenantRank(covenant: Covenant): number {
+    const offerings = this.getCovenantOfferings(covenant);
+    let rank = 0;
+    for (let i = 0; i < COVENANT_RANK_THRESHOLDS.length; i++) {
+      if (offerings >= COVENANT_RANK_THRESHOLDS[i]) rank = i;
+    }
+    return rank;
+  }
+
+  /** Sets rank by writing the offering count for that tier's threshold (0/10/30/80). */
+  setCovenantRank(covenant: Covenant, rank: number): void {
+    if (!this.hasCovenantRank(covenant)) return;
+    const tier = Math.max(0, Math.min(COVENANT_RANK_THRESHOLDS.length - 1, Math.round(rank)));
+    this.data[COVENANT_RANK_BASE_OFFSET + (covenant - COVENANT_RANK_MIN)] = COVENANT_RANK_THRESHOLDS[tier];
+  }
+
+  /** Whether this covenant shows as selectable in the "switch covenant at a bonfire" menu. */
+  isCovenantAvailable(covenant: Covenant): boolean {
+    const byteIndex = COVENANT_AVAILABLE_OFFSET + (covenant >> 3);
+    const bit = covenant & 7;
+    return ((this.data[byteIndex] >> bit) & 1) === 1;
+  }
+
+  setCovenantAvailable(covenant: Covenant, available: boolean): void {
+    const byteIndex = COVENANT_AVAILABLE_OFFSET + (covenant >> 3);
+    const bit = covenant & 7;
+    if (available) {
+      this.data[byteIndex] |= 1 << bit;
+    } else {
+      this.data[byteIndex] &= ~(1 << bit);
+    }
+  }
+
+  /** Sets the current covenant, marks it available, and bumps a 0 rank to 1 (freshly joined). */
+  joinCovenant(covenant: Covenant): void {
+    this.covenant = covenant;
+    this.setCovenantAvailable(covenant, true);
+    if (this.hasCovenantRank(covenant) && this.getCovenantRank(covenant) === 0) {
+      this.setCovenantRank(covenant, 1);
+    }
+  }
+
   get hp(): number {
     return this.data[0x0079] * 256 + this.data[0x0078];
   }
@@ -464,53 +710,50 @@ export class Character {
   }
 
   /**
-   * Восстановленный метод поиска "Магического паттерна" (Pattern1).
-   * Ищет последнее вхождение паттерна в диапазоне 0x1F000 - 0x1FFFF.
-   * @returns Базовое смещение (baseOffset) или -1, если не найдено.
+   * Counts the visited-area list entries by content shape rather than
+   * trusting `AREA_LIST_COUNT_OFFSET` alone (see the field's doc comment).
+   * Warns (but still returns the scanned count) when the two disagree.
+   */
+  private countAreaListEntries(): number {
+    const view = new DataView(this.data.buffer, this.data.byteOffset, this.data.length);
+    let count = 0;
+    for (let i = 0; i < AREA_LIST_MAX_SCAN; i++) {
+      const offset = AREA_LIST_START + i * 4;
+      if (offset + 4 > this.data.length) break;
+      const value = view.getUint32(offset, true);
+      if (value < AREA_CODE_MIN || value > AREA_CODE_MAX) break;
+      count++;
+    }
+
+    if (AREA_LIST_COUNT_OFFSET + 4 <= this.data.length) {
+      const stored = view.getUint32(AREA_LIST_COUNT_OFFSET, true);
+      if (stored !== count) {
+        console.warn(
+          `Area list count mismatch: stored field says ${stored}, content scan found ${count}. Trusting the scan.`
+        );
+      }
+    }
+
+    return count;
+  }
+
+  /**
+   * Anchor for bonfire warp flags, NG+, and world event flags:
+   * `PATTERN1_BASE + 4 * (visited-area list length)`. See `AREA_LIST_START`'s
+   * doc comment for why this replaced a byte-signature scan.
+   * @returns the anchor offset, or -1 for an empty/undersized slot.
    */
   public findPattern1(): number {
-    // Pattern1: FF FF FF FF 00 00 00 00 FF FF FF FF 00 00 00 00
-    const pattern = [
-      0xFF, 0xFF, 0xFF, 0xFF,
-      0x00, 0x00, 0x00, 0x00,
-      0xFF, 0xFF, 0xFF, 0xFF,
-      0x00, 0x00, 0x00, 0x00
-    ];
-
-    const startOffset = 0x1F000;
-    const endOffset = 0x1FFFF;
-    
-    if (startOffset < 0 || endOffset >= this.data.length || startOffset > endOffset) {
-      // Это может произойти, если файл слишком короткий
-      return -1;
-    }
-    
-    const maxStart = endOffset - pattern.length + 1;
-    const patternOffsets: number[] = [];
-
-    // Ищем ВСЕ вхождения
-    for (let i = startOffset; i <= maxStart; i++) {
-      let matches = true;
-      for (let j = 0; j < pattern.length; j++) {
-        if (this.data[i + j] !== pattern[j]) {
-          matches = false;
-          break;
-        }
-      }
-      if (matches) {
-        patternOffsets.push(i);
-      }
-    }
-
-    if (patternOffsets.length === 0) {
+    if (this.isEmpty) {
       return -1;
     }
 
-    // Возвращаем ПОСЛЕДНЕЕ вхождение
-    const lastOffset = patternOffsets[patternOffsets.length - 1];
-    console.log(`Найдено ${patternOffsets.length} Pattern1, используется ПОСЛЕДНЕЕ на 0x${lastOffset.toString(16)}`);
+    const offset = PATTERN1_BASE + 4 * this.countAreaListEntries();
+    if (offset < 0 || offset >= this.data.length) {
+      return -1;
+    }
 
-    return lastOffset;
+    return offset;
   }
 
   // Bonfire methods - using relative offsets to Pattern1
@@ -788,6 +1031,74 @@ export class Character {
     return BONFIRE_BIT_INDICES.every(bit => flags[bit]);
   }
 
+  /** True when a valid-looking kindle record (marker + plausible id) starts at `offset`. */
+  private isKindleRecordAt(offset: number): boolean {
+    if (offset < 0 || offset + BONFIRE_KINDLE_RECORD_SIZE > this.data.length) return false;
+    if (this.data[offset] !== 0x0B || this.data[offset + 1] !== 0 ||
+        this.data[offset + 2] !== 0 || this.data[offset + 3] !== 0) {
+      return false;
+    }
+    const idOff = offset + BONFIRE_KINDLE_ID_OFFSET;
+    const id = this.data[idOff] | (this.data[idOff + 1] << 8) | (this.data[idOff + 2] << 16);
+    return id >= BONFIRE_KINDLE_ID_MIN && id < BONFIRE_KINDLE_ID_MAX;
+  }
+
+  /**
+   * Finds the bonfire-kindle array by scanning for the longest run of
+   * consecutive 20-byte-stride valid-looking records (see class doc comment
+   * on `BONFIRE_KINDLE_RECORD_SIZE` for why this isn't a fixed offset/count).
+   * Cached per instance; returns null when nothing matches `BONFIRE_KINDLE_MIN_RUN`.
+   */
+  private findBonfireKindleArray(): { start: number; count: number } | null {
+    if (this.bonfireKindleArray !== undefined) return this.bonfireKindleArray;
+
+    let best: { start: number; count: number } | null = null;
+    const max = this.data.length - BONFIRE_KINDLE_RECORD_SIZE;
+    for (let i = 0; i <= max; i++) {
+      if (!this.isKindleRecordAt(i)) continue;
+      if (this.isKindleRecordAt(i - BONFIRE_KINDLE_RECORD_SIZE)) continue; // not a run start
+      let count = 1;
+      while (this.isKindleRecordAt(i + count * BONFIRE_KINDLE_RECORD_SIZE)) count++;
+      if (!best || count > best.count) best = { start: i, count };
+    }
+
+    this.bonfireKindleArray = best && best.count >= BONFIRE_KINDLE_MIN_RUN ? best : null;
+    return this.bonfireKindleArray;
+  }
+
+  /** Raw bonfire-kindle records: entity id + the raw value byte, by array index. */
+  getBonfireKindleEntries(): { index: number; id: number; name: string | null; value: number }[] {
+    const array = this.findBonfireKindleArray();
+    if (!array) return [];
+    const entries: { index: number; id: number; name: string | null; value: number }[] = [];
+    for (let i = 0; i < array.count; i++) {
+      const recOffset = array.start + i * BONFIRE_KINDLE_RECORD_SIZE;
+      const idOff = recOffset + BONFIRE_KINDLE_ID_OFFSET;
+      const id = this.data[idOff] | (this.data[idOff + 1] << 8) | (this.data[idOff + 2] << 16);
+      const value = this.data[recOffset + BONFIRE_KINDLE_VALUE_OFFSET];
+      entries.push({ index: i, id, name: BONFIRE_KINDLE_ID_NAMES[id] ?? null, value });
+    }
+    return entries;
+  }
+
+  /** Writes the raw kindle-value byte directly (see `BONFIRE_KINDLE_VALUES` for the 5 real states). */
+  setBonfireKindleValue(index: number, value: number): void {
+    const array = this.findBonfireKindleArray();
+    if (!array) return;
+    if (index < 0 || index >= array.count) return;
+    const recOffset = array.start + index * BONFIRE_KINDLE_RECORD_SIZE;
+    this.data[recOffset + BONFIRE_KINDLE_VALUE_OFFSET] = value;
+  }
+
+  /** Sets every tracked bonfire to the real max (25 Estus, value=40). */
+  kindleAllBonfires(): void {
+    const array = this.findBonfireKindleArray();
+    if (!array) return;
+    for (let i = 0; i < array.count; i++) {
+      this.setBonfireKindleValue(i, 40);
+    }
+  }
+
   /**
    * Метод для отладки, который проверяет смещения Pattern1 и значения костров.
    * Восстановлен для удобства.
@@ -832,7 +1143,7 @@ export class Character {
     };
 
     console.log('=== Pattern1 Verification (Восстановлено) ===');
-    console.log('Pattern1 (LAST) found at:', `0x${pattern1Offset.toString(16)}`);
+    console.log('Pattern1 found at:', `0x${pattern1Offset.toString(16)}`);
     console.log('Bonfire offsets (Абсолютные):');
     console.log(`  0x${bonfireOffset1.toString(16)}: 0x${this.data[bonfireOffset1].toString(16).padStart(2, '0')}`);
     console.log(`  0x${bonfireOffset2.toString(16)}: 0x${this.data[bonfireOffset2].toString(16).padStart(2, '0')}`);

@@ -627,6 +627,10 @@
   padding: 1.5rem 2rem;
 }
 
+.tab-content-inventory {
+  padding-top: 5px;
+}
+
 /* Reload button inside DS3 tabs row */
 .tabs .reload-button {
   margin-right: 0.5rem;
@@ -1172,6 +1176,132 @@
   background: #505050;
 }
 
+/*
+ * Legacy inventory-toolbar classes — DS3's InventoryTab/ItemCreateDialog/
+ * ItemEditDialog still use these (DS3 has no item icons yet, see
+ * project_ds1_ds3_item_icons memory), while DS1's own versions above were
+ * redesigned for the new icon layout. Kept byte-for-byte identical to what
+ * they were before that redesign so DS3 renders unchanged. Once DS3 gets
+ * its own icon pass, point it at the new classes and delete these.
+ */
+.legacy-inventory-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 0.25rem 0;
+}
+
+.legacy-inventory-search {
+  flex: 1;
+  min-width: 160px;
+  max-width: 260px;
+}
+
+.legacy-inventory-search .search-input {
+  width: 100%;
+  padding: 0.35rem 0.6rem;
+  background-color: #1e1e1e;
+  color: #d0d0d0;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  font-size: 0.82rem;
+}
+
+.legacy-inventory-search .search-input:focus {
+  outline: none;
+  border-color: rgba(255, 107, 53, 0.4);
+}
+
+.legacy-weapon-level-display {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+}
+
+.legacy-weapon-level-display label {
+  color: #666;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.legacy-weapon-level-display input[type="number"] {
+  width: 3.5rem;
+  padding: 0.32rem 0.4rem;
+  background-color: #1e1e1e;
+  color: #d0d0d0;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.legacy-weapon-level-display input[type="number"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.legacy-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.65rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: none;
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  transition: background 0.15s ease;
+}
+
+.legacy-item-row:hover {
+  background: rgba(255, 255, 255, 0.055);
+  border-left-color: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+.legacy-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.legacy-item-select-row {
+  padding: 0.32rem 0.6rem;
+  color: #a8a8a8;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.legacy-item-select-row:last-child {
+  border-bottom: none;
+}
+
+.legacy-item-select-row:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.legacy-item-select-row.selected {
+  background-color: rgba(106, 159, 181, 0.14);
+  border-left: 2px solid #6a9fb5;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.legacy-item-name-display-compact {
+  padding: 0.35rem 0.5rem;
+  background-color: #1e1e1e;
+  color: #c0c0c0;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
 /* Inventory Tab */
 .inventory-tab {
   display: flex;
@@ -1182,27 +1312,74 @@
 
 .inventory-header {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
+  gap: 0.6rem;
   padding: 0.25rem 0;
 }
 
+.inventory-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.toolbar-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 0.9rem;
+  background: transparent;
+  color: #c0c0c0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.toolbar-button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e0e0e0;
+}
+
+.toolbar-button-accent {
+  color: #ff6b35;
+}
+
+.toolbar-button-accent:hover:not(:disabled) {
+  background: rgba(255, 107, 53, 0.12);
+  border-color: rgba(255, 107, 53, 0.3);
+  color: #ff8255;
+}
+
+.inventory-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0 0.25rem;
+}
+
 .inventory-search {
-  flex: 1;
+  flex: 1 1 200px;
   min-width: 160px;
-  max-width: 260px;
+  max-width: 320px;
 }
 
 .inventory-search .search-input {
   width: 100%;
-  padding: 0.35rem 0.6rem;
+  padding: 0.32rem 0.6rem;
   background-color: #1e1e1e;
   color: #d0d0d0;
   border: 1px solid #2e2e2e;
   border-radius: 4px;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
 .inventory-search .search-input:focus {
@@ -1242,8 +1419,14 @@
 .weapon-level-display {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.4rem;
-  margin-left: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  /* Matches .sub-tab's own left text-indent (0.7rem) so "Weapon Level:"
+     lines up with "Consumables" below it and "Search items" above it —
+     this row's own container has no horizontal padding to borrow from. */
+  padding-left: 0.7rem;
 }
 
 .weapon-level-display label {
@@ -1342,11 +1525,36 @@
   gap: 0.25rem;
 }
 
+.bottomless-box-section {
+  border-top: 1px solid #2a2a2a;
+  padding: 0.75rem 0.65rem 0.5rem;
+  flex-shrink: 0;
+  max-height: 35%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bottomless-box-section h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: #8fb8c7;
+  font-weight: 600;
+}
+
+.box-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
 .item-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.45rem 0.65rem;
+  gap: 0.55rem;
+  min-height: 62px;
+  padding: 5px 0.65rem 5px 5px;
   background: rgba(255, 255, 255, 0.03);
   border: none;
   border-left: 2px solid rgba(255, 255, 255, 0.1);
@@ -1362,9 +1570,34 @@
 
 .item-info {
   display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.item-info-text {
+  display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  flex: 1;
+  min-width: 0;
+}
+
+.item-icon {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.item-icon-empty {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.item-icon-sprite {
+  image-rendering: auto;
+  /* The extracted DDS->PNG sheets read slightly washed-out/pale next to the
+     game's own in-engine rendering — compensate rather than re-extract. */
+  filter: saturate(1.45) contrast(1.08) brightness(0.97);
 }
 
 .item-name {
@@ -1550,6 +1783,239 @@
   background-color: #252525;
   border-radius: 6px;
   border: 1px solid #3a3a3a;
+}
+
+.destination-toggle {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.destination-option {
+  flex: 1;
+  padding: 0.35rem 0.6rem;
+  background-color: #1e1e1e;
+  color: #999;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.8rem;
+}
+
+.destination-option:hover {
+  background-color: #262626;
+}
+
+.destination-option.selected {
+  background-color: rgba(106, 159, 181, 0.15);
+  border-color: #6a9fb5;
+  color: #cfe8f0;
+  font-weight: 500;
+}
+
+.move-button {
+  background-color: #2a4a5a;
+  color: #cfe8f0;
+  border: 1px solid #3a6a7a;
+  border-radius: 4px;
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.15s;
+}
+
+.move-button:hover {
+  background-color: #3a6a7a;
+}
+
+.move-button:disabled {
+  background-color: #2e2e2e;
+  color: #777;
+  border-color: #3a3a3a;
+  cursor: not-allowed;
+}
+
+.move-button:disabled:hover {
+  background-color: #2e2e2e;
+}
+
+.item-location-badge {
+  font-size: 0.75rem;
+  color: #999;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  margin-left: 0.4rem;
+}
+
+/* --- Compact item create/edit dialog ---
+ * The generic .dialog-* family (used by several other dialogs across the
+ * app, e.g. "Add All Weapons") is deliberately spacious; these two dialogs
+ * get their own tighter classes instead, modelled on EntityListTab.css's
+ * density. Per user request: only the dialog's own footprint (max-width)
+ * stays enlarged and the list rows' text is a touch bigger — every other
+ * spacing value is back to the original compact baseline. */
+.item-dialog-content {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+  border-radius: 8px;
+  border: 1px solid #3a3a3a;
+  max-width: 660px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.item-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.25);
+}
+
+.item-dialog-header h2 {
+  color: #c0c0c0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.item-dialog-header .close-button {
+  width: 26px;
+  height: 26px;
+  font-size: 1.1rem;
+  border-width: 1px;
+}
+
+.item-dialog-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.item-form-group {
+  margin-bottom: 0.45rem;
+}
+
+.item-form-group:last-child {
+  margin-bottom: 0;
+}
+
+.item-form-group label {
+  display: block;
+  color: #666;
+  margin-bottom: 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.item-form-group input,
+.item-form-group select,
+.item-search-input {
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  background-color: #1e1e1e;
+  color: #d0d0d0;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.item-form-group input:focus,
+.item-form-group select:focus,
+.item-search-input:focus {
+  outline: none;
+  border-color: rgba(255, 107, 53, 0.45);
+  background-color: #222;
+}
+
+.item-form-group input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.item-form-group input[type="number"] {
+  width: 100px;
+}
+
+.item-select-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  background-color: #1a1a1a;
+}
+
+.item-select-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.32rem 0.6rem;
+  color: #a8a8a8;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.item-select-row:last-child {
+  border-bottom: none;
+}
+
+.item-select-row:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.item-select-row.selected {
+  background-color: rgba(106, 159, 181, 0.14);
+  border-left: 2px solid #6a9fb5;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+.item-name-display-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  background-color: #1e1e1e;
+  color: #c0c0c0;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.item-dialog-footer {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem;
+  border-top: 1px solid #333;
+  justify-content: flex-end;
+}
+
+.item-dialog-footer .cancel-button,
+.item-dialog-footer .create-button {
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  border-width: 1px;
+}
+
+.item-dialog-footer .info-text,
+.item-dialog-body .info-text {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
 }
 
 .dialog-footer {

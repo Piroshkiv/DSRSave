@@ -19,7 +19,6 @@ export const BossesTab: React.FC<BossesTabProps> = (props) => {
     searchPlaceholder: t('searchBosses', lang),
     loadingMessage: t('loadingBosses', lang),
     readState: true,
-    showOnlyDead: true,
   };
   return <EntityListTab {...props} config={bossConfig} />;
 };

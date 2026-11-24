@@ -6,9 +6,12 @@ import { CreateBackupResult } from '../lib/backups';
 import { GeneralTab } from './GeneralTab';
 import { InventoryTab } from './InventoryTab';
 import { BonfiresTab } from './BonfiresTab';
+import { CovenantsTab } from './CovenantsTab';
 import { GesturesTab } from './GesturesTab';
 import { NPCsTab } from './NPCsTab';
 import { BossesTab } from './BossesTab';
+import { NPCsTabV2 } from './NPCsTabV2';
+import { BossesTabV2 } from './BossesTabV2';
 import { WorldEventsTab } from './WorldEventsTab';
 import { TableTab } from './TableTab';
 import { AppearanceTab } from './AppearanceTab';
@@ -31,7 +34,7 @@ interface TabPanelProps {
   backups?: BackupControls | null;
 }
 
-type TabType = 'help' | 'general' | 'appearance' | 'inventory' | 'bonfires' | 'gestures' | 'npcs' | 'bosses' | 'world_events' | 'backups' | 'table';
+type TabType = 'help' | 'general' | 'appearance' | 'inventory' | 'bonfires' | 'covenants' | 'gestures' | 'npcs' | 'bosses' | 'npcs_v2' | 'bosses_v2' | 'world_events' | 'backups' | 'table';
 
 const TAB_KEYS: Record<TabType, string> = {
   help: 'tab_help',
@@ -39,15 +42,18 @@ const TAB_KEYS: Record<TabType, string> = {
   appearance: 'tab_appearance',
   inventory: 'tab_inventory',
   bonfires: 'tab_bonfires',
+  covenants: 'tab_covenants',
   gestures: 'tab_gestures',
   npcs: 'tab_npcs',
   bosses: 'tab_bosses',
+  npcs_v2: 'tab_npcs_v2',
+  bosses_v2: 'tab_bosses_v2',
   world_events: 'tab_world_events',
   backups: 'tab_backups',
   table: 'tab_table',
 };
 
-const FULL_TABS: TabType[] = ['general', 'appearance', 'inventory', 'bonfires', 'gestures', 'npcs', 'bosses', 'backups', 'table'];
+const FULL_TABS: TabType[] = ['general', 'appearance', 'inventory', 'bonfires', 'covenants', 'gestures', 'npcs', 'bosses', 'npcs_v2', 'bosses_v2', 'backups', 'table'];
 
 
 export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, safeMode, backups }) => {
@@ -93,7 +99,7 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
         </div>
       </div>
 
-      <div className="tab-content">
+      <div className={`tab-content ${activeTab === 'inventory' ? 'tab-content-inventory' : ''}`}>
         {isEmptySlot && (
           <div className="empty-slot-hint">
             {t('backupEmptySlotNotice', lang).replace('{slot}', String(character.slotNumber + 1))}
@@ -114,6 +120,9 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
         {activeTab === 'bonfires' && !isEmptySlot && (
           <BonfiresTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
+        {activeTab === 'covenants' && !isEmptySlot && (
+          <CovenantsTab character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
         {activeTab === 'gestures' && !isEmptySlot && (
           <GesturesTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
@@ -122,6 +131,12 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
         )}
         {activeTab === 'bosses' && !isEmptySlot && (
           <BossesTab character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
+        {activeTab === 'npcs_v2' && !isEmptySlot && (
+          <NPCsTabV2 character={character} onCharacterUpdate={onCharacterUpdate} />
+        )}
+        {activeTab === 'bosses_v2' && !isEmptySlot && (
+          <BossesTabV2 character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
         {activeTab === 'world_events' && !isEmptySlot && (
           <WorldEventsTab character={character} onCharacterUpdate={onCharacterUpdate} />

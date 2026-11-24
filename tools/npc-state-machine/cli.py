@@ -208,6 +208,32 @@ def apply_chr_obj_bits(schema, p1, buf, axis_cfg, target_true):
         obj_blob.set_bits(obj_bits["map"], obj_bits["indices"], 0 if target_true else 1)
 
 
+def sweep_sibling_chr_bits_alive(schema, p1, buf, npc):
+    """Revive-only safety net for multi-placement NPCs that can end up with a
+    STALE duplicate body left over from a native engine race (e.g. trusty_patches
+    + Rhea's flag 1173, see project memory) -- if the player killed one of the
+    two simultaneously-visible copies, only ITS OWN chr_bit gets forced-dead by
+    the native kill; a plain revive only clears the chr_bit for whichever single
+    stage flags currently point to, leaving the OTHER placement's chr_bit stuck
+    forced-dead. This sweeps EVERY chr_bit listed across all of this NPC's
+    alive.per_stage entries to 'not forced-dead' on every revive, regardless of
+    which one is the currently-active stage. Safe and NOT the reverted
+    'enforce_sibling_exclusivity' idea: this only ever CLEARS chr_bit (never
+    forces one on), so it can't fake-kill a placement the way that did."""
+    chr_blob = ChrBlob(schema, p1, buf)
+    seen = set()
+    per_stage = npc.get("status_axes", {}).get("alive", {}).get("per_stage", {})
+    for cfg in per_stage.values():
+        cb = cfg.get("chr_bit")
+        if not cb:
+            continue
+        key = (cb["map"], cb["msb_index"])
+        if key in seen:
+            continue
+        seen.add(key)
+        chr_blob.set_bits(cb["map"], [cb["msb_index"]], 0)
+
+
 def get_bit(buf, byte_off, bit):
     return (buf[byte_off] >> bit) & 1
 
@@ -385,6 +411,8 @@ def apply_axis_for_stage(fa, buf, npc, axis_name, target_true, stage_id):
         set_flags(fa, buf, {t: 0 for t in traps})
     if axis_name == "alive":
         apply_chr_obj_bits(schema_global, fa.p1, buf, axis_cfg, target_true)
+        if target_true:
+            sweep_sibling_chr_bits_alive(schema_global, fa.p1, buf, npc)
 
 
 def apply_npc_stage(fa, buf, npc, stage_id):
@@ -599,6 +627,8 @@ def cmd_axis_action(schema, args, axis_name, target_true):
 
     if axis_name == "alive":
         apply_chr_obj_bits(schema, p1, buf, axis_cfg, target_true)
+        if target_true:
+            sweep_sibling_chr_bits_alive(schema, p1, buf, npc)
 
     write_slot(args.save, raw, off, checksum, buf, args.slot, f"{args.npc}_{axis_name}_{target_true}")
 

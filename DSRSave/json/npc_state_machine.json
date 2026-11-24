@@ -1186,10 +1186,13 @@
         1110,
         1119
       ],
+      "transition_traps_always_clear": [
+        11010181
+      ],
       "status_axes": {
         "alive": {
           "per_stage": {
-            "before_first_meeting": {
+            "trapped_in_undead_burg": {
               "set_true": {
                 "1115": 0,
                 "1110": 1
@@ -1205,9 +1208,15 @@
                 "map": "m10_01",
                 "msb_index": 1
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1115": 0
+              },
+              "detect_false": {
+                "1115": 1
+              }
             },
-            "after_yes": {
+            "firelink_merchant": {
               "set_true": {
                 "1115": 0,
                 "1110": 1
@@ -1223,9 +1232,15 @@
                 "map": "m10_02",
                 "msb_index": 2
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1115": 0
+              },
+              "detect_false": {
+                "1115": 1
+              }
             },
-            "after_no": {
+            "hollow_in_sens_fortress": {
               "set_true": {
                 "1115": 0,
                 "1110": 1
@@ -1241,12 +1256,42 @@
                 "map": "m15_00",
                 "msb_index": 4
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1115": 0
+              },
+              "detect_false": {
+                "1115": 1
+              }
             }
           }
         },
         "hostile": {
           "per_stage": {
+            "trapped_in_undead_burg": {
+              "set_true": {
+                "1114": 1,
+                "11010511": 1
+              },
+              "set_false": {
+                "1114": 0,
+                "11010511": 0
+              },
+              "always_clear_traps": [],
+              "verified": true
+            },
+            "firelink_merchant": {
+              "set_true": {
+                "1114": 1,
+                "11020511": 1
+              },
+              "set_false": {
+                "1114": 0,
+                "11020511": 0
+              },
+              "always_clear_traps": [],
+              "verified": true
+            },
             "default": {
               "set_true": {
                 "1114": 1
@@ -1261,20 +1306,19 @@
         }
       },
       "key_stages": {
-        "before_first_meeting": {
+        "trapped_in_undead_burg": {
           "flags_on": [
             1111
           ],
-          "verified": false
+          "verified": true
         },
-        "after_yes": {
+        "firelink_merchant": {
           "flags_on": [
-            1112,
-            1113
+            1112
           ],
-          "verified": false
+          "verified": true
         },
-        "after_no": {
+        "hollow_in_sens_fortress": {
           "flags_on": [
             1117
           ],
@@ -1871,20 +1915,24 @@
             "default": {
               "set_true": {
                 "1295": 0,
-                "1290": 1
+                "11400523": 0
               },
               "set_false": {
                 "1295": 1,
-                "1290": 0
+                "11400523": 1
               },
-              "always_clear_traps": [
-                11400523
-              ],
+              "always_clear_traps": [],
               "chr_bit": {
                 "map": "m14_00",
                 "msb_index": 2
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1295": 0
+              },
+              "detect_false": {
+                "1295": 1
+              }
             }
           }
         },
@@ -1892,43 +1940,53 @@
           "per_stage": {
             "default": {
               "set_true": {
-                "1294": 1
+                "1294": 1,
+                "11400513": 1
               },
               "set_false": {
-                "1294": 0
+                "1294": 0,
+                "11400513": 0
               },
               "always_clear_traps": [],
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1294": 1
+              },
+              "detect_false": {
+                "1294": 0
+              }
             }
           }
         }
       },
       "key_stages": {
-        "default": {
+        "not_appeared": {
           "flags_on": [
             1290
           ],
-          "verified": false
+          "verified": true
         },
-        "stage_1291": {
+        "appeared": {
           "flags_on": [
-            1291
+            1291,
+            71400061
+          ],
+          "verified": true
+        },
+        "bed_of_chaos_defeated": {
+          "flags_on": [
+            1293,
+            71400061
           ],
           "verified": false
         },
-        "stage_1292": {
+        "taught_fire_tempest": {
           "flags_on": [
             1292
           ],
           "verified": false
         },
-        "stage_1293": {
-          "flags_on": [
-            1293
-          ],
-          "verified": false
-        },
-        "stage_1296": {
+        "quest_resolved": {
           "flags_on": [
             1296
           ],
@@ -2345,10 +2403,13 @@
         1250,
         1259
       ],
+      "transition_traps_always_clear": [
+        11020103
+      ],
       "status_axes": {
         "alive": {
           "per_stage": {
-            "m10_00": {
+            "undead_burg": {
               "set_true": {
                 "1254": 0,
                 "1250": 1,
@@ -2364,17 +2425,22 @@
                 "map": "m10_00",
                 "msb_index": 0
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1254": 0
+              },
+              "detect_false": {
+                "1254": 1
+              }
             },
-            "m10_02": {
+            "firelink_merchant": {
               "set_true": {
                 "1254": 0,
-                "1250": 1,
+                "1250": 0,
                 "11020536": 0
               },
               "set_false": {
                 "1254": 1,
-                "1250": 0,
                 "11020536": 1
               },
               "always_clear_traps": [],
@@ -2382,17 +2448,22 @@
                 "map": "m10_02",
                 "msb_index": 7
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1254": 0
+              },
+              "detect_false": {
+                "1254": 1
+              }
             },
-            "m14_00": {
+            "hollow_in_blighttown": {
               "set_true": {
                 "1254": 0,
-                "1250": 1,
+                "1250": 0,
                 "11400520": 0
               },
               "set_false": {
                 "1254": 1,
-                "1250": 0,
                 "11400520": 1
               },
               "always_clear_traps": [],
@@ -2400,7 +2471,13 @@
                 "map": "m14_00",
                 "msb_index": 1
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1254": 0
+              },
+              "detect_false": {
+                "1254": 1
+              }
             }
           }
         },
@@ -2430,20 +2507,19 @@
         }
       },
       "key_stages": {
-        "m10_00": {
+        "undead_burg": {
           "flags_on": [
             1251
           ],
           "verified": false
         },
-        "m10_02": {
+        "firelink_merchant": {
           "flags_on": [
-            1252,
-            1256
+            1252
           ],
           "verified": false
         },
-        "m14_00": {
+        "hollow_in_blighttown": {
           "flags_on": [
             1257
           ],
@@ -3133,12 +3209,11 @@
             "tomb_of_giants": {
               "set_true": {
                 "1628": 0,
-                "1620": 1,
+                "1620": 0,
                 "11310540": 0
               },
               "set_false": {
                 "1628": 1,
-                "1620": 0,
                 "11310540": 1
               },
               "always_clear_traps": [],
@@ -3157,12 +3232,11 @@
             "pit_pushed": {
               "set_true": {
                 "1628": 0,
-                "1620": 1,
+                "1620": 0,
                 "11310540": 0
               },
               "set_false": {
                 "1628": 1,
-                "1620": 0,
                 "11310540": 1
               },
               "always_clear_traps": [],
@@ -3181,12 +3255,11 @@
             "forgiven_awaiting_nito": {
               "set_true": {
                 "1628": 0,
-                "1620": 1,
+                "1620": 0,
                 "11310540": 0
               },
               "set_false": {
                 "1628": 1,
-                "1620": 0,
                 "11310540": 1
               },
               "always_clear_traps": [],
@@ -3205,12 +3278,11 @@
             "firelink_merchant": {
               "set_true": {
                 "1628": 0,
-                "1620": 1,
+                "1620": 0,
                 "11020544": 0
               },
               "set_false": {
                 "1628": 1,
-                "1620": 0,
                 "11020544": 1
               },
               "always_clear_traps": [],
@@ -3882,10 +3954,13 @@
         1090,
         1109
       ],
+      "transition_traps_always_clear": [
+        11700592
+      ],
       "status_axes": {
         "alive": {
           "per_stage": {
-            "m10_02": {
+            "caged_in_sens_fortress": {
               "set_true": {
                 "1097": 0,
                 "1090": 1
@@ -3893,6 +3968,29 @@
               "set_false": {
                 "1097": 1,
                 "1090": 0
+              },
+              "always_clear_traps": [
+                11500520
+              ],
+              "chr_bit": {
+                "map": "m15_00",
+                "msb_index": 0
+              },
+              "verified": true,
+              "detect_true": {
+                "1097": 0
+              },
+              "detect_false": {
+                "1097": 1
+              }
+            },
+            "firelink_merchant": {
+              "set_true": {
+                "1097": 0,
+                "1090": 0
+              },
+              "set_false": {
+                "1097": 1
               },
               "always_clear_traps": [
                 11020530
@@ -3901,27 +3999,123 @@
                 "map": "m10_02",
                 "msb_index": 1
               },
-              "verified": true
+              "verified": true,
+              "detect_true": {
+                "1097": 0
+              },
+              "detect_false": {
+                "1097": 1
+              }
             },
-            "m17_00": {
+            "caged_in_archives": {
               "set_true": {
                 "1097": 0,
-                "1090": 1
-              },
-              "set_false": {
-                "1097": 1,
                 "1090": 0
               },
+              "set_false": {
+                "1097": 1
+              },
               "always_clear_traps": [
-                11700521
+                11700520
               ],
-              "chr_map": "m17_00",
-              "verified": true
+              "chr_bit": {
+                "map": "m17_00",
+                "msb_index": 0
+              },
+              "verified": false,
+              "detect_true": {
+                "1097": 0
+              },
+              "detect_false": {
+                "1097": 1
+              }
+            },
+            "archives_library": {
+              "set_true": {
+                "1097": 0,
+                "1090": 0
+              },
+              "set_false": {
+                "1097": 1
+              },
+              "always_clear_traps": [
+                11700520
+              ],
+              "chr_bit": {
+                "map": "m17_00",
+                "msb_index": 0
+              },
+              "verified": true,
+              "detect_true": {
+                "1097": 0
+              },
+              "detect_false": {
+                "1097": 1
+              }
+            },
+            "hollow_at_seath_arena": {
+              "set_true": {
+                "1097": 0,
+                "1090": 0
+              },
+              "set_false": {
+                "1097": 1
+              },
+              "always_clear_traps": [
+                11700533
+              ],
+              "chr_bit": {
+                "map": "m17_00",
+                "msb_index": 4
+              },
+              "verified": true,
+              "detect_true": {
+                "1097": 0
+              },
+              "detect_false": {
+                "1097": 1
+              }
             }
           }
         },
         "hostile": {
           "per_stage": {
+            "caged_in_sens_fortress": {
+              "set_true": {
+                "1096": 1,
+                "11500510": 1
+              },
+              "set_false": {
+                "1096": 0,
+                "11500510": 0
+              },
+              "always_clear_traps": [],
+              "verified": true
+            },
+            "firelink_merchant": {
+              "set_true": {
+                "1096": 1,
+                "11020510": 1
+              },
+              "set_false": {
+                "1096": 0,
+                "11020510": 0
+              },
+              "always_clear_traps": [],
+              "verified": true
+            },
+            "archives_library": {
+              "set_true": {
+                "1096": 1,
+                "11700510": 1
+              },
+              "set_false": {
+                "1096": 0,
+                "11700510": 0
+              },
+              "always_clear_traps": [],
+              "verified": true
+            },
             "default": {
               "set_true": {
                 "1096": 1
@@ -3933,35 +4127,38 @@
               "verified": true
             }
           }
-        },
-        "hollow": {
-          "per_stage": {
-            "default": {
-              "set_true": {
-                "1099": 1
-              },
-              "set_false": {
-                "1099": 0
-              },
-              "always_clear_traps": [],
-              "verified": true
-            }
-          }
         }
       },
       "key_stages": {
-        "m10_02": {
+        "caged_in_sens_fortress": {
           "flags_on": [
-            1092,
-            1093
+            1090
+          ],
+          "verified": true
+        },
+        "firelink_merchant": {
+          "flags_on": [
+            1092
           ],
           "verified": false
         },
-        "m17_00": {
+        "caged_in_archives": {
+          "flags_on": [
+            1092
+          ],
+          "verified": false
+        },
+        "archives_library": {
           "flags_on": [
             1093,
             1094,
             1095
+          ],
+          "verified": false
+        },
+        "hollow_at_seath_arena": {
+          "flags_on": [
+            1099
           ],
           "verified": false
         }

@@ -144,7 +144,35 @@ namespace DSRSave.Editors.NpcStateMachine
                 SetFlags(fa, c, axisCfg.AlwaysClearTraps, 0);
 
             if (axisName == "alive")
+            {
                 ApplyChrObjBits(p1, c.GetRawData(), axisCfg, targetTrue);
+                if (targetTrue)
+                    SweepSiblingChrBitsAlive(p1, c.GetRawData(), npc);
+            }
+        }
+
+        /// <summary>Revive-only safety net for multi-placement NPCs that can end up with a
+        /// STALE duplicate body left over from a native engine race (e.g. trusty_patches +
+        /// Rhea's flag 1173, see project memory) -- if the player killed one of the two
+        /// simultaneously-visible copies, only ITS OWN ChrBit gets forced-dead by the native
+        /// kill; a plain revive only clears the ChrBit for whichever single stage flags
+        /// currently point to, leaving the OTHER placement's ChrBit stuck forced-dead. This
+        /// sweeps EVERY ChrBit listed across all of this NPC's alive.PerStage entries to
+        /// "not forced-dead" on every revive, regardless of which one is the currently-active
+        /// stage. Safe and NOT the reverted "enforce_sibling_exclusivity" idea: this only ever
+        /// CLEARS ChrBit (never forces one on), so it can't fake-kill a placement.</summary>
+        private void SweepSiblingChrBitsAlive(int p1, byte[] buf, NpcEntry npc)
+        {
+            if (npc.StatusAxes == null || !npc.StatusAxes.TryGetValue("alive", out var axis)) return;
+            var chrBlob = new ChrBlob(Schema, p1, buf);
+            var seen = new HashSet<(string, int)>();
+            foreach (var cfg in axis.PerStage.Values)
+            {
+                if (cfg.ChrBit == null) continue;
+                var key = (cfg.ChrBit.Map, cfg.ChrBit.MsbIndex);
+                if (!seen.Add(key)) continue;
+                chrBlob.SetBits(cfg.ChrBit.Map, new[] { cfg.ChrBit.MsbIndex }, 0);
+            }
         }
 
         /// <summary>Some NPCs' native death-watcher wipes their WHOLE PersonalFlagRange on
@@ -519,7 +547,11 @@ namespace DSRSave.Editors.NpcStateMachine
             }
 
             if (axisName == "alive")
+            {
                 ApplyChrObjBits(p1, c.GetRawData(), axisCfg, targetTrue);
+                if (targetTrue)
+                    SweepSiblingChrBitsAlive(p1, c.GetRawData(), npc);
+            }
         }
     }
 }

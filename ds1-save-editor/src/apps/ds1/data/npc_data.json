@@ -175,6 +175,11 @@
           "reverse": true
         },
         {
+          "offset": "0xF2",
+          "bit": 1,
+          "reverse": false
+        },
+        {
           "offset": "0x4695",
           "bit": 5,
           "reverse": true

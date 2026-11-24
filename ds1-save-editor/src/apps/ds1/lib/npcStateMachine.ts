@@ -353,7 +353,37 @@ export class NpcStateMachineEngine {
     this.setFlags(fa, p1, c, toSet);
     if (axisCfg.always_clear_traps?.length) this.setFlagIds(fa, c, axisCfg.always_clear_traps, 0);
 
-    if (axisName === 'alive') this.applyChrObjBits(p1, c, axisCfg, targetTrue);
+    if (axisName === 'alive') {
+      this.applyChrObjBits(p1, c, axisCfg, targetTrue);
+      if (targetTrue) this.sweepSiblingChrBitsAlive(p1, c, npc);
+    }
+  }
+
+  /** Revive-only safety net for multi-placement NPCs that can end up with a
+   * STALE duplicate body left over from a native engine race (e.g.
+   * trusty_patches + Rhea's flag 1173, see project memory) -- if the player
+   * killed one of the two simultaneously-visible copies, only ITS OWN chr_bit
+   * gets forced-dead by the native kill; a plain revive only clears the
+   * chr_bit for whichever single stage flags currently point to, leaving the
+   * OTHER placement's chr_bit stuck forced-dead. This sweeps EVERY chr_bit
+   * listed across all of this NPC's alive.per_stage entries to
+   * "not forced-dead" on every revive, regardless of which one is the
+   * currently-active stage. Safe and NOT the reverted
+   * "enforce_sibling_exclusivity" idea: this only ever CLEARS chr_bit (never
+   * forces one on), so it can't fake-kill a placement the way that did. */
+  private sweepSiblingChrBitsAlive(p1: number, c: Character, npc: NpcEntry): void {
+    const perStage = npc.status_axes?.['alive']?.per_stage;
+    if (!perStage) return;
+    const chrBlob = new ChrBlob(this.schema, p1, c);
+    const seen = new Set<string>();
+    for (const cfg of Object.values(perStage)) {
+      const cb = cfg.chr_bit;
+      if (!cb) continue;
+      const key = `${cb.map}:${cb.msb_index}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      chrBlob.setBits(cb.map, [cb.msb_index], 0);
+    }
   }
 
   /** Some NPCs' native death-watcher wipes their WHOLE personal_flag_range on
@@ -598,6 +628,9 @@ export class NpcStateMachineEngine {
     const toSet = targetTrue ? axisCfg.set_true : axisCfg.set_false;
     this.setFlags(fa, p1, character, toSet);
     if (axisCfg.always_clear_traps?.length) this.setFlagIds(fa, character, axisCfg.always_clear_traps, 0);
-    if (axisName === 'alive') this.applyChrObjBits(p1, character, axisCfg, targetTrue);
+    if (axisName === 'alive') {
+      this.applyChrObjBits(p1, character, axisCfg, targetTrue);
+      if (targetTrue) this.sweepSiblingChrBitsAlive(p1, character, npc);
+    }
   }
 }
