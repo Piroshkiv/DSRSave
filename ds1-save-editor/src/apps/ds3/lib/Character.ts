@@ -36,8 +36,79 @@ import {
   FACE_AGE_NAMES,
   FACE_PUPIL_ID_OFFSETS,
   FACE_PUPIL_COLOR_OFFSETS,
+  STAT_ORDER,
+  RESIST_OFFSET,
+  RESIST_COUNT,
+  RESIST_SLOT_TO_TYPE,
+  RESIST_TYPE_STAT,
+  EQUIP_ACTIVE_LEFT_OFFSET,
+  EQUIP_ACTIVE_RIGHT_OFFSET,
+  EQUIP_WEAPONS_OFFSET,
+  EQUIP_WEAPON_SLOTS_PER_HAND,
+  EQUIP_ARMOR_OFFSET,
+  EQUIP_ARMOR_COUNT,
+  EQUIP_RINGS_OFFSET,
+  EQUIP_RING_COUNT,
+  EFFECTIVE_STAT_CAP,
+  VITAL_CURRENT_OFFSETS,
+  VITAL_MAX_OFFSETS,
+  VITAL_BASE_OFFSETS,
+  EMBER_OFFSET,
+  EMBER_HP_RATE,
+  EQUIP_INDEX_OFFSET,
+  EQUIP_INDEX_FIRST_ARMOR,
+  EQUIP_INDEX_BIAS,
+  INVENTORY_RECORD_SIZE,
+  ITEM_CATEGORY_ARMOR,
+  GA_TABLE_OFFSET,
+  GA_TABLE_ENTRIES,
+  DURABILITY_AT_RISK_RATIO,
+  DURABILITY_SCALE_AT_RISK,
+  DURABILITY_SCALE_BROKEN,
 } from './constants';
 import { findSteamIdOffset } from './offsetPatterns';
+import {
+  RESIST_GRAPH_STAT,
+  RESIST_GRAPH_STAT_SUM,
+  PROTECTOR_RESIST,
+  RING_RESIST_ADD,
+  RING_STAT_BONUS,
+  WEAPON_RESIST_ADD,
+  RING_VITAL_RATE,
+  PROTECTOR_MAX_DURABILITY,
+  type CalcCorrectGraph,
+} from './resistData';
+
+/**
+ * Evaluate a CalcCorrectGraph row the way the game does (FUN_1406425e0).
+ *
+ * The game works in 32-bit floats and truncates the result later, so every
+ * intermediate is rounded with Math.fround — at a stage boundary a double would
+ * otherwise land one integer away from the game.
+ */
+function evalCalcCorrectGraph(graph: CalcCorrectGraph, input: number): number {
+  const { stage, grow, adj } = graph;
+  const f = Math.fround;
+  let x = f(input);
+  if (stage[4] <= x) x = f(stage[4]);
+  if (x <= 0) return f(grow[0]);
+
+  let i = 0;
+  while (i < 3 && x > stage[i + 1]) i++;
+
+  const lo = f(stage[i]);
+  const width = f(f(stage[i + 1]) - lo);
+  const from = f(grow[i]);
+  const to = f(grow[i + 1]);
+  const exponent = f(adj[i]);
+
+  const ratio = exponent < 0
+    ? f(1 - f(Math.pow(f(f(width - f(x - lo)) / width), -exponent)))
+    : f(Math.pow(f(f(x - lo) / width), exponent));
+  const value = f(f(ratio * f(to - from)) + from);
+
+  return Math.max(Math.min(from, to), Math.min(value, Math.max(from, to)));
+}
 
 /**
  * Represents a DS3 character save data
@@ -362,16 +433,23 @@ export class DS3Character {
     const max = MAX_VALUES[maxKey] as number || 99;
     value = Math.max(0, Math.min(max, value));
     const offset = this.getOffset(offsetKey as keyof typeof RELATIVE_OFFSETS);
+
     this.data[offset] = value & 0xFF;
 
+    // Every stat feeds the resistance maxima (through the stat sum), so the
+    // gauges are refilled to the new maxima after any of them changes.
+    this.resetResistances();
+
+    // Base HP/FP/Stamina follow the effective stat, ring bonuses included: a
+    // character with Prisoner's Chain on and 33 VIG stores the HP of 38 VIG.
     if (statName === 'VIG') {
-      const hp = VIGOR_TO_HP[value];
+      const hp = VIGOR_TO_HP[this.getEffectiveStat('VIG')];
       if (typeof hp === 'number') this.hp = hp;
     } else if (statName === 'ATN') {
-      const fp = ATTUNEMENT_TO_FP[value];
+      const fp = ATTUNEMENT_TO_FP[this.getEffectiveStat('ATN')];
       if (typeof fp === 'number') this.fp = fp;
     } else if (statName === 'END') {
-      const stamina = ENDURANCE_TO_STAMINA[value];
+      const stamina = ENDURANCE_TO_STAMINA[this.getEffectiveStat('END')];
       if (typeof stamina === 'number') this.stamina = stamina;
     }
   }
@@ -401,6 +479,7 @@ export class DS3Character {
     this.data[offset + 1] = (value >> 8) & 0xFF;
     this.data[offset + 2] = (value >> 16) & 0xFF;
     this.data[offset + 3] = (value >> 24) & 0xFF;
+    this.syncVital(0);
   }
 
   /**
@@ -427,6 +506,7 @@ export class DS3Character {
     this.data[offset + 1] = (value >> 8) & 0xFF;
     this.data[offset + 2] = (value >> 16) & 0xFF;
     this.data[offset + 3] = (value >> 24) & 0xFF;
+    this.syncVital(1);
   }
 
   /**
@@ -453,6 +533,258 @@ export class DS3Character {
     this.data[offset + 1] = (value >> 8) & 0xFF;
     this.data[offset + 2] = (value >> 16) & 0xFF;
     this.data[offset + 3] = (value >> 24) & 0xFF;
+    this.syncVital(2);
+  }
+
+  /**
+   * The maximum the game derives from a base HP / FP / stamina value
+   * (`vital` 0 / 1 / 2), or null when the slot can't be read:
+   *
+   *   max = trunc(base x ring multipliers x 1.3 if embered, HP only)
+   *
+   * Ring multipliers are the direct ones (Life Ring, Ring of Favor, Dusk Crown
+   * Ring) — a different mechanism from a stat bonus, which is already inside
+   * the base value. Reproduced the stored maximum on 41 of 41 characters.
+   */
+  computeVitalMax(vital: 0 | 1 | 2): number | null {
+    const baseAt = this.patternRelative(VITAL_BASE_OFFSETS[vital], 4);
+    const emberAt = this.patternRelative(EMBER_OFFSET, 1);
+    if (baseAt === -1 || emberAt === -1) return null;
+
+    const f = Math.fround;
+    let value = f(this.readU32(baseAt));
+    let rate = f(1);
+    for (const id of this.readEquipIds(EQUIP_RINGS_OFFSET, EQUIP_RING_COUNT)) {
+      const rates = RING_VITAL_RATE[id];
+      if (rates) rate = f(rate * f(rates[vital]));
+    }
+    value = f(value * rate);
+    if (vital === 0 && this.data[emberAt] !== 0) value = f(value * f(EMBER_HP_RATE));
+    return Math.trunc(value);
+  }
+
+  /**
+   * Bring the stored maximum and current value of one vital in line with its
+   * base value. The slot keeps three numbers per vital — current, maximum,
+   * base — and the editor used to write only the base, leaving the other two
+   * for the game to repair on load. A bar that was full stays full; a partly
+   * used one is only capped.
+   */
+  private syncVital(vital: 0 | 1 | 2): void {
+    const max = this.computeVitalMax(vital);
+    const maxAt = this.patternRelative(VITAL_MAX_OFFSETS[vital], 4);
+    const currentAt = this.patternRelative(VITAL_CURRENT_OFFSETS[vital], 4);
+    if (max === null || maxAt === -1 || currentAt === -1) return;
+
+    const oldMax = this.readU32(maxAt);
+    const current = this.readU32(currentAt);
+    this.writeU32(maxAt, max);
+    if (current === oldMax || current > max) this.writeU32(currentAt, max);
+  }
+
+  // ===== STATUS RESISTANCES =====
+
+  /** Absolute offset of a field that sits `relative` bytes from the pattern, or -1. */
+  private patternRelative(relative: number, size: number): number {
+    if (this.isEmpty) return -1;
+    try {
+      this.ensurePatternFound();
+    } catch {
+      return -1;
+    }
+    const offset = this.patternOffset! + relative;
+    return offset >= 0 && offset + size <= this.data.length ? offset : -1;
+  }
+
+  private readU32(offset: number): number {
+    return (
+      this.data[offset] |
+      (this.data[offset + 1] << 8) |
+      (this.data[offset + 2] << 16) |
+      (this.data[offset + 3] << 24)
+    ) >>> 0;
+  }
+
+  private writeU32(offset: number, value: number): void {
+    this.data[offset] = value & 0xFF;
+    this.data[offset + 1] = (value >>> 8) & 0xFF;
+    this.data[offset + 2] = (value >>> 16) & 0xFF;
+    this.data[offset + 3] = (value >>> 24) & 0xFF;
+  }
+
+  /** `count` consecutive u32 at a pattern-relative offset; empty when out of range. */
+  private readEquipIds(relative: number, count: number): number[] {
+    const base = this.patternRelative(relative, count * 4);
+    if (base === -1) return [];
+    return Array.from({ length: count }, (_, i) => this.readU32(base + i * 4));
+  }
+
+  /**
+   * A stat as the game uses it for derived values: the levelled value plus what
+   * the equipped rings add (Prisoner's Chain, Knight's Ring, ...), capped at 99.
+   * The save holds only the levelled value; the game rebuilds this one at
+   * PlayerGameData+0x200 on load.
+   */
+  getEffectiveStat(statName: string): number {
+    const index = STAT_ORDER.indexOf(statName);
+    let value = this.getStat(statName);
+    if (index === -1) return value;
+    for (const id of this.readEquipIds(EQUIP_RINGS_OFFSET, EQUIP_RING_COUNT)) {
+      const bonus = RING_STAT_BONUS[id];
+      if (bonus) value += bonus[index];
+    }
+    return Math.min(EFFECTIVE_STAT_CAP, value);
+  }
+
+  /**
+   * The five status-buildup gauges as stored, in save order (see RESIST_NAMES):
+   * poison, bleed, toxic, curse, frost. Empty when the slot has none.
+   *
+   * Each is what is left of the bar — `max` when nothing has built up.
+   */
+  getResistances(): number[] {
+    const base = this.patternRelative(RESIST_OFFSET, RESIST_COUNT * 4);
+    if (base === -1) return [];
+    return Array.from({ length: RESIST_COUNT }, (_, i) => this.readU32(base + i * 4));
+  }
+
+  /**
+   * The resistance maxima the game derives for this character, in save order,
+   * or null when the slot can't be read.
+   *
+   * This is FUN_1406384a0 with what a save can know:
+   *
+   *   max = trunc(graph12x(governing stat) + graph11x(sum of all nine stats))
+   *       + armor pieces + ring bonuses + held weapon bonus        (at least 1)
+   *
+   * where the stats are the effective ones (raw + ring bonuses, capped at 99).
+   * Matched the game on all 36 full-gauge characters it was checked against.
+   *
+   * Two things a save does not record are left out, and both only ever make the
+   * real maximum *higher* than this one: a buff running at the moment of the
+   * save, and the luck a Hollow-infused weapon grants at 15+ hollowing. Being
+   * low is safe — it reads as a slightly used gauge — while being high would
+   * not be, so the model never guesses upward.
+   */
+  computeMaxResistances(): number[] | null {
+    if (this.patternRelative(RESIST_OFFSET, RESIST_COUNT * 4) === -1) return null;
+
+    const armor = this.readEquipIds(EQUIP_ARMOR_OFFSET, EQUIP_ARMOR_COUNT);
+    const rings = this.readEquipIds(EQUIP_RINGS_OFFSET, EQUIP_RING_COUNT);
+    const weapons = this.readEquipIds(EQUIP_WEAPONS_OFFSET, EQUIP_WEAPON_SLOTS_PER_HAND * 2);
+    const activeSlots = this.readEquipIds(EQUIP_ACTIVE_LEFT_OFFSET, 1)
+      .concat(this.readEquipIds(EQUIP_ACTIVE_RIGHT_OFFSET, 1));
+
+    const flat = [0, 0, 0, 0, 0];
+    const addTuple = (tuple: readonly number[] | undefined, scale = 1) => {
+      if (!tuple) return;
+      for (let t = 0; t < RESIST_COUNT; t++) {
+        flat[t] = Math.fround(flat[t] + Math.fround(tuple[t] * Math.fround(scale)));
+      }
+    };
+
+    // A worn-out piece counts for less: see armorDurabilityScales()
+    const armorScales = this.armorDurabilityScales(armor);
+    armor.forEach((id, slot) => addTuple(PROTECTOR_RESIST[id], armorScales[slot]));
+
+    for (const id of rings) addTuple(RING_RESIST_ADD[id]);
+
+    // Only the weapon actually in each hand counts; the array is L1 R1 L2 R2 L3 R3
+    if (weapons.length > 0 && activeSlots.length === 2) {
+      activeSlots.forEach((slot, hand) => {
+        if (slot >= EQUIP_WEAPON_SLOTS_PER_HAND) return;
+        const id = weapons[slot * 2 + hand];
+        addTuple(WEAPON_RESIST_ADD[id - (id % 100)]);
+      });
+    }
+
+    const stats = STAT_ORDER.map((name) => this.getEffectiveStat(name));
+    const statSum = stats.reduce((a, b) => a + b, 0);
+
+    return RESIST_SLOT_TO_TYPE.map((type) => {
+      const base = Math.trunc(Math.fround(
+        evalCalcCorrectGraph(RESIST_GRAPH_STAT[type], stats[RESIST_TYPE_STAT[type]]) +
+        evalCalcCorrectGraph(RESIST_GRAPH_STAT_SUM[type], statSum)
+      ));
+      // the game adds in float and truncates once; only a worn piece makes
+      // the sum fractional
+      return Math.max(1, Math.trunc(Math.fround(base + flat[type])));
+    });
+  }
+
+  /**
+   * How much each equipped armor piece counts, by durability (FUN_140633b20):
+   *
+   *   durability / max  > 0.3  -> 1.0
+   *                    <= 0.3  -> 0.7   ("at risk")
+   *                    <= 0    -> 0.5   (broken)
+   *
+   * The durability is the item's own, three hops away: the equip block holds an
+   * inventory index, the inventory record holds the item handle, and the GA
+   * item table holds the durability under that handle. Any hop that does not
+   * check out — no index, a record for a different item, no such handle —
+   * leaves the piece at 1.0, which is where every piece in the reference saves
+   * sits anyway.
+   */
+  private armorDurabilityScales(armor: number[]): number[] {
+    const scales = armor.map(() => 1);
+    const indexBase = this.patternRelative(
+      EQUIP_INDEX_OFFSET + EQUIP_INDEX_FIRST_ARMOR * 4, EQUIP_ARMOR_COUNT * 4);
+    if (indexBase === -1) return scales;
+    const inventoryStart = this.findInventoryStartOffset();
+
+    const handles = new Map<number, number>();   // item handle -> armor slot
+    armor.forEach((id, slot) => {
+      if (!PROTECTOR_MAX_DURABILITY[id]) return;
+      const index = this.readU32(indexBase + slot * 4) | 0;
+      if (index < EQUIP_INDEX_BIAS) return;
+      const record = inventoryStart + (index - EQUIP_INDEX_BIAS) * INVENTORY_RECORD_SIZE;
+      if (record < 0 || record + INVENTORY_RECORD_SIZE > this.data.length) return;
+      // record: u32 handle, u32 item id with the category in the top nibble
+      if (this.readU32(record + 4) !== ((ITEM_CATEGORY_ARMOR | id) >>> 0)) return;
+      handles.set(this.readU32(record), slot);
+    });
+    if (handles.size === 0) return scales;
+
+    // Walk the GA item table: 8-byte entries, 60 for weapons and armor, which
+    // carry handle, item id and durability in their first twelve bytes
+    let offset = GA_TABLE_OFFSET;
+    for (let i = 0; i < GA_TABLE_ENTRIES && offset + 12 <= this.data.length; i++) {
+      const kind = this.data[offset + 3];
+      const large = kind === 0x80 || kind === 0x90 || kind === 0xA0 || kind === 0xB0;
+      if (large) {
+        const slot = handles.get(this.readU32(offset));
+        if (slot !== undefined) {
+          const ratio = Math.fround(this.readU32(offset + 8) / PROTECTOR_MAX_DURABILITY[armor[slot]]);
+          if (ratio <= Math.fround(DURABILITY_AT_RISK_RATIO)) {
+            scales[slot] = ratio <= 0 ? DURABILITY_SCALE_BROKEN : DURABILITY_SCALE_AT_RISK;
+          }
+        }
+      }
+      offset += large ? 60 : 8;
+    }
+    return scales;
+  }
+
+  /**
+   * Set all five gauges to full: `current = max`, no buildup.
+   *
+   * Called after every stat edit. The game itself is subtler when a maximum
+   * moves (FUN_1409e75b0 keeps the buildup of a partly used gauge), but nothing
+   * is lost by dropping that: buildup drains on its own within seconds of play,
+   * and "full" is the state almost every save is in. What matters is that the
+   * stored value never exceeds the maximum, which is the one thing the game
+   * cannot produce.
+   *
+   * "Full" has no sentinel — it is the maximum itself — so this still needs
+   * computeMaxResistances(). When that can't run, nothing is written and the
+   * slot is left exactly as it was.
+   */
+  resetResistances(): void {
+    const max = this.computeMaxResistances();
+    const base = this.patternRelative(RESIST_OFFSET, RESIST_COUNT * 4);
+    if (!max || base === -1) return;
+    for (let i = 0; i < RESIST_COUNT; i++) this.writeU32(base + i * 4, max[i]);
   }
 
   // ===== SOUL MEMORY (Total Get Soul) =====
@@ -1155,15 +1487,17 @@ export class DS3Character {
    * Update all derived stats (HP, FP, Stamina, Level) based on current stats
    */
   updateDerivedStats(): void {
-    const hp = VIGOR_TO_HP[this.getStat('VIG')];
+    const hp = VIGOR_TO_HP[this.getEffectiveStat('VIG')];
     if (typeof hp === 'number') this.hp = hp;
 
-    const fp = ATTUNEMENT_TO_FP[this.getStat('ATN')];
+    const fp = ATTUNEMENT_TO_FP[this.getEffectiveStat('ATN')];
     if (typeof fp === 'number') this.fp = fp;
 
-    const stamina = ENDURANCE_TO_STAMINA[this.getStat('END')];
+    const stamina = ENDURANCE_TO_STAMINA[this.getEffectiveStat('END')];
     if (typeof stamina === 'number') this.stamina = stamina;
 
     this.level = this.calculateLevel();
+
+    this.resetResistances();
   }
 }

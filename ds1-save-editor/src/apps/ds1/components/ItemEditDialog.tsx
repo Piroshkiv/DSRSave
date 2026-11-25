@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Inventory, ItemInfusion, InventoryItem } from '../lib/Inventory';
 import type { Item } from '../../../shared/items';
 import { NumberInput } from './NumberInput';
+import { ItemIcon } from './ItemIcon';
 import { t } from '../lib/i18n';
 import { useLang } from '../../../core/context/LanguageContext';
 import { applyChineseNames } from '../lib/itemNamesZh';
@@ -33,7 +34,11 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   const [durability, setDurability] = useState<number>(item.durability);
   const [maxUpgrade, setMaxUpgrade] = useState<number>(0);
   const [selectedEstusFlask, setSelectedEstusFlask] = useState<Item | null>(null);
-  const quantityInputRef = useRef<HTMLInputElement>(null);
+  const [boxQuantity, setBoxQuantity] = useState<number>(() => {
+    const itemInfo = item.itemInfo;
+    return itemInfo ? inventory.getStorageQuantityFor(itemInfo) : 0;
+  });
+  const dynamicFieldsRef = useRef<HTMLDivElement>(null);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
 
   const isPyromancyFlame = itemInfo?.name === 'Pyromancy Flame' || itemInfo?.name === 'Pyromancy Flame (Ascended)';
@@ -106,6 +111,11 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
 
       inventory.writeSlot(item.slotIndex, item);
       inventory.syncEquipmentSlots(item.slotIndex);
+
+      if (canStack && itemInfo) {
+        inventory.setStorageQuantity(itemInfo, boxQuantity);
+      }
+
       onItemUpdated();
       onClose();
     } catch (error) {
@@ -145,18 +155,17 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
     };
   }, []);
 
-  // Scroll to quantity field when dialog opens (if quantity field exists)
+  // Scroll the editable fields (quantity, box quantity, infusion, upgrade,
+  // durability...) into view when the dialog opens or the Estus Flask
+  // variant changes what's shown. Scrolls the whole group, not one input.
   useEffect(() => {
-    // Check if quantity field should be visible
-    const shouldHaveQuantity = canStack || (isEstusFlask && (!selectedEstusFlask ? !isEstusFlaskEmpty : !selectedEstusFlask.name?.includes('(empty)')));
-    
-    if (shouldHaveQuantity && quantityInputRef.current) {
-      // Use setTimeout to ensure the DOM is updated
+    if (dynamicFieldsRef.current) {
+      const node = dynamicFieldsRef.current;
       setTimeout(() => {
-        quantityInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 150);
     }
-  }, [canStack, isEstusFlask, isEstusFlaskEmpty, selectedEstusFlask]);
+  }, [selectedEstusFlask]);
 
   // Redirect scroll from overlay to dialog body
   useEffect(() => {
@@ -198,23 +207,27 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
 
   return (
     <div className="dialog-overlay" onClick={onClose}>
-      <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
-        <div className="dialog-header">
+      <div className="item-dialog-content" onClick={(e) => e.stopPropagation()}>
+        <div className="item-dialog-header">
           <h2>{t('editItemTitle', lang)}</h2>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
         </div>
 
-        <div className="dialog-body" ref={dialogBodyRef}>
-          <div className="form-group">
+        <div className="item-dialog-body" ref={dialogBodyRef}>
+          <div className="item-form-group">
             <label>{t('itemName', lang)}</label>
-            <div className="item-name-display">{item.itemName}</div>
+            <div className="item-name-display-compact">
+              <ItemIcon typeNibble={item.itemType} itemId={item.baseItemId} size={36} />
+              {item.itemName}
+            </div>
           </div>
 
+          <div ref={dynamicFieldsRef}>
           {isEstusFlask ? (
             <>
-              <div className="form-group">
+              <div className="item-form-group">
                 <label>{t('estusFlask', lang)}</label>
                 <select
                   value={String(selectedEstusFlask?.id ?? itemInfo?.id ?? '')}
@@ -249,7 +262,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
                   : !isEstusFlaskEmpty;
 
                 return showQuantity ? (
-                  <div className="form-group">
+                  <div className="item-form-group">
                     <label>{t('quantity', lang)} (max: 20)</label>
                     <NumberInput
                       value={quantity}
@@ -264,19 +277,30 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
           ) : (
             <>
               {canStack && (
-                <div className="form-group">
-                  <label>{t('quantity', lang)} (max: {itemInfo.stackMax})</label>
-                  <NumberInput
-                    value={quantity}
-                    onChange={setQuantity}
-                    min={1}
-                    max={itemInfo.stackMax}
-                  />
-                </div>
+                <>
+                  <div className="item-form-group">
+                    <label>{t('quantity', lang)} (max: {itemInfo.stackMax})</label>
+                    <NumberInput
+                      value={quantity}
+                      onChange={setQuantity}
+                      min={1}
+                      max={itemInfo.stackMax}
+                    />
+                  </div>
+                  <div className="item-form-group">
+                    <label>{t('boxQuantity', lang)} (max: {itemInfo.stackMax})</label>
+                    <NumberInput
+                      value={boxQuantity}
+                      onChange={setBoxQuantity}
+                      min={0}
+                      max={itemInfo.stackMax}
+                    />
+                  </div>
+                </>
               )}
 
               {canInfuse && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>{t('infusion', lang).replace(':', '')}</label>
                   <select value={infusion} onChange={(e) => setInfusion(parseInt(e.target.value) as ItemInfusion)}>
                     <option value={ItemInfusion.Standard}>{t('standard', lang)}</option>
@@ -294,7 +318,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
               )}
 
               {canUpgrade && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>{t('upgradeLevel', lang)} (max: +{maxUpgrade})</label>
                   <NumberInput
                     value={upgradeLevel}
@@ -308,7 +332,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
           )}
 
           {hasDurability && (
-            <div className="form-group">
+            <div className="item-form-group">
               <label>{t('durability', lang)}</label>
               <NumberInput
                 value={durability}
@@ -318,13 +342,14 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
               />
             </div>
           )}
+          </div>
 
           <div className="info-text">
             Slot Index: {item.slotIndex}
           </div>
         </div>
 
-        <div className="dialog-footer">
+        <div className="item-dialog-footer">
           <button className="cancel-button" onClick={onClose}>
             Cancel
           </button>

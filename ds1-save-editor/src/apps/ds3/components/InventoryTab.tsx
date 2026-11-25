@@ -234,7 +234,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
 
   return (
     <div className="inventory-tab">
-      <div className="inventory-header">
+      <div className="legacy-inventory-header">
         <button className="create-item-button" onClick={() => setShowCreateDialog(true)}>
           + Create Item
         </button>
@@ -245,7 +245,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
           Clear All
         </button>
 
-        <div className="inventory-search">
+        <div className="legacy-inventory-search">
           <input
             type="text"
             placeholder="Search items..."
@@ -301,7 +301,7 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
         )}
 
         {activeSubTab === 'weapons' && (
-          <div className="weapon-level-display">
+          <div className="legacy-weapon-level-display">
             <label>Weapon Memory:</label>
             <NumberInput
               value={weaponMemory}
@@ -355,8 +355,8 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
                 >
-                <div className="item-row">
-                  <div className="item-info">
+                <div className="legacy-item-row">
+                  <div className="legacy-item-info">
                     <span className="item-name">{formatItemDisplay(item)}</span>
                     <div className="item-details">
                       {showQtyColumn && (

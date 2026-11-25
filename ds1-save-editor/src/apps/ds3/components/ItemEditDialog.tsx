@@ -25,6 +25,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
   const [upgradeLevel, setUpgradeLevel] = useState(item.upgradeLevel);
   const [infusion, setInfusion] = useState<ItemInfusion>(item.infusion);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
+  const dynamicFieldsRef = useRef<HTMLDivElement>(null);
 
   const maxUpgrade = itemInfo?.maxUpgrade ?? 0;
   const canUpgrade = item.collectionType === ItemCollectionType.Weapon && maxUpgrade > 0;
@@ -51,6 +52,16 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
     const orig = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = orig; };
+  }, []);
+
+  // Scroll the editable fields into view on open.
+  useEffect(() => {
+    if (dynamicFieldsRef.current) {
+      const node = dynamicFieldsRef.current;
+      setTimeout(() => {
+        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
   }, []);
 
   // Redirect scroll from overlay to dialog
@@ -86,20 +97,21 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
 
   return (
     <div className="dialog-overlay" onClick={onClose}>
-      <div className="dialog-content" onClick={e => e.stopPropagation()}>
-        <div className="dialog-header">
+      <div className="item-dialog-content" onClick={e => e.stopPropagation()}>
+        <div className="item-dialog-header">
           <h2>Edit Item</h2>
           <button className="close-button" onClick={onClose}>×</button>
         </div>
-        <div className="dialog-body" ref={dialogBodyRef}>
-          <div className="form-group">
+        <div className="item-dialog-body" ref={dialogBodyRef}>
+          <div className="item-form-group">
             <label>Item Name</label>
-            <div className="item-name-display">{item.itemName}</div>
+            <div className="legacy-item-name-display-compact">{item.itemName}</div>
           </div>
 
+          <div ref={dynamicFieldsRef}>
           {canStack && (
             <>
-              <div className="form-group">
+              <div className="item-form-group">
                 <label>Quantity (max: {itemInfo!.stackMax})</label>
                 <NumberInput
                   value={quantity}
@@ -108,7 +120,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
                   max={itemInfo!.stackMax}
                 />
               </div>
-              <div className="form-group">
+              <div className="item-form-group">
                 <label>Box Quantity (max: 600)</label>
                 <NumberInput
                   value={storageQty}
@@ -121,7 +133,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
           )}
 
           {canInfuse && (
-            <div className="form-group">
+            <div className="item-form-group">
               <label>Infusion</label>
               <select value={infusion} onChange={e => setInfusion(parseInt(e.target.value) as ItemInfusion)}>
                 <option value={ItemInfusion.Standard}>Standard</option>
@@ -145,7 +157,7 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
           )}
 
           {canUpgrade && (
-            <div className="form-group">
+            <div className="item-form-group">
               <label>Upgrade Level (max: +{effectiveMaxUpgrade})</label>
               <NumberInput
                 value={upgradeLevel}
@@ -155,8 +167,9 @@ export const ItemEditDialog: React.FC<ItemEditDialogProps> = ({
               />
             </div>
           )}
+          </div>
         </div>
-        <div className="dialog-footer">
+        <div className="item-dialog-footer">
           <button className="cancel-button" onClick={onClose}>Cancel</button>
           <button className="create-button" onClick={handleUpdate}>Update</button>
         </div>

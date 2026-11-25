@@ -27,7 +27,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const [maxUpgrade, setMaxUpgrade] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [targetSlot, setTargetSlot] = useState<number>(0);
-  const quantityInputRef = useRef<HTMLInputElement>(null);
+  const dynamicFieldsRef = useRef<HTMLDivElement>(null);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
 
   // Set default slot on mount
@@ -128,15 +128,18 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     };
   }, []);
 
-  // Scroll to quantity field when item is selected
+  // Scroll the newly-revealed fields (quantity, box quantity, infusion,
+  // upgrade...) into view once an item is selected. Scrolls the whole
+  // group — a single NumberInput isn't a real DOM ref target since
+  // NumberInput is a plain function component, not forwardRef'd.
   useEffect(() => {
-    if (selectedItem && canStack && quantityInputRef.current) {
-      // Use setTimeout to ensure the DOM is updated
+    if (selectedItem && dynamicFieldsRef.current) {
+      const node = dynamicFieldsRef.current;
       setTimeout(() => {
-        quantityInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
-  }, [selectedItem, canStack]);
+  }, [selectedItem]);
 
   // Redirect scroll from overlay to dialog body
   useEffect(() => {
@@ -178,33 +181,33 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
   return (
     <div className="dialog-overlay" onClick={onClose}>
-      <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
-        <div className="dialog-header">
+      <div className="item-dialog-content" onClick={(e) => e.stopPropagation()}>
+        <div className="item-dialog-header">
           <h2>Create Item</h2>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
         </div>
 
-        <div className="dialog-body" ref={dialogBodyRef}>
-          <div className="form-group">
+        <div className="item-dialog-body" ref={dialogBodyRef}>
+          <div className="item-form-group">
             <label>Search Item</label>
             <input
               type="text"
               placeholder="Type to search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
+              className="item-search-input"
             />
           </div>
 
-          <div className="form-group">
+          <div className="item-form-group">
             <label>Select Item</label>
-            <div className="items-select-list">
+            <div className="item-select-list">
               {filteredItems.map((item) => (
                 <div
                   key={item.key}
-                  className={`item-select-option ${selectedItem === item ? 'selected' : ''}`}
+                  className={`legacy-item-select-row ${selectedItem === item ? 'selected' : ''}`}
                   onClick={() => handleItemSelect(item)}
                 >
                   {item.name}
@@ -213,7 +216,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
             </div>
           </div>
 
-          <div className="form-group">
+          <div className="item-form-group">
             <label>Slot Index (0-1999)</label>
             <NumberInput
               value={targetSlot}
@@ -224,10 +227,10 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
           </div>
 
           {selectedItem && (
-            <>
+            <div ref={dynamicFieldsRef}>
               {canStack && (
                 <>
-                  <div className="form-group">
+                  <div className="item-form-group">
                     <label>Quantity (max: {selectedItem.stackMax})</label>
                     <NumberInput
                       value={quantity}
@@ -236,7 +239,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                       max={selectedItem.stackMax}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className="item-form-group">
                     <label>Box Quantity (max: 600)</label>
                     <NumberInput
                       value={storageQty}
@@ -249,7 +252,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               )}
 
               {canInfuse && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>Infusion</label>
                   <select value={infusion} onChange={(e) => setInfusion(parseInt(e.target.value) as ItemInfusion)}>
                     <option value={ItemInfusion.Standard}>Standard</option>
@@ -273,7 +276,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               )}
 
               {canUpgrade && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>Upgrade Level (max: +{maxUpgrade})</label>
                   <NumberInput
                     value={upgradeLevel}
@@ -283,11 +286,11 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                   />
                 </div>
               )}
-            </>
+            </div>
           )}
         </div>
 
-        <div className="dialog-footer">
+        <div className="item-dialog-footer">
           <button className="cancel-button" onClick={onClose}>
             Cancel
           </button>

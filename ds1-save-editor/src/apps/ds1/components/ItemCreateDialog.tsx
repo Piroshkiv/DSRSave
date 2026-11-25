@@ -4,6 +4,7 @@ import { matchesItemSearch, type Item } from '../../../shared/items';
 import { useLang } from '../../../core/context/LanguageContext';
 import { applyChineseNames } from '../lib/itemNamesZh';
 import { NumberInput } from './NumberInput';
+import { ItemIcon } from './ItemIcon';
 import { t } from '../lib/i18n';
 
 interface ItemCreateDialogProps {
@@ -13,6 +14,13 @@ interface ItemCreateDialogProps {
   onItemCreated: (slotIndex: number | null) => void;
   safeMode: boolean;
 }
+
+/** Categories the real Bottomless Box accepts. Key items can't be stored there. */
+const BOX_ELIGIBLE: ItemCollectionType[] = [
+  ItemCollectionType.Weapon,
+  ItemCollectionType.Armor,
+  ItemCollectionType.Ring,
+];
 
 export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   inventory,
@@ -24,12 +32,14 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const [availableItems, setAvailableItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const [boxQuantity, setBoxQuantity] = useState<number>(0);
+  const [destination, setDestination] = useState<'inventory' | 'box'>('inventory');
   const [upgradeLevel, setUpgradeLevel] = useState<number>(0);
   const [infusion, setInfusion] = useState<ItemInfusion>(ItemInfusion.Standard);
   const [maxUpgrade, setMaxUpgrade] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [durability, setDurability] = useState<number>(0);
-  const quantityInputRef = useRef<HTMLInputElement>(null);
+  const dynamicFieldsRef = useRef<HTMLDivElement>(null);
   const dialogBodyRef = useRef<HTMLDivElement>(null);
   const { lang } = useLang();
 
@@ -98,6 +108,8 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     } else {
       setQuantity(Math.min(1, item.stackMax));
     }
+    setBoxQuantity(0);
+    setDestination('inventory');
     setUpgradeLevel(0);
     setInfusion(ItemInfusion.Standard);
     if (item.durability !== undefined) {
@@ -109,6 +121,23 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
     if (!selectedItem) return;
 
     try {
+      // Unique items (weapon/armor/ring) go to exactly one place — ask which.
+      if (canChooseDestination && destination === 'box') {
+        const boxSlot = inventory.addStorageItem(selectedItem, 1, upgradeLevel, infusion);
+        if (boxSlot === null) {
+          alert('The Bottomless Box is full.');
+          return;
+        }
+        if (hasDurability) {
+          const boxItem = inventory.readRepositorySlot(boxSlot);
+          boxItem.durability = durability;
+          inventory.writeRepositorySlot(boxSlot, boxItem);
+        }
+        onItemCreated(null);
+        onClose();
+        return;
+      }
+
       // For empty Estus Flask, quantity must be 0
       const finalQuantity = isEstusFlaskEmpty ? 0 : quantity;
       const slotIndex = inventory.addItem(selectedItem, finalQuantity, upgradeLevel, infusion);
@@ -124,13 +153,16 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
           } else if (baseId === 1332000) { // Pyromancy Flame (Ascended)
             item.itemId = 1332000 + upgradeLevel * 100;
           }
-          inventory.writeSlot(slotIndex, item);
         }
 
-        // Update durability if applicable
         if (hasDurability) {
           item.durability = durability;
-          inventory.writeSlot(slotIndex, item);
+        }
+
+        inventory.writeSlot(slotIndex, item);
+
+        if (canStack && boxQuantity > 0) {
+          inventory.setStorageQuantity(selectedItem, boxQuantity);
         }
       }
 
@@ -149,6 +181,10 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   const canStack = selectedItem && selectedItem.stackMax > 1;
   const hasDurability = selectedItem?.durability !== undefined &&
     (collectionType === ItemCollectionType.Weapon || collectionType === ItemCollectionType.Armor);
+  // Stackable goods live in the inventory and the box at the same time (two
+  // independent quantities); unique gear is in exactly one or the other.
+  const canChooseDestination = selectedItem !== null && BOX_ELIGIBLE.includes(collectionType) && !canStack;
+  const goesToBox = canChooseDestination && destination === 'box';
 
   const filteredItems = availableItems.filter((item) =>
     matchesItemSearch(item.displayName || item.name, searchQuery) ||
@@ -159,21 +195,24 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    
+
     return () => {
       document.body.style.overflow = originalOverflow;
     };
   }, []);
 
-  // Scroll to quantity field when item is selected
+  // Scroll the newly-revealed fields (quantity, destination, infusion,
+  // upgrade, durability...) into view once an item is selected. Scrolls the
+  // whole group rather than a single input, so it works regardless of which
+  // subset of fields a given item ends up showing.
   useEffect(() => {
-    if (selectedItem && (canStack || isEstusFlask) && quantityInputRef.current) {
-      // Use setTimeout to ensure the DOM is updated
+    if (selectedItem && dynamicFieldsRef.current) {
+      const node = dynamicFieldsRef.current;
       setTimeout(() => {
-        quantityInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        node.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     }
-  }, [selectedItem, canStack, isEstusFlask]);
+  }, [selectedItem]);
 
   // Redirect scroll from overlay to dialog body
   useEffect(() => {
@@ -184,9 +223,9 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
     const handleWheel = (e: Event) => {
       if (!(e instanceof WheelEvent)) return;
-      
+
       const target = e.target as HTMLElement;
-      
+
       // If scrolling is inside dialog content, allow it
       if (dialogContent.contains(target)) {
         // Don't prevent default - let dialog scroll normally
@@ -196,7 +235,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
       // If scrolling is on overlay (empty space), redirect it to dialog body
       e.preventDefault();
       e.stopPropagation();
-      
+
       // Scroll the dialog body instead
       dialogBody.scrollBy({
         top: e.deltaY,
@@ -215,35 +254,36 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
 
   return (
     <div className="dialog-overlay" onClick={onClose}>
-      <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
-        <div className="dialog-header">
+      <div className="item-dialog-content" onClick={(e) => e.stopPropagation()}>
+        <div className="item-dialog-header">
           <h2>{t('createItemTitle', lang)}</h2>
           <button className="close-button" onClick={onClose}>
             ×
           </button>
         </div>
 
-        <div className="dialog-body" ref={dialogBodyRef}>
-          <div className="form-group">
+        <div className="item-dialog-body" ref={dialogBodyRef}>
+          <div className="item-form-group">
             <label>{t('searchItem', lang)}</label>
             <input
               type="text"
               placeholder={t('typeToSearch', lang)}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="search-input"
+              className="item-search-input"
             />
           </div>
 
-          <div className="form-group">
+          <div className="item-form-group">
             <label>{t('selectItem', lang)}</label>
-            <div className="items-select-list">
+            <div className="item-select-list">
               {filteredItems.map((item) => (
                 <div
                   key={item.key}
-                  className={`item-select-option ${selectedItem === item ? 'selected' : ''}`}
+                  className={`item-select-row ${selectedItem === item ? 'selected' : ''}`}
                   onClick={() => handleItemSelect(item)}
                 >
+                  <ItemIcon typeNibble={item.typeNibble} itemId={item.id} size={36} />
                   {item.displayName}
                 </div>
               ))}
@@ -251,9 +291,31 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
           </div>
 
           {selectedItem && (
-            <>
+            <div ref={dynamicFieldsRef}>
+              {canChooseDestination && (
+                <div className="item-form-group">
+                  <label>{t('destination', lang)}</label>
+                  <div className="destination-toggle">
+                    <button
+                      type="button"
+                      className={`destination-option ${destination === 'inventory' ? 'selected' : ''}`}
+                      onClick={() => setDestination('inventory')}
+                    >
+                      {t('destInventory', lang)}
+                    </button>
+                    <button
+                      type="button"
+                      className={`destination-option ${destination === 'box' ? 'selected' : ''}`}
+                      onClick={() => setDestination('box')}
+                    >
+                      {t('destBox', lang)}
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {(canStack || isEstusFlask) && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>
                     {isEstusFlask
                       ? `${t('quantity', lang)} ${isEstusFlaskEmpty ? `(${t('estusFlaskEmpty', lang)})` : '(max: 20)'}`
@@ -276,8 +338,20 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                 </div>
               )}
 
+              {canStack && (
+                <div className="item-form-group">
+                  <label>{t('boxQuantity', lang)} (max: {selectedItem.stackMax})</label>
+                  <NumberInput
+                    value={boxQuantity}
+                    onChange={setBoxQuantity}
+                    min={0}
+                    max={selectedItem.stackMax}
+                  />
+                </div>
+              )}
+
               {canInfuse && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>{t('infusion', lang).replace(':', '')}</label>
                   <select value={infusion} onChange={(e) => setInfusion(parseInt(e.target.value) as ItemInfusion)}>
                     <option value={ItemInfusion.Standard}>{t('standard', lang)}</option>
@@ -295,7 +369,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               )}
 
               {canUpgrade && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>{t('upgradeLevel', lang)} (max: +{maxUpgrade})</label>
                   <NumberInput
                     value={upgradeLevel}
@@ -307,7 +381,7 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
               )}
 
               {hasDurability && (
-                <div className="form-group">
+                <div className="item-form-group">
                   <label>{t('durability', lang)}</label>
                   <NumberInput
                     value={durability}
@@ -317,11 +391,15 @@ export const ItemCreateDialog: React.FC<ItemCreateDialogProps> = ({
                   />
                 </div>
               )}
-            </>
+
+              {goesToBox && (
+                <p className="info-text">{t('destBox', lang)}: {selectedItem.displayName}</p>
+              )}
+            </div>
           )}
         </div>
 
-        <div className="dialog-footer">
+        <div className="item-dialog-footer">
           <button className="cancel-button" onClick={onClose}>
             {t('cancel', lang)}
           </button>

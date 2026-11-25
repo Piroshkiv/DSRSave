@@ -1,0 +1,1608 @@
+{
+  "npcs": [
+    {
+      "name": "Gwyn, Lord of Cinder",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Seath the Scaleless",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Four Kings",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Ornstein and Smough",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Iron Golem",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 4,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Bed of Chaos",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Chaos Witch Quelaag",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x55",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Gravelord Nito",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x56",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Pinwheel",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x56",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Great Grey Wolf Sif",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x56",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Crossbreed Priscilla",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x56",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Bell Gargoyles",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x56",
+            "bit": 4,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Gaping Dragon",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x56",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Boss — no aggro/quest-stage concept."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Manus, Father of the Abyss",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x54",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "DLC companion field",
+          "death": {
+            "offset": "0x2356",
+            "bit": 5,
+            "status": "candidate"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable"
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Asylum Demon",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "Peculiar Doll revisit kill",
+          "death": {
+            "offset": "0x54",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Prologue weaponless encounter (entity 1810810) has no persistent flag found — treat separately, not shown here (OPEN)."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Taurus Demon",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0xFC6",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable"
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Capra Demon",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0xFC6",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable"
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Centipede Demon",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x3CC6",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable"
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Demon Firesage",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x3C83",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Shipped value in the original editor (0x3F83 bit5) was a confirmed bug; 0x3C83 bit5 verified in-game 2026-11-07."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Moonlight Butterfly",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x1EC6",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Shipped value was once wrong (0x21C6, CT transcription error); already corrected."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Ceaseless Discharge",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x3CC6",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Many extra world-state/lava bits exist in the old shipped blob; only 0x3CC6 bit3 is the real kill bit."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Knight Artorias",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0x2356",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No DLC-hub MSB placement — spawned dynamically, encounter map m12_01_00_00."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Black Dragon Kalameet",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "Killed",
+          "death": {
+            "offset": "0x2356",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Enabled (huntable, via Hawkeye Gough dialogue)",
+          "death": {
+            "offset": "0x239C",
+            "bit": 7,
+            "status": "candidate"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "\"Enabled\" meaning (huntable vs shot-down) not confirmed in-game — verify before relying on it."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Dark Sun Gwyndolin",
+      "category": "boss",
+      "positions": [
+        {
+          "label": "Combat form (entity 1510650)",
+          "death": {
+            "offset": "0xF0",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Disguise form / \"Gwynevere\" (entity 1510600)",
+          "death": {
+            "offset": "0xB2",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Death-watcher re-arm gate (flag 1240, set unconditionally every map load by event 50 and never cleared — leaving it at 1 likely permanently skips re-arming his death watcher)",
+          "death": {
+            "offset": "0xF0",
+            "bit": 7,
+            "status": "candidate"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable"
+      },
+      "questStages": [],
+      "dependencies": [
+        "Shares save-state with the \"Gwynevere (Princess of Sunlight)\" entry — same underlying entity, two name-perspectives.",
+        "Darkmoon Knightess's aggro reads an OR of this NPC's own flags (1232/1241/1242) — see her entry.",
+        "Domhnall's armor-set shop unlocks (0x58E7/0x58E8/0x58E9/0x58F2) reset to locked when this NPC's combat form dies.",
+        "DO NOT clear 0x46C6 bit3 (flag 11510900) — confirmed (2026-11-08, live test + EMEVD trace): map init event 0 in m15_01_00_00 re-runs the ENTIRE kill event (cutscene + teleport) whenever this flag is 0. It is the kill event's mandatory re-entry guard, not a cosmetic corridor flag. Leave it exactly as found.",
+        "0x5F bit6 (present in the OLD shipped npc_data.json/NPCEditor) was confirmed via backup diff to already be 0 even in the fully-dead original save — it's a no-op for this NPC, removed from this entry."
+      ]
+    },
+    {
+      "name": "Solaire of Astora",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6001, reused at all 3 story locations)",
+          "death": {
+            "offset": "0xD6",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Exhaustive search found zero hostile SetTeamType on entity 6001 — his \"corruption\"/mad form, if real, is very likely a separate, unidentified entity, not this one turning hostile."
+      },
+      "questStages": [],
+      "dependencies": [
+        "Only the plain death flag is understood. ~16-19 other shipped bits (corruption branch, Lautrec cross-ref, O&S/Four Kings summon signs) are OPEN — do not expose a \"rollback his quest stage\" feature beyond plain alive/dead until those are resolved."
+      ]
+    },
+    {
+      "name": "Rhea of Thorolund",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Undead Parish",
+          "death": {
+            "offset": "0xE8",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Connecting corridor (m10_02)",
+          "death": {
+            "offset": "0xE8",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Tomb of the Giants",
+          "death": {
+            "offset": "0xE9",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Whole escort group (Rhea + Knights A/B/C) flips HostileAlly together if the player damages/attacks ANY ONE of the 4 (event 11020501, >=10% HP chip damage counts).",
+        "bits": [
+          {
+            "offset": "0xE8",
+            "bit": 7,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": [
+        "Thorolund Knight A/B/C aggro together with her (same trigger event) — see their own entries.",
+        "Reviving her cleanly most likely needs clearing all 3 position flags together (0xE8 bit2 + 0xE8 bit6 + 0xE9 bit1) since it's not confirmed which instance the game reads — not yet verified in-game.",
+        "~80 of her shipped bits remain untraced (likely dialogue milestones in an unresolved region7 (area=13,group=1) cluster)."
+      ]
+    },
+    {
+      "name": "Thorolund Knight A",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Connecting corridor only",
+          "death": {
+            "offset": "0xEE",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Aggroes together with Rhea's group (see her entry).",
+        "bits": [
+          {
+            "offset": "0xEE",
+            "bit": 2,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Thorolund Knight B",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0xEC",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Aggroes together with Rhea's group (see her entry).",
+        "bits": [
+          {
+            "offset": "0xEC",
+            "bit": 2,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Thorolund Knight C",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default",
+          "death": {
+            "offset": "0xF2",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Aggroes together with Rhea's group (see her entry).",
+        "bits": [
+          {
+            "offset": "0xEB",
+            "bit": 0,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Siegmeyer of Catarina",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Demon Ruins, friendly body (6286)",
+          "death": {
+            "offset": "0x116",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Blighttown, single body (6282)",
+          "death": {
+            "offset": "0x116",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not a simple persisted bit: Demon Ruins uses a dedicated second hostile entity (6004, TeamType baked in); Blighttown flips his own body's TeamType in place. Both are driven by the \"gone hollow\" flag below, not a separate aggro bit."
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "Has gone hollow",
+          "flag": {
+            "offset": "0x116",
+            "bit": 7,
+            "status": "confirmed"
+          },
+          "note": "Shared global flag 1512 — NOT in the original shipped file at all."
+        },
+        {
+          "order": 2,
+          "name": "Quest resolved",
+          "flag": {
+            "offset": "0x116",
+            "bit": 6,
+            "status": "confirmed"
+          },
+          "note": "Flag 1513 — same bit as his death positions above; set by two independent paths."
+        }
+      ],
+      "dependencies": [
+        "Sieglinde's identity/flags are unresolved — see her stub entry. No confirmed cross-reference either direction yet.",
+        "Demon Ruins: enabling the hostile body (6004) does not appear to explicitly disable the friendly body (6286) in the traced event — reviving him via flags alone may leave an inconsistent enabled-entity state in a live game session (save-only edits should be fine)."
+      ]
+    },
+    {
+      "name": "Sieglinde of Catarina",
+      "category": "npc",
+      "positions": [],
+      "aggro": {
+        "status": "open",
+        "note": "Identity entirely unresolved."
+      },
+      "questStages": [],
+      "dependencies": [
+        "NOT in the real shipped npc_data.json at all. One candidate entity (6320, Catacombs) could not be disambiguated from Siegmeyer's own Catacombs placement.",
+        "Recommended: a live before/after save-diff test (talk to her in the Catacombs) to settle her identity and real flags directly.",
+        "Shown here only as a placeholder so the tool doesn't silently omit her — every field is genuinely \"???\" right now."
+      ]
+    },
+    {
+      "name": "Anastacia of Astora",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (fire keeper, entity 6060)",
+          "death": {
+            "offset": "0xE4",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No Talk ESD, no SetTeamType wiring at all — she cannot go hostile."
+      },
+      "questStages": [],
+      "dependencies": [
+        "Her own death-check is gated by flag 810 (0xB9 bit5), owner unconfirmed (candidate: a Lautrec \"freed from cage\" marker). Forcing her to \"dead\" may not read correctly in-game unless flag 810 is also set — not verified live, treat as a real risk."
+      ]
+    },
+    {
+      "name": "Knight Lautrec of Carim",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6301)",
+          "death": {
+            "offset": "0x117",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Generic per-map hostility template (event 11020510).",
+        "bits": [
+          {
+            "offset": "0x117",
+            "bit": 1,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "Second state bit",
+          "flag": {
+            "offset": "0x117",
+            "bit": 3,
+            "status": "confirmed"
+          },
+          "note": "Set via event 11020588's multi-branch dispatcher; exact narrative meaning not fully decoded."
+        }
+      ],
+      "dependencies": [
+        "Possibly the owner of flag 810 that gates Anastacia's death (candidate, not proven) — freeing/killing him may be a prerequisite for her death to register correctly."
+      ]
+    },
+    {
+      "name": "Crestfallen Warrior",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6270)",
+          "death": {
+            "offset": "0x10D",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Generic per-map hostility template (event 11020510).",
+        "bits": [
+          {
+            "offset": "0x10D",
+            "bit": 2,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "Vanished / gave up",
+          "flag": {
+            "offset": "0x10C",
+            "bit": 7,
+            "status": "candidate"
+          },
+          "note": "Gated by his own hostility flag as a precondition; not in-game verified."
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "name": "Griggs of Vinheim",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (reused across m10_01/m10_02/m15_00)",
+          "death": {
+            "offset": "0xE0",
+            "bit": 4,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not traced this pass."
+      },
+      "questStages": [],
+      "dependencies": [
+        "No confirmed cross-reference with Big Hat Logan or Rickert."
+      ]
+    },
+    {
+      "name": "Big Hat Logan",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Merchant form (6030/6031/6032 across map relocations)",
+          "death": {
+            "offset": "0xE2",
+            "bit": 6,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "His hollow-form entity (6033) is a STATIC HostileAlly placement, always active whenever enabled — not a live flip.",
+        "bits": [
+          {
+            "offset": "0xE2",
+            "bit": 4,
+            "status": "confirmed"
+          }
+        ]
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "First milestone",
+          "flag": {
+            "offset": "0xDB",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Second milestone",
+          "flag": {
+            "offset": "0xDB",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        },
+        {
+          "order": 3,
+          "name": "Third milestone",
+          "flag": {
+            "offset": "0xDB",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        },
+        {
+          "order": 4,
+          "name": "Fourth milestone",
+          "flag": {
+            "offset": "0xDB",
+            "bit": 1,
+            "status": "candidate"
+          },
+          "note": "Found, NOT in the original shipped file — real gap."
+        },
+        {
+          "order": 5,
+          "name": "Gone hollow/insane",
+          "flag": {
+            "offset": "0xE2",
+            "bit": 4,
+            "status": "confirmed"
+          },
+          "note": "Entity 6032 (merchant) disabled, entity 6033 (hostile) enabled. Same bit as the aggro flag above — his hollow state IS his hostility state."
+        }
+      ],
+      "dependencies": [
+        "Hollow transition and plain death are independent bits sharing byte 0xE2 (bit4 vs bit6) — a revive must handle both together.",
+        "A save-only rollback (clearing bits) should let the game's own init event re-enable the correct entity next load — not verified in-game, treat as candidate assumption."
+      ]
+    },
+    {
+      "name": "Rickert of Vinheim",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default — IDENTITY IN QUESTION",
+          "death": {
+            "offset": "0xFF",
+            "bit": 1,
+            "status": "candidate"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Moot until identity is resolved."
+      },
+      "questStages": [],
+      "dependencies": [
+        "His Talk ESD references area=18 (Oolacile) flags, contradicting the assumed m16_00 (New Londo?) location. Do not trust this entry as more than a CANDIDATE until the map identity is independently re-verified."
+      ]
+    },
+    {
+      "name": "Laurentius (Pyromancer)",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Lower Burg / relocated (6130/6131)",
+          "death": {
+            "offset": "0xEF",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Blighttown, hollowed (6132, non-talkable)",
+          "death": {
+            "offset": "0xEF",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "His Blighttown hollow entity (6132) is unconditionally TeamType HostileAlly whenever enabled.",
+        "bits": []
+      },
+      "questStages": [],
+      "dependencies": [
+        "His \"hollow\" form is a LITERAL SEPARATE MAP ENTITY (6132), not a flag-driven transform of the same body. Moving him backward from hollow means disabling 6132 and re-enabling 6130/6131, not just flipping a bit — what enables 6132 in the first place was not found."
+      ]
+    },
+    {
+      "name": "Quelana of Izalith",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6170)",
+          "death": {
+            "offset": "0xFA",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No SetTeamType call found anywhere in her home map."
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "First met / talked to",
+          "flag": {
+            "offset": "0xFA",
+            "bit": 7,
+            "status": "candidate"
+          },
+          "note": "Flag 1294, single-arg RunEvent variant; not individually confirmed against shipped bits."
+        },
+        {
+          "order": 2,
+          "name": "Pyromancy milestone",
+          "flag": {
+            "offset": "0xFA",
+            "bit": 6,
+            "status": "candidate"
+          },
+          "note": "Flag 1291."
+        },
+        {
+          "order": 3,
+          "name": "Pyromancy milestone",
+          "flag": {
+            "offset": "0xFA",
+            "bit": 5,
+            "status": "candidate"
+          },
+          "note": "Flag 1292."
+        },
+        {
+          "order": 4,
+          "name": "Pyromancy milestone",
+          "flag": {
+            "offset": "0xFA",
+            "bit": 4,
+            "status": "candidate"
+          },
+          "note": "Flag 1293."
+        },
+        {
+          "order": 5,
+          "name": "Pyromancy milestone",
+          "flag": {
+            "offset": "0xFA",
+            "bit": 1,
+            "status": "candidate"
+          },
+          "note": "Flag 1296."
+        }
+      ],
+      "dependencies": [
+        "None of these 5 extra milestone flags currently appear in her shipped entry — none in-game verified."
+      ]
+    },
+    {
+      "name": "Eingyi",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6160)",
+          "death": {
+            "offset": "0xF3",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not individually re-traced this pass; no aggro scan done specifically for him."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Alvina",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6380, Darkroot Garden)",
+          "death": {
+            "offset": "0x12E",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No SetTeamType call found anywhere in her home map."
+      },
+      "questStages": [],
+      "dependencies": [
+        "Confirmed genuinely killable like any other NPC, not a pure dialogue fixture."
+      ]
+    },
+    {
+      "name": "Marvellous Chester",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "candidate: entity 6730, m12_01_00_00",
+          "death": {
+            "offset": "0x13D",
+            "bit": 5,
+            "status": "candidate"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Generic per-map hostility template (event 11210510), flag 1841.",
+        "bits": [
+          {
+            "offset": "0x13D",
+            "bit": 6,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": [
+        "Identity REOPENED: entity 6730 (unique c4090 model, near Hawkeye Gough) looks like the real Chester; the two c5330 entities previously assumed in m18_00 are now in question (could be Dusk-related, or something else).",
+        "Aggro candidate not yet in-game tested."
+      ]
+    },
+    {
+      "name": "Dusk of Oolacile",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default — IDENTITY BY ELIMINATION",
+          "death": {
+            "offset": null,
+            "bit": null,
+            "status": "open",
+            "note": "One of two c5330 entities in m18_00; which one is Dusk vs. something else is unresolved."
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not checked specifically."
+      },
+      "questStages": [],
+      "dependencies": [
+        "\"(Revive golem)\" label: two unidentified golem entities (1803900/1803901/1803902) in her map are almost certainly the crystal golems imprisoning her — structurally very likely, not byte-proven. Their own death flag was not traced."
+      ]
+    },
+    {
+      "name": "Elizabeth (Mushroom)",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6023, talkable; 6024, combat form)",
+          "death": {
+            "offset": null,
+            "bit": null,
+            "status": "open",
+            "note": "4 shipped bits not individually traced; the newly-found hostility-template flags (1060-1062/1073-1074) do NOT match any of them."
+          }
+        }
+      ],
+      "aggro": {
+        "status": "confirmed",
+        "note": "Talkable decoy (6023) + separate dormant hostile combat form (6024, pre-set TeamType 9, enabled on provocation) — same structural pattern as Gwyndolin.",
+        "bits": [
+          {
+            "offset": "0xD7",
+            "bit": 1,
+            "status": "candidate"
+          },
+          {
+            "offset": "0xD7",
+            "bit": 2,
+            "status": "candidate"
+          },
+          {
+            "offset": "0xD7",
+            "bit": 3,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": [
+        "Identity of entity 6023/6024 as Elizabeth is by elimination + behavior match, not an exact-bit cross-check."
+      ]
+    },
+    {
+      "name": "Quelaag's Sister / The Fair Lady",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (fire keeper, entity 6002, Quelaag's Domain)",
+          "death": {
+            "offset": "0xF4",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Zero SetTeamType calls anywhere in her map for her own entity. The area's ambush hostility calls all target a different, unrelated entity (6004, a boss-arena ambush mob)."
+      },
+      "questStages": [],
+      "dependencies": [
+        "No code-level mechanism found connecting her to Quelaag's death — her ESD has no native command capable of reading Quelaag's block1 (non-EventFlag) kill bit. If her dialogue does change after Quelaag dies in actual play, the mechanism is unknown; re-check the premise."
+      ]
+    },
+    {
+      "name": "Hawkeye Gough",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6720, m12_01_00_00)",
+          "death": {
+            "offset": "0x138",
+            "bit": 0,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Generic per-map hostility template (event 11210510), flag 1822.",
+        "bits": [
+          {
+            "offset": "0x138",
+            "bit": 1,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "Kalameet \"Enabled\"",
+          "flag": {
+            "offset": "0x239C",
+            "bit": 7,
+            "status": "candidate"
+          },
+          "note": "Set via dialogue choice about facing the dragon; shared with Kalameet's own boss entry."
+        }
+      ],
+      "dependencies": []
+    },
+    {
+      "name": "Lord's Blade Ciaran",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Availability / appeared",
+          "death": {
+            "offset": "0x13B",
+            "bit": 2,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Combat death",
+          "death": {
+            "offset": "0x142",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Generic per-map hostility template (event 11210510), flag 1863.",
+        "bits": [
+          {
+            "offset": "0x13B",
+            "bit": 0,
+            "status": "candidate"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": [
+        "Her \"appeared\" flag is a read-then-write relay off Artorias's own kill flag, not a live check — see Knight Artorias."
+      ]
+    },
+    {
+      "name": "Giant Blacksmith",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6210, Anor Londo)",
+          "death": {
+            "offset": "0x101",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No dedicated persisted hostility flag found for any of this merchant/blacksmith cluster."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Vamos",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6200, Catacombs)",
+          "death": {
+            "offset": "0xFC",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No dedicated persisted hostility flag found for any of this merchant/blacksmith cluster."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Undead Male Merchant",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6230, Undead Parish)",
+          "death": {
+            "offset": "0x104",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No dedicated persisted hostility flag found for any of this merchant/blacksmith cluster."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Undead Female Merchant",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6240)",
+          "death": {
+            "offset": "0x103",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No dedicated persisted hostility flag found for any of this merchant/blacksmith cluster."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Domhnall of Zena",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6260, Lower Undead Burg)",
+          "death": {
+            "offset": "0x108",
+            "bit": 4,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "No dedicated persisted hostility flag found for any of this merchant/blacksmith cluster."
+      },
+      "questStages": [
+        {
+          "order": 1,
+          "name": "Secondary disappearance/relocation",
+          "flag": {
+            "offset": "0x109",
+            "bit": 0,
+            "status": "candidate"
+          },
+          "note": "Fires once his own resolution flags AND some other area's progress flags are set — exact other-area trigger not traced."
+        }
+      ],
+      "dependencies": [
+        "His shop sells Gwyndolin's armor set via 4 individually flag-gated rows (see Dark Sun Gwyndolin entry) plus EVERY other shop row (1550-1569) has its own per-item unlock flag tied to other bosses/areas — not individually resolved."
+      ]
+    },
+    {
+      "name": "Andre of Astora",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6190, Undead Parish — the REAL Andre, not the generic c0000 placement)",
+          "death": {
+            "offset": "0xFE",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not traced."
+      },
+      "questStages": [],
+      "dependencies": [
+        "Corrects a multi-session project mixup: entity 6001/flag 1005 (0xD6 bit2) previously called \"Andre\" is actually Solaire — see his own entry."
+      ]
+    },
+    {
+      "name": "Gwynevere (Princess of Sunlight)",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 1510600)",
+          "death": {
+            "offset": "0xF1",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "has-met milestone (Template-A start flag, flag 1230) — ESD-confirmed gate for her first-greeting state (State_56); without it the repeat-talk unlock flag 71510020 can never be set",
+          "death": {
+            "offset": "0xF2",
+            "bit": 1,
+            "status": "confirmed",
+            "reverse": false
+          }
+        },
+        {
+          "label": "first-encounter/illusion-reveal cutscene marker (event 11510400's own completion flag; also the ONLY place SetCharacterState(1510600,1) is ever called, and gates the global Anor Londo darkness swap)",
+          "death": {
+            "offset": "0x4684",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "native validity/reset bit (flag 11510522) — direct sibling of Dark Sun Gwyndolin's own confirmed revival-critical flag 11510523 (same byte, adjacent bit); native-code-only read site, not found in any EMEVD/ESD",
+          "death": {
+            "offset": "0x4695",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "second native validity bit, generic region-7/block-k15 shared \"world event\" bucket (same byte range used by many unrelated NPCs) — confirmed necessary for her specifically via live bisection, exact semantic meaning still undecoded",
+          "death": {
+            "offset": "0x16D77",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "not_applicable",
+        "note": "Verified: zero SetTeamType/SetTeamTypeAndExitStandbyAnimation anywhere for entity 1510600 — she can never go hostile herself."
+      },
+      "questStages": [],
+      "dependencies": [
+        "SHARES SAVE-STATE WITH DARK SUN GWYNDOLIN'S DISGUISE FORM — this is not a separate character. Never let a tool independently \"revive Gwynevere\" and \"kill Gwyndolin's disguise\" as two different operations; always change both entries together (see Dark Sun Gwyndolin entry).",
+        "Darkmoon Knightess's aggro reads this NPC's own death flag as part of an OR — see her entry.",
+        "FULL REVIVAL REQUIRES ALL 5 POSITIONS ABOVE TOGETHER — live-tested and confirmed 2026-11-09 (character N0, slot 9), both directions (revive AND kill via save edit, matching a genuine in-game kill/revive exactly). Clearing/setting only a subset (e.g. just 0xF1, or just 0xF1+0xF2, or the 3 extra bits without 0xF2) was live-tested and FAILS — either an infinite one-phrase dialogue loop (native CheckSelfDeath() still true) or a replayed illusion-reveal cutscene with no actual fix. See project memory project_ds1_gwynevere_talk_bug.md and project_ds1_npc_revival_methodology.md for the full bisection trace."
+      ]
+    },
+    {
+      "name": "Darkmoon Knightess",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (fire keeper, entity 6010)",
+          "death": {
+            "offset": "0xDA",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "candidate",
+        "note": "Hostility is an OR of 3 flags, not a bit she owns herself: Gwynevere/disguise death (0xF1 bit7), an unexplained intermediate combat-form milestone (0xF0 bit6), and Gwyndolin combat-form death (0xF0 bit5, already tracked on his entry).",
+        "bits": [
+          {
+            "offset": "0xF1",
+            "bit": 7,
+            "status": "confirmed"
+          },
+          {
+            "offset": "0xF0",
+            "bit": 6,
+            "status": "candidate"
+          },
+          {
+            "offset": "0xF0",
+            "bit": 5,
+            "status": "confirmed"
+          }
+        ]
+      },
+      "questStages": [],
+      "dependencies": [
+        "Covenant/Darkmoonblade miracle disable is a side effect of this hostility, not a separate flag.",
+        "Rolling back her hostility means rolling back whichever of the 3 OR'd flags is true — never her own 0xDA/0x64/0xD3 cluster."
+      ]
+    },
+    {
+      "name": "Oswald of Carim",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (entity 6370)",
+          "death": {
+            "offset": "0x127",
+            "bit": 1,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not traced."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Ingward",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "default (6180)",
+          "death": {
+            "offset": "0xF7",
+            "bit": 4,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "relocated instance (6181)",
+          "death": {
+            "offset": "0xF7",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not traced."
+      },
+      "questStages": [],
+      "dependencies": []
+    },
+    {
+      "name": "Shiva of the East and Bodyguard",
+      "category": "npc",
+      "positions": [
+        {
+          "label": "Shiva",
+          "death": {
+            "offset": "0x12D",
+            "bit": 7,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Bodyguard A",
+          "death": {
+            "offset": "0x11B",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        },
+        {
+          "label": "Bodyguard B",
+          "death": {
+            "offset": "0x12F",
+            "bit": 3,
+            "status": "confirmed"
+          }
+        }
+      ],
+      "aggro": {
+        "status": "open",
+        "note": "Not traced."
+      },
+      "questStages": [],
+      "dependencies": []
+    }
+  ]
+}

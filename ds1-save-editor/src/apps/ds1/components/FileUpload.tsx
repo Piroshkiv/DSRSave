@@ -8,6 +8,18 @@ interface FileUploadProps {
   onAutoLoadAttempt?: (attempting: boolean) => void;
 }
 
+const AUTO_LOAD_TIMEOUT_MS = 3000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`Timed out after ${ms}ms`)), ms);
+    promise.then(
+      value => { clearTimeout(timer); resolve(value); },
+      err => { clearTimeout(timer); reject(err); }
+    );
+  });
+}
+
 export const FileUpload: React.FC<FileUploadProps> = ({ onFileLoaded, onAutoLoadAttempt }) => {
   const { lang } = useLang();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,23 +38,30 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileLoaded, onAutoLoad
       try {
         onAutoLoadAttempt?.(true);
 
-        // First try to load directly (if permission already granted)
-        const fileData = await adapter.loadLastFile();
+        // First try to load directly (if permission already granted). Capped at
+        // AUTO_LOAD_TIMEOUT_MS so a hung adapter call can't leave the UI stuck
+        // in an infinite loading state.
+        const fileData = await withTimeout(adapter.loadLastFile(), AUTO_LOAD_TIMEOUT_MS);
         if (fileData) {
           console.log(`[FileUpload] Auto-loading: ${fileData.file.name}`);
           onFileLoaded(fileData.file, fileData.handle);
           return;
         }
+      } catch (err) {
+        console.warn('[FileUpload] Auto-load failed or timed out:', err);
+      } finally {
+        onAutoLoadAttempt?.(false);
+      }
 
-        // Permission not granted - check if we have a stored file
+      // Permission not granted, or the attempt above failed/timed out - if we
+      // still know about a stored file, offer the manual "load last save" button.
+      try {
         const lastFileName = await (adapter as any).getLastFileName?.();
         if (lastFileName) {
           setHasLastFile(true);
         }
       } catch (err) {
-        console.warn('[FileUpload] Auto-load failed:', err);
-      } finally {
-        onAutoLoadAttempt?.(false);
+        console.warn('[FileUpload] Failed to read last file name:', err);
       }
     };
 

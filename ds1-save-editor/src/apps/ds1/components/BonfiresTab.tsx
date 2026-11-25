@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Character, BONFIRE_BIT_INDICES } from '../lib/Character';
+import {
+  Character, BONFIRE_BIT_INDICES,
+  BONFIRE_KINDLE_VALUES, BONFIRE_KINDLE_VALUE_LABELS, BONFIRE_KINDLE_VALUE_ESTUS,
+} from '../lib/Character';
 import { useLang } from '../../../core/context/LanguageContext';
 import { t } from '../lib/i18n';
 
@@ -44,6 +47,10 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
 
   const [warpFlag, setWarpFlag] = useState<boolean>(false);
 
+  const [kindleEntries, setKindleEntries] = useState<{ index: number; id: number; name: string | null; value: number }[]>([]);
+
+  const [search, setSearch] = useState('');
+
   const [error, setError] = useState<string | null>(null);
 
   const loadStatus = () => {
@@ -52,6 +59,8 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
       setBonfires(flags);
 
       setWarpFlag(character.getWarpFlag());
+
+      setKindleEntries(character.getBonfireKindleEntries());
 
       setError(null);
     } catch (err: any) {
@@ -96,6 +105,26 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
   };
 
 
+  const handleKindleChange = (index: number, value: number) => {
+    try {
+      character.setBonfireKindleValue(index, value);
+      setKindleEntries(prev => prev.map(e => e.index === index ? { ...e, value } : e));
+      onCharacterUpdate();
+    } catch (err: any) {
+      setError(err.message || 'Failed to set kindle level');
+    }
+  };
+
+  const handleKindleAll = () => {
+    try {
+      character.kindleAllBonfires();
+      setKindleEntries(character.getBonfireKindleEntries());
+      onCharacterUpdate();
+    } catch (err: any) {
+      setError(err.message || 'Failed to kindle all bonfires');
+    }
+  };
+
   const handleUnlockAll = () => {
     try {
       character.unlockAllBonfires();
@@ -113,6 +142,19 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
   const names = BONFIRE_NAMES[lang] || BONFIRE_NAMES.en;
   const unlockedCount = BIT_INDICES.filter(i => bonfires[i]).length;
   const allUnlocked = BIT_INDICES.every(i => bonfires[i]);
+
+  const query = search.trim().toLowerCase();
+
+  // Named entries first, in the same order as the unlock-flag list above; unnamed
+  // (non-warpable) rest points after, sorted by id for a stable order.
+  const nameOrder = new Map(BONFIRE_NAMES.en.map((n, i) => [n, i]));
+  const sortedKindleEntries = [...kindleEntries]
+    .filter(e => !query || (e.name ?? String(e.id)).toLowerCase().includes(query))
+    .sort((a, b) => {
+      const ao = a.name !== null ? (nameOrder.get(a.name) ?? 999) : 1000 + a.id;
+      const bo = b.name !== null ? (nameOrder.get(b.name) ?? 999) : 1000 + b.id;
+      return ao - bo;
+    });
 
   return (
     <div className="bonfires-tab">
@@ -165,6 +207,45 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
         })}
       </div>
 
+      <div className="bonfire-actions kindling-actions">
+        <h3 className="kindling-heading">{t('kindling', lang)}</h3>
+        <button className="unlock-button primary-button" onClick={handleKindleAll}>
+          {t('kindleAll', lang)}
+        </button>
+      </div>
+
+      <input
+        type="text"
+        className="bonfire-search"
+        placeholder={t('kindleSearch', lang)}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <div className="kindle-list">
+        {sortedKindleEntries.map(entry => (
+          <div key={entry.index} className="kindle-row">
+            <span className="kindle-name">{entry.name ?? `${t('kindleUnnamed', lang)} (${entry.id})`}</span>
+            <div className="kindle-estus">
+              <label>{t('maxEstus', lang)}</label>
+              <select
+                value={entry.value}
+                onChange={(e) => handleKindleChange(entry.index, parseInt(e.target.value, 10))}
+              >
+                {BONFIRE_KINDLE_VALUES.map(v => (
+                  <option key={v} value={v}>
+                    {BONFIRE_KINDLE_VALUE_LABELS[v] ? t(BONFIRE_KINDLE_VALUE_LABELS[v], lang) : BONFIRE_KINDLE_VALUE_ESTUS[v]}
+                  </option>
+                ))}
+                {!BONFIRE_KINDLE_VALUES.includes(entry.value as any) && (
+                  <option value={entry.value}>{entry.value}</option>
+                )}
+              </select>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <style>{`
         .bonfires-tab {
           padding: 0;
@@ -215,10 +296,88 @@ export const BonfiresTab: React.FC<BonfiresTabProps> = ({ character, onCharacter
           color: #666;
         }
 
+        .bonfire-search {
+          width: 100%;
+          box-sizing: border-box;
+          background: #2a2a2a;
+          color: #c0c0c0;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 4px;
+          padding: 0.45rem 0.7rem;
+          font-size: 0.82rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .bonfire-search::placeholder {
+          color: #777;
+        }
+
+        .kindling-actions {
+          justify-content: space-between;
+        }
+
         .bonfire-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
           gap: 0.5rem;
+          margin-bottom: 1.25rem;
+        }
+
+        .kindling-heading {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #c0c0c0;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin: 0;
+        }
+
+        .kindle-list {
+          display: flex;
+          flex-direction: column;
+          gap: 0.4rem;
+        }
+
+        .kindle-row {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          padding: 0.45rem 0.75rem;
+          border-radius: 4px;
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          background: rgba(255, 255, 255, 0.02);
+        }
+
+        .kindle-name {
+          font-size: 0.82rem;
+          color: #c0c0c0;
+          flex: 1;
+        }
+
+        .kindle-estus {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+
+        .kindle-estus label {
+          font-size: 0.75rem;
+          color: #888;
+        }
+
+        .kindle-estus select {
+          color-scheme: dark;
+          background: #2a2a2a;
+          color: #c0c0c0;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          border-radius: 4px;
+          padding: 0.2rem 0.4rem;
+          font-size: 0.78rem;
+        }
+
+        .kindle-estus select option {
+          background: #2a2a2a;
+          color: #c0c0c0;
         }
 
         .bonfire-item {

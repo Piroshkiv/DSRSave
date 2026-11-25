@@ -41,7 +41,10 @@ namespace DSRSave.Editors
         public NPCEditor(Character character)
         {
             _character = character;
-            string json = File.ReadAllText("json/npc_data.json");
+            string jsonPath = File.Exists("json/npc_data.json")
+                ? "json/npc_data.json"
+                : Path.Combine(AppContext.BaseDirectory, "json", "npc_data.json");
+            string json = File.ReadAllText(jsonPath);
             _npcData = JsonSerializer.Deserialize<NpcCollection>(json)
                        ?? throw new Exception("Failed to parse npc_data.json.");
         }

@@ -49,11 +49,18 @@ function steamIdFromSource(file: File, fileHandle: FileHandle | null): bigint | 
  * answer "were stats edited since this file was last on disk?" — cheaper and
  * more honest than threading a dirty flag through every stat input, and it
  * self-corrects when a value is edited back to what it was.
+ *
+ * The five resistance gauges ride along. DS3Character keeps them in step with
+ * the stats on its own (docs/ds3-resist-recalc.md), so they only ever move
+ * together with a stat — but if they are ever written some other way, that is
+ * still an edit the game has not seen, and the offline guard should catch it.
  */
 function statsFingerprint(editor: DS3SaveFileEditor | null): string {
   if (!editor) return '';
   return editor.getCharacters()
-    .map(c => (c.isEmpty ? '-' : `${c.level}:${STAT_ORDER.map(s => c.getStat(s)).join(',')}`))
+    .map(c => (c.isEmpty
+      ? '-'
+      : `${c.level}:${STAT_ORDER.map(s => c.getStat(s)).join(',')}:${c.getResistances().join(',')}`))
     .join('|');
 }
 

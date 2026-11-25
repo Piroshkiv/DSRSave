@@ -385,6 +385,11 @@
           "reverse": true
         },
         {
+          "offset": "0xF2",
+          "bit": 1,
+          "reverse": false
+        },
+        {
           "offset": "0x4695",
           "bit": 5,
           "reverse": true
@@ -1378,8 +1383,13 @@
       "displayName": "暗影太阳葛温德林",
       "bits": [
         {
-          "offset": "0x5F",
-          "bit": 6,
+          "offset": "0x46C6",
+          "bit": 3,
+          "reverse": true
+        },
+        {
+          "offset": "0x4695",
+          "bit": 4,
           "reverse": true
         },
         {
@@ -3682,7 +3692,7 @@
       "displayName": "恶魔火焰司祭",
       "bits": [
         {
-          "offset": "0x3F83",
+          "offset": "0x3C83",
           "bit": 5,
           "reverse": true
         }

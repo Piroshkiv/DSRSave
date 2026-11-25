@@ -3,7 +3,11 @@ import { ByteView } from '../../../shared/ByteView';
 import {
   ItemCatalog,
   loadItemCatalog,
+  makeItemKey,
+  keyTypeNibble,
+  keyItemId,
   type Item,
+  type ItemKey,
 } from '../../../shared/items';
 
 export enum ItemInfusion {
@@ -296,6 +300,209 @@ export class InventoryItem {
   }
 }
 
+/**
+ * One slot of the Bottomless Box (`NS_FRPG::RepositoryData` — a second,
+ * structurally distinct item array from the main 2048-slot inventory, not a
+ * sub-range of it). Confirmed via RE of the compiled game's own
+ * `RepositoryData::AddItem`/`RemoveAt`/`AdjustQuantity` AND the two transfer
+ * functions that move an item between this and the main inventory
+ * (`DepositItem`/`WithdrawItem` below), cross-checked against the live-save
+ * byte diffing in `docs/exe-re-findings.md` §13.1: 2048 slots × 32 bytes,
+ * sitting right before the gesture table at file offset `0xE4A4`. Same
+ * sparse, "first free slot by occupied-flag scan" design as the main
+ * inventory — NOT a dense, compacted array like DS3's storage box.
+ *
+ * Record layout — confirmed by reading `DepositItem` (builds this record
+ * from an `InventoryItem`) and `WithdrawItem` (reads it back into a fresh
+ * `InventoryItem` via the main inventory's own `SetDurability`/`SetOrder`
+ * setters) side by side, so the mapping is symmetric both ways:
+ *   +0x00 (4B): packed `category<<28 | id` — exactly this codebase's own
+ *               `ItemKey`/`makeItemKey` shape, not two separate 32-bit
+ *               itemType/itemId fields like the main inventory.
+ *   +0x04 (4B): the deposited `InventoryItem`'s `order` field, carried over
+ *               verbatim and restored into the new inventory slot's `order`
+ *               on withdrawal. **Not** a mirror of `itemKey` — an earlier
+ *               pass at this got that wrong.
+ *   +0x08 (2B): quantity. A 16-bit short here, not a full 32-bit int like
+ *               the main inventory's `quantity` — confirmed from both the
+ *               insert path and the quantity-adjust helper, which clamps it
+ *               to a per-category max and deletes the slot outright once it
+ *               reaches 0.
+ *   +0x0A (1B): bit 0 = occupied flag. The game's own free-slot scan checks
+ *               exactly this bit — not `itemKey`, not `quantity` — so this
+ *               is the authoritative emptiness check, `isEmpty` below mirrors it.
+ *   +0x0B (1B): unused padding.
+ *   +0x0C (4B): the deposited `InventoryItem`'s `durability` — **weapons and
+ *               armour really do keep their durability in the box.** This is
+ *               the field an earlier pass at this wrongly called vestigial;
+ *               it's written by `DepositItem` and read back by `WithdrawItem`
+ *               via the main inventory's `SetDurability` setter.
+ *   +0x10 (4B): the deposited item's unnamed 7th inventory field (see
+ *               `InventoryItem`), carried over but never read back out by
+ *               either transfer function found this session — effectively
+ *               inert today, kept only so a round trip doesn't lose data.
+ *   +0x14..0x1F (12B): zero on every transfer path found — not used.
+ */
+export class RepositoryItem {
+  private data: ByteView;
+  private catalog: ItemCatalog | null;
+  public slotIndex: number;
+
+  constructor(data: Uint8Array, slotIndex: number, catalog: ItemCatalog | null = null) {
+    this.data = new ByteView(32);
+    if (data) {
+      this.data.set(data.slice(0, 32));
+    }
+    this.slotIndex = slotIndex;
+    this.catalog = catalog;
+  }
+
+  private static readonly FIELD = {
+    itemKey: 0,
+    order: 4,
+    quantity: 8,
+    flags: 10,
+    durability: 12,
+    extra: 16,
+  } as const;
+
+  get itemKey(): ItemKey {
+    return this.data.readUInt(RepositoryItem.FIELD.itemKey, 4) as ItemKey;
+  }
+
+  set itemKey(value: ItemKey) {
+    this.data.write(RepositoryItem.FIELD.itemKey, 4, value as number);
+  }
+
+  get itemType(): number {
+    return keyTypeNibble(this.itemKey);
+  }
+
+  get itemId(): number {
+    return keyItemId(this.itemKey);
+  }
+
+  get order(): number {
+    return this.data.readInt(RepositoryItem.FIELD.order, 4);
+  }
+
+  set order(value: number) {
+    this.data.write(RepositoryItem.FIELD.order, 4, value);
+  }
+
+  get quantity(): number {
+    return this.data.readUInt(RepositoryItem.FIELD.quantity, 2);
+  }
+
+  set quantity(value: number) {
+    this.data.write(RepositoryItem.FIELD.quantity, 2, value & 0xffff);
+  }
+
+  get occupied(): boolean {
+    return (this.data.readUInt(RepositoryItem.FIELD.flags, 1) & 1) === 1;
+  }
+
+  set occupied(value: boolean) {
+    const current = this.data.readUInt(RepositoryItem.FIELD.flags, 1);
+    this.data.write(RepositoryItem.FIELD.flags, 1, value ? current | 1 : current & ~1);
+  }
+
+  get durability(): number {
+    return this.data.readInt(RepositoryItem.FIELD.durability, 4);
+  }
+
+  set durability(value: number) {
+    this.data.write(RepositoryItem.FIELD.durability, 4, value);
+  }
+
+  /** Carried over from the deposited item's unnamed 7th inventory field. Never read back by the game. */
+  get extra(): number {
+    return this.data.readInt(RepositoryItem.FIELD.extra, 4);
+  }
+
+  set extra(value: number) {
+    this.data.write(RepositoryItem.FIELD.extra, 4, value);
+  }
+
+  get isEmpty(): boolean {
+    return !this.occupied;
+  }
+
+  /**
+   * `itemId` (from `itemKey`) is the same raw, on-disk id the main
+   * inventory stores — for weapons/armour that's `base + infusion*100 +
+   * level`, not the catalogue's base id. Mirrors `InventoryItem.baseItemId`
+   * exactly; see that class for why the special-cased ranges exist.
+   */
+  private get isArtoriasCursedRange(): boolean {
+    return this.itemType === 0 && this.itemId >= 311000 && this.itemId <= 312705;
+  }
+
+  get baseItemId(): number {
+    if (this.itemType !== 0 && this.itemType !== 1) {
+      return this.itemId;
+    }
+    if (this.itemId >= 1330000 && this.itemId < 1332000) {
+      return 1330000;
+    }
+    if (this.itemId >= 1332000 && this.itemId <= 1332500) {
+      return 1332000;
+    }
+    if (this.isArtoriasCursedRange) {
+      return 311000;
+    }
+    const withoutUpgrade = this.itemId - (this.itemId % 100);
+    const infusion = withoutUpgrade % 1000;
+    return withoutUpgrade - infusion;
+  }
+
+  get upgradeLevel(): number {
+    if (this.itemType !== 0 && this.itemType !== 1) {
+      return 0;
+    }
+    if (this.itemId >= 1330000 && this.itemId < 1332000) {
+      return Math.floor((this.itemId - 1330000) / 100);
+    }
+    if (this.itemId >= 1332000 && this.itemId <= 1332500) {
+      return Math.floor((this.itemId - 1332000) / 100);
+    }
+    return this.itemId % 100;
+  }
+
+  get infusion(): ItemInfusion {
+    if (this.itemType !== 0) {
+      return ItemInfusion.Standard;
+    }
+    if ((this.itemId >= 1330000 && this.itemId <= 1332500) || this.isArtoriasCursedRange) {
+      return ItemInfusion.Standard;
+    }
+    const withoutUpgrade = this.itemId - (this.itemId % 100);
+    const infusionValue = Math.floor((withoutUpgrade % 1000) / 100);
+    return infusionValue as ItemInfusion;
+  }
+
+  get itemInfo(): Item | null {
+    if (this.isEmpty || !this.catalog) return null;
+    return this.catalog.lookup(this.itemType, this.baseItemId);
+  }
+
+  get itemName(): string {
+    const info = this.itemInfo;
+    if (!info) return `Unknown (Key:0x${this.itemKey.toString(16)})`;
+    return info.displayName;
+  }
+
+  get collectionType(): ItemCollectionType {
+    const item = this.itemInfo;
+    if (!item) return ItemCollectionType.Unknown;
+    return COLLECTION_TO_TYPE[item.collection] ?? ItemCollectionType.Unknown;
+  }
+
+  getRawData(): Uint8Array {
+    return new Uint8Array(this.data);
+  }
+}
+
 export class Inventory {
   private character: Character;
   private catalog: ItemCatalog | null = null;
@@ -303,6 +510,12 @@ export class Inventory {
   private static readonly INVENTORY_START = 0x370;
   private static readonly ITEM_SIZE = 28;
   private static readonly MAX_SLOTS = 2048;
+
+  // Bottomless Box — see RepositoryItem's doc comment for how this was found
+  // and what's confirmed vs. not. Sits right before the gesture table.
+  private static readonly REPOSITORY_START = 0xe4a4;
+  private static readonly REPOSITORY_ITEM_SIZE = 32;
+  private static readonly REPOSITORY_MAX_SLOTS = 2048;
 
   // Hand slots: base offset stores the inventory slot index of the equipped weapon,
   // data offset stores a cached copy of that weapon's item ID (bytes 4-7).
@@ -568,43 +781,68 @@ export class Inventory {
     // For Key Items, search in slots 0-63, for others search in slots 64+
     const startSlot = collectionType === ItemCollectionType.Key ? 0 : 64;
     const endSlot = collectionType === ItemCollectionType.Key ? 64 : Inventory.MAX_SLOTS;
+    const typeNumeric = itemInfo.typeNibble;
 
+    // The game derives `order` from a per-category GameParam field (a different
+    // table/offset for weapons, armor, rings, goods — see docs/exe-re-findings.md),
+    // packed with the slot index. We don't replicate that lookup; instead we keep
+    // items of the same itemType in a stable, monotonically increasing order by
+    // tracking the highest `order` already used within that category and slotting
+    // new items in right after it. One pass finds both the first free slot and the
+    // running max.
+    let freeSlot = -1;
+    let maxOrder = -1;
     for (let i = startSlot; i < endSlot; i++) {
       const slot = this.readSlot(i);
       if (slot.isEmpty) {
-        const typeNumeric = itemInfo.typeNibble;
-        const idNumeric = itemInfo.id;
-
-        slot.itemType = typeNumeric;
-        slot.itemId = idNumeric;
-        slot.quantity = Math.min(quantity, itemInfo.stackMax);
-        slot.order = i;
-        slot.exists = 1;
-
-        let baseDurability = itemInfo.durability;
-        if (infusion === ItemInfusion.Crystal) {
-          baseDurability = Math.floor(baseDurability / 10);
-        }
-        slot.durability = baseDurability;
-
-        slot.upgradeLevel = upgradeLevel;
-        slot.infusion = infusion;
-
-        this.writeSlot(i, slot);
-        this.updateItemsNumber(i);
-
-        return i;
+        if (freeSlot === -1) freeSlot = i;
+        continue;
+      }
+      if (slot.itemType === typeNumeric && slot.order > maxOrder) {
+        maxOrder = slot.order;
       }
     }
 
-    return null;
+    if (freeSlot === -1) return null;
+
+    const slot = this.readSlot(freeSlot);
+    const idNumeric = itemInfo.id;
+
+    slot.itemType = typeNumeric;
+    slot.itemId = idNumeric;
+    slot.quantity = Math.min(quantity, itemInfo.stackMax);
+    slot.order = maxOrder + 1;
+    slot.exists = 1;
+
+    let baseDurability = itemInfo.durability;
+    if (infusion === ItemInfusion.Crystal) {
+      baseDurability = Math.floor(baseDurability / 10);
+    }
+    slot.durability = baseDurability;
+
+    slot.upgradeLevel = upgradeLevel;
+    slot.infusion = infusion;
+
+    this.writeSlot(freeSlot, slot);
+    this.updateItemsNumber(freeSlot);
+
+    return freeSlot;
   }
 
+  /**
+   * Matches the game's own `RemoveItemAt` byte-for-byte: only `itemType`,
+   * `itemId`, `quantity`, and `exists` get cleared. `order` and `durability`
+   * are left as-is — the game never touches them on removal either, and
+   * `addItem` always overwrites every field (including those two) the next
+   * time this slot is reused, so nothing reads stale data in between.
+   */
   deleteItem(slotIndex: number): void {
     this.clearEquipmentSlots(slotIndex);
-    const emptyItem = new InventoryItem(new Uint8Array(28).fill(0xff), slotIndex, this.catalog);
-    emptyItem.exists = 0;
-    this.writeSlot(slotIndex, emptyItem);
+    const data = this.character.getRawData();
+    const offset = Inventory.INVENTORY_START + slotIndex * Inventory.ITEM_SIZE;
+    data.fill(0xff, offset, offset + 8);      // itemType = -1, itemId = -1
+    data.fill(0x00, offset + 8, offset + 12); // quantity = 0
+    data[offset + 16] = 0;                    // exists = 0
   }
 
   clearAllItems(collectionType: ItemCollectionType): number {
@@ -613,6 +851,253 @@ export class Inventory {
       this.deleteItem(item.slotIndex);
     }
     return items.length;
+  }
+
+  // --- Bottomless Box (Repository) ---
+  // See RepositoryItem's doc comment for the record layout and what's
+  // confirmed vs. not. This is a separate 2048-slot array from the main
+  // inventory above, not a sub-range of it.
+
+  readRepositorySlot(slotIndex: number): RepositoryItem {
+    const data = this.character.getRawData();
+    const offset = Inventory.REPOSITORY_START + slotIndex * Inventory.REPOSITORY_ITEM_SIZE;
+
+    if (offset + Inventory.REPOSITORY_ITEM_SIZE > data.length) {
+      throw new Error('Repository slot index out of range');
+    }
+
+    const itemData = data.slice(offset, offset + Inventory.REPOSITORY_ITEM_SIZE);
+    return new RepositoryItem(itemData, slotIndex, this.catalog);
+  }
+
+  writeRepositorySlot(slotIndex: number, item: RepositoryItem): void {
+    const data = this.character.getRawData();
+    const offset = Inventory.REPOSITORY_START + slotIndex * Inventory.REPOSITORY_ITEM_SIZE;
+
+    if (offset + Inventory.REPOSITORY_ITEM_SIZE > data.length) {
+      throw new Error('Repository slot index out of range');
+    }
+
+    data.set(item.getRawData(), offset);
+  }
+
+  getAllStorageItems(): RepositoryItem[] {
+    const items: RepositoryItem[] = [];
+    for (let i = 0; i < Inventory.REPOSITORY_MAX_SLOTS; i++) {
+      const item = this.readRepositorySlot(i);
+      if (!item.isEmpty) items.push(item);
+    }
+    return items;
+  }
+
+  getStorageItemsByType(collectionType: ItemCollectionType): RepositoryItem[] {
+    return this.getAllStorageItems().filter((item) => item.collectionType === collectionType);
+  }
+
+  /** Base-id match — right for stackable goods (no infusion/upgrade variance). */
+  findStorageItem(itemInfo: Item): RepositoryItem | null {
+    const key = makeItemKey(itemInfo.typeNibble, itemInfo.id);
+    for (let i = 0; i < Inventory.REPOSITORY_MAX_SLOTS; i++) {
+      const item = this.readRepositorySlot(i);
+      if (!item.isEmpty && item.itemKey === key) return item;
+    }
+    return null;
+  }
+
+  /** Exact match on the full (infusion/upgrade-encoded) key — right for weapons/armour. */
+  private findStorageItemByKey(key: ItemKey): RepositoryItem | null {
+    for (let i = 0; i < Inventory.REPOSITORY_MAX_SLOTS; i++) {
+      const item = this.readRepositorySlot(i);
+      if (!item.isEmpty && item.itemKey === key) return item;
+    }
+    return null;
+  }
+
+  /** Safe wrapper around `findStorageItem` for UI code that just wants a number. */
+  getStorageQuantityFor(itemInfo: Item): number {
+    return this.findStorageItem(itemInfo)?.quantity ?? 0;
+  }
+
+  /**
+   * Add to (or create) a stack in the Bottomless Box directly from the
+   * catalogue (not from an existing inventory slot — use `moveToStorage` for
+   * that, which also carries over the real durability/order). Matches the
+   * game's own `RepositoryData::AddItem`: tops up an existing stack of the
+   * same item (clamped to the catalogue's `stackMax`) instead of creating a
+   * new slot; otherwise uses the first slot whose occupied bit is clear.
+   *
+   * `upgradeLevel`/`infusion` only matter for weapons/armour — passing them
+   * encodes the same on-disk id the main inventory would use (reusing
+   * `InventoryItem`'s own id arithmetic on a throwaway instance, so the
+   * Pyromancy Flame/Artorias special cases stay in exactly one place) and
+   * matches on the *exact* resulting id, not just the base item, so a +5 and
+   * a +10 of the same weapon stack separately. A freshly-created slot gets
+   * `order = 0` and the catalogue's default durability (adjusted for
+   * Crystal infusion the same way `addItem` does), since there's no existing
+   * inventory item to carry those over from.
+   */
+  addStorageItem(
+    itemInfo: Item,
+    quantity: number = 1,
+    upgradeLevel: number = 0,
+    infusion: ItemInfusion = ItemInfusion.Standard
+  ): number | null {
+    const scratch = new InventoryItem(new Uint8Array(28).fill(0xff), -1, this.catalog);
+    scratch.itemType = itemInfo.typeNibble;
+    scratch.itemId = itemInfo.id;
+    scratch.upgradeLevel = upgradeLevel;
+    scratch.infusion = infusion;
+    const key = makeItemKey(itemInfo.typeNibble, scratch.itemId);
+
+    const existing = this.findStorageItemByKey(key);
+    if (existing) {
+      existing.quantity = Math.min(existing.quantity + quantity, itemInfo.stackMax || 0xffff);
+      this.writeRepositorySlot(existing.slotIndex, existing);
+      return existing.slotIndex;
+    }
+
+    let baseDurability = itemInfo.durability;
+    if (infusion === ItemInfusion.Crystal) {
+      baseDurability = Math.floor(baseDurability / 10);
+    }
+
+    for (let i = 0; i < Inventory.REPOSITORY_MAX_SLOTS; i++) {
+      const slot = this.readRepositorySlot(i);
+      if (slot.isEmpty) {
+        slot.itemKey = key;
+        slot.quantity = Math.min(quantity, itemInfo.stackMax || 0xffff);
+        slot.order = 0;
+        slot.durability = baseDurability;
+        slot.occupied = true;
+        this.writeRepositorySlot(i, slot);
+        return i;
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Move `quantity` of the item in inventory slot `slotIndex` into the
+   * Bottomless Box. Matches the game's own deposit function: carries the
+   * item's real `order` and `durability` over into the box (so a worn
+   * weapon keeps its durability), stacks onto an existing box entry of the
+   * same item if present, and reduces (or clears) the source inventory slot
+   * by exactly the amount actually moved.
+   *
+   * Returns the Repository slot used, or `null` if nothing could be moved
+   * (source slot empty, insufficient quantity, or the box is full).
+   */
+  moveToStorage(slotIndex: number, quantity: number = 1): number | null {
+    const source = this.readSlot(slotIndex);
+    if (source.isEmpty || quantity <= 0 || quantity > source.quantity) return null;
+
+    const key = makeItemKey(source.itemType, source.itemId);
+    let targetIndex: number | null = null;
+
+    const existing = this.getAllStorageItems().find((item) => item.itemKey === key);
+    if (existing) {
+      existing.quantity = Math.min(existing.quantity + quantity, 0xffff);
+      this.writeRepositorySlot(existing.slotIndex, existing);
+      targetIndex = existing.slotIndex;
+    } else {
+      for (let i = 0; i < Inventory.REPOSITORY_MAX_SLOTS; i++) {
+        const slot = this.readRepositorySlot(i);
+        if (slot.isEmpty) {
+          slot.itemKey = key;
+          slot.order = source.order;
+          slot.durability = source.durability;
+          slot.quantity = Math.min(quantity, 0xffff);
+          slot.occupied = true;
+          this.writeRepositorySlot(i, slot);
+          targetIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (targetIndex === null) return null;
+
+    if (quantity >= source.quantity) {
+      this.deleteItem(slotIndex);
+    } else {
+      source.quantity -= quantity;
+      this.writeSlot(slotIndex, source);
+    }
+    this.updateItemsNumber(slotIndex);
+
+    return targetIndex;
+  }
+
+  /**
+   * Move `quantity` of the Bottomless Box item in slot `repositorySlotIndex`
+   * back into the main inventory. Matches the game's own withdraw function:
+   * adds the item through the normal `addItem` path (so it lands in the
+   * right slot range, stacks correctly, etc.) and then restores the box's
+   * stored `order`/`durability` onto the resulting inventory slot, rather
+   * than leaving it at the catalogue default.
+   *
+   * Returns the inventory slot used, or `null` if nothing could be moved.
+   */
+  moveFromStorage(repositorySlotIndex: number, quantity: number = 1): number | null {
+    const source = this.readRepositorySlot(repositorySlotIndex);
+    if (source.isEmpty || quantity <= 0 || quantity > source.quantity || !this.catalog) {
+      return null;
+    }
+
+    const itemInfo = source.itemInfo;
+    if (!itemInfo) return null;
+
+    const inventorySlot = this.addItem(itemInfo, quantity, source.upgradeLevel, source.infusion);
+    if (inventorySlot === null) return null;
+
+    const target = this.readSlot(inventorySlot);
+    target.order = source.order;
+    target.durability = source.durability;
+    this.writeSlot(inventorySlot, target);
+
+    if (quantity >= source.quantity) {
+      this.removeStorageItem(repositorySlotIndex);
+    } else {
+      source.quantity -= quantity;
+      this.writeRepositorySlot(repositorySlotIndex, source);
+    }
+
+    return inventorySlot;
+  }
+
+  /**
+   * Matches `RepositoryData::RemoveAt` byte-for-byte: the whole 32-byte slot
+   * is cleared (unlike the main inventory's `deleteItem`, which leaves a
+   * couple of fields stale — the Repository's own remove clears everything).
+   */
+  removeStorageItem(slotIndex: number): void {
+    const data = this.character.getRawData();
+    const offset = Inventory.REPOSITORY_START + slotIndex * Inventory.REPOSITORY_ITEM_SIZE;
+    data.fill(0xff, offset, offset + 8); // itemKey = -1, +0x04 = -1
+    data.fill(0x00, offset + 8, offset + Inventory.REPOSITORY_ITEM_SIZE); // quantity/flags/rest = 0
+  }
+
+  /**
+   * Set an exact quantity for a stackable item in the Bottomless Box,
+   * adding or removing the slot as needed (quantity <= 0 removes it,
+   * mirroring the game's own auto-remove-at-zero behaviour).
+   */
+  setStorageQuantity(itemInfo: Item, quantity: number): number | null {
+    const existing = this.findStorageItem(itemInfo);
+
+    if (quantity <= 0) {
+      if (existing) this.removeStorageItem(existing.slotIndex);
+      return null;
+    }
+
+    if (existing) {
+      existing.quantity = Math.min(quantity, itemInfo.stackMax || 0xffff);
+      this.writeRepositorySlot(existing.slotIndex, existing);
+      return existing.slotIndex;
+    }
+
+    return this.addStorageItem(itemInfo, quantity);
   }
 
   private updateItemsNumber(slotIndex: number): void {

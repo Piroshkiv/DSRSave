@@ -30,9 +30,16 @@ export const translations: Record<string, Record<Lang, string>> = {
   tab_appearance: { en: 'Appearance', zh: '外观' },
   tab_inventory: { en: 'Inventory', zh: '物品' },
   tab_bonfires: { en: 'Bonfires', zh: '篝火' },
+  tab_covenants: { en: 'Covenants', zh: '誓约' },
   tab_gestures: { en: 'Gestures', zh: '姿势' },
   tab_npcs: { en: 'NPCs', zh: 'NPC' },
   tab_bosses: { en: 'Bosses', zh: 'Boss' },
+
+  legacyVersionHint: {
+    en: "If the new version doesn't work for you, you can try the old one.",
+    zh: '如果新版本无法正常使用，可以尝试旧版本。',
+  },
+  useOldVersion: { en: 'Use old version', zh: '使用旧版本' },
 
   tab_world_events: { en: 'Events', zh: '世界事件' },
 
@@ -93,6 +100,10 @@ export const translations: Record<string, Record<Lang, string>> = {
   upgradeLevel: { en: 'Upgrade Level', zh: '强化等级' },
   durability: { en: 'Durability', zh: '耐久度' },
   errorCreatingItem: { en: 'Error creating item:', zh: '创建物品失败:' },
+  boxQuantity: { en: 'Box Quantity', zh: '箱子数量' },
+  destination: { en: 'Destination', zh: '目标位置' },
+  destInventory: { en: 'Inventory', zh: '背包' },
+  destBox: { en: 'Bottomless Box', zh: '无底的箱子' },
 
   // 编辑物品对话框
   editItemTitle: { en: 'Edit Item', zh: '编辑物品' },
@@ -101,6 +112,17 @@ export const translations: Record<string, Record<Lang, string>> = {
   estusFlaskEmpty: { en: 'empty flask, must be 0', zh: '空瓶，必须为0' },
   keepCurrent: { en: 'Keep Current', zh: '保持当前' },
   slotIndex: { en: 'Slot Index:', zh: '槽位索引:' },
+
+  // Bottomless Box (inventory tab)
+  bottomlessBox: { en: 'Bottomless Box', zh: '无底的箱子' },
+  moveToBox: { en: 'Box →', zh: '箱子 →' },
+  moveToInventory: { en: '← Inventory', zh: '← 背包' },
+  inBox: { en: 'In Box', zh: '箱子中' },
+  inInventory: { en: 'In Inventory', zh: '背包中' },
+  cannotMoveEquipped: {
+    en: 'Unequip this weapon before moving it to the Bottomless Box.',
+    zh: '请先卸下该武器，再将其移入无底的箱子。',
+  },
 
   // 基础标签页
   stats: { en: 'Stats', zh: '属性' },
@@ -137,6 +159,13 @@ export const translations: Record<string, Record<Lang, string>> = {
   notAllUnlocked: { en: '✗ Not All Bonfires Unlocked', zh: '✗ 未解锁所有篝火' },
   unlockAll: { en: 'Unlock All Warpable Bonfires', zh: '解锁所有可传送篝火' },
   alreadyUnlocked: { en: 'All Bonfires Already Unlocked', zh: '所有篝火已解锁' },
+  kindling: { en: 'Kindling', zh: '篝火等级' },
+  maxEstus: { en: 'Max Estus', zh: '最大估算瓶数' },
+  kindleUnnamed: { en: 'Unlisted rest point', zh: '未列出的休息点' },
+  kindleAll: { en: 'Kindle All', zh: '全部点燃' },
+  kindleUnkindled: { en: 'Unkindled', zh: '未点燃' },
+  kindleSearch: { en: 'Search bonfires...', zh: '搜索篝火...' },
+  kindleNeverTouched: { en: 'Not Kindled At All', zh: '从未点燃过' },
   info: { en: 'ℹ️ Information', zh: 'ℹ️ 信息' },
   infoText1: { en: 'Unlocks all 20 warpable bonfires in Dark Souls Remastered.', zh: '解锁所有 20 个可传送篝火。' },
   infoText2: { en: 'You still need to rest at each bonfire to register it in-game.', zh: '仍需在每个篝火处休息以在游戏内注册。' },
@@ -521,6 +550,14 @@ export const translations: Record<string, Record<Lang, string>> = {
   covenantForestHunter: { en: 'Forest Hunter', zh: '森林猎人' },
   covenantDarkmoonBlade: { en: 'Darkmoon Blade', zh: '暗月之刃' },
   covenantChaosServant: { en: 'Chaos Servant', zh: '混沌仆役' },
+
+  covenants: { en: 'Covenants', zh: '誓约' },
+  covenantRank: { en: 'Rank', zh: '等级' },
+  covenantJoin: { en: 'Join', zh: '加入' },
+  covenantAvailable: { en: 'Available', zh: '可选' },
+  covenantName: { en: 'Covenant', zh: '誓约' },
+  covenantJoined: { en: 'Joined', zh: '已加入' },
+  covenantLeave: { en: 'Leave Covenant', zh: '退出誓约' },
 
   // 体型名
   physiqueAverage: { en: 'Average', zh: '普通' },

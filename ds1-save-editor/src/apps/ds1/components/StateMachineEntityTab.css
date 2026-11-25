@@ -1,0 +1,151 @@
+.state-machine-tab .entity-item {
+  flex-wrap: wrap;
+}
+
+.state-machine-tab .entity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 11rem;
+}
+
+.sm-status-line {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.sm-badge {
+  font-size: 0.68rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #999;
+}
+
+.sm-badge--stage {
+  background: rgba(255, 255, 255, 0.05);
+  color: #8aa0c0;
+}
+
+.sm-badge--unknown {
+  border: 1px dashed rgba(150, 130, 200, 0.5);
+  color: #9090c8;
+  background: rgba(130, 130, 200, 0.08);
+}
+
+/* Alive/dead status toggle — the one axis still rendered as a single
+   click-to-advance button, same visual language as DS3's ds3-slot-status: a
+   dot + action label. Colour always follows the ACTION about to run (Kill
+   red, Revive green), not the state being left. An undetected read just
+   adds a dashed border on top of whichever action colour is the default. */
+.sm-status-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  border: 1px solid;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.sm-status-toggle-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* Every select-driven cycle here (hostile/calm, the Gwyndolin covenant lock,
+   quest-stage jumps, npc_group combo stages) applies on change -- no
+   separate Go button -- and is sized to the exact same padding/border/font
+   as .sm-status-toggle so it lines up at the same height next to the
+   Kill/Revive button. */
+.sm-cycle-select {
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  border: 1px solid #2e2e2e;
+  background: #1e1e1e;
+  max-width: 15rem;
+  color: #c0c0c0;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sm-status-toggle--action-kill {
+  color: #d9534f;
+  background: rgba(217, 83, 79, 0.12);
+  border-color: rgba(217, 83, 79, 0.35);
+}
+
+.sm-status-toggle--action-kill:hover {
+  background: rgba(217, 83, 79, 0.2);
+  border-color: rgba(217, 83, 79, 0.6);
+}
+
+.sm-status-toggle--action-revive {
+  color: #5cb85c;
+  background: rgba(92, 184, 92, 0.12);
+  border-color: rgba(92, 184, 92, 0.35);
+}
+
+.sm-status-toggle--action-revive:hover {
+  background: rgba(92, 184, 92, 0.2);
+  border-color: rgba(92, 184, 92, 0.6);
+}
+
+.sm-status-toggle--undetected {
+  border-style: dashed;
+}
+
+.sm-status-toggle--flash-kill {
+  animation: kill-flash 0.35s ease-out forwards;
+}
+
+.sm-status-toggle--flash-revive {
+  animation: revive-flash 0.35s ease-out forwards;
+}
+
+.sm-actions {
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+/* A group is its 2-4 member rows merged into ONE visual block: a single
+   shared background/border around all of them, thin dividers between, no
+   per-member background or left-accent -- not several separate list items
+   sitting next to each other. */
+.entity-group {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.entity-group .entity-item {
+  background: transparent;
+  border-left: none;
+  border-radius: 0;
+}
+
+.entity-group .entity-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 768px) {
+  .state-machine-tab .entity-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

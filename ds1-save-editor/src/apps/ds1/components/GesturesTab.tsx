@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Character, GESTURE_COUNT } from '../lib/Character';
 import { useLang } from '../../../core/context/LanguageContext';
 import { t } from '../lib/i18n';
+import { GestureIcon } from './ItemIcon';
 
 interface GesturesTabProps {
   character: Character;
@@ -111,6 +112,7 @@ export const GesturesTab: React.FC<GesturesTabProps> = ({ character, onCharacter
               onClick={() => tableFound && handleToggle(i)}
             >
               <span className={`gesture-dot ${isUnlocked ? 'dot-on' : 'dot-off'}`} />
+              <GestureIcon index={i} size={40} />
               <span className="gesture-name">{name}</span>
             </div>
           );

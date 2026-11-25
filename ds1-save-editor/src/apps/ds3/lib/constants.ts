@@ -55,6 +55,104 @@ export const RELATIVE_OFFSETS = {
 /** The nine levelled stats, in the order the game's status screen lists them. */
 export const STAT_ORDER = ['VIG', 'ATN', 'END', 'VIT', 'STR', 'DEX', 'INT', 'FTH', 'LCK'];
 
+// ===== STATUS RESISTANCES =====
+// Five u32 LE at PlayerGameData+0xE0..+0xF0, i.e. CHARACTER_PATTERN - 0x70. Full
+// write-up, decompiled functions and validation: docs/ds3-resist-recalc.md.
+//
+// These are NOT a cache of the "resistance" numbers on the status screen. They
+// are the live status-buildup gauges: `current = max - buildup so far`, copied
+// out of the player's resist module (FUN_1408c0fd0) so that quitting does not
+// wipe a half-filled poison bar. A full gauge reads exactly `max`; anything in
+// 0..max is a state the game produces on its own.
+//
+// What an editor can get wrong is `current > max`: lower a stat without touching
+// the gauge and the slot holds a value no legitimate save has. So every stat
+// edit refills the gauges to the new maxima — see DS3Character.resetResistances.
+//
+// The slots are not in the game's internal type order: toxic and bleed swap.
+export const RESIST_OFFSET = -0x70;
+export const RESIST_COUNT = 5;
+/** Save slot -> the game's resist type (0 poison, 1 toxic, 2 bleed, 3 curse, 4 frost). */
+export const RESIST_SLOT_TO_TYPE = [0, 2, 1, 3, 4] as const;
+/** Names in save-slot order. */
+export const RESIST_NAMES = ['Poison', 'Bleed', 'Toxic', 'Curse', 'Frost'] as const;
+/** Index into STAT_ORDER of the stat that feeds each resist type (VIT, VIT, END, LCK, VIG). */
+export const RESIST_TYPE_STAT = [3, 3, 2, 8, 0] as const;
+
+// ===== EQUIPPED ITEMS =====
+// The equipment block follows the stat block at a fixed distance from
+// CHARACTER_PATTERN (the pattern is the first of eleven 16-byte records that sit
+// between the two). Held on 41 distinct characters across 4 profiles — the
+// resistances recomputed from these IDs matched the game's own on every one that
+// had a full gauge.
+//
+//   +0x10C  u32      active left-hand slot  (0..2)
+//   +0x110  u32      active right-hand slot (0..2)
+//   +0x124  u32 x 6  weapon IDs: L1, R1, L2, R2, L3, R3
+//   +0x154  u32 x 4  armor IDs: head, chest, hands, legs
+//   +0x168  u32 x 4  ring IDs
+//
+// IDs are param row IDs (weapons carry infusion and upgrade level in the low
+// digits); an empty ring slot is 0xFFFFFFFF, bare skin is 900000/901000/...
+export const EQUIP_ACTIVE_LEFT_OFFSET = 0x10C;
+export const EQUIP_ACTIVE_RIGHT_OFFSET = 0x110;
+export const EQUIP_WEAPONS_OFFSET = 0x124;
+export const EQUIP_WEAPON_SLOTS_PER_HAND = 3;
+export const EQUIP_ARMOR_OFFSET = 0x154;
+export const EQUIP_ARMOR_COUNT = 4;
+export const EQUIP_RINGS_OFFSET = 0x168;
+export const EQUIP_RING_COUNT = 4;
+// ===== ARMOR DURABILITY =====
+// A worn piece of armor contributes less status resist (and absorption). The
+// rule is a three-step staircase, FUN_140633b20(durability, maxDurability):
+//
+//   max <= 0                    -> 1.0
+//   durability / max  > 0.3     -> 1.0
+//   0 < durability / max <= 0.3 -> 0.7   ("at risk")
+//   durability / max <= 0       -> 0.5   (broken)
+//
+// with the constants at 0x14456CE70 (0.3, 1.0, 0.7, 0.5). The durability is a
+// per-item value and it is in the save: equip index (+0xB0, 22 x i32, biased by
+// 128) -> 16-byte inventory record {handle, item id, ...} -> GA item table
+// entry {handle, item id, durability}. See docs/ds3-resist-recalc.md.
+export const EQUIP_INDEX_OFFSET = 0xB0;
+/** Equip slots 12..15 are head, chest, hands, legs. */
+export const EQUIP_INDEX_FIRST_ARMOR = 12;
+/** Equip indices are inventory indices plus this (the game's tailDataIdx). */
+export const EQUIP_INDEX_BIAS = 128;
+export const INVENTORY_RECORD_SIZE = 16;
+export const ITEM_CATEGORY_ARMOR = 0x10000000;
+export const GA_TABLE_OFFSET = 0x70;
+export const GA_TABLE_ENTRIES = 6144;
+export const DURABILITY_AT_RISK_RATIO = 0.3;
+export const DURABILITY_SCALE_AT_RISK = 0.7;
+export const DURABILITY_SCALE_BROKEN = 0.5;
+
+/** No stat counts above this, even with rings on (FUN_140750010 clamps to 99). */
+export const EFFECTIVE_STAT_CAP = 99;
+
+// ===== HP / FP / STAMINA: current, maximum, base =====
+// Each vital is three u32 in the stat block (PlayerGameData +0x18..+0x3C):
+//
+//            current   maximum   base
+//   HP       -0x138    -0x134    -0x130   (RELATIVE_OFFSETS.HP is the base)
+//   FP       -0x12C    -0x128    -0x124
+//   stamina  -0x11C    -0x118    -0x114
+//
+// base    = table lookup on the effective stat (VIGOR_TO_HP and friends)
+// maximum = trunc(base x ring multipliers x 1.3 when embered, HP only)
+//
+// Held on 41 of 41 characters, 24 of them embered and 3 wearing Ring of
+// Favor+3. See docs/ds3-resist-recalc.md, "HP, FP and stamina".
+/** Indexed by vital: 0 HP, 1 FP, 2 stamina. */
+export const VITAL_CURRENT_OFFSETS = [-0x138, -0x12C, -0x11C] as const;
+export const VITAL_MAX_OFFSETS = [-0x134, -0x128, -0x118] as const;
+export const VITAL_BASE_OFFSETS = [-0x130, -0x124, -0x114] as const;
+/** PlayerGameData +0x100: non-zero while the character is embered. */
+export const EMBER_OFFSET = -0x50;
+/** Max HP multiplier of the ember state (SpEffect 490, maxHpRate). */
+export const EMBER_HP_RATE = 1.3;
+
 // ===== BONFIRES / event-flag block =====
 // The bonfire block moves with the (variable-length) inventory, so it can't be read at a
 // fixed offset. It is located with a DS1-style windowed anchor search — see

@@ -4,9 +4,10 @@ import { Character } from '../lib/Character';
 import { useLang } from '../../../core/context/LanguageContext';
 import { t } from '../lib/i18n';
 import { applyChineseNames } from '../lib/itemNamesZh';
-import { Inventory, ItemCollectionType, ItemInfusion, InventoryItem } from '../lib/Inventory';
+import { Inventory, ItemCollectionType, ItemInfusion, InventoryItem, RepositoryItem } from '../lib/Inventory';
 import { ItemCreateDialog } from './ItemCreateDialog';
 import { ItemEditDialog } from './ItemEditDialog';
+import { ItemIcon } from './ItemIcon';
 import { NumberInput } from './NumberInput';
 import { matchesItemSearch } from '../../../shared/items';
 
@@ -48,10 +49,20 @@ const SUB_TAB_TO_COLLECTION: Record<SubTabType, ItemCollectionType> = {
   rings: ItemCollectionType.Ring,
 };
 
+/**
+ * Tabs whose items the real Bottomless Box accepts. Unlike stackable goods
+ * (which live in the inventory and the box at once, as two independent
+ * quantities), a weapon/ring/piece of armor is in exactly one of the two —
+ * hence the separate "Bottomless Box" section with move-to/-from buttons,
+ * rather than a second quantity field like the stackable tabs get.
+ */
+const BOX_ELIGIBLE_TABS: SubTabType[] = ['weapons', 'armor', 'rings'];
+
 export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharacterUpdate, safeMode }) => {
   const { lang } = useLang();
   const [inventory, setInventory] = useState(() => new Inventory(character));
   const [items, setItems] = useState<InventoryItem[]>([]);
+  const [boxItems, setBoxItems] = useState<RepositoryItem[]>([]);
   const [activeSubTab, setActiveSubTab] = useState<SubTabType>('consumables');
   const [loading, setLoading] = useState(true);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -100,6 +111,16 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     setItems(filteredItems);
     setWeaponLevel(inv.weaponLevel);
     setEquippedSlots(inv.getEquippedWeaponSlots());
+
+    if (BOX_ELIGIBLE_TABS.includes(activeSubTab)) {
+      let boxFiltered = inv.getStorageItemsByType(collectionType);
+      if (searchQuery.trim()) {
+        boxFiltered = boxFiltered.filter(item => matchesItemSearch(item.itemName, searchQuery));
+      }
+      setBoxItems(boxFiltered);
+    } else {
+      setBoxItems([]);
+    }
   }, [inventory, activeSubTab, safeMode, searchQuery, infusionFilter, wlFilter]);
 
   // Recreate inventory when character changes
@@ -146,6 +167,16 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
         setItems(filteredItems);
         setWeaponLevel(newInventory.weaponLevel);
         setEquippedSlots(newInventory.getEquippedWeaponSlots());
+
+        if (BOX_ELIGIBLE_TABS.includes(activeSubTab)) {
+          let boxFiltered = newInventory.getStorageItemsByType(collectionType);
+          if (searchQuery.trim()) {
+            boxFiltered = boxFiltered.filter(item => matchesItemSearch(item.itemName, searchQuery));
+          }
+          setBoxItems(boxFiltered);
+        } else {
+          setBoxItems([]);
+        }
       } catch (error) {
         console.error('Error loading inventory:', error);
         alert(`Failed to load items database: ${error instanceof Error ? error.message : String(error)}\n\nPlease ensure items.json is available.`);
@@ -216,6 +247,38 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     setEditingItem(item);
   };
 
+  const handleMoveToBox = (item: InventoryItem) => {
+    if (equippedSlots.has(item.slotIndex)) {
+      alert(t('cannotMoveEquipped', lang));
+      return;
+    }
+    const moved = inventory.moveToStorage(item.slotIndex, item.quantity);
+    if (moved === null) {
+      alert(t('bottomlessBox', lang) + ': full or nothing to move.');
+      return;
+    }
+    refreshItems();
+    onCharacterUpdate();
+  };
+
+  const handleMoveToInventory = (item: RepositoryItem) => {
+    const moved = inventory.moveFromStorage(item.slotIndex, item.quantity);
+    if (moved === null) {
+      alert(t('createItem', lang) + ': inventory full or nothing to move.');
+      return;
+    }
+    refreshItems();
+    onCharacterUpdate();
+  };
+
+  const handleDeleteBoxItem = (slotIndex: number) => {
+    if (confirm(t('deleteConfirm', lang))) {
+      inventory.removeStorageItem(slotIndex);
+      refreshItems();
+      onCharacterUpdate();
+    }
+  };
+
   const handleItemUpdated = () => {
     if (safeMode) {
       inventory.calibrateWeaponLevel();
@@ -276,10 +339,15 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
     }
   };
 
-  const formatItemDisplay = (item: InventoryItem): string => {
+  const formatItemDisplay = (item: Pick<InventoryItem, 'itemName' | 'infusion' | 'upgradeLevel'>): string => {
     const infusionStr = item.infusion !== ItemInfusion.Standard ? `${getInfusionName(item.infusion)} ` : '';
     const upgradeStr = item.upgradeLevel > 0 ? ` +${item.upgradeLevel}` : '';
     return `${infusionStr}${item.itemName}${upgradeStr}`;
+  };
+
+  const getBoxQty = (item: InventoryItem): number => {
+    const info = item.itemInfo;
+    return info ? inventory.getStorageQuantityFor(info) : 0;
   };
 
   if (loading) {
@@ -293,21 +361,57 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
   return (
     <div className="inventory-tab">
       <div className="inventory-header">
-        <button className="create-item-button" onClick={() => setShowCreateDialog(true)}>
-          {t('createItem', lang)}
-        </button>
-        <button className="create-item-button add-all-button" onClick={handleAddAll}>
-          {t('addAll', lang)}
-        </button>
-        <button className="delete-button clear-all-button" onClick={() => {
-          const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
-          inventory.clearAllItems(collectionType);
-          refreshItems();
-          onCharacterUpdate();
-        }}>
-          {t('clearAll', lang)}
-        </button>
+        {activeSubTab === 'weapons' && (
+          <div className="weapon-level-display">
+            <label>{t('weaponLevel', lang)}</label>
+            <NumberInput
+              value={weaponLevel}
+              onChange={handleWeaponLevelChange}
+              min={0}
+              max={15}
+              disabled={safeMode}
+            />
+            <button
+              className="toolbar-button"
+              onClick={handleCalibrateWL}
+              title={t('calibrateWL', lang)}
+            >
+              {t('calibrateWL', lang)}
+            </button>
+          </div>
+        )}
 
+        <div className="inventory-controls-right">
+          <button className="toolbar-button" onClick={() => {
+            const collectionType = SUB_TAB_TO_COLLECTION[activeSubTab];
+            inventory.clearAllItems(collectionType);
+            refreshItems();
+            onCharacterUpdate();
+          }}>
+            {t('clearAll', lang)}
+          </button>
+          <button className="toolbar-button" onClick={() => setShowCreateDialog(true)}>
+            {t('createItem', lang)}
+          </button>
+          <button className="toolbar-button toolbar-button-accent" onClick={handleAddAll}>
+            {t('addAll', lang)}
+          </button>
+        </div>
+      </div>
+
+      <div className="sub-tabs">
+        {(Object.keys(SUB_TAB_KEYS) as SubTabType[]).map((subTab) => (
+          <button
+            key={subTab}
+            className={`sub-tab ${activeSubTab === subTab ? 'active' : ''}`}
+            onClick={() => setActiveSubTab(subTab)}
+          >
+            {t(SUB_TAB_KEYS[subTab], lang)}
+          </button>
+        ))}
+      </div>
+
+      <div className="inventory-filters">
         <div className="inventory-search">
           <input
             type="text"
@@ -342,52 +446,20 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
         )}
 
         {activeSubTab === 'weapons' && (
-          <>
-            <div className="filter-group">
-              <label>{t('wl', lang)}</label>
-              <select
-                value={wlFilter}
-                onChange={(e) => setWlFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
-                className="filter-select"
-              >
-                <option value="all">{t('all', lang)}</option>
-                {Array.from({ length: 16 }, (_, i) => (
-                  <option key={i} value={i}>{i}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="weapon-level-display">
-              <label>{t('weaponLevel', lang)}</label>
-              <NumberInput
-                value={weaponLevel}
-                onChange={handleWeaponLevelChange}
-                min={0}
-                max={15}
-                disabled={safeMode}
-              />
-              <button
-                className="calibrate-button"
-                onClick={handleCalibrateWL}
-                title={t('calibrateWL', lang)}
-              >
-                {t('calibrateWL', lang)}
-              </button>
-            </div>
-          </>
+          <div className="filter-group">
+            <label>{t('wl', lang)}</label>
+            <select
+              value={wlFilter}
+              onChange={(e) => setWlFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+              className="filter-select"
+            >
+              <option value="all">{t('all', lang)}</option>
+              {Array.from({ length: 16 }, (_, i) => (
+                <option key={i} value={i}>{i}</option>
+              ))}
+            </select>
+          </div>
         )}
-      </div>
-
-      <div className="sub-tabs">
-        {(Object.keys(SUB_TAB_KEYS) as SubTabType[]).map((subTab) => (
-          <button
-            key={subTab}
-            className={`sub-tab ${activeSubTab === subTab ? 'active' : ''}`}
-            onClick={() => setActiveSubTab(subTab)}
-          >
-            {t(SUB_TAB_KEYS[subTab], lang)}
-          </button>
-        ))}
       </div>
 
       <div className="inventory-content" ref={parentRef}>
@@ -413,20 +485,38 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
                 >
                 <div className="item-row">
                   <div className="item-info">
-                    <span className="item-name">{formatItemDisplay(item)}</span>
-                    <div className="item-details">
-                      {item.quantity > 1 && (
-                        <span className="item-detail">Qty: {item.quantity}</span>
-                      )}
-                      {item.infusion !== ItemInfusion.Standard && (
-                        <span className="item-detail">{getInfusionName(item.infusion)}</span>
-                      )}
-                      {equippedSlots.has(item.slotIndex) && (
-                        <span className="item-detail item-detail-equipped">{equippedSlots.get(item.slotIndex)}</span>
-                      )}
+                    <ItemIcon typeNibble={item.itemType} itemId={item.baseItemId} size={44} />
+                    <div className="item-info-text">
+                      <span className="item-name">{formatItemDisplay(item)}</span>
+                      <div className="item-details">
+                        {item.quantity > 1 && (
+                          <span className="item-detail">
+                            Qty: {item.quantity}
+                            {item.itemInfo && item.itemInfo.stackMax > 1 && getBoxQty(item) > 0
+                              ? ` / ${t('destBox', lang)}: ${getBoxQty(item)}`
+                              : ''}
+                          </span>
+                        )}
+                        {item.infusion !== ItemInfusion.Standard && (
+                          <span className="item-detail">{getInfusionName(item.infusion)}</span>
+                        )}
+                        {equippedSlots.has(item.slotIndex) && (
+                          <span className="item-detail item-detail-equipped">{equippedSlots.get(item.slotIndex)}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="item-actions">
+                    {BOX_ELIGIBLE_TABS.includes(activeSubTab) && (
+                      <button
+                        className="move-button"
+                        onClick={() => handleMoveToBox(item)}
+                        disabled={equippedSlots.has(item.slotIndex)}
+                        title={equippedSlots.has(item.slotIndex) ? t('cannotMoveEquipped', lang) : t('destBox', lang)}
+                      >
+                        {t('moveToBox', lang)}
+                      </button>
+                    )}
                     <button className="edit-button" onClick={() => handleEditItem(item)}>{t('edit', lang)}</button>
                     <button className="delete-button" onClick={() => handleDeleteItem(item.slotIndex)}>{t('delete', lang)}</button>
                   </div>
@@ -437,6 +527,40 @@ export const InventoryTab: React.FC<InventoryTabProps> = ({ character, onCharact
           </div>
         )}
       </div>
+
+      {BOX_ELIGIBLE_TABS.includes(activeSubTab) && (
+        <div className="bottomless-box-section">
+          <h3>{t('bottomlessBox', lang)}</h3>
+          {boxItems.length === 0 ? (
+            <div className="no-items">{t('noItems', lang)}</div>
+          ) : (
+            <div className="box-items-list">
+              {boxItems.map((item) => (
+                <div className="item-row" key={item.slotIndex}>
+                  <div className="item-info">
+                    <ItemIcon typeNibble={item.itemType} itemId={item.baseItemId} size={44} />
+                    <div className="item-info-text">
+                      <span className="item-name">{formatItemDisplay(item)}</span>
+                      <div className="item-details">
+                        {item.quantity > 1 && <span className="item-detail">Qty: {item.quantity}</span>}
+                        {item.infusion !== ItemInfusion.Standard && (
+                          <span className="item-detail">{getInfusionName(item.infusion)}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="item-actions">
+                    <button className="move-button" onClick={() => handleMoveToInventory(item)} title={t('destInventory', lang)}>
+                      {t('moveToInventory', lang)}
+                    </button>
+                    <button className="delete-button" onClick={() => handleDeleteBoxItem(item.slotIndex)}>{t('delete', lang)}</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {showCreateDialog && (
         <ItemCreateDialog

@@ -64,8 +64,8 @@ const WORLD_EVENTS_CATEGORIES: EventCategory[] = [
     name_en: 'Bells',
     name_zh: '钟',
     events: [
-      { id: 'bell1', name_en: 'First Bell of Awakening', name_zh: '第一口钟', offset: '0x180', bit: 0, reverse: false, verified: false },
-      { id: 'bell2', name_en: 'Second Bell of Awakening', name_zh: '第二口钟', offset: '0x1D1', bit: 0, reverse: false, verified: false },
+      { id: 'bell1', name_en: 'Upper Bell of Awakening (Undead Parish)', name_zh: '第一口钟', offset: '0xFA7', bit: 3, reverse: false, verified: true },
+      { id: 'bell2', name_en: 'Second Bell of Awakening', name_zh: '第二口钟', offset: '0x376D', bit: 7, reverse: false, verified: true },
     ]
   },
 ];
