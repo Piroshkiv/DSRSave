@@ -34,8 +34,12 @@ export const translations: Record<string, Record<Lang, string>> = {
   tab_gestures: { en: 'Gestures', zh: '姿势' },
   tab_npcs: { en: 'NPCs', zh: 'NPC' },
   tab_bosses: { en: 'Bosses', zh: 'Boss' },
-  tab_npcs_v2: { en: 'NPCs (New)', zh: 'NPC（新）' },
-  tab_bosses_v2: { en: 'Bosses (New)', zh: 'Boss（新）' },
+
+  legacyVersionHint: {
+    en: "If the new version doesn't work for you, you can try the old one.",
+    zh: '如果新版本无法正常使用，可以尝试旧版本。',
+  },
+  useOldVersion: { en: 'Use old version', zh: '使用旧版本' },
 
   tab_world_events: { en: 'Events', zh: '世界事件' },
 

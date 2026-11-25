@@ -301,9 +301,7 @@ export const StateMachineEntityTab: React.FC<Props> = ({ character, onCharacterU
       <h2>{config.title}</h2>
 
       <div className="disclaimer">
-        Experimental: stage/quest data is reverse-engineered and marked "not verified yet" where it
-        has not been confirmed on a real save. Always confirm the game is sitting at the main menu
-        before applying a change here.
+        ⚠️ There may be bugs. If you encounter any issues, please report them via Discord.
       </div>
 
       {!ready && !error && <div className="loading-message">{config.loadingMessage}</div>}

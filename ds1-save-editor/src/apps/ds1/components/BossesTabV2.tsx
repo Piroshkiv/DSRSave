@@ -12,7 +12,7 @@ interface Props {
 export const BossesTabV2: React.FC<Props> = (props) => {
   const config: StateMachineEntityTabConfig = {
     entityType: 'boss',
-    title: 'Bosses (New)',
+    title: 'Bosses',
     searchPlaceholder: 'Search bosses...',
     loadingMessage: 'Loading boss state machine data...',
     includeGroups: false,

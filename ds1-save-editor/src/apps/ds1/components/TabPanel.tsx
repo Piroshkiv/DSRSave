@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Character } from '../lib/Character';
 import { useLang } from '../../../core/context/LanguageContext';
-import { t } from '../lib/i18n';
+import { t, Lang } from '../lib/i18n';
 import { CreateBackupResult } from '../lib/backups';
 import { GeneralTab } from './GeneralTab';
 import { InventoryTab } from './InventoryTab';
@@ -34,7 +34,7 @@ interface TabPanelProps {
   backups?: BackupControls | null;
 }
 
-type TabType = 'help' | 'general' | 'appearance' | 'inventory' | 'bonfires' | 'covenants' | 'gestures' | 'npcs' | 'bosses' | 'npcs_v2' | 'bosses_v2' | 'world_events' | 'backups' | 'table';
+type TabType = 'help' | 'general' | 'appearance' | 'inventory' | 'bonfires' | 'covenants' | 'gestures' | 'npcs' | 'bosses' | 'world_events' | 'backups' | 'table';
 
 const TAB_KEYS: Record<TabType, string> = {
   help: 'tab_help',
@@ -46,19 +46,34 @@ const TAB_KEYS: Record<TabType, string> = {
   gestures: 'tab_gestures',
   npcs: 'tab_npcs',
   bosses: 'tab_bosses',
-  npcs_v2: 'tab_npcs_v2',
-  bosses_v2: 'tab_bosses_v2',
   world_events: 'tab_world_events',
   backups: 'tab_backups',
   table: 'tab_table',
 };
 
-const FULL_TABS: TabType[] = ['general', 'appearance', 'inventory', 'bonfires', 'covenants', 'gestures', 'npcs', 'bosses', 'npcs_v2', 'bosses_v2', 'backups', 'table'];
+const FULL_TABS: TabType[] = ['general', 'appearance', 'inventory', 'bonfires', 'covenants', 'gestures', 'npcs', 'bosses', 'backups', 'table'];
+
+/** Shown above the npcs/bosses tab content: lets the user fall back to the
+ * older, simpler tool if the new state-machine-backed one misbehaves. */
+const VersionToggleBanner: React.FC<{ legacy: boolean; onChange: (legacy: boolean) => void; lang: Lang }> = ({ legacy, onChange, lang }) => (
+  <div className="version-toggle-banner">
+    <span className="version-toggle-hint">{t('legacyVersionHint', lang)}</span>
+    <button className="ds1-safemode-btn" onClick={() => onChange(!legacy)} title={t('useOldVersion', lang)}>
+      <span className={`ds1-safemode-dot ${legacy ? 'on' : 'off'}`}>●</span>
+      {t('useOldVersion', lang)}
+      <span className={`ds1-safemode-badge ${legacy ? 'on' : 'off'}`}>
+        {legacy ? t('on', lang) : t('off', lang)}
+      </span>
+    </button>
+  </div>
+);
 
 
 export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate, safeMode, backups }) => {
   const { lang } = useLang();
   const [activeTab, setActiveTab] = useState<TabType>('general');
+  const [npcsLegacy, setNpcsLegacy] = useState(false);
+  const [bossesLegacy, setBossesLegacy] = useState(false);
 
   // An empty slot is reachable only for its backup history, so that is all it offers
   const isEmptySlot = character?.isEmpty ?? false;
@@ -127,16 +142,20 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
           <GesturesTab character={character} onCharacterUpdate={onCharacterUpdate} />
         )}
         {activeTab === 'npcs' && !isEmptySlot && (
-          <NPCsTab character={character} onCharacterUpdate={onCharacterUpdate} />
+          <>
+            <VersionToggleBanner legacy={npcsLegacy} onChange={setNpcsLegacy} lang={lang} />
+            {npcsLegacy
+              ? <NPCsTab character={character} onCharacterUpdate={onCharacterUpdate} />
+              : <NPCsTabV2 character={character} onCharacterUpdate={onCharacterUpdate} />}
+          </>
         )}
         {activeTab === 'bosses' && !isEmptySlot && (
-          <BossesTab character={character} onCharacterUpdate={onCharacterUpdate} />
-        )}
-        {activeTab === 'npcs_v2' && !isEmptySlot && (
-          <NPCsTabV2 character={character} onCharacterUpdate={onCharacterUpdate} />
-        )}
-        {activeTab === 'bosses_v2' && !isEmptySlot && (
-          <BossesTabV2 character={character} onCharacterUpdate={onCharacterUpdate} />
+          <>
+            <VersionToggleBanner legacy={bossesLegacy} onChange={setBossesLegacy} lang={lang} />
+            {bossesLegacy
+              ? <BossesTab character={character} onCharacterUpdate={onCharacterUpdate} />
+              : <BossesTabV2 character={character} onCharacterUpdate={onCharacterUpdate} />}
+          </>
         )}
         {activeTab === 'world_events' && !isEmptySlot && (
           <WorldEventsTab character={character} onCharacterUpdate={onCharacterUpdate} />
@@ -166,6 +185,23 @@ export const TabPanel: React.FC<TabPanelProps> = ({ character, onCharacterUpdate
           background: rgba(255, 255, 255, 0.03);
           border-left: 2px solid rgba(255, 107, 53, 0.5);
           border-radius: 3px;
+          font-size: 0.78rem;
+          color: #888;
+        }
+
+        .version-toggle-banner {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+          margin-bottom: 0.75rem;
+          padding: 0.5rem 0.7rem;
+          background: rgba(255, 255, 255, 0.03);
+          border-left: 2px solid rgba(255, 107, 53, 0.5);
+          border-radius: 3px;
+        }
+
+        .version-toggle-hint {
           font-size: 0.78rem;
           color: #888;
         }

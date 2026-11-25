@@ -13,7 +13,7 @@ interface Props {
 export const NPCsTabV2: React.FC<Props> = (props) => {
   const config: StateMachineEntityTabConfig = {
     entityType: 'npc',
-    title: 'NPCs (New)',
+    title: 'NPCs',
     searchPlaceholder: 'Search NPCs...',
     loadingMessage: 'Loading NPC state machine data...',
     includeGroups: true,
